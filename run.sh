@@ -1,1 +1,1 @@
-java -classpath bin/ controller.ApplicationController
+java -classpath bin/ coderampart.controller.ApplicationController
