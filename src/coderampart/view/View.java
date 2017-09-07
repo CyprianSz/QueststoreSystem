@@ -96,5 +96,12 @@ public class View {
        return artifactData;
    }
 
+   public static String chooseQuestCategory() {
+       // Demo:
+       System.out.println("Category:\n1. Basic\n2. Extra\n");
+       String category = "Basic";
+       return category;
+   }
+
 
 }
