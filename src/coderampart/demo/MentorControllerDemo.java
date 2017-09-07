@@ -69,7 +69,6 @@ public class MentorControllerDemo implements Bootable {
         String name = userData[0];
         String surname = userData[1];
         String email = userData[2];
-        // 2017-12-25
         LocalDate dateOfBirth = LocalDate.parse(userData[3]);
         Codecooler codecooler = new Codecooler(name, surname, email, dateOfBirth);
 
@@ -98,7 +97,7 @@ public class MentorControllerDemo implements Bootable {
             quest.setName(name);
 
         } else if (option == 2) {   // edit coolcoins
-            int coolcoins = getUserChoice();
+            int coolcoins = view.getUserChoice();
             Integer reward = new Integer(coolcoins);
             quest.setReward(reward);
 
@@ -117,6 +116,7 @@ public class MentorControllerDemo implements Bootable {
         quest.setCategory(category);
 
         // Demo
+        view.enterToContinue();
         System.out.println("Quest category: " + category);
     }
 
@@ -125,8 +125,10 @@ public class MentorControllerDemo implements Bootable {
         // choose specific quest and return it
 
         // Demo:
-        System.out.println("\nChoose Quest: \nBasic\n1. Finishing Teamwork\nExtra\n1. Master of mornings \n2. Recruiting some n00bs");
+        System.out.println("\nChoose Quest:\nBasic\n1. Finishing Teamwork\nExtra\n2. Master of mornings \n3. Recruiting some n00bs");
+        view.enterToContinue();
         System.out.println("\nYour choice: Master of mornings");
+
         Quest quest = new Quest("Master of mornings", 100);
         return quest;
     }
@@ -157,10 +159,10 @@ public class MentorControllerDemo implements Bootable {
 
         if (option == 1) {  //edit name
             String name = view.takeInput("New name: ");
-            quest.setName(name);
+            artifact.setName(name);
 
         } else if (option == 2) {   // edit coolcoins
-            int coolcoins = getUserChoice();
+            int coolcoins = view.getUserChoice();
             Integer value = new Integer(coolcoins);
             artifact.setValue(value);
 
@@ -179,7 +181,8 @@ public class MentorControllerDemo implements Bootable {
         artifact.setType(type);
 
         // Demo:
-        System.out.println("Artifact category: " + artifact);
+        view.enterToContinue();
+        System.out.println("Artifact category: " + type);
     }
 
     public Artifact chooseArtifact() {
@@ -187,8 +190,10 @@ public class MentorControllerDemo implements Bootable {
         // choose specific artifact and return it
 
         // Demo:
-        System.out.println("\nChoose artifact: Basic\n1. Private mentoring \n2. Day in home office\nMagic\n1. Workshop 60min.");
+        System.out.println("\nChoose artifact:\nBasic\n1. Private mentoring \n2. Day in home office\nMagic\n3. Workshop 60min.");
+        view.enterToContinue();
         System.out.println("\nYour choice: Private Mentoring");
+        
 
         Artifact artifact = new Artifact("Private Mentoring", 50);
         return artifact;
