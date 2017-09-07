@@ -1,5 +1,9 @@
 package coderampart.Demo;
 
+import coderampart.model.Mentor;
+
+import java.util.Date;
+
 public class MentorControllerDemo implements Bootable {
 
     public void start() {
@@ -7,7 +11,7 @@ public class MentorControllerDemo implements Bootable {
         Integer userChoice = View.getUserChoice();
 
         switch(userChoice) {
-            case 1: createCodecooler();
+            case 1: createMentor();
                     break;
             case 2: addQuest();
                     break;
@@ -28,5 +32,19 @@ public class MentorControllerDemo implements Bootable {
             case 10: displayWalletDetails();
                     break;
         }
-    }    
+    }
+
+    public static void createMentor() {
+        String[] userData = View.getUserData();
+
+        String name = userData[0];
+        String surname = userData[1];
+        String email = userData[2];
+        Date dateOfBirth = userData[3];
+        Mentor mentor = new Codecooler(name, surname, email, dateOfBirth);
+
+        // Demo:
+        System.out.println("New Mentor: " + mentor);
+
+    } 
 }
