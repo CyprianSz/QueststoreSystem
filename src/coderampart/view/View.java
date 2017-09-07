@@ -1,6 +1,7 @@
 package coderampart.view;
 
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class View {
 
@@ -48,9 +49,8 @@ public class View {
         String name = takeInput("Name: ");
         String surname = takeInput("Surname: ");
         String email = takeInput("E-mail: ");
-        
-    }
 
+    }
 
     public static String takeInput(String label) {
         Scanner inputScan = new Scanner();
@@ -58,6 +58,17 @@ public class View {
         String input = inputScan.next();
 
         return input;
+   }
+
+   public LocalDate takeDateInput(String label) {
+       String input;
+
+       do {
+           System.out.println(label);
+           input = inputScan.next();
+       } while (!input.matches("^[2][0][1-9][0-9]-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"));
+
+       return LocalDate.parse(input);
    }
 
 
