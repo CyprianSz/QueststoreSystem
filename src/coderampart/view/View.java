@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class View {
 
-    public static void displayMentorMenu() {
+    public void displayMentorMenu() {
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new Codecooler", "Add quest", "Update quest",
                                                                   "Set quest category", "Mark quest", "Add artifact", "Update artifact", 
                                                                   "Set artifact type", "Mark artifact", "Display wallet details"));
@@ -16,7 +16,7 @@ public class View {
         System.out.println("\n0. Exit");
     }
 
-    public static void displayCodecoolerMenu() {
+    public void displayCodecoolerMenu() {
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Display wallet", "Buy artifact", "Buy artifact with group",
                                                                   "Display level"));
 
@@ -24,7 +24,7 @@ public class View {
         System.out.println("\n0. Exit");
     }
 
-    public static void displayOptions(ArrayList<String> options) {
+    public void displayOptions(ArrayList<String> options) {
         Integer number = 1;
         System.out.println(" ");
         for (String option : options) {
@@ -33,11 +33,11 @@ public class View {
         }
     }
 
-    public static void printExitMessage() {
+    public void printExitMessage() {
         System.out.println("\nGood bye;)");
     }
 
-    public static int getUserChoice() {
+    public int getUserChoice() {
         Scanner input = new Scanner(System.in);
         int number;
 
@@ -51,11 +51,11 @@ public class View {
         return number;
     }
 
-    public static void printErrorMessage() {
+    public void printErrorMessage() {
         System.out.println("\nBad choice");
     }
 
-    public static String[] getUserData() {
+    public String[] getUserData() {
         String name = takeInput("Name: ");
         String surname = takeInput("Surname: ");
         String email = takeInput("E-mail: ");
@@ -66,7 +66,7 @@ public class View {
         return userData;
     }
 
-    public static String takeInput(String label) {
+    public String takeInput(String label) {
         Scanner inputScan = new Scanner(System.in);
         System.out.println(label);
         String input = inputScan.next();
@@ -74,7 +74,7 @@ public class View {
         return input;
    }
 
-   public static String takeDateInput(String label) {
+   public String takeDateInput(String label) {
        Scanner inputScan = new Scanner(System.in);
        String input;
 
@@ -86,7 +86,7 @@ public class View {
        return input;
    }
 
-   public static String[] getQuestData() {
+   public String[] getQuestData() {
        String name = takeInput("Name: ");
        String reward = takeInput("Reward (coolcoins): ");
     
@@ -95,7 +95,7 @@ public class View {
        return questData;
    }
 
-   public static String[] getArtifactData() {
+   public String[] getArtifactData() {
        String name = takeInput("Name: ");
        String value = takeInput("Value (coolcoins): ");
     
@@ -104,14 +104,14 @@ public class View {
        return artifactData;
    }
 
-   public static String chooseQuestCategory() {
+   public String chooseQuestCategory() {
        // Demo:
        System.out.println("Category:\n1. Basic\n2. Extra\n");
        String category = "Basic";
        return category;
    }
 
-   public static String chooseArtifactType() {
+   public String chooseArtifactType() {
        // Demo:
        System.out.println("Category:\n1. Basic\n2. Magic\n");
        String type = "Magic";
