@@ -62,7 +62,7 @@ public class MentorControllerDemo implements Bootable {
         return true;
     }
 
-    public static void createCodecooler() {
+    public void createCodecooler() {
         String[] userData = view.getUserData();
 
         String name = userData[0];
@@ -76,7 +76,7 @@ public class MentorControllerDemo implements Bootable {
         System.out.println("You create new Codecooler: " + codecooler);
     }
 
-    public static void addQuest() {
+    public void addQuest() {
         String[] questData = view.getQuestData();
 
         String name = questData[0];
@@ -88,11 +88,11 @@ public class MentorControllerDemo implements Bootable {
         System.out.println("You create new quest: " + quest);
     }
 
-    public static void updateQuest() {
+    public void updateQuest() {
 
     }
 
-    public static void setQuestCategory() {
+    public void setQuestCategory() {
         // basic or extra
         Quest quest = chooseQuest();
         String category = view.chooseQuestCategory();
@@ -102,7 +102,7 @@ public class MentorControllerDemo implements Bootable {
         System.out.println("Quest category: " + category);
     }
 
-    public static Quest chooseQuest() {
+    public Quest chooseQuest() {
         // QuestDao: readAll -> questList
         // choose specific quest and return it
 
@@ -111,11 +111,11 @@ public class MentorControllerDemo implements Bootable {
         return quest;
     }
 
-    public static void markQuest() {
+    public void markQuest() {
 
     }
 
-    public static void addArtifact() {
+    public void addArtifact() {
         String[] artifactData = view.getArtifactData();
 
         String name = artifactData[0];
@@ -127,11 +127,11 @@ public class MentorControllerDemo implements Bootable {
         System.out.println("You create new artifact: " + artifact);
     }
 
-    public static void updateArtifact() {
+    public void updateArtifact() {
 
     }
 
-    public static void setArtifactCategory() {
+    public void setArtifactCategory() {
         // basic or extra
         Artifact artifact = chooseArtifact();
         String type = view.chooseArtifactType();
@@ -141,7 +141,7 @@ public class MentorControllerDemo implements Bootable {
         System.out.println("Artifact category: " + artifact);
     }
 
-    public static Artifact chooseArtifact() {
+    public Artifact chooseArtifact() {
         // ArtifactDao: readAll -> artifactList
         // choose specific artifact and return it
 
@@ -150,11 +150,11 @@ public class MentorControllerDemo implements Bootable {
         return artifact;
     }
 
-    public static void markArtifact() {
+    public void markArtifact() {
 
     }
 
-    public static void displayWalletDetails() {
+    public void displayWalletDetails() {
         // Demo:
         System.out.println("Wallet details:");
         System.out.println("\nJan Kowalski\nBalanse: 200 coolcoins\nAlreadyBought: Private mentoring");
