@@ -23,4 +23,20 @@ public class View {
     public static void printExitMessage() {
         System.out.println("\nGood bye;)");
     }
+
+    public static int getUserChoice() {
+        Scanner input = new Scanner(System.in);
+        int number;
+
+        System.out.println("Enter a number: ");
+        while (!input.hasNextInt()) {
+            printErrorMessage();
+            input.next();
+        }
+        
+        number = input.nextInt();
+        return number;
+    }
+
+
 }
