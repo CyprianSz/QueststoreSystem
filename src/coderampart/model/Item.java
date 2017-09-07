@@ -23,4 +23,8 @@ public class Item {
     public void setMark() {
         this.isMarked = true;
     }
+
+    public boolean getMark() {
+        return this.isMarked;
+    }
 }
