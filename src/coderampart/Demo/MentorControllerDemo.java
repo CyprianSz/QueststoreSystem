@@ -71,5 +71,16 @@ public class MentorControllerDemo implements Bootable {
         System.out.println("You create new quest: " + quest);
     }
 
-    
+    public static void addArtifact() {
+        String[] artifactData = View.getArtifactData();
+
+        String name = artifactData[0];
+        String type = artifactData[1];
+        Integer value = artifactData[2];
+
+        Artifact artifact = new Artifact(name, type, value);
+
+        // Demo:
+        System.out.println("You create new artifact: " + artifact);
+    }
 }
