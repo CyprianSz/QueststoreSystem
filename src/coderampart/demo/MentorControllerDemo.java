@@ -12,6 +12,8 @@ import java.time.LocalDate;
 
 public class MentorControllerDemo implements Bootable {
 
+    private View view = new View();
+
     public static final int CREATE_CODECOOLER = 1;
     public static final int ADD_QUEST = 2;
     public static final int UPDATE_QUEST = 3;
@@ -25,8 +27,8 @@ public class MentorControllerDemo implements Bootable {
     public static final int EXIT = 0;
 
     public boolean start() {
-        View.displayMentorMenu();
-        int userChoice = View.getUserChoice();
+        view.displayMentorMenu();
+        int userChoice = view.getUserChoice();
 
         switch(userChoice) {
             case CREATE_CODECOOLER: createCodecooler();
@@ -57,7 +59,7 @@ public class MentorControllerDemo implements Bootable {
     }
 
     public static void createCodecooler() {
-        String[] userData = View.getUserData();
+        String[] userData = view.getUserData();
 
         String name = userData[0];
         String surname = userData[1];
@@ -71,7 +73,7 @@ public class MentorControllerDemo implements Bootable {
     }
 
     public static void addQuest() {
-        String[] questData = View.getQuestData();
+        String[] questData = view.getQuestData();
 
         String name = questData[0];
         Integer reward = Integer.valueOf(questData[1]);
@@ -89,7 +91,7 @@ public class MentorControllerDemo implements Bootable {
     public static void setQuestCategory() {
         // basic or extra
         Quest quest = chooseQuest();
-        String category = View.chooseQuestCategory();
+        String category = view.chooseQuestCategory();
         quest.setCategory(category);
 
         // Demo
@@ -110,7 +112,7 @@ public class MentorControllerDemo implements Bootable {
     }
 
     public static void addArtifact() {
-        String[] artifactData = View.getArtifactData();
+        String[] artifactData = view.getArtifactData();
 
         String name = artifactData[0];
         Integer value = Integer.valueOf(artifactData[1]);
@@ -128,7 +130,7 @@ public class MentorControllerDemo implements Bootable {
     public static void setArtifactCategory() {
         // basic or extra
         Artifact artifact = chooseArtifact();
-        String type = View.chooseArtifactType();
+        String type = view.chooseArtifactType();
         artifact.setType(type);
 
         // Demo:
