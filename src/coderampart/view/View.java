@@ -33,10 +33,16 @@ public class View {
             printErrorMessage();
             input.next();
         }
-        
+
         number = input.nextInt();
         return number;
     }
+
+    public static void printErrorMessage() {
+        System.out.println("\nBad choice");
+    }
+
+
 
 
 }
