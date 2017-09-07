@@ -12,7 +12,7 @@ public class Group{
 
     public Group(String name){
         this.ID = null;
-        this.name = null;
+        this.name = name;
     }
 
     public String toString(){
