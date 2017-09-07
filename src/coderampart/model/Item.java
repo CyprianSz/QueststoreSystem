@@ -20,4 +20,7 @@ public class Item {
         this.isMarked = false;
     }
 
+    public void setMark() {
+        this.isMarked = true;
+    }
 }
