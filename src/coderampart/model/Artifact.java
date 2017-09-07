@@ -20,6 +20,10 @@ public class Artifact {
         this.value = value;
     }
 
+    public String getID() {
+        return this.ID;
+    }
+
     public String getType() {
         return this.type;
     }
