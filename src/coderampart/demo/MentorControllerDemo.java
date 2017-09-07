@@ -30,6 +30,8 @@ public class MentorControllerDemo implements Bootable {
         view.displayMentorMenu();
         int userChoice = view.getUserChoice();
 
+        view.clearTerminal();
+
         switch(userChoice) {
             case CREATE_CODECOOLER: createCodecooler();
                 break;
@@ -54,6 +56,8 @@ public class MentorControllerDemo implements Bootable {
             case EXIT:
                 return false;
         }
+
+        view.enterToContinue();
 
         return true;
     }
