@@ -6,30 +6,41 @@ import java.util.Date;
 
 public class MentorControllerDemo implements Bootable {
 
+    public final Integer CREATE_MENTOR = 1;
+    public final Integer ADD_QUEST = 2;
+    public final Integer UPDATE_QUEST = 3;
+    public final Integer SET_QUEST_CATEGORY = 4;
+    public final Integer MARK_QUEST = 5;
+    public final Integer ADD_ARTIFACT = 6;
+    public final Integer UPDATE_ARTIFACT = 7;
+    public final Integer SET_ARTIFACT_CATEGORY = 8;
+    public final Integer MARK_ARTIFACT = 9;
+    public final Integer DISPLAY_WALLET_DETAILS = 10;
+
     public void start() {
         View.displayMentorMenu();
         Integer userChoice = View.getUserChoice();
 
         switch(userChoice) {
-            case 1: createMentor();
+            case CREATE_MENTOR: createMentor();
                     break;
-            case 2: addQuest();
+            case ADD_QUEST: addQuest();
                     break;
-            case 3: updateQuest();
+            case UPDATE_QUEST: updateQuest();
                     break;
-            case 4: setQuestCategory();
+            case SET_QUEST_CATEGORY: setQuestCategory();
                     break;
-            case 5: markQuest();
+            case MARK_QUEST: markQuest();
                     break;
-            case 6: addArtifact();
+            case ADD_ARTIFACT: addArtifact();
                     break;
-            case 7: updateArtifact();
+            case UPDATE_ARTIFACT: updateArtifact();
                     break;
-            case 8: setArtifactCategory();
+            case SET_ARTIFACT_CATEGORY: setArtifactCategory();
                     break;
-            case 9: markArtifact();
+            case MARK_ARTIFACT: markArtifact();
                     break;
-            case 10: displayWalletDetails();
+            case DISPLAY_WALLET_DETAILS: displayWalletDetails();
                     break;
         }
     }
@@ -47,4 +58,8 @@ public class MentorControllerDemo implements Bootable {
         System.out.println("New Mentor: " + mentor);
 
     } 
+
+    public static void addQuest() {
+
+    }
 }
