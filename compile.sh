@@ -1,2 +1,2 @@
 mkdir -p bin
-javac -d bin -sourcepath src/ src/**/*.java
+javac -d bin -sourcepath src/ src/coderampart/**/*.java
