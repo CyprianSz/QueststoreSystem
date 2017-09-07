@@ -45,22 +45,27 @@ public class View {
         System.out.println("\nBad choice");
     }
 
-    public static void getUserData() {
+    public static String[] getUserData() {
         String name = takeInput("Name: ");
         String surname = takeInput("Surname: ");
         String email = takeInput("E-mail: ");
+        String dateOfBirth = takeDateInput("Date of birth: ");
 
+        String[] userData = new String[] {name, surname, email, dateOfBirth};
+
+        return userData;
     }
 
     public static String takeInput(String label) {
-        Scanner inputScan = new Scanner();
+        Scanner inputScan = new Scanner(System.in);
         System.out.println(label);
         String input = inputScan.next();
 
         return input;
    }
 
-   public LocalDate takeDateInput(String label) {
+   public static String takeDateInput(String label) {
+       String inputScan = new Scanner(System.in);
        String input;
 
        do {
@@ -68,7 +73,7 @@ public class View {
            input = inputScan.next();
        } while (!input.matches("^[2][0][1-9][0-9]-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"));
 
-       return LocalDate.parse(input);
+       return input;
    }
 
 
