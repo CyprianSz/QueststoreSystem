@@ -1,6 +1,6 @@
 package coderampart.model;
 
-import coderampart.DAO.WalletDAO;
+// import coderampart.DAO.WalletDAO;     UNCOMENT WHEN CREATE ItemDAO
 
 public class Wallet {
 
@@ -9,7 +9,9 @@ public class Wallet {
 
     public Integer getBalance() { return this.balance; }
     public Integer getEarnedCoins() { return this.earnedCoins; }
-    public ArrayList<Item> getItemList() { return ItemDAO.itemList; }
+    public ArrayList<Item> getItemList() {
+        //return ItemDAO.itemList;   UNCOMENT WHEN CREATE ItemDAO
+    }
 
     public void addItem(Item item) {
         ItemDAO.itemList().add(item);
