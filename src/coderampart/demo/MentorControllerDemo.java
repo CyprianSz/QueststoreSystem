@@ -1,6 +1,10 @@
-package coderampart.Demo;
+package coderampart.demo;
+
+import coderampart.services.Bootable;
 
 import coderampart.model.Mentor;
+import coderampart.model.Quest;
+import coderampart.model.Artifact;
 
 import java.util.Date;
 
