@@ -1,5 +1,5 @@
-package coderampart.view.View;
+package coderampart.view;
 
 public class View {
-    
+
 }
