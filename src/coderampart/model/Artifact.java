@@ -20,4 +20,8 @@ public class Artifact {
         this.name = name;
         this.value = value;
     }
+
+    public String getType() {
+        return this.type;
+    }
 }
