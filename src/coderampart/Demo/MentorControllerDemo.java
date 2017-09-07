@@ -107,7 +107,7 @@ public class MentorControllerDemo implements Bootable {
         String artifact = View.chooseArtifactCategory();
         artifact.category = category;
 
-        // Demo 
+        // Demo:
         System.out.println("Artifact category: " + artifact);
     }
 
@@ -118,6 +118,13 @@ public class MentorControllerDemo implements Bootable {
         // Demo:
         Artifact artifact = new Artifact("Private Mentoring", 50);
         return artifact;
+    }
+
+    public static void displayWalletDetails() {
+        // Demo:
+        System.out.println("Wallet details:");
+        System.out.println("Jan Kowalski\nBalanse: 200 coolcoins\nAlreadyBought: Private mentoring");
+        System.out.println("Anna Nowak\nBalanse: 100 coolcoins\nAlreadyBought: Day in office");
     }
 
 
