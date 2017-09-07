@@ -80,11 +80,20 @@ public class View {
 
    public static String[] getQuestData() {
        String name = takeInput("Name: ");
-       String reward = takeInput("Reward: ");
+       String reward = takeInput("Reward (coolcoins): ");
     
        String[] questData = new String[] {name, reward};
        
        return questData;
+   }
+
+   public static String[] getArtifactData() {
+       String name = takeInput("Name: ");
+       String value = takeInput("Value (coolcoins): ");
+    
+       String[] artifactData = new String[] {name, value};
+       
+       return artifactData;
    }
 
 
