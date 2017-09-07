@@ -16,7 +16,7 @@ public class Mentor extends AbstractUser {
         this.group = null;
     }
 
-    public Mentor(String name, String surname, String email, LocalTime dateOfBirth) {
+    public Mentor(String name, String surname, String email, LocalDate dateOfBirth) {
         this.ID = null; // ID generatoro here
         this.name = name;
         this.surname = surname;
