@@ -28,4 +28,8 @@ public class Artifact {
     public String getName() {
         return this.name;
     }
+
+    public Integer getValue() {
+        return this.value;
+    }
 }
