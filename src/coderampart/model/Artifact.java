@@ -14,12 +14,13 @@ public class Artifact {
         this.value = null;
     }
 
-    public Artifact(String type, String name, Integer value) {
+    public Artifact(String name, Integer value) {
         this.ID = null; // ID generatoro here
-        this.type = type;
         this.name = name;
         this.value = value;
     }
+
+    parseTo
 
     public String getType() {
         return this.type;

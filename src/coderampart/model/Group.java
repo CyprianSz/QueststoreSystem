@@ -2,8 +2,8 @@ package coderampart.model;
 
 public class Group{
 
-    private String ID;
-    private String name;
+    protected String ID;
+    protected String name;
 
     public Group(){
         this.ID = null;

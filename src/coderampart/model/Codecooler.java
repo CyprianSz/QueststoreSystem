@@ -1,6 +1,7 @@
 package coderampart.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Codecooler extends AbstractUser {
 
@@ -25,7 +26,7 @@ public class Codecooler extends AbstractUser {
         this.achievementList = null;
     }
 
-    public Codecooler(String name, String surname, String email, LocalTime dateOfBirth) {
+    public Codecooler(String name, String surname, String email, LocalDate dateOfBirth) {
         this.ID = null; // ID generatoro here
         this.name = name;
         this.surname = surname;
@@ -33,7 +34,8 @@ public class Codecooler extends AbstractUser {
         this.password = null; // some method to create password here
         this.dateOfBirth = dateOfBirth;
         this.wallet = new Wallet();
-        this.level = LevelDAO.levelList.get(0); // tutaj uważać bo może być IndexOutOfBound exception jak nie będzie jeszcze żadnego levelu
+        // odkomentować gdy stworzy się levelDAO
+        // this.level = LevelDAO.levelList.get(0); // tutaj uważać bo może być IndexOutOfBound exception jak nie będzie jeszcze żadnego levelu
         this.team = null;
         this.achievementList = new ArrayList<Achievement>();
     }
