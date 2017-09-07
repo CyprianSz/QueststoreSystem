@@ -1,5 +1,7 @@
 package coderampart.Demo;
 
+import coderampart.services.Bootable;
+
 import coderampart.model.Mentor;
 import coderampart.model.Quest;
 import coderampart.model.Artifact;
