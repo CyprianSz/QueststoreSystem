@@ -6,14 +6,18 @@ import coderampart.view.View;
 
 public class CodecoolerControllerDemo implements Bootable {
 
+    private View view = new View();
+
     public static final int DISPLAY_WALLET = 1;
     public static final int BUY_ARTIFACT = 2;
     public static final int BUY_WITH_GROUP = 3;
     public static final int DISPLAY_LEVEL = 4;
 
     public void start() {
-        View.displayCodecoolerMenu();
-        int userChoice = View.getUserChoice();
+        view.displayCodecoolerMenu();
+        int userChoice = view.getUserChoice();
+
+        view.clearTerminal();
 
         switch(userChoice) {
             case DISPLAY_WALLET: displayWallet();
@@ -25,6 +29,8 @@ public class CodecoolerControllerDemo implements Bootable {
             case DISPLAY_LEVEL: displayLevel();
                 break;
         }
+
+        view.enterToContinue();
     }
 
     public static void displayWallet(){
@@ -40,7 +46,7 @@ public class CodecoolerControllerDemo implements Bootable {
                          + "\n2. Sanctuary, 300cc"
                          + "\n3. Time Travel, 500cc");
 
-        Integer artifactChoice = View.getUserChoice();
+        Integer artifactChoice = view.getUserChoice();
         if (artifactChoice >= 0) {
             System.out.println("Item bought!");
         }
