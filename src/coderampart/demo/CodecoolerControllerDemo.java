@@ -38,13 +38,13 @@ public class CodecoolerControllerDemo implements Bootable {
         return true;
     }
 
-    public static void displayWallet(){
+    public void displayWallet(){
         System.out.println("Your wallet:");
         System.out.println("Balance: 500 coolcoins");
         System.out.println("Bought items: Private mentoring");
     }
 
-    public static void buyArtifact(){
+    public void buyArtifact(){
         System.out.println("Current balance: 500cc");
         System.out.println("Choose an item:");
         System.out.println("\n1. Combat training, 50cc"
@@ -57,12 +57,12 @@ public class CodecoolerControllerDemo implements Bootable {
         }
     }
 
-    public static void buyWithGroup(){
+    public void buyWithGroup(){
         // Demo:
         System.out.println("Not enough codecoolers in your group. Recruit some noobs");
     }
 
-    public static void displayLevel(){
+    public void displayLevel(){
         // Demo:
         System.out.println("Your level: D.N.O.");
     }
