@@ -43,4 +43,12 @@ public class Artifact {
     public void setValue(Integer value) {
         this.value = value;
     }
+
+    public String toString() {
+        String userData = "\nID: " + this.getID()
+                        + "\nname: " + this.getName()
+                        + "\nvalue: " + this.getValue();
+
+        return userData;
+    }
 }

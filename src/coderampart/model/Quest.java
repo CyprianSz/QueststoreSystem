@@ -21,4 +21,13 @@ public class Quest{
     public void setName(String name) {this.name = name;}
     public void setCategory(String category) {this.category = category;}
     public void setReward(Integer reward) {this.reward = reward;}
+
+    public String toString() {
+        String questData = "\nID: " + this.getID()
+                         + "\nname: " + this.getName()
+                         + "\ncategory: " + this.getCategory()
+                         + "\nreward: " + this.getReward();
+
+        return questData;
+    }
 }

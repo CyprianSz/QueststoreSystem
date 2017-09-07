@@ -10,8 +10,9 @@ public class CodecoolerControllerDemo implements Bootable {
     public static final int BUY_ARTIFACT = 2;
     public static final int BUY_WITH_GROUP = 3;
     public static final int DISPLAY_LEVEL = 4;
+    public static final int EXIT = 0;
 
-    public void start() {
+    public boolean start() {
         View.displayCodecoolerMenu();
         int userChoice = View.getUserChoice();
 
@@ -24,7 +25,10 @@ public class CodecoolerControllerDemo implements Bootable {
                 break;
             case DISPLAY_LEVEL: displayLevel();
                 break;
+            case EXIT:
+                return false;
         }
+        return true;
     }
 
     public static void displayWallet(){
