@@ -5,6 +5,7 @@ import coderampart.view.View;
 
 import coderampart.model.Mentor;
 import coderampart.model.Codecooler;
+import coderampart.model.Item;
 import coderampart.model.Quest;
 import coderampart.model.Artifact;
 
@@ -146,12 +147,19 @@ public class MentorControllerDemo implements Bootable {
         // choose specific artifact and return it
 
         // Demo:
+        System.out.println("\nChoose artifact: Basic\n1. Private mentoring \n2. Day in home office\nMagic\n1. Workshop 60min.");
+        System.out.println("\nYour choice: Private Mentoring");
+
         Artifact artifact = new Artifact("Private Mentoring", 50);
         return artifact;
     }
 
     public void markArtifact() {
-
+        // Demo:
+        System.out.println("Codecooler: Jan Kowalski want to buy artifact: day in home");
+        System.out.println("Confirm? (y/n)");
+        view.enterToContinue();
+        System.out.println("Marked");
     }
 
     public void displayWalletDetails() {
