@@ -1,5 +1,6 @@
 package coderampart.model;
 
+import java.util.ArrayList;
 // import coderampart.DAO.WalletDAO;     UNCOMENT WHEN CREATE ItemDAO
 
 public class Wallet {
@@ -14,12 +15,12 @@ public class Wallet {
     }
 
     public void addItem(Item item) {
-        ItemDAO.itemList().add(item);
+        //ItemDAO.itemList().add(item);  UNCOMMENT WHEN CREATE ItemDAO
     }
 
     public String toString() {
-        String walletData = "\nbalance: " + this.getID()
-                          + "\nearnedCoins: " + this.getName();
+        String walletData = "\nbalance: " + this.getBalance()
+                          + "\nearnedCoins: " + this.getEarnedCoins();
 
         return walletData;
     }
