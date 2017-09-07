@@ -55,11 +55,21 @@ public class MentorControllerDemo implements Bootable {
         Mentor mentor = new Codecooler(name, surname, email, dateOfBirth);
 
         // Demo:
-        System.out.println("New Mentor: " + mentor);
-
+        System.out.println("You create new Mentor: " + mentor);
     } 
 
     public static void addQuest() {
+        String[] questData = View.getQuestData();
 
+        String name = questData[0];
+        String category = questData[1];
+        Integer reward = questData[2];
+
+        Quest quest = new Quest(name, category, reward);
+
+        // Demo:
+        System.out.println("You create new quest: " + quest);
     }
+
+    
 }
