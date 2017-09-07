@@ -71,6 +71,25 @@ public class MentorControllerDemo implements Bootable {
         System.out.println("You create new quest: " + quest);
     }
 
+    public static void setQuestCategory() {
+        // basic or extra
+        Quest quest = chooseQuest();
+        String category = View.chooseQuestCategory();
+        quest.category = category;
+
+        // Demo 
+        System.out.println("Quest category: " + category);
+    }
+
+    public static Quest chooseQuest() {
+        // QuestDao: readAll -> questList
+        // choose specific quest and return it 
+        
+        // Demo:
+        Quest quest = new Quest("Master of mornings", 100);
+        return quest;
+    }
+
     public static void addArtifact() {
         String[] artifactData = View.getArtifactData();
 
@@ -83,4 +102,6 @@ public class MentorControllerDemo implements Bootable {
         // Demo:
         System.out.println("You create new artifact: " + artifact);
     }
+
+    
 }
