@@ -1,32 +1,35 @@
 package coderampart.demo;
 
 import coderampart.services.Bootable;
+import coderampart.view.View;
 
 import coderampart.model.Mentor;
+import coderampart.model.Codecooler;
 import coderampart.model.Quest;
 import coderampart.model.Artifact;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class MentorControllerDemo implements Bootable {
 
-    public final Integer CREATE_MENTOR = 1;
-    public final Integer ADD_QUEST = 2;
-    public final Integer UPDATE_QUEST = 3;
-    public final Integer SET_QUEST_CATEGORY = 4;
-    public final Integer MARK_QUEST = 5;
-    public final Integer ADD_ARTIFACT = 6;
-    public final Integer UPDATE_ARTIFACT = 7;
-    public final Integer SET_ARTIFACT_CATEGORY = 8;
-    public final Integer MARK_ARTIFACT = 9;
-    public final Integer DISPLAY_WALLET_DETAILS = 10;
+    public static final int CREATE_CODECOOLER = 1;
+    public static final int ADD_QUEST = 2;
+    public static final int UPDATE_QUEST = 3;
+    public static final int SET_QUEST_CATEGORY = 4;
+    public static final int MARK_QUEST = 5;
+    public static final int ADD_ARTIFACT = 6;
+    public static final int UPDATE_ARTIFACT = 7;
+    public static final int SET_ARTIFACT_CATEGORY = 8;
+    public static final int MARK_ARTIFACT = 9;
+    public static final int DISPLAY_WALLET_DETAILS = 10;
 
     public void start() {
         View.displayMentorMenu();
-        Integer userChoice = View.getUserChoice();
+        int userChoice = View.getUserChoice();
 
         switch(userChoice) {
-            case CREATE_MENTOR: createMentor();
+            case CREATE_CODECOOLER: createCodecooler();
                     break;
             case ADD_QUEST: addQuest();
                     break;
@@ -49,24 +52,24 @@ public class MentorControllerDemo implements Bootable {
         }
     }
 
-    public static void createMentor() {
+    public static void createCodecooler() {
         String[] userData = View.getUserData();
 
         String name = userData[0];
         String surname = userData[1];
         String email = userData[2];
-        Date dateOfBirth = userData[3];
-        Mentor mentor = new Codecooler(name, surname, email, dateOfBirth);
+        LocalDate dateOfBirth = userData[3];
+        Codecooler codecooler = new Codecooler(name, surname, email, dateOfBirth);
 
         // Demo:
-        System.out.println("You create new Mentor: " + mentor);
+        System.out.println("You create new Codecooler: " + codecooler);
     } 
 
     public static void addQuest() {
         String[] questData = View.getQuestData();
 
         String name = questData[0];
-        Integer reward = questData[1];
+        Integer reward = Integer.valueOf(questData[1]);
 
         Quest quest = new Quest(name, reward);
 
@@ -82,7 +85,7 @@ public class MentorControllerDemo implements Bootable {
         // basic or extra
         Quest quest = chooseQuest();
         String category = View.chooseQuestCategory();
-        quest.category = category;
+        quest.setCategory(category);
 
         // Demo 
         System.out.println("Quest category: " + category);
@@ -105,7 +108,7 @@ public class MentorControllerDemo implements Bootable {
         String[] artifactData = View.getArtifactData();
 
         String name = artifactData[0];
-        Integer value = artifactData[1];
+        Integer value = Integer.valueOf(artifactData[1]);
 
         Artifact artifact = new Artifact(name, value);
 
@@ -121,7 +124,7 @@ public class MentorControllerDemo implements Bootable {
         // basic or extra
         Artifact artifact = chooseArtifact();
         String artifact = View.chooseArtifactCategory();
-        artifact.category = category;
+        artifact.setType(type);
 
         // Demo:
         System.out.println("Artifact category: " + artifact);
