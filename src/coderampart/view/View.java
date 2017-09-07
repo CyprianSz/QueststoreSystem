@@ -45,14 +45,18 @@ public class View {
     }
 
     public static void getUserData() {
+        String name = takeInput("Name: ");
+        String surname = takeInput("Surname: ");
+        String email = takeInput("E-mail: ");
         
     }
 
-    public String takeInput(String label) {
+
+    public static String takeInput(String label) {
         Scanner inputScan = new Scanner();
         System.out.println(label);
         String input = inputScan.next();
-        
+
         return input;
    }
 
