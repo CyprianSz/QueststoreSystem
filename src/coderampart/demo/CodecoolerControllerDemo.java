@@ -47,9 +47,12 @@ public class CodecoolerControllerDemo implements Bootable {
     }
 
     public static void buyWithGroup(){
+        // Demo:
+        System.out.println("Not enough codecoolers in your group. Recruit some noobs");
     }
 
     public static void displayLevel(){
-        System.out.println("");
+        // Demo:
+        System.out.println("Your level: D.N.O.");
     }
 }
