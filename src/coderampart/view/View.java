@@ -2,6 +2,8 @@ package coderampart.view;
 
 import java.util.Scanner;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class View {
 
@@ -65,7 +67,7 @@ public class View {
    }
 
    public static String takeDateInput(String label) {
-       String inputScan = new Scanner(System.in);
+       Scanner inputScan = new Scanner(System.in);
        String input;
 
        do {
@@ -76,7 +78,14 @@ public class View {
        return input;
    }
 
-
+   public static String[] getQuestData() {
+       String name = takeInput("Name: ");
+       String reward = takeInput("Reward: ");
+    
+       String[] questData = new String[] {name, reward};
+       
+       return questData;
+   }
 
 
 }
