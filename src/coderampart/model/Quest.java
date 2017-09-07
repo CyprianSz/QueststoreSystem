@@ -15,4 +15,10 @@ public class Quest{
         this.name = name;
         this.reward = reward;
     }
+
+    public String getName() {return this.name;}
+    public Integer getReward() {return this.reward;}
+    public void setName(String name) {this.name = name;}
+    public void setCategory(String category) {this.category = category;}
+    public void setReward(Integer reward) {this.reward = reward;}
 }
