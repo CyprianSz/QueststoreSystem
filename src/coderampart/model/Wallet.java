@@ -9,7 +9,7 @@ public class Wallet {
 
     public Integer getBalance() { return this.balance; }
     public Integer getEarnedCoins() { return this.earnedCoins; }
-    public ArrayList<Item> getItemList() { return ItemDAO.; }
+    public ArrayList<Item> getItemList() { return ItemDAO.itemList; }
 
     public void addItem(Item item) {
         ItemDAO.itemList().add(item);
