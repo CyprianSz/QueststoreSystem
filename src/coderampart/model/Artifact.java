@@ -7,4 +7,11 @@ public class Artifact {
     private String name;
     private Integer value;
 
+    public Artifact() {
+        this.ID = null;
+        this.type = null;
+        this.name = null;
+        this.value = null;
+    }
+
 }
