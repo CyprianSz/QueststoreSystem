@@ -12,6 +12,7 @@ public class Wallet {
     public Integer getEarnedCoins() { return this.earnedCoins; }
     public ArrayList<Item> getItemList() {
         //return ItemDAO.itemList;   UNCOMENT WHEN CREATE ItemDAO
+        return null;
     }
 
     public void addItem(Item item) {
