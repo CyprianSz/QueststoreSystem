@@ -33,10 +33,6 @@ public class View {
         }
     }
 
-    public void printExitMessage() {
-        System.out.println("\nGood bye;)");
-    }
-
     public int getUserChoice() {
         Scanner input = new Scanner(System.in);
         int number;
