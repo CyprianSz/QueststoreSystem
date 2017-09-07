@@ -1,5 +1,7 @@
 package coderampart.view;
 
+import java.util.Scanner;
+
 public class View {
 
     public static void displayMentorMenu() {
@@ -41,6 +43,18 @@ public class View {
     public static void printErrorMessage() {
         System.out.println("\nBad choice");
     }
+
+    public static void getUserData() {
+        
+    }
+
+    public String takeInput(String label) {
+        Scanner inputScan = new Scanner();
+        System.out.println(label);
+        String input = inputScan.next();
+        
+        return input;
+   }
 
 
 
