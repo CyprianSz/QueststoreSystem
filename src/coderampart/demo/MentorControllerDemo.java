@@ -9,7 +9,6 @@ import coderampart.model.Quest;
 import coderampart.model.Artifact;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class MentorControllerDemo implements Bootable {
 
@@ -58,7 +57,8 @@ public class MentorControllerDemo implements Bootable {
         String name = userData[0];
         String surname = userData[1];
         String email = userData[2];
-        LocalDate dateOfBirth = userData[3];
+        // 2017-12-25
+        LocalDate dateOfBirth = LocalDate.parse(userData[3]);
         Codecooler codecooler = new Codecooler(name, surname, email, dateOfBirth);
 
         // Demo:
@@ -123,7 +123,7 @@ public class MentorControllerDemo implements Bootable {
     public static void setArtifactCategory() {
         // basic or extra
         Artifact artifact = chooseArtifact();
-        String artifact = View.chooseArtifactCategory();
+        String type = View.chooseArtifactType();
         artifact.setType(type);
 
         // Demo:
@@ -149,8 +149,4 @@ public class MentorControllerDemo implements Bootable {
         System.out.println("\nJan Kowalski\nBalanse: 200 coolcoins\nAlreadyBought: Private mentoring");
         System.out.println("\nAnna Nowak\nBalanse: 100 coolcoins\nAlreadyBought: Day in office");
     }
-
-
-
-    
 }
