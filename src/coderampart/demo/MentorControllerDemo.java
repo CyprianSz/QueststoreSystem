@@ -105,6 +105,9 @@ public class MentorControllerDemo implements Bootable {
         } else {
             view.printErrorMessage();
         }
+
+        // Demo:
+        System.out.println("\nUpdate: done");
     }
 
     public void setQuestCategory() {
