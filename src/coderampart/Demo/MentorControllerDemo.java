@@ -62,10 +62,9 @@ public class MentorControllerDemo implements Bootable {
         String[] questData = View.getQuestData();
 
         String name = questData[0];
-        String category = questData[1];
-        Integer reward = questData[2];
+        Integer reward = questData[1];
 
-        Quest quest = new Quest(name, category, reward);
+        Quest quest = new Quest(name, reward);
 
         // Demo:
         System.out.println("You create new quest: " + quest);
@@ -94,14 +93,34 @@ public class MentorControllerDemo implements Bootable {
         String[] artifactData = View.getArtifactData();
 
         String name = artifactData[0];
-        String type = artifactData[1];
-        Integer value = artifactData[2];
+        Integer value = artifactData[1];
 
-        Artifact artifact = new Artifact(name, type, value);
+        Artifact artifact = new Artifact(name, value);
 
         // Demo:
         System.out.println("You create new artifact: " + artifact);
     }
+
+    public static void setArtifactCategory() {
+        // basic or extra
+        Artifact artifact = chooseArtifact();
+        String artifact = View.chooseArtifactCategory();
+        artifact.category = category;
+
+        // Demo 
+        System.out.println("Artifact category: " + artifact);
+    }
+
+    public static Artifact chooseArtifact() {
+        // ArtifactDao: readAll -> artifactList
+        // choose specific artifact and return it 
+        
+        // Demo:
+        Artifact artifact = new Artifact("Private Mentoring", 50);
+        return artifact;
+    }
+
+
 
     
 }
