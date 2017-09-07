@@ -17,4 +17,11 @@ public class Level {
         this.requiredExperience = requiredExperience;
         this.description = description;
     }
+
+    public String toString() {
+        String levelInfo = "\nLevel number: " + this.rank
+                         + "\nRequired experience: " + this.requiredExperience
+                         + "\nDescription: " + this.description;
+        return levelInfo;
+    }
 }
