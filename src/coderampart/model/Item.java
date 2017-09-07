@@ -14,4 +14,10 @@ public class Item {
         this.isMarked = false;
     }
 
+    public Item(Artifact artifact) {
+        this.artifact = artifact;
+        this.creationDate = LocalDate.now();
+        this.isMarked = false;
+    }
+
 }
