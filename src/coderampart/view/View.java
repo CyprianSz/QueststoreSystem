@@ -170,4 +170,14 @@ public class View {
             e.printStackTrace();
         }
     }
+
+    public int chooseEdit() {
+        System.out.println("\nWhat do you want to change?: ");
+
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "Amount of coolcoins"));
+        displayOptions(options);
+        int userChoice = getUserChoice();
+
+        return userChoice;
+    }
 }
