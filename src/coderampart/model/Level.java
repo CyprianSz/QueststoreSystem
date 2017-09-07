@@ -6,4 +6,9 @@ public class Level {
     private Integer requiredExperience;
     private String description;
 
+    public Level() {
+        this.rank = null;
+        this.requiredExperience = null;
+        this.description = null;
+    }
 }
