@@ -123,8 +123,8 @@ public class MentorControllerDemo implements Bootable {
     public static void displayWalletDetails() {
         // Demo:
         System.out.println("Wallet details:");
-        System.out.println("Jan Kowalski\nBalanse: 200 coolcoins\nAlreadyBought: Private mentoring");
-        System.out.println("Anna Nowak\nBalanse: 100 coolcoins\nAlreadyBought: Day in office");
+        System.out.println("\nJan Kowalski\nBalanse: 200 coolcoins\nAlreadyBought: Private mentoring");
+        System.out.println("\nAnna Nowak\nBalanse: 100 coolcoins\nAlreadyBought: Day in office");
     }
 
 
