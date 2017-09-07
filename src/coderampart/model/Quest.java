@@ -16,11 +16,14 @@ public class Quest{
         this.reward = reward;
     }
 
-    public String getName() {return this.name;}
-    public Integer getReward() {return this.reward;}
-    public void setName(String name) {this.name = name;}
-    public void setCategory(String category) {this.category = category;}
-    public void setReward(Integer reward) {this.reward = reward;}
+    public String getID() { return this.ID; }
+    public String getName() { return this.name; }
+    public String getCategory() { return this.category; }
+    public Integer getReward()  {return this.reward; }
+    public void setName(String name) { this.name = name; }
+    public void setCategory(String category) { this.category = category; }
+    public void setReward(Integer reward) { this.reward = reward; }
+
 
     public String toString() {
         String questData = "\nID: " + this.getID()
