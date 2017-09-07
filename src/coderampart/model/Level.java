@@ -11,4 +11,10 @@ public class Level {
         this.requiredExperience = null;
         this.description = null;
     }
+
+    public Level(Integer rank, Integer requiredExperience, String description) {
+        this.rank = rank;
+        this.requiredExperience = requiredExperience;
+        this.description = description;
+    }
 }
