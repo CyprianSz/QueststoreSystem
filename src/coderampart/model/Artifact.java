@@ -32,4 +32,8 @@ public class Artifact {
     public Integer getValue() {
         return this.value;
     }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }
