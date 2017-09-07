@@ -9,7 +9,7 @@ public class View {
 
     public void displayMentorMenu() {
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new Codecooler", "Add quest", "Update quest",
-                                                                  "Set quest category", "Mark quest", "Add artifact", "Update artifact", 
+                                                                  "Set quest category", "Mark quest", "Add artifact", "Update artifact",
                                                                   "Set artifact type", "Mark artifact", "Display wallet details"));
 
         displayOptions(options);
@@ -89,18 +89,18 @@ public class View {
    public String[] getQuestData() {
        String name = takeInput("Name: ");
        String reward = takeInput("Reward (coolcoins): ");
-    
+
        String[] questData = new String[] {name, reward};
-       
+
        return questData;
    }
 
    public String[] getArtifactData() {
        String name = takeInput("Name: ");
        String value = takeInput("Value (coolcoins): ");
-    
+
        String[] artifactData = new String[] {name, value};
-       
+
        return artifactData;
    }
 
@@ -126,7 +126,7 @@ public class View {
         this.takeInput("\nType password: ");
     }
 
-    private void displayProgressBar() {
+    public void displayProgressBar() {
         /* Prints imitation of progress bar, and at the same time
         percentage of work done. Uses 'format' to achieve stady format
         of displayed percentage value (completes value with zeros). */
@@ -135,7 +135,7 @@ public class View {
         for (int i = 1; i <= 50; i++) {
             progressBar += "#";
 
-            view.clearTerminal();
+            this.clearTerminal();
             System.out.println("\n-----> LOGING IN - PLEASE WAIT <-----\n");
 
             System.out.println(progressBar);
@@ -154,6 +154,20 @@ public class View {
         }
         catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
+        }
+    }
+
+    public void clearTerminal() {
+        System.out.print("\033[H\033[2J");
+    }
+
+    public void enterToContinue() {
+        try {
+            System.out.print("\nPRESS ENTER TO CONTINUE");
+            System.in.read();
+        } catch (IOException e) {
+            System.out.println("INPUT INTERRUPTED");
+            e.printStackTrace();
         }
     }
 }

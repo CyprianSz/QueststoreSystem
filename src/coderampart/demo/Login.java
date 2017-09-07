@@ -1,5 +1,7 @@
 package coderampart.demo;
 
+import coderampart.view.View;
+
 public class Login {
 
     private View view = new View();

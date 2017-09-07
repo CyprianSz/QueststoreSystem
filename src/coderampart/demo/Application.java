@@ -4,6 +4,7 @@ public class Application {
 
     public static void main(String[] args) {
         MentorControllerDemo mentorController = new MentorControllerDemo();
+        CodecoolerControllerDemo codecoolerController = new CodecoolerControllerDemo();
         Login login = new Login();
         boolean proceed = true;
 
@@ -12,5 +13,14 @@ public class Application {
         while (proceed) {
             proceed = mentorController.start();
         }
+
+        login.start();
+        proceed = true;
+
+        while (proceed) {
+            proceed = codecoolerController.start();
+        }
+
+        System.out.println("\nSEE YOU SOON\n");
     }
 }
