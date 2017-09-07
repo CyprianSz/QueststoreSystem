@@ -11,4 +11,13 @@ public class View {
         System.out.println("\n0. Exit");
     }
 
+    public static void displayOptions(ArrayList<String> options) {
+        Integer number = 1;
+        System.out.println(" ");
+        for (String option : options) {
+            System.out.println(String.format("%d. %s", number, option));
+            number++;
+        }
+    }
+
 }
