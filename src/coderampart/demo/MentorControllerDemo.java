@@ -147,7 +147,21 @@ public class MentorControllerDemo implements Bootable {
     }
 
     public void updateArtifact() {
+        Artifact artifact = chooseArtifact();
+        int option = view.chooseEdit();
 
+        if (option == 1) {  //edit name
+            String name = view.takeInput("New name: ");
+            quest.setName(name);
+
+        } else if (option == 2) {   // edit coolcoins
+            int coolcoins = getUserChoice();
+            Integer value = new Integer(coolcoins);
+            artifact.setValue(value);
+
+        } else {
+            view.printErrorMessage();
+        }
     }
 
     public void setArtifactCategory() {
