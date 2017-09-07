@@ -6,14 +6,14 @@ import coderampart.view.View;
 
 public class CodecoolerControllerDemo implements Bootable {
 
-    public final Integer DISPLAY_WALLET = 1;
-    public final Integer BUY_ARTIFACT = 2;
-    public final Integer BUY_WITH_GROUP = 3;
-    public final Integer DISPLAY_LEVEL = 4;
+    public static final int DISPLAY_WALLET = 1;
+    public static final int BUY_ARTIFACT = 2;
+    public static final int BUY_WITH_GROUP = 3;
+    public static final int DISPLAY_LEVEL = 4;
 
     public void start() {
         View.displayCodecoolerMenu();
-        Integer userChoice = View.getUserChoice();
+        int userChoice = View.getUserChoice();
 
         switch(userChoice) {
             case DISPLAY_WALLET: displayWallet();
