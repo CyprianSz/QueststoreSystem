@@ -13,7 +13,7 @@ public class Admin extends AbstractUser {
         this.dateOfBirth = null;
     }
 
-    public Admin(String name, String surname, String email, LocalTime dateOfBirth) {
+    public Admin(String name, String surname, String email, LocalDate dateOfBirth) {
         this.ID = null; // ID generatoro here
         this.name = name;
         this.surname = surname;
