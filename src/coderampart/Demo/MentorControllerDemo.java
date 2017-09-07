@@ -70,6 +70,10 @@ public class MentorControllerDemo implements Bootable {
         System.out.println("You create new quest: " + quest);
     }
 
+    public static void updateQuest() {
+
+    }
+
     public static void setQuestCategory() {
         // basic or extra
         Quest quest = chooseQuest();
@@ -89,6 +93,10 @@ public class MentorControllerDemo implements Bootable {
         return quest;
     }
 
+    public static void markQuest() {
+
+    }
+
     public static void addArtifact() {
         String[] artifactData = View.getArtifactData();
 
@@ -99,6 +107,10 @@ public class MentorControllerDemo implements Bootable {
 
         // Demo:
         System.out.println("You create new artifact: " + artifact);
+    }
+
+    public static void updateArtifact() {
+        
     }
 
     public static void setArtifactCategory() {
@@ -118,6 +130,10 @@ public class MentorControllerDemo implements Bootable {
         // Demo:
         Artifact artifact = new Artifact("Private Mentoring", 50);
         return artifact;
+    }
+
+    public static void markArtifact() {
+        
     }
 
     public static void displayWalletDetails() {
