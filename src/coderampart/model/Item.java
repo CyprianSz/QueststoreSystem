@@ -8,4 +8,10 @@ public class Item {
     private LocalDate creationDate;
     private boolean isMarked;
 
+    public Item() {
+        this.artifact = null;
+        this.creationDate = null;
+        this.isMarked = false;
+    }
+
 }
