@@ -103,5 +103,11 @@ public class View {
        return category;
    }
 
+   public static String chooseArtifactType() {
+       // Demo:
+       System.out.println("Category:\n1. Basic\n2. Magic\n");
+       String type = "Magic";
+       return type;
+   }
 
 }
