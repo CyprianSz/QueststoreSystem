@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 public abstract class AbstractUser {
 
-    private String ID;
-    private String name;
-    private String surname;
-    private String email;
-    private String password;
-    private LocalDate dateOfBirth;
+    protected String ID;
+    protected String name;
+    protected String surname;
+    protected String email;
+    protected String password;
+    protected LocalDate dateOfBirth;
 
     public String getID() { return this.ID; }
     public String getName() { return this.name; }
