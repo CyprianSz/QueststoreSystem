@@ -125,6 +125,8 @@ public class MentorControllerDemo implements Bootable {
         // choose specific quest and return it
 
         // Demo:
+        System.out.println("\nChoose Quest: \nBasic\n1. Finishing Teamwork\nExtra\n1. Master of mornings \n2. Recruiting some n00bs");
+        System.out.println("\nYour choice: Master of mornings");
         Quest quest = new Quest("Master of mornings", 100);
         return quest;
     }
