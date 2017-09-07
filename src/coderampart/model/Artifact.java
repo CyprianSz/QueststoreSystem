@@ -20,8 +20,6 @@ public class Artifact {
         this.value = value;
     }
 
-    parseTo
-
     public String getType() {
         return this.type;
     }
