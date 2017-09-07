@@ -2,7 +2,7 @@ package coderampart.model;
 
 import java.time.LocalDate;
 
-public class Archievement {
+public class Achievement {
 
     private Quest quest;
     private LocalDate creationDate;
