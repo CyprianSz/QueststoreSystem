@@ -1,6 +1,7 @@
 package coderampart.demo;
 
 import coderampart.services.Bootable;
+import coderampart.view.View;
 
 import coderampart.model.Mentor;
 import coderampart.model.Quest;
@@ -10,20 +11,20 @@ import java.util.Date;
 
 public class MentorControllerDemo implements Bootable {
 
-    public final Integer CREATE_MENTOR = 1;
-    public final Integer ADD_QUEST = 2;
-    public final Integer UPDATE_QUEST = 3;
-    public final Integer SET_QUEST_CATEGORY = 4;
-    public final Integer MARK_QUEST = 5;
-    public final Integer ADD_ARTIFACT = 6;
-    public final Integer UPDATE_ARTIFACT = 7;
-    public final Integer SET_ARTIFACT_CATEGORY = 8;
-    public final Integer MARK_ARTIFACT = 9;
-    public final Integer DISPLAY_WALLET_DETAILS = 10;
+    public static final int CREATE_MENTOR = 1;
+    public static final int ADD_QUEST = 2;
+    public static final int UPDATE_QUEST = 3;
+    public static final int SET_QUEST_CATEGORY = 4;
+    public static final int MARK_QUEST = 5;
+    public static final int ADD_ARTIFACT = 6;
+    public static final int UPDATE_ARTIFACT = 7;
+    public static final int SET_ARTIFACT_CATEGORY = 8;
+    public static final int MARK_ARTIFACT = 9;
+    public static final int DISPLAY_WALLET_DETAILS = 10;
 
     public void start() {
         View.displayMentorMenu();
-        Integer userChoice = View.getUserChoice();
+        int userChoice = View.getUserChoice();
 
         switch(userChoice) {
             case CREATE_MENTOR: createMentor();
