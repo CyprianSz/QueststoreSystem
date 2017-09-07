@@ -20,4 +20,7 @@ public class View {
         }
     }
 
+    public static void printExitMessage() {
+        System.out.println("\nGood bye;)");
+    }
 }
