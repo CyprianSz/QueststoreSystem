@@ -90,7 +90,21 @@ public class MentorControllerDemo implements Bootable {
     }
 
     public void updateQuest() {
+        Quest quest = chooseQuest();
+        int option = view.chooseEdit();
 
+        if (option == 1) {  //edit name
+            String name = view.takeInput("New name: ");
+            quest.setName(name);
+
+        } else if (option == 2) {   // edit coolcoins
+            int coolcoins = getUserChoice();
+            Integer reward = new Integer(coolcoins);
+            quest.setReward(reward);
+
+        } else {
+            view.printErrorMessage();
+        }
     }
 
     public void setQuestCategory() {
