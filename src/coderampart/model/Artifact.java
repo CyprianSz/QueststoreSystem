@@ -40,4 +40,8 @@ public class Artifact {
     public void setName(String name) {
         this.name = name;
     }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
 }
