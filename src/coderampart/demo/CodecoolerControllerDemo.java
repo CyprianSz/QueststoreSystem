@@ -17,13 +17,13 @@ public class CodecoolerControllerDemo implements Bootable {
 
         switch(userChoice) {
             case DISPLAY_WALLET: displayWallet();
-                    break;
+                break;
             case BUY_ARTIFACT: buyArtifact();
-                    break;
+                break;
             case BUY_WITH_GROUP: buyWithGroup();
-                    break;
+                break;
             case DISPLAY_LEVEL: displayLevel();
-                    break;
+                break;
         }
     }
 

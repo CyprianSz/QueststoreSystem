@@ -22,33 +22,38 @@ public class MentorControllerDemo implements Bootable {
     public static final int SET_ARTIFACT_CATEGORY = 8;
     public static final int MARK_ARTIFACT = 9;
     public static final int DISPLAY_WALLET_DETAILS = 10;
+    public static final int EXIT = 0;
 
-    public void start() {
+    public boolean start() {
         View.displayMentorMenu();
         int userChoice = View.getUserChoice();
 
         switch(userChoice) {
             case CREATE_CODECOOLER: createCodecooler();
-                    break;
+                break;
             case ADD_QUEST: addQuest();
-                    break;
+                break;
             case UPDATE_QUEST: updateQuest();
-                    break;
+                break;
             case SET_QUEST_CATEGORY: setQuestCategory();
-                    break;
+                break;
             case MARK_QUEST: markQuest();
-                    break;
+                break;
             case ADD_ARTIFACT: addArtifact();
-                    break;
+                break;
             case UPDATE_ARTIFACT: updateArtifact();
-                    break;
+                break;
             case SET_ARTIFACT_CATEGORY: setArtifactCategory();
-                    break;
+                break;
             case MARK_ARTIFACT: markArtifact();
-                    break;
+                break;
             case DISPLAY_WALLET_DETAILS: displayWalletDetails();
-                    break;
+                break;
+            case EXIT:
+                return false;
         }
+
+        return true;
     }
 
     public static void createCodecooler() {
@@ -63,7 +68,7 @@ public class MentorControllerDemo implements Bootable {
 
         // Demo:
         System.out.println("You create new Codecooler: " + codecooler);
-    } 
+    }
 
     public static void addQuest() {
         String[] questData = View.getQuestData();
@@ -87,14 +92,14 @@ public class MentorControllerDemo implements Bootable {
         String category = View.chooseQuestCategory();
         quest.setCategory(category);
 
-        // Demo 
+        // Demo
         System.out.println("Quest category: " + category);
     }
 
     public static Quest chooseQuest() {
         // QuestDao: readAll -> questList
-        // choose specific quest and return it 
-        
+        // choose specific quest and return it
+
         // Demo:
         Quest quest = new Quest("Master of mornings", 100);
         return quest;
@@ -117,7 +122,7 @@ public class MentorControllerDemo implements Bootable {
     }
 
     public static void updateArtifact() {
-        
+
     }
 
     public static void setArtifactCategory() {
@@ -132,15 +137,15 @@ public class MentorControllerDemo implements Bootable {
 
     public static Artifact chooseArtifact() {
         // ArtifactDao: readAll -> artifactList
-        // choose specific artifact and return it 
-        
+        // choose specific artifact and return it
+
         // Demo:
         Artifact artifact = new Artifact("Private Mentoring", 50);
         return artifact;
     }
 
     public static void markArtifact() {
-        
+
     }
 
     public static void displayWalletDetails() {
