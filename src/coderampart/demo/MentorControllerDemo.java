@@ -113,7 +113,11 @@ public class MentorControllerDemo implements Bootable {
     }
 
     public void markQuest() {
-
+        // Demo:
+        System.out.println("Codecooler: Anna Nowak; Quest: Master of mornings");
+        System.out.println("Confirm? (y/n)");
+        view.enterToContinue();
+        System.out.println("Marked");
     }
 
     public void addArtifact() {
@@ -165,7 +169,7 @@ public class MentorControllerDemo implements Bootable {
     public void displayWalletDetails() {
         // Demo:
         System.out.println("Wallet details:");
-        System.out.println("\nJan Kowalski\nBalanse: 200 coolcoins\nAlreadyBought: Private mentoring");
-        System.out.println("\nAnna Nowak\nBalanse: 100 coolcoins\nAlreadyBought: Day in office");
+        System.out.println("\nJan Kowalski\nBalanse: 200 coolcoins\nAlreadyBought: Day in home");
+        System.out.println("\nAnna Nowak\nBalanse: 100 coolcoins\nAlreadyBought: Private Mentoring");
     }
 }
