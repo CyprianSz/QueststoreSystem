@@ -11,7 +11,7 @@ public abstract class AbstractUser {
     private String password;
     private LocalDate dateOfBirth;
 
-    public String getID() { return self.ID; }
+    public String getID() { return this.ID; }
     public String getName() { return this.name; }
     public String getSurname() { return this.surname; }
     public String getEmail() { return this.email; }

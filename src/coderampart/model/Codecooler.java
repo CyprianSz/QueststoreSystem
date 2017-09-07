@@ -20,7 +20,6 @@ public class Codecooler extends AbstractUser {
         this.dateOfBirth = null;
         this.group = null;
         this.wallet = null;
-        this.group = null;
         this.level = null;
         this.team = null;
         this.achievementList = null;
@@ -34,7 +33,7 @@ public class Codecooler extends AbstractUser {
         this.password = null; // some method to create password here
         this.dateOfBirth = dateOfBirth;
         this.wallet = new Wallet;
-        this.level = Level.levelList.get(0); // tutaj uważać bo może być IndexOutOfBound exception jak nie będzie jeszcze żadnego levelu
+        this.level = LevelDAO.levelList.get(0); // tutaj uważać bo może być IndexOutOfBound exception jak nie będzie jeszcze żadnego levelu
         this.team = null;
         this.achievementList = new ArrayList<Achievement>;
     }
