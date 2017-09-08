@@ -2,6 +2,7 @@ package coderampart.demo;
 
 import coderampart.services.Bootable;
 import coderampart.view.View;
+import java.lang.NumberFormatException;
 
 import coderampart.model.Mentor;
 import coderampart.model.Codecooler;
@@ -77,15 +78,18 @@ public class MentorControllerDemo implements Bootable {
     }
 
     public void addQuest() {
-        String[] questData = view.getQuestData();
-
-        String name = questData[0];
-        Integer reward = Integer.valueOf(questData[1]);
-
-        Quest quest = new Quest(name, reward);
-
-        // Demo:
-        System.out.println("You create new quest: " + quest);
+        try {
+            String[] questData = view.getQuestData();
+            String name = questData[0];
+            Integer reward = Integer.valueOf(questData[1]);
+            Quest quest = new Quest(name, reward);
+            // Demo:
+            System.out.println("You create new quest: " + quest);
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Following error occured: " + e);
+            System.out.println("Reward must be number !");
+        }
     }
 
     public void updateQuest() {
@@ -142,15 +146,18 @@ public class MentorControllerDemo implements Bootable {
     }
 
     public void addArtifact() {
-        String[] artifactData = view.getArtifactData();
-
-        String name = artifactData[0];
-        Integer value = Integer.valueOf(artifactData[1]);
-
-        Artifact artifact = new Artifact(name, value);
-
-        // Demo:
-        System.out.println("You create new artifact: " + artifact);
+        try {
+            String[] artifactData = view.getArtifactData();
+            String name = artifactData[0];
+            Integer value = Integer.valueOf(artifactData[1]);
+            Artifact artifact = new Artifact(name, value);
+            // Demo:
+            System.out.println("You create new artifact: " + artifact);
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Following error occured: " + e);
+            System.out.println("Reward must be number !");
+        }
     }
 
     public void updateArtifact() {
@@ -193,8 +200,6 @@ public class MentorControllerDemo implements Bootable {
         System.out.println("\nChoose artifact:\nBasic\n1. Private mentoring \n2. Day in home office\nMagic\n3. Workshop 60min.");
         view.enterToContinue();
         System.out.println("\nYour choice: Private Mentoring");
-        
-
         Artifact artifact = new Artifact("Private Mentoring", 50);
         return artifact;
     }
