@@ -11,14 +11,9 @@ public class Codecooler extends AbstractUser {
     private Team team;
     private ArrayList<Achievement> achievementList;
 
+    // TODO: remove after testing
     public Codecooler() {
-        // CZY TWORZYĆ TAKIE PUSTE KONSTRUKTORY ???!!! (były w projekcie)
-        this.ID = null;
-        this.name = null;
-        this.surname = null;
-        this.email = null;
-        this.password = null;
-        this.dateOfBirth = null;
+        super();
         this.group = null;
         this.wallet = null;
         this.level = null;
@@ -27,15 +22,11 @@ public class Codecooler extends AbstractUser {
     }
 
     public Codecooler(String name, String surname, String email, LocalDate dateOfBirth) {
-        this.ID = null; // ID generatoro here
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.password = null; // some method to create password here
-        this.dateOfBirth = dateOfBirth;
+        super(name, surname, email, dateOfBirth);
         this.wallet = new Wallet();
-        // odkomentować gdy stworzy się levelDAO
-        // this.level = LevelDAO.levelList.get(0); // tutaj uważać bo może być IndexOutOfBound exception jak nie będzie jeszcze żadnego levelu
+        // TODO: uncomment when levelDAO created
+        // be careful on IndexOutOfBound. Handle it.
+        // this.level = LevelDAO.levelList.get(0);
         this.team = null;
         this.achievementList = new ArrayList<Achievement>();
     }
