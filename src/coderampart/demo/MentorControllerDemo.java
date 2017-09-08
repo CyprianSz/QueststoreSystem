@@ -74,7 +74,7 @@ public class MentorControllerDemo implements Bootable {
         Codecooler codecooler = new Codecooler(name, surname, email, dateOfBirth);
 
         // Demo:
-        System.out.println("You've created a new Codecooler: " + codecooler);
+        view.output("You've created a new Codecooler: " + codecooler);
     }
 
     public void addQuest() {
@@ -84,11 +84,11 @@ public class MentorControllerDemo implements Bootable {
             Integer reward = Integer.valueOf(questData[1]);
             Quest quest = new Quest(name, reward);
             // Demo:
-            System.out.println("You create new quest: " + quest);
+            view.output("You create new quest: " + quest);
         }
         catch (NumberFormatException e) {
-            System.out.println("Following error occured: " + e);
-            System.out.println("Reward must be number !");
+            view.output("Following error occured: " + e);
+            view.output("Reward must be number !");
         }
     }
 
@@ -97,7 +97,7 @@ public class MentorControllerDemo implements Bootable {
         int option = view.chooseEdit();
 
         if (option == 1) {  //edit name
-            String name = view.takeInput("New name: ");
+            String name = view.getInput("New name: ");
             quest.setName(name);
 
         } else if (option == 2) {   // edit coolcoins
@@ -110,7 +110,7 @@ public class MentorControllerDemo implements Bootable {
         }
 
         // Demo:
-        System.out.println("\nUpdate: done");
+        view.output("\nUpdate: done");
     }
 
     public void setQuestCategory() {
@@ -121,7 +121,7 @@ public class MentorControllerDemo implements Bootable {
 
         // Demo
         view.enterToContinue();
-        System.out.println("Quest category: " + category);
+        view.output("Quest category: " + category);
     }
 
     public Quest chooseQuest() {
@@ -129,9 +129,9 @@ public class MentorControllerDemo implements Bootable {
         // choose specific quest and return it
 
         // Demo:
-        System.out.println("\nChoose Quest:\nBasic\n1. Finishing Teamwork\nExtra\n2. Master of mornings \n3. Recruiting some n00bz");
+        view.output("\nChoose Quest:\nBasic\n1. Finishing Teamwork\nExtra\n2. Master of mornings \n3. Recruiting some n00bz");
         view.enterToContinue();
-        System.out.println("\nYour choice: Master of mornings");
+        view.output("\nYour choice: Master of mornings");
 
         Quest quest = new Quest("Master of mornings", 100);
         return quest;
@@ -139,10 +139,10 @@ public class MentorControllerDemo implements Bootable {
 
     public void markQuest() {
         // Demo:
-        System.out.println("Codecooler: Anna Nowak; Quest: Master of mornings");
-        System.out.println("Confirm? (y/n)");
+        view.output("Codecooler: Anna Nowak; Quest: Master of mornings");
+        view.output("Confirm? (y/n)");
         view.enterToContinue();
-        System.out.println("Marked");
+        view.output("Marked");
     }
 
     public void addArtifact() {
@@ -152,11 +152,11 @@ public class MentorControllerDemo implements Bootable {
             Integer value = Integer.valueOf(artifactData[1]);
             Artifact artifact = new Artifact(name, value);
             // Demo:
-            System.out.println("You create new artifact: " + artifact);
+            view.output("You create new artifact: " + artifact);
         }
         catch (NumberFormatException e) {
-            System.out.println("Following error occured: " + e);
-            System.out.println("Reward must be number !");
+            view.output("Following error occured: " + e);
+            view.output("Reward must be number !");
         }
     }
 
@@ -165,7 +165,7 @@ public class MentorControllerDemo implements Bootable {
         int option = view.chooseEdit();
 
         if (option == 1) {  //edit name
-            String name = view.takeInput("New name: ");
+            String name = view.getInput("New name: ");
             artifact.setName(name);
 
         } else if (option == 2) {   // edit coolcoins
@@ -178,7 +178,7 @@ public class MentorControllerDemo implements Bootable {
         }
 
         // Demo:
-        System.out.println("\nUpdate: done");
+        view.output("\nUpdate: done");
     }
 
     public void setArtifactCategory() {
@@ -189,7 +189,7 @@ public class MentorControllerDemo implements Bootable {
 
         // Demo:
         view.enterToContinue();
-        System.out.println("Artifact category: " + type);
+        view.output("Artifact category: " + type);
     }
 
     public Artifact chooseArtifact() {
@@ -197,25 +197,25 @@ public class MentorControllerDemo implements Bootable {
         // choose specific artifact and return it
 
         // Demo:
-        System.out.println("\nChoose an artifact:\nBasic\n1. Private mentoring \n2. Day in home office\nMagic\n3. Workshop 60min.");
+        view.output("\nChoose an artifact:\nBasic\n1. Private mentoring \n2. Day in home office\nMagic\n3. Workshop 60min.");
         view.enterToContinue();
-        System.out.println("\nYour choice: Private Mentoring");
+        view.output("\nYour choice: Private Mentoring");
         Artifact artifact = new Artifact("Private Mentoring", 50);
         return artifact;
     }
 
     public void markArtifact() {
         // Demo:
-        System.out.println("Codecooler: Jan Kowalski wants to buy an artifact: day in home");
-        System.out.println("Confirm? (y/n)");
+        view.output("Codecooler: Jan Kowalski wants to buy an artifact: day in home");
+        view.output("Confirm? (y/n)");
         view.enterToContinue();
-        System.out.println("Marked");
+        view.output("Marked");
     }
 
     public void displayWalletDetails() {
         // Demo:
-        System.out.println("Wallet details:");
-        System.out.println("\nJan Kowalski\nBalance: 200 coolcoins\nBought artifacts: Day in home");
-        System.out.println("\nAnna Nowak\nBalance: 100 coolcoins\nBought artifacts: Private Mentoring");
+        view.output("Wallet details:");
+        view.output("\nJan Kowalski\nBalance: 200 coolcoins\nBought artifacts: Day in home");
+        view.output("\nAnna Nowak\nBalance: 100 coolcoins\nBought artifacts: Private Mentoring");
     }
 }

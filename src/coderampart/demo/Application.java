@@ -5,12 +5,10 @@ import coderampart.view.View;
 public class Application {
 
     public static void main(String[] args) {
-
-        View myView = new View();
-
         MentorControllerDemo mentorController = new MentorControllerDemo();
         CodecoolerControllerDemo codecoolerController = new CodecoolerControllerDemo();
         Login login = new Login();
+        View view = new View();
         boolean proceed = true;
 
         login.start();
@@ -26,6 +24,6 @@ public class Application {
             proceed = codecoolerController.start();
         }
 
-        myView.sayGoodbye();
+        view.output("\nSEE YOU SOON\n");
     }
 }
