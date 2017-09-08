@@ -15,38 +15,18 @@ public class Artifact {
     }
 
     public Artifact(String name, Integer value) {
-        this.ID = null; // ID generatoro here
+        this.ID = null; // TODO: ID generator here
         this.name = name;
         this.value = value;
     }
 
-    public String getID() {
-        return this.ID;
-    }
-
-    public String getType() {
-        return this.type;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public Integer getValue() {
-        return this.value;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setValue(Integer value) {
-        this.value = value;
-    }
+    public String getID() { return this.ID; }
+    public String getType() { return this.type; }
+    public String getName() { return this.name; }
+    public Integer getValue() { return this.value; }
+    public void setType(String type) { this.type = type; }
+    public void setName(String name) { this.name = name; }
+    public void setValue(Integer value) { this.value = value; }
 
     public String toString() {
         String userData = "\nID: " + this.getID()

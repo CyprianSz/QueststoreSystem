@@ -1,7 +1,7 @@
 package coderampart.model;
 
 import java.util.ArrayList;
-// import coderampart.DAO.WalletDAO;     UNCOMENT WHEN CREATE ItemDAO
+// import coderampart.DAO.WalletDAO;  TODO: uncomment when ItemDAO created
 
 public class Wallet {
 
@@ -11,12 +11,12 @@ public class Wallet {
     public Integer getBalance() { return this.balance; }
     public Integer getEarnedCoins() { return this.earnedCoins; }
     public ArrayList<Item> getItemList() {
-        //return ItemDAO.itemList;   UNCOMENT WHEN CREATE ItemDAO
+        //return ItemDAO.itemList;  TODO: uncomment when ItemDAO created
         return null;
     }
 
     public void addItem(Item item) {
-        //ItemDAO.itemList().add(item);  UNCOMMENT WHEN CREATE ItemDAO
+        //ItemDAO.itemList().add(item); TODO: uncomment when ItemDAO created
     }
 
     public String toString() {
