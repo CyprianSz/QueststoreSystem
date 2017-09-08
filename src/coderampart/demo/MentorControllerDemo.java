@@ -73,7 +73,7 @@ public class MentorControllerDemo implements Bootable {
         Codecooler codecooler = new Codecooler(name, surname, email, dateOfBirth);
 
         // Demo:
-        System.out.println("You create new Codecooler: " + codecooler);
+        System.out.println("You've created a new Codecooler: " + codecooler);
     }
 
     public void addQuest() {
@@ -85,7 +85,7 @@ public class MentorControllerDemo implements Bootable {
         Quest quest = new Quest(name, reward);
 
         // Demo:
-        System.out.println("You create new quest: " + quest);
+        System.out.println("You've created a new quest: " + quest);
     }
 
     public void updateQuest() {
@@ -125,7 +125,7 @@ public class MentorControllerDemo implements Bootable {
         // choose specific quest and return it
 
         // Demo:
-        System.out.println("\nChoose Quest:\nBasic\n1. Finishing Teamwork\nExtra\n2. Master of mornings \n3. Recruiting some n00bs");
+        System.out.println("\nChoose Quest:\nBasic\n1. Finishing Teamwork\nExtra\n2. Master of mornings \n3. Recruiting some n00bz");
         view.enterToContinue();
         System.out.println("\nYour choice: Master of mornings");
 
@@ -150,7 +150,7 @@ public class MentorControllerDemo implements Bootable {
         Artifact artifact = new Artifact(name, value);
 
         // Demo:
-        System.out.println("You create new artifact: " + artifact);
+        System.out.println("You've created a new artifact: " + artifact);
     }
 
     public void updateArtifact() {
@@ -190,10 +190,10 @@ public class MentorControllerDemo implements Bootable {
         // choose specific artifact and return it
 
         // Demo:
-        System.out.println("\nChoose artifact:\nBasic\n1. Private mentoring \n2. Day in home office\nMagic\n3. Workshop 60min.");
+        System.out.println("\nChoose an artifact:\nBasic\n1. Private mentoring \n2. Day in home office\nMagic\n3. Workshop 60min.");
         view.enterToContinue();
         System.out.println("\nYour choice: Private Mentoring");
-        
+
 
         Artifact artifact = new Artifact("Private Mentoring", 50);
         return artifact;
@@ -201,7 +201,7 @@ public class MentorControllerDemo implements Bootable {
 
     public void markArtifact() {
         // Demo:
-        System.out.println("Codecooler: Jan Kowalski want to buy artifact: day in home");
+        System.out.println("Codecooler: Jan Kowalski wants to buy an artifact: day in home");
         System.out.println("Confirm? (y/n)");
         view.enterToContinue();
         System.out.println("Marked");
@@ -210,7 +210,7 @@ public class MentorControllerDemo implements Bootable {
     public void displayWalletDetails() {
         // Demo:
         System.out.println("Wallet details:");
-        System.out.println("\nJan Kowalski\nBalanse: 200 coolcoins\nAlreadyBought: Day in home");
-        System.out.println("\nAnna Nowak\nBalanse: 100 coolcoins\nAlreadyBought: Private Mentoring");
+        System.out.println("\nJan Kowalski\nBalance: 200 coolcoins\nBought artifacts: Day in home");
+        System.out.println("\nAnna Nowak\nBalance: 100 coolcoins\nBought artifacts: Private Mentoring");
     }
 }

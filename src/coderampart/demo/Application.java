@@ -21,6 +21,6 @@ public class Application {
             proceed = codecoolerController.start();
         }
 
-        System.out.println("\nSEE YOU SOON\n");
+        System.out.println("\nGOOD BYE\n");
     }
 }
