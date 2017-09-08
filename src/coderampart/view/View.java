@@ -77,7 +77,7 @@ public class View {
        do {
            System.out.println(label);
            input = inputScan.next();
-       } while (!input.matches("^[12][09]\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"));
+       } while (!input.matches("^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"));
 
        return input;
    }
@@ -175,5 +175,9 @@ public class View {
         int userChoice = getUserChoice();
 
         return userChoice;
+    }
+
+    public void sayGoodbye(){
+        System.out.println("\nGOOD BYE\n");
     }
 }
