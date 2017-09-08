@@ -55,7 +55,7 @@ public class View {
         String name = takeInput("Name: ");
         String surname = takeInput("Surname: ");
         String email = takeInput("E-mail: ");
-        String dateOfBirth = takeDateInput("Date of birth: ");
+        String dateOfBirth = takeDateInput("Date of birth (yyyy-mm-dd): ");
 
         String[] userData = new String[] {name, surname, email, dateOfBirth};
 
@@ -77,7 +77,7 @@ public class View {
        do {
            System.out.println(label);
            input = inputScan.next();
-       } while (!input.matches("^[1-2][0][1-9][0-9]-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"));
+       } while (!input.matches("^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"));
 
        return input;
    }
@@ -117,7 +117,7 @@ public class View {
     public void displayLogingInfo() {
         Scanner inputScannet = new Scanner(System.in);
         this.clearTerminal();
-        System.out.println("\nLOGING IN:\n");
+        System.out.println("\nLOGGING IN:\n");
         this.takeInput("\nType login: ");
         this.takeInput("\nType password: ");
     }
@@ -132,7 +132,7 @@ public class View {
             progressBar += "#";
 
             this.clearTerminal();
-            System.out.println("\n-----> LOGING IN - PLEASE WAIT <-----\n");
+            System.out.println("\n-----> LOGGING IN - PLEASE WAIT <-----\n");
 
             System.out.println(progressBar);
             System.out.println(progressBar);
@@ -140,7 +140,7 @@ public class View {
 
             delayExecutionFor(70);
         }
-        System.out.println("\n\n-----> LOGED IN SUCCESSFULLY <-----");
+        System.out.println("\n\n-----> LOGGED IN SUCCESSFULLY <-----");
         delayExecutionFor(1000);
     }
 
@@ -175,5 +175,9 @@ public class View {
         int userChoice = getUserChoice();
 
         return userChoice;
+    }
+
+    public void sayGoodbye(){
+        System.out.println("\nGOOD BYE\n");
     }
 }
