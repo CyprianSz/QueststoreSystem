@@ -39,31 +39,31 @@ public class CodecoolerControllerDemo implements Bootable {
     }
 
     public void displayWallet(){
-        System.out.println("Your wallet:");
-        System.out.println("Balance: 500 coolcoins");
-        System.out.println("Bought items: Private mentoring");
+        view.output("Your wallet:");
+        view.output("Balance: 500 coolcoins");
+        view.output("Bought items: Private mentoring");
     }
 
     public void buyArtifact(){
-        System.out.println("Current balance: 500cc");
-        System.out.println("Choose an item:");
-        System.out.println("\n1. Combat training, 50cc"
+        view.output("Current balance: 500cc");
+        view.output("Choose an item:");
+        view.output("\n1. Combat training, 50cc"
                          + "\n2. Sanctuary, 300cc"
                          + "\n3. Time Travel, 500cc");
 
         Integer artifactChoice = view.getUserChoice();
         if (artifactChoice >= 0) {
-            System.out.println("Item bought!");
+            view.output("Item bought!");
         }
     }
 
     public void buyWithGroup(){
         // Demo:
-        System.out.println("Not enough codecoolers in your group. Recruit some noobs");
+        view.output("Not enough codecoolers in your group. Recruit some noobs");
     }
 
     public void displayLevel(){
         // Demo:
-        System.out.println("Your level: D.N.O.");
+        view.output("Your level: D.N.O.");
     }
 }
