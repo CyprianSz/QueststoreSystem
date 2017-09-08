@@ -13,7 +13,7 @@ public class View {
                                                                   "Set artifact type", "Mark artifact", "Display wallet details"));
 
         displayOptions(options);
-        System.out.println("\n0. Exit");
+        this.output("\n0. Exit");
     }
 
     public void displayCodecoolerMenu() {
@@ -21,14 +21,14 @@ public class View {
                                                                   "Display level"));
 
         displayOptions(options);
-        System.out.println("\n0. Exit");
+        this.output("\n0. Exit");
     }
 
     public void displayOptions(ArrayList<String> options) {
         Integer number = 1;
-        System.out.println(" ");
+        this.output(" ");
         for (String option : options) {
-            System.out.println(String.format("%d. %s", number, option));
+            this.output(String.format("%d. %s", number, option));
             number++;
         }
     }
@@ -37,7 +37,7 @@ public class View {
         Scanner input = new Scanner(System.in);
         int number;
 
-        System.out.println("Enter a number: ");
+        this.output("Enter a number: ");
         while (!input.hasNextInt()) {
             printErrorMessage();
             input.next();
@@ -48,34 +48,34 @@ public class View {
     }
 
     public void printErrorMessage() {
-        System.out.println("\nBad choice");
+        this.output("\nBad choice");
     }
 
     public String[] getUserData() {
-        String name = takeInput("Name: ");
-        String surname = takeInput("Surname: ");
-        String email = takeInput("E-mail: ");
-        String dateOfBirth = takeDateInput("Date of birth (yyyy-mm-dd): ");
+        String name = getInput("Name: ");
+        String surname = getInput("Surname: ");
+        String email = getInput("E-mail: ");
+        String dateOfBirth = getDateInput("Date of birth (yyyy-mm-dd): ");
 
         String[] userData = new String[] {name, surname, email, dateOfBirth};
 
         return userData;
     }
 
-    public String takeInput(String label) {
+    public String getInput(String label) {
         Scanner inputScan = new Scanner(System.in);
-        System.out.println(label);
+        this.output(label);
         String input = inputScan.next();
 
         return input;
    }
 
-   public String takeDateInput(String label) {
+   public String getDateInput(String label) {
        Scanner inputScan = new Scanner(System.in);
        String input;
 
        do {
-           System.out.println(label);
+           this.output(label);
            input = inputScan.next();
        } while (!input.matches("^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"));
 
@@ -83,8 +83,8 @@ public class View {
    }
 
    public String[] getQuestData() {
-       String name = takeInput("Name: ");
-       String reward = takeInput("Reward (coolcoins): ");
+       String name = getInput("Name: ");
+       String reward = getInput("Reward (coolcoins): ");
 
        String[] questData = new String[] {name, reward};
 
@@ -92,8 +92,8 @@ public class View {
    }
 
    public String[] getArtifactData() {
-       String name = takeInput("Name: ");
-       String value = takeInput("Value (coolcoins): ");
+       String name = getInput("Name: ");
+       String value = getInput("Value (coolcoins): ");
 
        String[] artifactData = new String[] {name, value};
 
@@ -102,24 +102,24 @@ public class View {
 
    public String chooseQuestCategory() {
        // Demo:
-       System.out.println("Category:\n1. Basic\n2. Extra\n");
+       this.output("Category:\n1. Basic\n2. Extra\n");
        String category = "Basic";
        return category;
    }
 
    public String chooseArtifactType() {
        // Demo:
-       System.out.println("Category:\n1. Basic\n2. Magic\n");
+       this.output("Category:\n1. Basic\n2. Magic\n");
        String type = "Magic";
        return type;
    }
 
     public void displayLogingInfo() {
-        Scanner inputScannet = new Scanner(System.in);
+        Scanner inputScanner = new Scanner(System.in);
         this.clearTerminal();
-        System.out.println("\nLOGGING IN:\n");
-        this.takeInput("\nType login: ");
-        this.takeInput("\nType password: ");
+        this.output("\nLOGGING IN:\n");
+        this.getInput("\nType login: ");
+        this.getInput("\nType password: ");
     }
 
     public void displayProgressBar() {
@@ -132,15 +132,15 @@ public class View {
             progressBar += "#";
 
             this.clearTerminal();
-            System.out.println("\n-----> LOGGING IN - PLEASE WAIT <-----\n");
+            this.output("\n-----> LOGGING IN - PLEASE WAIT <-----\n");
 
-            System.out.println(progressBar);
-            System.out.println(progressBar);
+            this.output(progressBar);
+            this.output(progressBar);
             System.out.format("%n-----> " + "%03d" + "%s" + " <-----", i*2, "%");
 
             delayExecutionFor(70);
         }
-        System.out.println("\n\n-----> LOGGED IN SUCCESSFULLY <-----");
+        this.output("\n\n-----> LOGGED IN SUCCESSFULLY <-----");
         delayExecutionFor(1000);
     }
 
@@ -159,16 +159,16 @@ public class View {
 
     public void enterToContinue() {
         try {
-            System.out.print("\nPRESS ENTER TO CONTINUE");
+            this.output("\nPRESS ENTER TO CONTINUE");
             System.in.read();
         } catch (IOException e) {
-            System.out.println("INPUT INTERRUPTED");
+            this.output("INPUT INTERRUPTED");
             e.printStackTrace();
         }
     }
 
     public int chooseEdit() {
-        System.out.println("\nWhat do you want to change?: ");
+        this.output("\nWhat do you want to change?: ");
 
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "Amount of coolcoins"));
         displayOptions(options);
@@ -178,6 +178,10 @@ public class View {
     }
 
     public void sayGoodbye(){
-        System.out.println("\nGOOD BYE\n");
+        this.output("\nGOOD BYE\n");
+    }
+
+    public void output(String output) {
+        System.out.println(output);
     }
 }
