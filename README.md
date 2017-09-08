@@ -1,4 +1,5 @@
 # Queststore_system by 'Code Rampart Inc.'
+# demo version v0.9
 
 ## Overview
 * This is a simple console app simulating Questore platform system
@@ -7,7 +8,7 @@
 
 ## Launching
 * To compile: compile.sh
-* To run: run.sh
+* To run: runDemo.sh
 
 ## Contributors
 * Monika Zaganiacz - monzag
