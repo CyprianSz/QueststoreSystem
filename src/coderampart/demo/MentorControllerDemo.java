@@ -16,6 +16,7 @@ public class MentorControllerDemo implements Bootable {
 
     private View view = new View();
 
+    // TODO: implement enums here
     public static final int CREATE_CODECOOLER = 1;
     public static final int ADD_QUEST = 2;
     public static final int UPDATE_QUEST = 3;

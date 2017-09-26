@@ -38,13 +38,13 @@ public class CodecoolerControllerDemo implements Bootable {
         return true;
     }
 
-    public void displayWallet(){
+    public void displayWallet() {
         view.output("Your wallet:");
         view.output("Balance: 500 coolcoins");
         view.output("Bought items: Private mentoring");
     }
 
-    public void buyArtifact(){
+    public void buyArtifact() {
         view.output("Current balance: 500cc");
         view.output("Choose an item:");
         view.output("\n1. Combat training, 50cc"
