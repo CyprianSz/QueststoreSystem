@@ -1,9 +1,0 @@
-<file>:<line>, Note: <note>
-/src/coderampart/demo/CodecoolerControllerDemo.java:42, Note: OOP: avoid priniting
-/src/coderampart/model/Codecooler.java:37, Note: CC: mark as todo
-/src/coderampart/model/Mentor.java:19, Note: OOP: use super()
-/src/coderampart/demo/MentorControllerDemo.java:19, Note: change to enum in future
-/src/coderampart/view/View.java:65, Note: CC: bad naming
-/src/coderampart/view/View.java:118, Note: CC: typo
-/src/coderampart/demo/Login.java:5, Note: CC: bad naming
-
