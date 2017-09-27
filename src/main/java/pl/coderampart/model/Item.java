@@ -1,20 +1,17 @@
 package pl.coderampart.model;
 
+import pl.coderampart.controller.UUIDController;
 import java.time.LocalDate;
 
 public class Item {
 
+    private String ID;
     private Artifact artifact;
     private LocalDate creationDate;
     private boolean isMarked;
 
-    public Item() {
-        this.artifact = null;
-        this.creationDate = null;
-        this.isMarked = false;
-    }
-
     public Item(Artifact artifact) {
+        this.ID = UUIDController.createUUID();
         this.artifact = artifact;
         this.creationDate = LocalDate.now();
         this.isMarked = false;

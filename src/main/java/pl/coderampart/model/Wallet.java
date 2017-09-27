@@ -1,15 +1,22 @@
 package pl.coderampart.model;
 
+import pl.coderampart.controller.UUIDController;
 import java.util.ArrayList;
 // import coderampart.DAO.WalletDAO;  TODO: uncomment when ItemDAO created
 
 public class Wallet {
 
+    private String ID;
     private Integer balance;
     private Integer earnedCoins;
 
+    public Wallet() {
+        this.ID = UUIDController.createUUID();
+    }
+
     public Integer getBalance() { return this.balance; }
     public Integer getEarnedCoins() { return this.earnedCoins; }
+
     public ArrayList<Item> getItemList() {
         //return ItemDAO.itemList;  TODO: uncomment when ItemDAO created
         return null;

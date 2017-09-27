@@ -1,17 +1,15 @@
 package pl.coderampart.model;
 
+import pl.coderampart.controller.UUIDController;
+
 public class Group{
 
     protected String ID;
     protected String name;
 
-    public Group(){
-        this.ID = null;
-        this.name = null;
-    }
 
     public Group(String name){
-        this.ID = null;
+        this.ID = UUIDController.createUUID(name);
         this.name = name;
     }
 

@@ -1,42 +1,32 @@
 package pl.coderampart.model;
 
 import java.time.LocalDate;
+import pl.coderampart.controller.UUIDController;
 
 public abstract class AbstractUser {
 
     protected String ID;
-    protected String name;
-    protected String surname;
+    protected String first_name;
+    protected String last_name;
     protected String email;
     protected String password;
     protected LocalDate dateOfBirth;
 
-    // TODO: remove after testing
-    public AbstractUser() {
-        this.ID = null;
-        this.name = null;
-        this.surname = null;
-        this.email = null;
-        this.password = null;
-        this.dateOfBirth = null;
-    }
-
-    public AbstractUser(String name, String surname, String email, LocalDate dateOfBirth) {
-        this.ID = null; // TODO: ID generatoro here
-        this.name = name;
-        this.surname = surname;
+    public AbstractUser(String first_name, String last_name, String email, String password, LocalDate dateOfBirth) {
+        this.ID = UUIDController.createUUID(first_name);
+        this.first_name = first_name;
+        this.last_name = last_name;
         this.email = email;
-        this.password = null; // TODO: some method to create password here
+        this.password = password;
         this.dateOfBirth = dateOfBirth;
     }
 
     public String getID() { return this.ID; }
-    public String getName() { return this.name; }
-    public String getSurname() { return this.surname; }
+    public String getName() { return this.first_name; }
+    public String getSurname() { return this.last_name; }
     public String getEmail() { return this.email; }
     public String getPassword() { return this.password; }
     public LocalDate getDateOfBirth() { return this.dateOfBirth; }
-    public void setEmail(String password) { this.password = password; }
 
     public String toString() {
         String userData = "\nID: " + this.getID()
