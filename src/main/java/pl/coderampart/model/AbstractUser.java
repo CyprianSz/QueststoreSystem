@@ -32,16 +32,16 @@ public abstract class AbstractUser {
     }
 
     public String getID() { return this.ID; }
-    public String getName() { return this.first_name; }
-    public String getSurname() { return this.last_name; }
+    public String getFirstName() { return this.first_name; }
+    public String getLastName() { return this.last_name; }
     public String getEmail() { return this.email; }
     public String getPassword() { return this.password; }
     public LocalDate getDateOfBirth() { return this.dateOfBirth; }
 
     public String toString() {
         String userData = "\nID: " + this.getID()
-                        + "\nname: " + this.getName()
-                        + "\nsurname: " + this.getSurname()
+                        + "\nname: " + this.getFirstName()
+                        + "\nsurname: " + this.getLastName()
                         + "\nemail: " + this.getEmail()
                         + "\ndate of birth: " + this.getDateOfBirth();
 
