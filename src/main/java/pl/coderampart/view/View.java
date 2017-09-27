@@ -70,7 +70,7 @@ public class View {
     public String[] getUserData() {
         String name = getInput("Name: ");
         String surname = getInput("Surname: ");
-        String email = getInput("E-mail: ");
+        String email = getEmailInput("E-mail: ");
         String dateOfBirth = getDateInput("Date of birth (yyyy-mm-dd): ");
 
         String[] userData = new String[] {name, surname, email, dateOfBirth};
@@ -96,6 +96,18 @@ public class View {
        } while (!input.matches(dateRegEx));
 
        return input;
+   }
+
+   public String getEmailInput(String label) {
+        Scanner inputScan = new Scanner(System.in);
+        String input;
+
+        do {
+            this.output(label);
+            input = inputScan.next();
+        } while (!input.matches(emailRegEx));
+
+        return input;
    }
 
    public LocalDate stringToDate(String date) {
