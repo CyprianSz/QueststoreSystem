@@ -2,11 +2,20 @@ package pl.coderampart.view;
 
 import java.util.Scanner;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.IOException;
 
 public class View {
+
+    public void displayAdminMenu(){
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new mentor", "Create new group", "Update mentor data",
+                                                                  "Display mentor data", "Create experience level"));
+
+        displayOptions(options);
+        this.output("\n0. Exit");
+    }
 
     public void displayMentorMenu() {
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new Codecooler", "Add quest", "Update quest",
