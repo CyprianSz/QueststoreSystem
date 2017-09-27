@@ -80,7 +80,7 @@ public class View {
         return input;
    }
 
-   public String getDateInput(String label) {
+   public LocalDate getDateInput(String label) {
        Scanner inputScan = new Scanner(System.in);
        String input;
 
@@ -89,7 +89,12 @@ public class View {
            input = inputScan.next();
        } while (!input.matches("^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"));
 
-       return input;
+       return stringToDate(input);
+   }
+
+   public LocalDate stringToDate(String date) {
+        String dateToConvert = date;
+
    }
 
    public String[] getQuestData() {
