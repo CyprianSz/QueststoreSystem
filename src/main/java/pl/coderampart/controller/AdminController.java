@@ -5,7 +5,6 @@ import pl.coderampart.services.Bootable;
 import pl.coderampart.view.View;
 import pl.coderampart.model.Mentor;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 // import pl.coderampart.DAO.MentorDAO;
 // import pl.coderampart.DAO.AdminDAO;
@@ -22,11 +21,11 @@ public class AdminController implements Bootable {
     public static final int EXIT = 0;
 
     public boolean start() {
-        // view.displayAdminMenu(); //TODO: ADD THIS METHOD TO VIEW
+        view.displayAdminMenu();
         int userChoice = view.getUserChoice();
 
         view.clearTerminal();
-
+        // TODO: USE ENUM
         switch(userChoice) {
 
             case CREATE_MENTOR: createMentor();
@@ -50,15 +49,10 @@ public class AdminController implements Bootable {
 
     public void createMentor(){
 
-        String mentorFirstName = view.getInput("Enter first name of a new mentor:");
-        String mentorLastName = view.getInput("Enter last name of a new mentor:");
-        String birthdateData = view.getInput("Enter mentor's birth date: (dd-mm-yyyy)");
-        DateTimeFormatter dupa = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
-        LocalDate mentorBirthDate = LocalDate.parse(birthdateData, dupa);
-        String mentorPassword = view.getInput("Enter mentor's password.");
-        String mentorEmail = view.getInput("Enter mentor's email address:");
+        String[] mentorData = view.getUserData();
 
-        Mentor newMentor = new Mentor(mentorFirstName, mentorLastName, mentorEmail, mentorPassword, mentorBirthDate);
+        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], mentorData[2], mentorData[3],
+                                      view.stringToDate(mentorData[4]));
     }
 
     public void editMentor(){

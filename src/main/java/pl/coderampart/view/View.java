@@ -71,9 +71,10 @@ public class View {
         String name = getInput("Name: ");
         String surname = getInput("Surname: ");
         String email = getEmailInput("E-mail: ");
+        String password = getInput("Password: ");
         String dateOfBirth = getDateInput("Date of birth (yyyy-mm-dd): ");
 
-        String[] userData = new String[] {name, surname, email, dateOfBirth};
+        String[] userData = new String[] {name, surname, email, password, dateOfBirth};
 
         return userData;
     }
