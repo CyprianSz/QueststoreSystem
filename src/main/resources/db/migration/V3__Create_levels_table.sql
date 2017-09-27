@@ -1,4 +1,4 @@
-CREATE TABLE codecoolers (
+CREATE TABLE levels (
   id VARCHAR(36),
   rank INTEGER,
   required_experience INTEGER,
