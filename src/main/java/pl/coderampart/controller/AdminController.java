@@ -4,9 +4,10 @@ import pl.coderampart.model.Admin;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.View;
 import pl.coderampart.model.Mentor;
-import pl.coderampart.DAO.MentorDAO;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+// import pl.coderampart.DAO.MentorDAO;
 // import pl.coderampart.DAO.AdminDAO;
 
 public class AdminController implements Bootable {
@@ -21,7 +22,7 @@ public class AdminController implements Bootable {
     public static final int EXIT = 0;
 
     public boolean start() {
-        view.displayAdminMenu(); //TODO: ADD THIS METHOD TO VIEW
+        // view.displayAdminMenu(); //TODO: ADD THIS METHOD TO VIEW
         int userChoice = view.getUserChoice();
 
         view.clearTerminal();
@@ -48,16 +49,16 @@ public class AdminController implements Bootable {
     }
 
     public void createMentor(){
+
         String mentorFirstName = view.getInput("Enter first name of a new mentor:");
         String mentorLastName = view.getInput("Enter last name of a new mentor:");
-        //TODO: ADD GETDATE TO VIEW, UPDATE THIS METHOD TO CONTAIN DATE INSTEAD OF STRING
         String birthdateData = view.getInput("Enter mentor's birth date: (dd-mm-yyyy)");
-        DateTimeFormatter dupa = new DateTimeFormatter("dd-MM-yyyy");
+        DateTimeFormatter dupa = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
         LocalDate mentorBirthDate = LocalDate.parse(birthdateData, dupa);
         String mentorPassword = view.getInput("Enter mentor's password.");
         String mentorEmail = view.getInput("Enter mentor's email address:");
 
-        Mentor(mentorFirstName, mentorLastName, mentorEmail, mentorPassword, mentorBirthDate);
+        Mentor newMentor = new Mentor(mentorFirstName, mentorLastName, mentorEmail, mentorPassword, mentorBirthDate);
     }
 
     public void editMentor(){
