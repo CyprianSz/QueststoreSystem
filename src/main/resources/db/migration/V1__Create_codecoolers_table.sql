@@ -10,5 +10,8 @@ CREATE TABLE codecoolers (
   team_id VARCHAR(36),
   level_id VARCHAR(36),
   PRIMARY KEY (id),
-  FOREIGN KEY (wallet_id) REFERENCES wallets(id)
+  FOREIGN KEY (wallet_id) REFERENCES wallets(id),
+  FOREIGN KEY (group_id) REFERENCES groups(id),
+  FOREIGN KEY (team_id) REFERENCES teams(id),
+  FOREIGN KEY (level_id) REFERENCES levels(id)
 );
