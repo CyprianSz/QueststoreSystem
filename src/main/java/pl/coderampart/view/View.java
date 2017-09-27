@@ -10,6 +10,11 @@ import java.io.IOException;
 
 public class View {
 
+    private static final String emailRegEx = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+"
+            + "(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
+
+    private static final String dateRegEx = "^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
+
     public void displayAdminMenu(){
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new mentor", "Create new group", "Update mentor data",
                                                                   "Display mentor data", "Create experience level"));
@@ -88,17 +93,15 @@ public class View {
        do {
            this.output(label);
            input = inputScan.next();
-       } while (!input.matches("^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"));
+       } while (!input.matches(dateRegEx));
 
        return input;
    }
 
    public LocalDate stringToDate(String date) {
-       String dateToConvert = date;
        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-       LocalDate convertedDate = LocalDate.parse(dateToConvert, formatter);
 
-       return convertedDate;
+       return LocalDate.parse(date, formatter);
    }
 
    public String[] getQuestData() {
