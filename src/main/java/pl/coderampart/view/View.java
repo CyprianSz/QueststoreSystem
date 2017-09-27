@@ -1,5 +1,6 @@
 package pl.coderampart.view;
 
+import java.util.Locale;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -93,8 +94,11 @@ public class View {
    }
 
    public LocalDate stringToDate(String date) {
-        String dateToConvert = date;
+       String dateToConvert = date;
+       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+       LocalDate convertedDate = LocalDate.parse(dateToConvert, formatter);
 
+       return convertedDate;
    }
 
    public String[] getQuestData() {
