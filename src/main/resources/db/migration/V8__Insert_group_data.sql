@@ -5,5 +5,5 @@ VALUES
    'Codecool 2017.1'),
 
   ('58f9dfa7-ecc1-4da9-8946-12872b6366db',
-   'Codecool 2017.2'),
+   'Codecool 2017.2')
 ;
