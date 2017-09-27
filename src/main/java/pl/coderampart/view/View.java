@@ -202,10 +202,9 @@ public class View {
         }
     }
 
-    public int chooseEdit() {
+    public int chooseEdit(ArrayList<String> options) {
         this.output("\nWhat do you want to change?: ");
 
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "Amount of coolcoins"));
         displayOptions(options);
         int userChoice = getUserChoice();
 
