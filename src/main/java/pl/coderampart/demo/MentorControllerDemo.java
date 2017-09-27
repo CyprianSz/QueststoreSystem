@@ -72,8 +72,9 @@ public class MentorControllerDemo implements Bootable {
         String name = userData[0];
         String surname = userData[1];
         String email = userData[2];
+        String password = "samplePassword";
         LocalDate dateOfBirth = LocalDate.parse(userData[3]);
-        Codecooler codecooler = new Codecooler(name, surname, email, dateOfBirth);
+        Codecooler codecooler = new Codecooler(name, surname, email, password, dateOfBirth);
 
         // Demo:
         view.output("You've created a new Codecooler: " + codecooler);
@@ -151,8 +152,9 @@ public class MentorControllerDemo implements Bootable {
         try {
             String[] artifactData = view.getArtifactData();
             String name = artifactData[0];
+            String type = "normal";
             Integer value = Integer.valueOf(artifactData[1]);
-            Artifact artifact = new Artifact(name, value);
+            Artifact artifact = new Artifact(name, type, value);
             // Demo:
             view.output("You create new artifact: " + artifact);
         }
@@ -202,7 +204,8 @@ public class MentorControllerDemo implements Bootable {
         view.output("\nChoose an artifact:\nBasic\n1. Private mentoring \n2. Day in home office\nMagic\n3. Workshop 60min.");
         view.enterToContinue();
         view.output("\nYour choice: Private Mentoring");
-        Artifact artifact = new Artifact("Private Mentoring", 50);
+        String type = "normal";
+        Artifact artifact = new Artifact("Private Mentoring", type, 50);
         return artifact;
     }
 

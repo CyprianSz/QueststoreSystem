@@ -1,22 +1,18 @@
 package pl.coderampart.model;
 
+import pl.coderampart.controller.UUIDController;
+
 public class Artifact {
 
     private String ID;
-    private String type;
     private String name;
+    private String type;
     private Integer value;
 
-    public Artifact() {
-        this.ID = null;
-        this.type = null;
-        this.name = null;
-        this.value = null;
-    }
-
-    public Artifact(String name, Integer value) {
-        this.ID = null; // TODO: ID generator here
+    public Artifact(String name, String type, Integer value) {
+        this.ID = UUIDController.createUUID();
         this.name = name;
+        this.type = type;
         this.value = value;
     }
 
@@ -31,6 +27,7 @@ public class Artifact {
     public String toString() {
         String userData = "\nID: " + this.getID()
                         + "\nname: " + this.getName()
+                        + "\ntype: " + this.getType()
                         + "\nvalue: " + this.getValue();
 
         return userData;

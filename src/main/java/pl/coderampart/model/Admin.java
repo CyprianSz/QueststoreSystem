@@ -4,13 +4,7 @@ import java.time.LocalDate;
 
 public class Admin extends AbstractUser {
 
-    // TODO: remove after testing
-    public Admin() {
-        super();
+    public Admin(String first_name, String last_name, String password, String email, LocalDate dateOfBirth) {
+        super(first_name, last_name, password, email, dateOfBirth);
     }
-
-    public Admin(String name, String surname, String email, LocalDate dateOfBirth) {
-        super(name, surname, email, dateOfBirth);
-    }
-
 }

@@ -1,5 +1,7 @@
 package pl.coderampart.model;
 
+import pl.coderampart.controller.UUIDController;
+
 public class Quest{
 
     private String ID;
@@ -7,11 +9,8 @@ public class Quest{
     private String category;
     private Integer reward;
 
-    public Quest(){
-
-    }
-
     public Quest(String name, Integer reward){
+        this.ID = UUIDController.createUUID(name);
         this.name = name;
         this.reward = reward;
     }

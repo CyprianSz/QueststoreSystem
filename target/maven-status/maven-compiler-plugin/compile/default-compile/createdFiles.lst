@@ -5,6 +5,7 @@ pl/coderampart/model/Level.class
 pl/coderampart/model/Codecooler.class
 pl/coderampart/demo/Application.class
 pl/coderampart/demo/CodecoolerControllerDemo.class
+pl/coderampart/controller/UUIDController.class
 pl/coderampart/model/Achievement.class
 pl/coderampart/model/AbstractUser.class
 pl/coderampart/model/Item.class
