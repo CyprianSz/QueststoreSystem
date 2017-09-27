@@ -1,4 +1,4 @@
-INSERT INTO codecoolers
+INSERT INTO quests
 (id, name, description, reward)
 VALUES
   ('f7d3964a-2e3e-4722-99be-78622db6fb97',
