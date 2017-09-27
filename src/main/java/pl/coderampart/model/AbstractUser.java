@@ -21,6 +21,16 @@ public abstract class AbstractUser {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public AbstractUser(String ID, String first_name, String last_name,
+                        String email, String password, LocalDate dateOfBirth) {
+        this.ID = ID;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public String getID() { return this.ID; }
     public String getName() { return this.first_name; }
     public String getSurname() { return this.last_name; }
