@@ -66,7 +66,7 @@ public class ItemDAO extends AbstractDAO {
     public void delete(Item item) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM items WHERE ?;";
+            String query = "DELETE FROM items WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, item.getID());
             statement.executeUpdate();

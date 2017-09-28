@@ -31,6 +31,25 @@ public class TeamDAO extends AbstractDAO {
         return teamList;
     }
 
+    public Team getByID(String ID) {
+        Team team = null;
+
+        try {
+            Connection connection = this.connectToDataBase();
+            String query = "SELECT * FROM teams WHERE id = ?;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, ID);
+            ResultSet resultSet = statement.executeQuery();
+
+            team = this.createTeamFromResultSet(resultSet);
+            connection.close();
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+
+        return team;
+    }
+
     public void create(Team team) {
         try {
             Connection connection = this.connectToDataBase();
@@ -62,7 +81,7 @@ public class TeamDAO extends AbstractDAO {
     public void delete(Team team) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM teams WHERE ?;";
+            String query = "DELETE FROM teams WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, team.getID());
             statement.executeUpdate();

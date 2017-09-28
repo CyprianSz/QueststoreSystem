@@ -79,7 +79,7 @@ public class GroupDAO extends AbstractDAO {
     public void delete(Group group) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM groups WHERE ?;";
+            String query = "DELETE FROM groups WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, group.getID());
             statement.executeUpdate();

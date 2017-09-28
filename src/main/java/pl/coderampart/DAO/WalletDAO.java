@@ -59,7 +59,7 @@ public class WalletDAO extends AbstractDAO {
     public void delete(Wallet wallet) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM wallets WHERE ?;";
+            String query = "DELETE FROM wallets WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, wallet.getID());
             statement.executeUpdate();

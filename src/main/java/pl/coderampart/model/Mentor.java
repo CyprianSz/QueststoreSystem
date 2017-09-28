@@ -6,14 +6,14 @@ public class Mentor extends AbstractUser {
 
     private Group group;
 
-    public Mentor(String name, String surname, String email, String password, LocalDate dateOfBirth) {
-        super(name, surname, email, password, dateOfBirth);
+    public Mentor(String firstName, String lastName, LocalDate dateOfBirth, String email, String password) {
+        super(firstName, lastName, dateOfBirth, email, password);
         this.group = null;
     }
 
-    public Mentor(String ID, String name, String surname, String email,
-                  String password, LocalDate dateOfBirth, Group group) {
-        super(ID, name, surname, email, password, dateOfBirth);
+    public Mentor(String ID, String firstName, String lastName, LocalDate dateOfBirth,
+                  String email, String password, Group group) {
+        super(ID, firstName, lastName, dateOfBirth, email, password);
         this.group = group;
     }
 
