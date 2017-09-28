@@ -1,16 +1,12 @@
 package pl.coderampart.controller;
 
-import pl.coderampart.DAO.MentorDAO;
-import pl.coderampart.DAO.GroupDAO;
-import pl.coderampart.DAO.LevelDAO;
-import pl.coderampart.model.Level;
+import pl.coderampart.DAO.*;
+import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.View;
-import pl.coderampart.model.Mentor;
-import pl.coderampart.model.Group;
 import java.util.ArrayList;
 
-public class AdminController implements Bootable {
+public class AdminController implements Bootable<Admin> {
 
     private View view = new View();
     private MentorDAO mentorDAO = new MentorDAO();
@@ -31,7 +27,7 @@ public class AdminController implements Bootable {
     private static final int DELETE_LEVEL = 12;
     private static final int EXIT = 0;
 
-    public boolean start() {
+    public boolean start(Admin admin) {
         view.displayAdminMenu();
         int userChoice = view.getUserChoice();
 

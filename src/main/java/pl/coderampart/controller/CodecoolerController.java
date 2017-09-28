@@ -1,19 +1,12 @@
 package pl.coderampart.controller;
 
-import pl.coderampart.DAO.ItemDAO;
-import pl.coderampart.DAO.LevelDAO;
-import pl.coderampart.model.Codecooler;
-import pl.coderampart.model.Item;
-import pl.coderampart.model.Level;
+import pl.coderampart.DAO.*;
+import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.View;
-import pl.coderampart.model.Mentor;
 import java.util.ArrayList;
-import java.util.Arrays;
-// TODO: after finished DAOs uncomment following statements
-// import pl.coderampart.DAO.WalletDAO;
-// import pl.coderampart.DAO.ArtifactDAO;
-// import pl.coderampart.DAO.LevelDAO;
+
+
 
 public class CodecoolerController implements Bootable<Codecooler> {
 
