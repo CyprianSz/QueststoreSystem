@@ -35,4 +35,15 @@ public class Item {
     public void setMark() {
         this.isSpent = true;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "ID='" + ID + '\'' +
+                ", artifact=" + artifact +
+                ", wallet=" + wallet +
+                ", creationDate=" + creationDate +
+                ", isSpent=" + isSpent +
+                '}';
+    }
 }

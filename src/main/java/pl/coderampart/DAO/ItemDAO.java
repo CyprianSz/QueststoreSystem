@@ -34,7 +34,30 @@ public class ItemDAO extends AbstractDAO {
         return itemList;
     }
 
+    public ArrayList<Item> getUserItems(String walletID) {
+        ArrayList<Item> itemList = new ArrayList<>();
+
+        try {
+            Connection connection = this.connectToDataBase();
+            String query = "SELECT * FROM items WHERE wallet_id = ?;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, walletID);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Item item = this.createItemFromResultSet(resultSet);
+                itemList.add(item);
+            }
+            connection.close();
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+
+        return itemList;
+    }
+
     public void create(Item item) {
+
         try {
             Connection connection = this.connectToDataBase();
             String query = "INSERT INTO items VALUES (?, ?, ?, ?, ?);";

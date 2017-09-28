@@ -13,7 +13,7 @@ public class LevelDAO extends AbstractDAO {
 
         try {
             Connection connection = this.connectToDataBase();
-            String query = "SELECT * FROM levels;";
+            String query = "SELECT * FROM levels ORDER BY required_experience;";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
 

@@ -1,5 +1,7 @@
 package pl.coderampart.view;
 
+import pl.coderampart.model.Item;
+
 import java.util.Locale;
 import java.util.Scanner;
 import java.time.LocalDate;
@@ -209,6 +211,19 @@ public class View {
         int userChoice = getUserChoice();
 
         return userChoice;
+    }
+
+    public void outputTable(ArrayList<String> table) {
+        for (String record: table){
+            this.output(record);
+        }
+    }
+
+    public void displayUserItems(ArrayList<Item> userItems) {
+        this.output("\nYour items:");
+        for (Item item: userItems) {
+            this.output(item.toString());
+        }
     }
 
     public void sayGoodbye(){

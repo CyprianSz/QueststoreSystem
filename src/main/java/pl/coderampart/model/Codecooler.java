@@ -34,6 +34,11 @@ public class Codecooler extends AbstractUser {
     }
 
     public Wallet getWallet() { return this.wallet; }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
     public Level getLevel() { return this.level; }
     public Group getGroup() { return this.group; }
     public Team getTeam() {return this.team; }
