@@ -16,6 +16,13 @@ public class Artifact {
         this.value = value;
     }
 
+    public Artifact(String ID, String name, String type, Integer value) {
+        this.ID = ID;
+        this.name = name;
+        this.type = type;
+        this.value = value;
+    }
+
     public String getID() { return this.ID; }
     public String getType() { return this.type; }
     public String getName() { return this.name; }

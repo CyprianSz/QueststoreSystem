@@ -2,7 +2,7 @@ package pl.coderampart.DAO;
 
 import java.sql.*;
 
-abstract class AbstractDAO<T> {
+abstract class AbstractDAO {
 
     Connection connectToDataBase() throws Exception {
         Connection connection = null;
@@ -12,5 +12,4 @@ abstract class AbstractDAO<T> {
 
         return connection;
     }
-
 }

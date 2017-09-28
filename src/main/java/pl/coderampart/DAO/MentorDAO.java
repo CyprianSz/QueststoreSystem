@@ -57,15 +57,9 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
             Connection connection = this.connectToDataBase();
             String query = "INSERT INTO mentors VALUES (?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement setStatement = setPreparedStatement(statement, mentor);
 
-            statement.setString(1, mentor.getID());
-            statement.setString(2, mentor.getFirstName());
-            statement.setString(3, mentor.getLastName());
-            statement.setString(4, mentor.getEmail());
-            statement.setString(5, mentor.getPassword());
-            statement.setString(6, mentor.getDateOfBirth().toString());
-
-            statement.executeUpdate();
+            setStatement.executeUpdate();
 
             connection.close();
         } catch (Exception e) {

@@ -57,15 +57,8 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
             Connection connection = this.connectToDataBase();
             String query = "INSERT INTO codecoolers VALUES (?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(query);
-
-            statement.setString(1, codecooler.getID());
-            statement.setString(2, codecooler.getFirstName());
-            statement.setString(3, codecooler.getLastName());
-            statement.setString(4, codecooler.getEmail());
-            statement.setString(5, codecooler.getPassword());
-            statement.setString(6, codecooler.getDateOfBirth().toString());
-
-            statement.executeUpdate();
+            PreparedStatement setStatement = setPreparedStatement(statement, codecooler);
+            setStatement.executeUpdate();
 
             connection.close();
         } catch (Exception e) {

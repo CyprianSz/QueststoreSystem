@@ -57,14 +57,7 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
             Connection connection = this.connectToDataBase();
             String query = "INSERT INTO admins VALUES (?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(query);
-
-            statement.setString(1, admin.getID());
-            statement.setString(2, admin.getFirstName());
-            statement.setString(3, admin.getLastName());
-            statement.setString(4, admin.getEmail());
-            statement.setString(5, admin.getPassword());
-            statement.setString(6, admin.getDateOfBirth().toString());
-
+            PreparedStatement setStatement = setPreparedStatement(statement, admin);
             statement.executeUpdate();
 
             connection.close();
@@ -102,6 +95,17 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
         } catch (Exception e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
+    }
+
+    private PreparedStatement setPreparedStatement(PreparedStatement statement, Admin admin) throws Exception {
+        statement.setString(1, admin.getID());
+        statement.setString(2, admin.getFirstName());
+        statement.setString(3, admin.getLastName());
+        statement.setString(4, admin.getEmail());
+        statement.setString(5, admin.getPassword());
+        statement.setString(6, admin.getDateOfBirth().toString());
+
+        return statement;
     }
 
     private Admin createAdminFromResultSet(ResultSet resultSet) throws Exception {
