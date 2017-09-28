@@ -60,7 +60,8 @@ public class AdminController implements Bootable<Admin> {
             case DELETE_LEVEL: deleteLevel();
                 break;
             case EXIT:
-                return false;
+                //return false;
+                break;
         }
 
         view.enterToContinue();

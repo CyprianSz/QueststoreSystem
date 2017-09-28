@@ -17,38 +17,74 @@ public class Logger {
 
     public void logIn() {
         view.displayLoggerMenu();
-        String choosenOption = view.getRegExInput("^[0-3]$", "Choose option (0-3): ");
-        String email = view.getInput("Email: ");
-        String password = view.getInput("Password: ");
+        String chosenOption = view.getRegExInput("^[0-3]$", "Choose option (0-3): ");
 
         //TODO: use enum here
-        switch(choosenOption) {
+        switch(chosenOption) {
             case "1":
-                this.logInAsAdmin(email, password);
+                this.logInAsAdmin();
                 break;
             case "2":
-                this.logInAsMentor(email, password);
+                this.logInAsMentor();
                 break;
             case "3":
-                this.logInAsCodecooler(email, password);
+                this.logInAsCodecooler();
                 break;
             case "0":
+                System.exit(0);
                 break;
         }
     }
 
-    private void logInAsAdmin(String email, String password) {
-        Admin loggedAdmin = this.adminDAO.getLogged(email, password);
-        this.adminController.start(loggedAdmin);
+    private void logInAsAdmin() {
+        String email = view.getInput("Email: ");
+        String password = view.getInput("Password: ");
+
+        try {
+            Admin loggedAdmin = this.adminDAO.getLogged( email, password );
+
+            if (loggedAdmin != null) {
+                this.adminController.start( loggedAdmin );
+            } else {
+                view.output( "Wrong data" );
+            }
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
     }
 
-    private void logInAsMentor(String email, String password) {
-        Mentor loggedMentor = this.mentorDAO.getLogged(email, password);
-        //this.mentorController.start(loggedMentor);
+    private void logInAsMentor() {
+        String email = view.getInput("Email: ");
+        String password = view.getInput("Password: ");
+        Mentor loggedMentor = null;
+
+        try {
+            loggedMentor = this.mentorDAO.getLogged(email, password);
+            if (loggedMentor != null) {
+                //this.mentorController.start(loggedMentor);
+            } else {
+                view.output("Wrong data");
+            }
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
     }
 
-    private void logInAsCodecooler(String email, String password) {
-        Codecooler loggedCodecooler = this.codecoolerDAO.getLogged(email, password);
-        this.codecoolerController.start(loggedCodecooler);
+    private void logInAsCodecooler() {
+        String email = view.getInput("Email: ");
+        String password = view.getInput("Password: ");
+        Codecooler loggedCodecooler = null;
+
+        try {
+            loggedCodecooler = this.codecoolerDAO.getLogged(email, password);
+
+            if (loggedCodecooler != null) {
+                this.codecoolerController.start( loggedCodecooler );
+            } else {
+                view.output("Wrong data");
+            }
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
     }
 }
