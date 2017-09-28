@@ -21,6 +21,17 @@ public class Codecooler extends AbstractUser {
         this.achievementList = new ArrayList<Achievement>();
     }
 
+    public Codecooler(String ID, String name, String surname, String email, String password, LocalDate dateOfBirth) {
+        super(ID, name, surname, email, password, dateOfBirth);
+        this.wallet = new Wallet();
+        // TODO: uncomment when levelDAO created
+        // be careful on IndexOutOfBound. Handle it.
+        // this.level = LevelDAO.levelList.get(0);
+        this.team = null;
+        this.achievementList = new ArrayList<Achievement>();
+    }
+
+
     public Wallet getWallet() { return this.wallet; }
     public Level getLevel() { return this.level; }
     public Group getGroup() { return this.group; }
