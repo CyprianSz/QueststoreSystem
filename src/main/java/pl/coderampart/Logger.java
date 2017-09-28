@@ -39,17 +39,21 @@ public class Logger {
     private void logInAsAdmin() {
         String email = view.getInput("Email: ");
         String password = view.getInput("Password: ");
+        Admin loggedAdmin = null;
 
         try {
-            Admin loggedAdmin = this.adminDAO.getLogged( email, password );
+            loggedAdmin = this.adminDAO.getLogged(email, password);
 
             if (loggedAdmin != null) {
-                this.adminController.start( loggedAdmin );
+                boolean proceed = true;
+                while (proceed) {
+                    proceed = this.adminController.start(loggedAdmin);
+                }
             } else {
                 view.output( "Wrong data" );
             }
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
@@ -66,7 +70,7 @@ public class Logger {
                 view.output("Wrong data");
             }
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
@@ -79,7 +83,10 @@ public class Logger {
             loggedCodecooler = this.codecoolerDAO.getLogged(email, password);
 
             if (loggedCodecooler != null) {
-                this.codecoolerController.start( loggedCodecooler );
+                boolean proceed = true;
+                while (proceed) {
+                    proceed = this.codecoolerController.start(loggedCodecooler);
+                }
             } else {
                 view.output("Wrong data");
             }
