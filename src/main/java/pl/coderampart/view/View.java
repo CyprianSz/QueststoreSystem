@@ -68,13 +68,13 @@ public class View {
     }
 
     public String[] getUserData() {
-        String name = getInput("Name: ");
-        String surname = getInput("Surname: ");
+        String firstName = getInput("First name: ");
+        String lastName = getInput("Last name: ");
         String email = getEmailInput("E-mail: ");
         String password = getInput("Password: ");
         String dateOfBirth = getDateInput("Date of birth (yyyy-mm-dd): ");
 
-        String[] userData = new String[] {name, surname, email, password, dateOfBirth};
+        String[] userData = new String[] {firstName, lastName, email, password, dateOfBirth};
 
         return userData;
     }
@@ -133,6 +133,14 @@ public class View {
        String[] artifactData = new String[] {name, value};
 
        return artifactData;
+   }
+
+   public String[] getGroupData() {
+        String name = getInput("Name: ");
+
+        String[] groupData = new String[] {name};
+
+        return groupData;
    }
 
    public String chooseQuestCategory() {
