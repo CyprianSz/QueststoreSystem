@@ -96,24 +96,24 @@ public class MentorControllerDemo implements Bootable {
     }
 
     public void updateQuest() {
-        Quest quest = chooseQuest();
-        int option = view.chooseEdit();
-
-        if (option == 1) {  //edit name
-            String name = view.getInput("New name: ");
-            quest.setName(name);
-
-        } else if (option == 2) {   // edit coolcoins
-            int coolcoins = view.getUserChoice();
-            Integer reward = new Integer(coolcoins);
-            quest.setReward(reward);
-
-        } else {
-            view.printErrorMessage();
-        }
-
-        // Demo:
-        view.output("\nUpdate: done");
+//        Quest quest = chooseQuest();
+//        int option = view.chooseEdit();
+//
+//        if (option == 1) {  //edit name
+//            String name = view.getInput("New name: ");
+//            quest.setName(name);
+//
+//        } else if (option == 2) {   // edit coolcoins
+//            int coolcoins = view.getUserChoice();
+//            Integer reward = new Integer(coolcoins);
+//            quest.setReward(reward);
+//
+//        } else {
+//            view.printErrorMessage();
+//        }
+//
+//        // Demo:
+//        view.output("\nUpdate: done");
     }
 
     public void setQuestCategory() {
@@ -165,24 +165,24 @@ public class MentorControllerDemo implements Bootable {
     }
 
     public void updateArtifact() {
-        Artifact artifact = chooseArtifact();
-        int option = view.chooseEdit();
-
-        if (option == 1) {  //edit name
-            String name = view.getInput("New name: ");
-            artifact.setName(name);
-
-        } else if (option == 2) {   // edit coolcoins
-            int coolcoins = view.getUserChoice();
-            Integer value = new Integer(coolcoins);
-            artifact.setValue(value);
-
-        } else {
-            view.printErrorMessage();
-        }
-
-        // Demo:
-        view.output("\nUpdate: done");
+//        Artifact artifact = chooseArtifact();
+//        int option = view.chooseEdit();
+//
+//        if (option == 1) {  //edit name
+//            String name = view.getInput("New name: ");
+//            artifact.setName(name);
+//
+//        } else if (option == 2) {   // edit coolcoins
+//            int coolcoins = view.getUserChoice();
+//            Integer value = new Integer(coolcoins);
+//            artifact.setValue(value);
+//
+//        } else {
+//            view.printErrorMessage();
+//        }
+//
+//        // Demo:
+//        view.output("\nUpdate: done");
     }
 
     public void setArtifactCategory() {
