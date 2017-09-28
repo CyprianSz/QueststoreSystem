@@ -19,10 +19,18 @@ public class AdminController implements Bootable {
 
     public static final int CREATE_MENTOR = 1;
     public static final int CREATE_GROUP = 2;
-    public static final int EDIT_MENTOR = 3;
-    public static final int DISPLAY_MENTOR = 4;
-    public static final int DISPLAY_GROUP = 5;
-    public static final int CREATE_LEVEL = 6;
+    public static final int CREATE_LEVEL = 3;
+    public static final int EDIT_MENTOR = 4;
+    public static final int EDIT_GROUP = 5;
+    public static final int EDIT_LEVEL = 6;
+    public static final int DISPLAY_MENTORS = 7;
+    public static final int DISPLAY_GROUPS = 8;
+    public static final int DISPLAY_LEVELS = 9;
+    public static final int DELETE_MENTOR = 10;
+    public static final int DELETE_GROUP = 11;
+    public static final int DELETE_LEVEL = 12;
+
+
     public static final int EXIT = 0;
 
     public boolean start() {
@@ -37,13 +45,25 @@ public class AdminController implements Bootable {
                 break;
             case CREATE_GROUP: createGroup();
                 break;
+            case CREATE_LEVEL: createLevel();
+                break;
             case EDIT_MENTOR: editMentor();
                 break;
-            case DISPLAY_MENTOR: displayMentors();
+            case EDIT_GROUP: editGroup();
                 break;
-            case DISPLAY_GROUP: displayGroups();
+            case EDIT_LEVEL: editLevel();
                 break;
-            case CREATE_LEVEL: createLevel();
+            case DISPLAY_MENTORS: displayMentors();
+                break;
+            case DISPLAY_GROUPS: displayGroups();
+                break;
+            case DISPLAY_LEVELS: displayLevels();
+                break;
+            case DELETE_MENTOR: deleteMentor();
+                break;
+            case DELETE_GROUP: deleteGroup();
+                break;
+            case DELETE_LEVEL: deleteLevel();
                 break;
             case EXIT:
                 return false;
