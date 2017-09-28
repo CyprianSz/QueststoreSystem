@@ -2,6 +2,8 @@ package pl.coderampart.controller;
 
 import pl.coderampart.DAO.MentorDAO;
 import pl.coderampart.DAO.GroupDAO;
+import pl.coderampart.DAO.LevelDAO;
+import pl.coderampart.model.Level;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.View;
 import pl.coderampart.model.Mentor;
@@ -13,6 +15,7 @@ public class AdminController implements Bootable {
     private View view = new View();
     private MentorDAO mentorDao = new MentorDAO();
     private GroupDAO groupDao = new GroupDAO();
+    private LevelDAO levelDao = new LevelDAO();
 
     public static final int CREATE_MENTOR = 1;
     public static final int CREATE_GROUP = 2;
@@ -52,6 +55,8 @@ public class AdminController implements Bootable {
     }
 
     public void createMentor(){
+
+        this.displayMentors();
 
         String[] mentorData = view.getUserData();
 
@@ -102,7 +107,19 @@ public class AdminController implements Bootable {
         view.outputTable(groupStrings);
     }
 
+    public void displayLevels(){
+        ArrayList<Level> allLevels = levelDao.readAll();
+        ArrayList<String> levelStrings = new ArrayList<String>();
+
+        for (Level level: allLevels){
+            levelStrings.add(level.toString());
+        }
+
+        view.outputTable(levelStrings);
+    }
+
     public void createGroup(){
+        this.displayGroups();
         String[] groupData = view.getGroupData();
 
         Group newGroup = new Group(groupData[0]);
@@ -111,7 +128,12 @@ public class AdminController implements Bootable {
     }
 
     public void createLevel(){
+        this.displayLevels();
+        String[] levelData = view.getLevelData();
 
+        Level newLevel = new Level(Integer.parseInt(levelData[0]), Integer.parseInt(levelData[1]), levelData[2]);
+
+        levelDao.create(newLevel);
     }
 
 }
