@@ -139,7 +139,16 @@ public class AdminController implements Bootable {
     }
 
     public void editLevel(){
+        this.displayLevels();
 
+        ArrayList<Level> allLevels = levelDao.readAll();
+        String chosenLevelRank = view.getInput("Enter rank of a level you wish to edit: ");
+
+        for (Level level: allLevels){
+            if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
+                groupDao.update(level);
+            }
+        }
     }
 
     public void displayMentors(){
