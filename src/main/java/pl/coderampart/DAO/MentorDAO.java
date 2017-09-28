@@ -10,6 +10,8 @@ import pl.coderampart.services.User;
 
 public class MentorDAO extends AbstractDAO implements User<Mentor> {
 
+    private GroupDAO groupDAO = new GroupDAO();
+
     public Mentor getLogged(String email, String password) {
         Mentor mentor = null;
 
@@ -118,8 +120,9 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         String password = resultSet.getString("password");
         String dateOfBirth = resultSet.getString("date_of_birth");
         LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
-        String groupID = resultSet.getString("group_id")
+        String groupID = resultSet.getString("group_id");
+        Group groupObject = groupDAO.getByID(groupID);
 
-        return new Mentor(ID, firstName, lastName, email, password, dateOfBirthObject, groupID);
+        return new Mentor(ID, firstName, lastName, email, password, dateOfBirthObject, groupObject);
     }
 }

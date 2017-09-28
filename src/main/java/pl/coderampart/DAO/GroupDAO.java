@@ -29,6 +29,25 @@ public class GroupDAO extends AbstractDAO {
         return groupList;
     }
 
+    public Group getByID(String ID) {
+        Group group = null;
+
+        try {
+            Connection connection = this.connectToDataBase();
+            String query = "SELECT * FROM groups WHERE id = ?;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, ID);
+            ResultSet resultSet = statement.executeQuery();
+
+            group = this.createGroupFromResultSet(resultSet);
+            connection.close();
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+
+        return group;
+    }
+
     public void create(Group group) {
         try {
             Connection connection = this.connectToDataBase();
