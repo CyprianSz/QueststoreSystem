@@ -27,4 +27,5 @@ public class Group{
 
     public String getID() { return this.ID; }
     public String getName() { return this.name; }
+    public void setName(String name) { this.name = name; }
 }
