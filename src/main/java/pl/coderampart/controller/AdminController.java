@@ -163,14 +163,25 @@ public class AdminController implements Bootable {
     public void editGroup(){
         this.displayGroups();
 
+        Group changedGroup = null;
+
         ArrayList<Group> allGroups = groupDAO.readAll();
         String chosenGroupName = view.getInput("Enter name of a group you wish to edit: ");
 
         for (Group group: allGroups){
             if (chosenGroupName.equals(group.getName())){
-                groupDAO.update(group);
+                changedGroup = group;
+            } else {
+                view.output("No such group.");
+                break;
             }
         }
+
+        if(!changedGroup.equals(null)){
+            changedGroup.setName(view.getInput("Enter new name: "));
+        }
+
+        groupDAO.update(changedGroup);
     }
 
     public void editLevel(){
