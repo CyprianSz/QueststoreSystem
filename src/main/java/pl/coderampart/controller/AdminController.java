@@ -1,14 +1,11 @@
 package pl.coderampart.controller;
 
-import pl.coderampart.DAO.MentorDAO;
-import pl.coderampart.DAO.GroupDAO;
-import pl.coderampart.DAO.LevelDAO;
-import pl.coderampart.model.Level;
+import pl.coderampart.DAO.*;
+import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.View;
-import pl.coderampart.model.Mentor;
-import pl.coderampart.model.Group;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AdminController implements Bootable {
 
@@ -113,20 +110,53 @@ public class AdminController implements Bootable {
     public void editMentor(){
         this.displayMentors();
 
+        Mentor changedMentor = null;
 
         ArrayList<Mentor> allMentors = mentorDAO.readAll();
         String chosenMentorEmail = view.getInput("Enter email of a mentor you wish to edit: ");
 
-        final int EDIT_FIRSTNAME = 1;
-        final int EDIT_LASTNAME = 2;
-        final int EDIT_EMAIL = 3;
-        final int EDIT_PASSWORD = 4;
-        final int EDIT_BIRTHDATE = 5;
-
         for (Mentor mentor: allMentors){
             if (chosenMentorEmail.equals(mentor.getEmail())){
-                mentorDAO.update(mentor);
+                changedMentor = mentor;
+            } else {
+                view.output("No such mentor.");
+                break;
             }
+        }
+
+        if (!changedMentor.equals(null)) {
+            final int EDIT_FIRSTNAME = 1;
+            final int EDIT_LASTNAME = 2;
+            final int EDIT_EMAIL = 3;
+            final int EDIT_PASSWORD = 4;
+            final int EDIT_BIRTHDATE = 5;
+
+            ArrayList<String> editMentorOptions = new ArrayList<>(Arrays.asList("Edit first name", "Edit last name,",
+                                                                                "Edit email", "Edit password",
+                                                                                "Edit birthdate"));
+            view.displayOptions(editMentorOptions);
+            int userChoice = view.getUserChoice();
+            view.clearTerminal();
+
+            switch(userChoice){
+                case EDIT_FIRSTNAME:
+                    changedMentor.setFirstName(view.getInput("Enter new name: "));
+                    break;
+                case EDIT_LASTNAME:
+                    changedMentor.setLastName(view.getInput("Enter new name: "));
+                    break;
+                case EDIT_EMAIL:
+                    changedMentor.setEmail(view.getRegExInput(View.emailRegEx, "Enter new email: "));
+                    break;
+                case EDIT_PASSWORD:
+                    changedMentor.setPassword(view.getInput("Enter new password: "));
+                    break;
+                case EDIT_BIRTHDATE:
+                    changedMentor.setDateOfBirth(view.stringToDate(view.getRegExInput(View.dateRegEx,
+                                                                                      "Enter new date")));
+                    break;
+            }
+            mentorDAO.update(changedMentor);
         }
     }
 
