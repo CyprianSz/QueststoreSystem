@@ -114,8 +114,10 @@ public class AdminController implements Bootable {
 
     public void editMentor(){
         this.displayMentors();
+
         ArrayList<Mentor> allMentors = mentorDao.readAll();
-        String chosenMentorEmail = view.getInput("Enter email of a mentor you wish to edit:");
+        String chosenMentorEmail = view.getInput("Enter email of a mentor you wish to edit: ");
+
         for (Mentor mentor: allMentors){
             if (chosenMentorEmail.equals(mentor.getEmail())){
                 mentorDao.update(mentor);
@@ -124,7 +126,16 @@ public class AdminController implements Bootable {
     }
 
     public void editGroup(){
+        this.displayGroups();
 
+        ArrayList<Group> allGroups = groupDao.readAll();
+        String chosenGroupName = view.getInput("Enter name of a group you wish to edit: ");
+
+        for (Group group: allGroups){
+            if (chosenGroupName.equals(group.getName())){
+                groupDao.update(group);
+            }
+        }
     }
 
     public void editLevel(){
