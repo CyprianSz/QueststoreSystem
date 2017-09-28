@@ -60,7 +60,7 @@ public class QuestDAO extends AbstractDAO {
     public void delete(Quest quest) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM quests WHERE ?;";
+            String query = "DELETE FROM quests WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, quest.getID());
             statement.executeUpdate();

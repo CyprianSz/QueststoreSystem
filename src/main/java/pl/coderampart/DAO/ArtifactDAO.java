@@ -79,7 +79,7 @@ public class ArtifactDAO extends AbstractDAO {
     public void delete(Artifact artifact) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM artifacts WHERE ?;";
+            String query = "DELETE FROM artifacts WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, artifact.getID());
             statement.executeUpdate();

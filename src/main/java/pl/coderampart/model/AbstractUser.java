@@ -6,34 +6,34 @@ import pl.coderampart.controller.UUIDController;
 public abstract class AbstractUser {
 
     protected String ID;
-    protected String first_name;
-    protected String last_name;
+    protected String firstName;
+    protected String lastName;
     protected String email;
     protected String password;
     protected LocalDate dateOfBirth;
 
-    public AbstractUser(String first_name, String last_name, String email, String password, LocalDate dateOfBirth) {
-        this.ID = UUIDController.createUUID(first_name);
-        this.first_name = first_name;
-        this.last_name = last_name;
+    public AbstractUser(String firstName, String lastName, LocalDate dateOfBirth, String email, String password) {
+        this.ID = UUIDController.createUUID(firstName);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
-        this.dateOfBirth = dateOfBirth;
     }
 
-    public AbstractUser(String ID, String first_name, String last_name,
-                        String email, String password, LocalDate dateOfBirth) {
+    public AbstractUser(String ID, String firstName, String lastName,
+                        LocalDate dateOfBirth, String email, String password) {
         this.ID = ID;
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.dateOfBirth = dateOfBirth;
     }
 
     public String getID() { return this.ID; }
-    public String getFirstName() { return this.first_name; }
-    public String getLastName() { return this.last_name; }
+    public String getFirstName() { return this.firstName; }
+    public String getLastName() { return this.lastName; }
     public String getEmail() { return this.email; }
     public String getPassword() { return this.password; }
     public LocalDate getDateOfBirth() { return this.dateOfBirth; }
@@ -41,9 +41,10 @@ public abstract class AbstractUser {
     public String toString() {
         String userData = "\nID: " + this.getID()
                         + "\nname: " + this.getFirstName()
+                        + "\ndate of birth: " + this.getDateOfBirth()
                         + "\nsurname: " + this.getLastName()
-                        + "\nemail: " + this.getEmail()
-                        + "\ndate of birth: " + this.getDateOfBirth();
+                        + "\nemail: " + this.getEmail();
+
 
         return userData;
     }

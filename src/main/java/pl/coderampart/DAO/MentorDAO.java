@@ -89,7 +89,7 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
     public void delete(Mentor mentor) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM mentors WHERE ?;";
+            String query = "DELETE FROM mentors WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, mentor.getID());
             statement.executeUpdate();
@@ -116,13 +116,13 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName = resultSet.getString("last_name");
-        String email = resultSet.getString("email");
-        String password = resultSet.getString("password");
         String dateOfBirth = resultSet.getString("date_of_birth");
         LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
+        String email = resultSet.getString("email");
+        String password = resultSet.getString("password");
         String groupID = resultSet.getString("group_id");
         Group groupObject = groupDAO.getByID(groupID);
 
-        return new Mentor(ID, firstName, lastName, email, password, dateOfBirthObject, groupObject);
+        return new Mentor(ID, firstName, lastName, dateOfBirthObject, email, password, groupObject);
     }
 }

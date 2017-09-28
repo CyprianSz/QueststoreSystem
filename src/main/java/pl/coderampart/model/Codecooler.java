@@ -2,6 +2,7 @@ package pl.coderampart.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import pl.coderampart.DAO.LevelDAO;
 
 public class Codecooler extends AbstractUser {
 
@@ -11,26 +12,26 @@ public class Codecooler extends AbstractUser {
     private Team team;
     private ArrayList<Achievement> achievementList;
 
-    public Codecooler(string name, String surname, String email, String password, LocalDate dateOfBirth) {
-        super(name, surname, email, password, dateOfBirth);
+    public Codecooler(String firstName, String lastName, LocalDate dateOfBirth, String email, String password) {
+        super(firstName, lastName, dateOfBirth, email, password);
         this.wallet = new Wallet();
-        this.level = // napisać w LevelDAO metode to zwracania pierwszego levelu
-        // TODO: uncomment when levelDAO created
-        // be careful on IndexOutOfBound. Handle it.
-        // this.level = LevelDAO.levelList.get(0);
+        this.group = null;
+        LevelDAO levelDAO = new LevelDAO();
+        this.level = levelDAO.getFirstLevel();
         this.team = null;
         this.achievementList = new ArrayList<Achievement>();
     }
 
-    public Codecooler(String ID, String name, String surname, String email, String password,
-                      LocalDate dateOfBirth, Wallet wallet, Level level, Team team) {
-        super(ID, name, surname, email, password, dateOfBirth);
+    public Codecooler(String ID, String name, String surname, LocalDate dateOfBirth,
+                      String email, String password, Wallet wallet, Group group,
+                      Level level, Team team) {
+        super(ID, name, surname, dateOfBirth, email, password);
         this.wallet = wallet;
+        this.group = group;
         this.level = level;
         this.team = team;
         this.achievementList = new ArrayList<Achievement>();
     }
-
 
     public Wallet getWallet() { return this.wallet; }
     public Level getLevel() { return this.level; }

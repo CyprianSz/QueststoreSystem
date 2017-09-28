@@ -29,6 +29,44 @@ public class LevelDAO extends AbstractDAO {
         return levelList;
     }
 
+    public Level getByID(String ID) {
+        Level level = null;
+
+        try {
+            Connection connection = this.connectToDataBase();
+            String query = "SELECT * FROM levels WHERE id = ?;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, ID);
+            ResultSet resultSet = statement.executeQuery();
+
+            level = this.createLevelFromResultSet(resultSet);
+            connection.close();
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+
+        return level;
+    }
+
+    public Level getFirstLevel() {
+        Level level = null;
+
+        try {
+            Connection connection = this.connectToDataBase();
+            String query = "SELECT * FROM levels WHERE rank = 0;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            level = this.createLevelFromResultSet(resultSet);
+
+            connection.close();
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+
+        return level;
+    }
+
     public void create(Level level) {
         try {
             Connection connection = this.connectToDataBase();
@@ -60,7 +98,7 @@ public class LevelDAO extends AbstractDAO {
     public void delete(Level level) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM levels WHERE ?;";
+            String query = "DELETE FROM levels WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, level.getID());
             statement.executeUpdate();
