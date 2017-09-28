@@ -1,5 +1,6 @@
 package pl.coderampart;
 
-public class Application {
+public class Logger {
 
+    
 }
