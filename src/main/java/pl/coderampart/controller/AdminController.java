@@ -61,12 +61,10 @@ public class AdminController implements Bootable<Admin> {
             case DELETE_LEVEL: deleteLevel();
                 break;
             case EXIT:
-                //return false;
-                break;
+                return false;
         }
 
         view.enterToContinue();
-
         return true;
     }
 
@@ -158,6 +156,7 @@ public class AdminController implements Bootable<Admin> {
                     break;
             }
             mentorDAO.update(changedMentor);
+
         }
     }
 
