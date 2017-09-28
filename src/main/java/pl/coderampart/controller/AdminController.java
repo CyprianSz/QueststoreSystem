@@ -78,8 +78,8 @@ public class AdminController implements Bootable {
 
         String[] mentorData = view.getUserData();
 
-        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], mentorData[2], mentorData[3],
-                                      view.stringToDate(mentorData[4]));
+        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], view.stringToDate(mentorData[2]),
+                                      mentorData[3], mentorData[4]);
 
         this.displayGroups();
         ArrayList<Group> allGroups = groupDAO.readAll();
@@ -151,7 +151,7 @@ public class AdminController implements Bootable {
 
         for (Level level: allLevels){
             if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
-                groupDAO.update(level);
+                levelDAO.update(level);
             }
         }
     }
@@ -224,7 +224,7 @@ public class AdminController implements Bootable {
 
         for (Level level: allLevels){
             if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
-                groupDAO.delete(level);
+                levelDAO.delete(level);
             }
         }
     }
