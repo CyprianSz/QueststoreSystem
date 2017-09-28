@@ -211,6 +211,12 @@ public class View {
         return userChoice;
     }
 
+    public void outputTable(ArrayList<String> table) {
+        for (String record: table){
+            this.output(record);
+        }
+    }
+
     public void sayGoodbye(){
         this.output("\nGOOD BYE\n");
     }
