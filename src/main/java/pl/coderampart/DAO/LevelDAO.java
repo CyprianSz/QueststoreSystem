@@ -29,6 +29,26 @@ public class LevelDAO extends AbstractDAO {
         return levelList;
     }
 
+
+    public Level getFirstLevel() {
+        Level level = null;
+
+        try {
+            Connection connection = this.connectToDataBase();
+            String query = "SELECT * FROM levels WHERE rank = 0;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            level = this.createLevelFromResultSet(resultSet);
+
+            connection.close();
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+
+        return level;
+    }
+
     public void create(Level level) {
         try {
             Connection connection = this.connectToDataBase();

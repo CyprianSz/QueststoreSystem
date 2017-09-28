@@ -2,22 +2,21 @@ package pl.coderampart.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import pl.coderampart.DAO.LevelDAO;
 
 public class Codecooler extends AbstractUser {
 
+    private LevelDAO levelDAO = new LevelDAO();
     private Wallet wallet;
     private Group group;
     private Level level;
     private Team team;
     private ArrayList<Achievement> achievementList;
 
-    public Codecooler(string name, String surname, String email, String password, LocalDate dateOfBirth) {
+    public Codecooler(String name, String surname, String email, String password, LocalDate dateOfBirth) {
         super(name, surname, email, password, dateOfBirth);
         this.wallet = new Wallet();
-        this.level = // napisać w LevelDAO metode to zwracania pierwszego levelu
-        // TODO: uncomment when levelDAO created
-        // be careful on IndexOutOfBound. Handle it.
-        // this.level = LevelDAO.levelList.get(0);
+        this.level = levelDAO.getFirstLevel();
         this.team = null;
         this.achievementList = new ArrayList<Achievement>();
     }
