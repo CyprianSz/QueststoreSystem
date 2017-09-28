@@ -27,6 +27,9 @@ public class Level {
     public Integer getRank() { return this.rank; }
     public Integer getRequiredExperience() { return this.requiredExperience; }
     public String getDescription() { return this.description; }
+    public void setRank(Integer rank) { this.rank = rank; }
+    public void setRequiredExperience(Integer reqExp) { this.requiredExperience = reqExp; }
+    public void setDescription(String description) { this.description = description; }
 
     public String toString() {
         String levelInfo = "\nLevel number: " + this.rank
