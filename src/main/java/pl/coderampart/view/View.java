@@ -16,8 +16,12 @@ public class View {
     private static final String dateRegEx = "^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
 
     public void displayAdminMenu(){
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new mentor", "Create new group", "Update mentor data",
-                                                                  "Display mentor data", "Create experience level"));
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new mentor.", "Create new group.",
+                                                                  "Create new experience level.",
+                                                                  "Edit mentor.", "Edit group.", "Edit experience level",
+                                                                  "Display all mentors.", "Display all groups.",
+                                                                  "Display all experience levels.", "Delete mentor.",
+                                                                  "Delete group.", "Delete experience level."));
 
         displayOptions(options);
         this.output("\n0. Exit");
