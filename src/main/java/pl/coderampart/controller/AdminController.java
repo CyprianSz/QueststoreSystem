@@ -38,7 +38,7 @@ public class AdminController implements Bootable {
         int userChoice = view.getUserChoice();
 
         view.clearTerminal();
-        // TODO: USE ENUM
+        // TODO: USE ENUM, DECLARE SUBMENUS FOR EACH CLASS
         switch(userChoice) {
 
             case CREATE_MENTOR: createMentor();
@@ -94,6 +94,24 @@ public class AdminController implements Bootable {
         mentorDao.create(newMentor);
     }
 
+    public void createGroup(){
+        this.displayGroups();
+        String[] groupData = view.getGroupData();
+
+        Group newGroup = new Group(groupData[0]);
+
+        groupDao.create(newGroup);
+    }
+
+    public void createLevel(){
+        this.displayLevels();
+        String[] levelData = view.getLevelData();
+
+        Level newLevel = new Level(Integer.parseInt(levelData[0]), Integer.parseInt(levelData[1]), levelData[2]);
+
+        levelDao.create(newLevel);
+    }
+
     public void editMentor(){
         this.displayMentors();
         ArrayList<Mentor> allMentors = mentorDao.readAll();
@@ -103,6 +121,14 @@ public class AdminController implements Bootable {
                 mentorDao.update(mentor);
             }
         }
+    }
+
+    public void editGroup(){
+
+    }
+
+    public void editLevel(){
+
     }
 
     public void displayMentors(){
@@ -138,22 +164,15 @@ public class AdminController implements Bootable {
         view.outputTable(levelStrings);
     }
 
-    public void createGroup(){
-        this.displayGroups();
-        String[] groupData = view.getGroupData();
+    public void deleteMentor(){
 
-        Group newGroup = new Group(groupData[0]);
-
-        groupDao.create(newGroup);
     }
 
-    public void createLevel(){
-        this.displayLevels();
-        String[] levelData = view.getLevelData();
+    public void deleteGroup(){
 
-        Level newLevel = new Level(Integer.parseInt(levelData[0]), Integer.parseInt(levelData[1]), levelData[2]);
-
-        levelDao.create(newLevel);
     }
 
+    public void deleteLevel(){
+
+    }
 }
