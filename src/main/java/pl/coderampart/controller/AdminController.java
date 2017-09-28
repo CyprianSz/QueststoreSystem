@@ -4,9 +4,8 @@ import pl.coderampart.model.Admin;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.View;
 import pl.coderampart.model.Mentor;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.Arrays;
 // import pl.coderampart.DAO.MentorDAO;
 // import pl.coderampart.DAO.AdminDAO;
 
@@ -22,11 +21,11 @@ public class AdminController implements Bootable {
     public static final int EXIT = 0;
 
     public boolean start() {
-        // view.displayAdminMenu(); //TODO: ADD THIS METHOD TO VIEW
+        view.displayAdminMenu();
         int userChoice = view.getUserChoice();
 
         view.clearTerminal();
-
+        // TODO: USE ENUM
         switch(userChoice) {
 
             case CREATE_MENTOR: createMentor();
@@ -50,19 +49,44 @@ public class AdminController implements Bootable {
 
     public void createMentor(){
 
-        String mentorFirstName = view.getInput("Enter first name of a new mentor:");
-        String mentorLastName = view.getInput("Enter last name of a new mentor:");
-        String birthdateData = view.getInput("Enter mentor's birth date: (dd-mm-yyyy)");
-        DateTimeFormatter dupa = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
-        LocalDate mentorBirthDate = LocalDate.parse(birthdateData, dupa);
-        String mentorPassword = view.getInput("Enter mentor's password.");
-        String mentorEmail = view.getInput("Enter mentor's email address:");
+        String[] mentorData = view.getUserData();
 
-        Mentor newMentor = new Mentor(mentorFirstName, mentorLastName, mentorEmail, mentorPassword, mentorBirthDate);
+        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], mentorData[2], mentorData[3],
+                                      view.stringToDate(mentorData[4]));
     }
 
     public void editMentor(){
 
+        String mentor
+        final int EDIT_FIRSTNAME = 1;
+        final int EDIT_LASTNAME = 2;
+        final int EDIT_EMAIL = 3;
+        final int EDIT_PASSWORD = 4;
+        final int EDIT_BIRTHDATE = 5;
+
+        ArrayList<String> mentorOptions = new ArrayList<>(Arrays.asList("Edit first name.", "Edit last name.",
+                                                                        "Edit email address.", "Edit password.",
+                                                                        "Edit birth date."));
+
+        view.displayOptions(mentorOptions);
+
+        int editChoice = view.getUserChoice();
+
+        view.clearTerminal();
+
+        switch(editChoice) {
+
+            case EDIT_FIRSTNAME:
+                break;
+            case EDIT_LASTNAME:
+                break;
+            case EDIT_EMAIL:
+                break;
+            case EDIT_PASSWORD:
+                break;
+            case EDIT_BIRTHDATE:
+                break;
+        }
     }
 
     public void displayMentors(){
