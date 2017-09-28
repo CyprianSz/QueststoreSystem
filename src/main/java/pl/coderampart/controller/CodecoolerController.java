@@ -15,7 +15,7 @@ import java.util.Arrays;
 // import pl.coderampart.DAO.ArtifactDAO;
 // import pl.coderampart.DAO.LevelDAO;
 
-public class CodecoolerController implements Bootable {
+public class CodecoolerController implements Bootable<Codecooler> {
 
     private View view = new View();
 
@@ -25,20 +25,24 @@ public class CodecoolerController implements Bootable {
     public static final int DISPLAY_LEVEL = 4;
     public static final int EXIT = 0;
 
-    public boolean start() {
+    public boolean start(Codecooler codecooler) {
         view.displayCodecoolerMenu();
         int userChoice = view.getUserChoice();
 
         view.clearTerminal();
 
         switch(userChoice) {
-            case DISPLAY_WALLET: displayWallet();
+            case DISPLAY_WALLET:
+                displayWallet(codecooler);
                 break;
-            case BUY_ARTIFACT: buyArtifact();
+            case BUY_ARTIFACT:
+                buyArtifact();
                 break;
-            case BUY_WITH_GROUP: buyWithGroup();
+            case BUY_WITH_GROUP:
+                buyWithGroup();
                 break;
-            case DISPLAY_LEVEL: displayLevel();
+            case DISPLAY_LEVEL:
+                displayLevel(codecooler);
                 break;
             case EXIT:
                 return false;
