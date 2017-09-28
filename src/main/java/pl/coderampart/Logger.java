@@ -27,10 +27,10 @@ public class Logger {
                 this.logInAsAdmin(email, password);
                 break;
             case "2":
-                this.logInAsMentor();
+                this.logInAsMentor(email, password);
                 break;
             case "3":
-                this.logInAsCodecooler();
+                this.logInAsCodecooler(email, password);
                 break;
             case "0":
                 break;
