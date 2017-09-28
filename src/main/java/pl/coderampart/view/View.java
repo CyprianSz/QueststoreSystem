@@ -143,6 +143,16 @@ public class View {
         return groupData;
    }
 
+   public String[] getLevelData(){
+        String rank = getInput("Rank: ");
+        String requiredExperience = getInput("Required experience: ");
+        String description = getInput("Description: ");
+
+        String[] levelData = new String[] {rank, requiredExperience, description};
+
+        return levelData;
+   }
+
    public String chooseQuestCategory() {
        // Demo:
        this.output("Category:\n1. Basic\n2. Extra\n");
