@@ -59,7 +59,14 @@ public class AdminController implements Bootable {
     }
 
     public void editMentor(){
-
+        this.displayMentors();
+        ArrayList<Mentor> mentorList = mentorDao.readAll();
+        String chosenMentorEmail = view.getInput("Enter email of a mentor you wish to edit:");
+        for (Mentor mentor: mentorList){
+            if (chosenMentorEmail.equals(mentor.getEmail())){
+                mentorDao.update(mentor);
+            }
+        }
     }
 
     public void displayMentors(){
