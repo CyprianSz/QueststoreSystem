@@ -11,9 +11,10 @@ public class Mentor extends AbstractUser {
         this.group = null;
     }
 
-    public Mentor(String ID, String name, String surname, String email, String password, LocalDate dateOfBirth) {
+    public Mentor(String ID, String name, String surname, String email,
+                  String password, LocalDate dateOfBirth, Group group) {
         super(ID, name, surname, email, password, dateOfBirth);
-        this.group = null;
+        this.group = group;
     }
 
     public Group getGroup() { return this.group; }
