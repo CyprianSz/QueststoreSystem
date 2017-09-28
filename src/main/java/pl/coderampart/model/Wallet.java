@@ -24,8 +24,8 @@ public class Wallet {
 
 
     public String toString() {
-        String walletData = "\nbalance: " + this.getBalance()
-                          + "\nearnedCoins: " + this.getEarnedCoins();
+        String walletData = "\nBalance: " + this.getBalance()
+                          + "\nTotal coins earned: " + this.getEarnedCoins();
 
         return walletData;
     }
