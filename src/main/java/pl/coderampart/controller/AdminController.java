@@ -5,6 +5,7 @@ import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.View;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AdminController implements Bootable<Admin> {
 
@@ -110,46 +111,120 @@ public class AdminController implements Bootable<Admin> {
     public void editMentor(){
         this.displayMentors();
 
+        Mentor changedMentor = null;
 
         ArrayList<Mentor> allMentors = mentorDAO.readAll();
         String chosenMentorEmail = view.getInput("Enter email of a mentor you wish to edit: ");
 
-        final int EDIT_FIRSTNAME = 1;
-        final int EDIT_LASTNAME = 2;
-        final int EDIT_EMAIL = 3;
-        final int EDIT_PASSWORD = 4;
-        final int EDIT_BIRTHDATE = 5;
-
         for (Mentor mentor: allMentors){
             if (chosenMentorEmail.equals(mentor.getEmail())){
-                mentorDAO.update(mentor);
+                changedMentor = mentor;
+            } else {
+                view.output("No such mentor.");
+                break;
             }
+        }
+
+        if (!changedMentor.equals(null)) {
+            final int EDIT_FIRSTNAME = 1;
+            final int EDIT_LASTNAME = 2;
+            final int EDIT_EMAIL = 3;
+            final int EDIT_PASSWORD = 4;
+            final int EDIT_BIRTHDATE = 5;
+
+            ArrayList<String> editMentorOptions = new ArrayList<>(Arrays.asList("Edit first name", "Edit last name,",
+                                                                                "Edit email", "Edit password",
+                                                                                "Edit birthdate"));
+            view.displayOptions(editMentorOptions);
+            int userChoice = view.getUserChoice();
+            view.clearTerminal();
+
+            switch(userChoice){
+                case EDIT_FIRSTNAME:
+                    changedMentor.setFirstName(view.getInput("Enter new name: "));
+                    break;
+                case EDIT_LASTNAME:
+                    changedMentor.setLastName(view.getInput("Enter new name: "));
+                    break;
+                case EDIT_EMAIL:
+                    changedMentor.setEmail(view.getRegExInput(View.emailRegEx, "Enter new email: "));
+                    break;
+                case EDIT_PASSWORD:
+                    changedMentor.setPassword(view.getInput("Enter new password: "));
+                    break;
+                case EDIT_BIRTHDATE:
+                    changedMentor.setDateOfBirth(view.stringToDate(view.getRegExInput(View.dateRegEx,
+                                                                                      "Enter new date")));
+                    break;
+            }
+            mentorDAO.update(changedMentor);
         }
     }
 
     public void editGroup(){
         this.displayGroups();
 
+        Group changedGroup = null;
+
         ArrayList<Group> allGroups = groupDAO.readAll();
         String chosenGroupName = view.getInput("Enter name of a group you wish to edit: ");
 
         for (Group group: allGroups){
             if (chosenGroupName.equals(group.getName())){
-                groupDAO.update(group);
+                changedGroup = group;
+            } else {
+                view.output("No such group.");
+                break;
             }
         }
+
+        if(!changedGroup.equals(null)){
+            changedGroup.setName(view.getInput("Enter new name: "));
+        }
+
+        groupDAO.update(changedGroup);
     }
 
     public void editLevel(){
         this.displayLevels();
+
+        Level changedLevel = null;
 
         ArrayList<Level> allLevels = levelDAO.readAll();
         String chosenLevelRank = view.getInput("Enter rank of a level you wish to edit: ");
 
         for (Level level: allLevels){
             if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
-                levelDAO.update(level);
+                changedLevel = level;
+            } else {
+                view.output("No such level.");
+                break;
             }
+        }
+
+        if (!changedLevel.equals(null)) {
+            final int EDIT_RANK = 1;
+            final int EDIT_REQEXP = 2;
+            final int EDIT_DESCRIPTION = 3;
+
+            ArrayList<String> editLevelOptions = new ArrayList<>(Arrays.asList("Edit rank", "Edit required experience,",
+                                                                                "Edit description"));
+            view.displayOptions(editLevelOptions);
+            int userChoice = view.getUserChoice();
+            view.clearTerminal();
+
+            switch(userChoice){
+                case EDIT_RANK:
+                    changedLevel.setRank(Integer.parseInt(view.getInput("Enter new rank: ")));
+                    break;
+                case EDIT_REQEXP:
+                    changedLevel.setRequiredExperience(Integer.parseInt(view.getInput("Enter new value: ")));
+                    break;
+                case EDIT_DESCRIPTION:
+                    changedLevel.setDescription(view.getInput("Enter new email: "));
+                    break;
+            }
+            levelDAO.update(changedLevel);
         }
     }
 
