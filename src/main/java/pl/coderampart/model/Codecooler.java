@@ -11,9 +11,10 @@ public class Codecooler extends AbstractUser {
     private Team team;
     private ArrayList<Achievement> achievementList;
 
-    public Codecooler(String name, String surname, String email, String password, LocalDate dateOfBirth) {
+    public Codecooler(string name, String surname, String email, String password, LocalDate dateOfBirth) {
         super(name, surname, email, password, dateOfBirth);
         this.wallet = new Wallet();
+        this.level = // napisać w LevelDAO metode to zwracania pierwszego levelu
         // TODO: uncomment when levelDAO created
         // be careful on IndexOutOfBound. Handle it.
         // this.level = LevelDAO.levelList.get(0);
@@ -21,13 +22,12 @@ public class Codecooler extends AbstractUser {
         this.achievementList = new ArrayList<Achievement>();
     }
 
-    public Codecooler(String ID, String name, String surname, String email, String password, LocalDate dateOfBirth) {
+    public Codecooler(String ID, String name, String surname, String email, String password,
+                      LocalDate dateOfBirth, Wallet wallet, Level level, Team team) {
         super(ID, name, surname, email, password, dateOfBirth);
-        this.wallet = new Wallet();
-        // TODO: uncomment when levelDAO created
-        // be careful on IndexOutOfBound. Handle it.
-        // this.level = LevelDAO.levelList.get(0);
-        this.team = null;
+        this.wallet = wallet;
+        this.level = level;
+        this.team = team;
         this.achievementList = new ArrayList<Achievement>();
     }
 

@@ -69,9 +69,9 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
     public void update(Codecooler codecooler) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE codecoolers SET first_name = ?, " +
-                    "last_name = ?, email = ?, password = ?, " +
-                    "date_of_birth = ?;";
+            String query = "UPDATE codecoolers SET id = ?, first_name = ?, " +
+                           "last_name = ?, email = ?, password = ?, " +
+                           "date_of_birth = ?;";
 
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, codecooler);

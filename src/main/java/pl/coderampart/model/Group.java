@@ -8,18 +8,23 @@ public class Group{
     protected String name;
 
 
-    public Group(String name){
+    public Group(String name) {
         this.ID = UUIDController.createUUID(name);
         this.name = name;
     }
 
-    public String toString(){
+    public Group(String ID, String name) {
+        this.ID = ID;
+        this.name = name;
+    }
+
+    public String toString() {
         String groupData = "\nID: " + this.getID()
                          + "\nname: " + this.getName();
 
         return groupData;
     }
 
-    public String getID(){ return this.ID; }
-    public String getName(){ return this.name; }
+    public String getID() { return this.ID; }
+    public String getName() { return this.name; }
 }

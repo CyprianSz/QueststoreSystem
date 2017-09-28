@@ -57,7 +57,7 @@ public class AdminController implements Bootable {
 
     public void editMentor(){
 
-        String mentor
+        String mentor;
         final int EDIT_FIRSTNAME = 1;
         final int EDIT_LASTNAME = 2;
         final int EDIT_EMAIL = 3;

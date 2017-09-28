@@ -10,6 +10,8 @@ import pl.coderampart.services.User;
 
 public class MentorDAO extends AbstractDAO implements User<Mentor> {
 
+    private GroupDAO groupDAO = new GroupDAO();
+
     public Mentor getLogged(String email, String password) {
         Mentor mentor = null;
 
@@ -55,7 +57,7 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
     public void create(Mentor mentor) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "INSERT INTO mentors VALUES (?, ?, ?, ?, ?, ?);";
+            String query = "INSERT INTO mentors VALUES (?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, mentor);
 
@@ -70,9 +72,9 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
     public void update(Mentor mentor) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE mentors SET first_name = ?, " +
+            String query = "UPDATE mentors SET id = ?, first_name = ?, " +
                     "last_name = ?, email = ?, password = ?, " +
-                    "date_of_birth = ?;";
+                    "date_of_birth = ?, group_id = ?;";
 
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, mentor);
@@ -105,19 +107,22 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         statement.setString(4, mentor.getEmail());
         statement.setString(5, mentor.getPassword());
         statement.setString(6, mentor.getDateOfBirth().toString());
+        statement.setString(7, mentor.getGroup().getID());
 
         return statement;
     }
 
     private Mentor createMentorFromResultSet(ResultSet resultSet) throws Exception {
         String ID = resultSet.getString("id");
-        String first_name = resultSet.getString("first_name");
-        String last_name = resultSet.getString("last_name");
+        String firstName = resultSet.getString("first_name");
+        String lastName = resultSet.getString("last_name");
         String email = resultSet.getString("email");
         String password = resultSet.getString("password");
         String dateOfBirth = resultSet.getString("date_of_birth");
         LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
+        String groupID = resultSet.getString("group_id");
+        Group groupObject = groupDAO.getByID(groupID);
 
-        return new Mentor(ID, first_name, last_name, email, password, dateOfBirthObject);
+        return new Mentor(ID, firstName, lastName, email, password, dateOfBirthObject, groupObject);
     }
 }

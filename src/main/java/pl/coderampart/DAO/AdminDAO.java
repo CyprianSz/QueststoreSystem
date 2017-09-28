@@ -69,7 +69,7 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
     public void update(Admin admin) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE admins SET first_name = ?, " +
+            String query = "UPDATE admins SET id = ?, first_name = ?, " +
                            "last_name = ?, email = ?, password = ?, " +
                            "date_of_birth = ?;";
 
