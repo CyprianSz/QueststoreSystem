@@ -70,8 +70,8 @@ public class CodecoolerController implements Bootable {
         view.output("Current balance: 500cc");
         view.output("Choose an item:");
         view.output("\n1. Combat training, 50cc"
-                + "\n2. Sanctuary, 300cc"
-                + "\n3. Time Travel, 500cc");
+                  + "\n2. Sanctuary, 300cc"
+                  + "\n3. Time Travel, 500cc");
 
         Integer artifactChoice = view.getUserChoice();
         if (artifactChoice >= 0) {

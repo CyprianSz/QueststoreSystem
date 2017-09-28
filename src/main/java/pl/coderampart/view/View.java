@@ -85,6 +85,18 @@ public class View {
         return userData;
     }
 
+    public String getRegExInput(String regEx, String label) {
+        Scanner inputScan = new Scanner(System.in);
+        String input;
+
+        do {
+            this.output(label);
+            input = inputScan.next();
+        } while (!input.matches(regEx));
+
+        return input;
+    }
+
     public String getInput(String label) {
         Scanner inputScan = new Scanner(System.in);
         this.output(label);
@@ -93,6 +105,7 @@ public class View {
         return input;
    }
 
+   //TODO: change name where used to 'getRegExInput' and remove
    public String getDateInput(String label) {
        Scanner inputScan = new Scanner(System.in);
        String input;
@@ -105,6 +118,7 @@ public class View {
        return input;
    }
 
+    //TODO: change name where used to 'getRegExInput' and remove
    public String getEmailInput(String label) {
         Scanner inputScan = new Scanner(System.in);
         String input;
