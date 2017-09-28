@@ -46,7 +46,7 @@ public class GroupDAO extends AbstractDAO {
     public void update(Group group) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE groups SET name = ?, type = ?, value = ?";
+            String query = "UPDATE groups SET id = ?, name = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, group);
             setStatement.executeUpdate();

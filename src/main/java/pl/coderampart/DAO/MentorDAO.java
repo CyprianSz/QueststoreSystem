@@ -70,7 +70,7 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
     public void update(Mentor mentor) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE mentors SET first_name = ?, " +
+            String query = "UPDATE mentors SET id = ?, first_name = ?, " +
                     "last_name = ?, email = ?, password = ?, " +
                     "date_of_birth = ?;";
 
