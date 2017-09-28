@@ -27,7 +27,6 @@ public class Item {
         this.isSpent = isSpent;
     }
 
-
     public String getID() { return this.ID; }
     public Artifact getArtifact() { return this.artifact; }
     public Wallet getWallet() { return this.wallet; }
