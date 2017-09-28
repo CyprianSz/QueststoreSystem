@@ -69,7 +69,7 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
     public void update(Admin admin) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE admins SET first_name = ?, " +
+            String query = "UPDATE admins SET id = ?, first_name = ?, " +
                            "last_name = ?, email = ?, password = ?, " +
                            "date_of_birth = ?;";
 
@@ -86,7 +86,7 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
     public void delete(Admin admin) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM admins WHERE ?;";
+            String query = "DELETE FROM admins WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, admin.getID());
             statement.executeUpdate();
@@ -110,13 +110,13 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
 
     private Admin createAdminFromResultSet(ResultSet resultSet) throws Exception {
         String ID = resultSet.getString("id");
-        String first_name = resultSet.getString("first_name");
-        String last_name = resultSet.getString("last_name");
+        String firstName = resultSet.getString("first_name");
+        String lastName = resultSet.getString("last_name");
         String email = resultSet.getString("email");
         String password = resultSet.getString("password");
         String dateOfBirth = resultSet.getString("date_of_birth");
         LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
 
-        return new Admin(ID, first_name, last_name, email, password, dateOfBirthObject);
+        return new Admin(ID, firstName, lastName, dateOfBirthObject,email, password);
     }
 }

@@ -1,8 +1,6 @@
 package pl.coderampart.model;
 
 import pl.coderampart.controller.UUIDController;
-import java.util.ArrayList;
-// import coderampart.DAO.WalletDAO;  TODO: uncomment when ItemDAO created
 
 public class Wallet {
 
@@ -14,21 +12,20 @@ public class Wallet {
         this.ID = UUIDController.createUUID();
     }
 
+    public Wallet(String ID, Integer balance, Integer earnedCoins) {
+        this.ID = ID;
+        this.balance = balance;
+        this.earnedCoins = earnedCoins;
+    }
+
+    public String getID() { return this.ID; }
     public Integer getBalance() { return this.balance; }
     public Integer getEarnedCoins() { return this.earnedCoins; }
 
-    public ArrayList<Item> getItemList() {
-        //return ItemDAO.itemList;  TODO: uncomment when ItemDAO created
-        return null;
-    }
-
-    public void addItem(Item item) {
-        //ItemDAO.itemList().add(item); TODO: uncomment when ItemDAO created
-    }
 
     public String toString() {
-        String walletData = "\nbalance: " + this.getBalance()
-                          + "\nearnedCoins: " + this.getEarnedCoins();
+        String walletData = "\nBalance: " + this.getBalance()
+                          + "\nTotal coins earned: " + this.getEarnedCoins();
 
         return walletData;
     }
