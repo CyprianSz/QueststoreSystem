@@ -8,7 +8,7 @@ abstract class AbstractDAO {
         Connection connection = null;
 
         Class.forName("org.sqlite.JDBC");
-        connection = DriverManager.getConnection("jdbc:sqlite:../../../main/resources/db/codecoolers.db");
+        connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/db/quest_store.db");
 
         return connection;
     }

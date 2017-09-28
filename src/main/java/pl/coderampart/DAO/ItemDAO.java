@@ -116,7 +116,7 @@ public class ItemDAO extends AbstractDAO {
         Artifact artifact = artifactDAO.getByID(artifact_id);
         String wallet_id = resultSet.getString("wallet_id");
         Wallet wallet = walletDAO.getByID(wallet_id);
-        String creationDate = resultSet.getString("cration_date");
+        String creationDate = resultSet.getString("creation_date");
         LocalDate creationDateObject = LocalDate.parse(creationDate);
         Boolean isSpent = resultSet.getBoolean("is_spent");
 

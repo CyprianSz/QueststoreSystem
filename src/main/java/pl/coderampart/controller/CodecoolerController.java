@@ -1,21 +1,14 @@
 package pl.coderampart.controller;
 
-import pl.coderampart.DAO.ItemDAO;
-import pl.coderampart.DAO.LevelDAO;
-import pl.coderampart.model.Codecooler;
-import pl.coderampart.model.Item;
-import pl.coderampart.model.Level;
+import pl.coderampart.DAO.*;
+import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.View;
-import pl.coderampart.model.Mentor;
 import java.util.ArrayList;
-import java.util.Arrays;
-// TODO: after finished DAOs uncomment following statements
-// import pl.coderampart.DAO.WalletDAO;
-// import pl.coderampart.DAO.ArtifactDAO;
-// import pl.coderampart.DAO.LevelDAO;
 
-public class CodecoolerController implements Bootable {
+
+
+public class CodecoolerController implements Bootable<Codecooler> {
 
     private View view = new View();
 
@@ -25,20 +18,24 @@ public class CodecoolerController implements Bootable {
     public static final int DISPLAY_LEVEL = 4;
     public static final int EXIT = 0;
 
-    public boolean start() {
+    public boolean start(Codecooler codecooler) {
         view.displayCodecoolerMenu();
         int userChoice = view.getUserChoice();
 
         view.clearTerminal();
 
         switch(userChoice) {
-            case DISPLAY_WALLET: displayWallet();
+            case DISPLAY_WALLET:
+                displayWallet(codecooler);
                 break;
-            case BUY_ARTIFACT: buyArtifact();
+            case BUY_ARTIFACT:
+                buyArtifact();
                 break;
-            case BUY_WITH_GROUP: buyWithGroup();
+            case BUY_WITH_GROUP:
+                buyWithGroup();
                 break;
-            case DISPLAY_LEVEL: displayLevel();
+            case DISPLAY_LEVEL:
+                displayLevel(codecooler);
                 break;
             case EXIT:
                 return false;

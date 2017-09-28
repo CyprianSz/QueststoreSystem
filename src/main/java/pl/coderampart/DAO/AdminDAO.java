@@ -10,23 +10,18 @@ import pl.coderampart.services.User;
 
 public class AdminDAO extends AbstractDAO implements User<Admin> {
 
-    public Admin getLogged(String email, String password) {
+    public Admin getLogged(String email, String password) throws Exception {
         Admin admin = null;
 
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "SELECT * FROM admins WHERE email = ? AND password = ?;";
+        Connection connection = this.connectToDataBase();
+        String query = "SELECT * FROM admins WHERE email = ? AND password = ?;";
 
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, email);
-            statement.setString(2, password);
-            ResultSet resultSet = statement.executeQuery();
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, email);
+        statement.setString(2, password);
+        ResultSet resultSet = statement.executeQuery();
 
-            admin = this.createAdminFromResultSet(resultSet);
-
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        admin = this.createAdminFromResultSet(resultSet);
 
         return admin;
     }

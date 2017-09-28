@@ -7,7 +7,7 @@ import pl.coderampart.view.View;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AdminController implements Bootable {
+public class AdminController implements Bootable<Admin> {
 
     private View view = new View();
     private MentorDAO mentorDAO = new MentorDAO();
@@ -28,7 +28,7 @@ public class AdminController implements Bootable {
     private static final int DELETE_LEVEL = 12;
     private static final int EXIT = 0;
 
-    public boolean start() {
+    public boolean start(Admin admin) {
         view.displayAdminMenu();
         int userChoice = view.getUserChoice();
 
@@ -61,7 +61,8 @@ public class AdminController implements Bootable {
             case DELETE_LEVEL: deleteLevel();
                 break;
             case EXIT:
-                return false;
+                //return false;
+                break;
         }
 
         view.enterToContinue();

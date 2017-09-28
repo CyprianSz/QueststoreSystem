@@ -15,23 +15,18 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
     private LevelDAO levelDAO = new LevelDAO();
     private TeamDAO teamDAO = new TeamDAO();
 
-    public Codecooler getLogged(String email, String password) {
+    public Codecooler getLogged(String email, String password) throws Exception {
         Codecooler codecooler = null;
 
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "SELECT * FROM codecoolers WHERE email = ? AND password = ?;";
+        Connection connection = this.connectToDataBase();
+        String query = "SELECT * FROM codecoolers WHERE email = ? AND password = ?;";
 
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, email);
-            statement.setString(2, password);
-            ResultSet resultSet = statement.executeQuery();
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, email);
+        statement.setString(2, password);
+        ResultSet resultSet = statement.executeQuery();
 
-            codecooler = this.createCodecoolerFromResultSet(resultSet);
-
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        codecooler = this.createCodecoolerFromResultSet(resultSet);
 
         return codecooler;
     }
