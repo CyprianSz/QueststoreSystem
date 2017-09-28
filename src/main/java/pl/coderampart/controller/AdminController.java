@@ -13,25 +13,23 @@ import java.util.ArrayList;
 public class AdminController implements Bootable {
 
     private View view = new View();
-    private MentorDAO mentorDao = new MentorDAO();
-    private GroupDAO groupDao = new GroupDAO();
-    private LevelDAO levelDao = new LevelDAO();
+    private MentorDAO mentorDAO = new MentorDAO();
+    private GroupDAO groupDAO = new GroupDAO();
+    private LevelDAO levelDAO = new LevelDAO();
 
-    public static final int CREATE_MENTOR = 1;
-    public static final int CREATE_GROUP = 2;
-    public static final int CREATE_LEVEL = 3;
-    public static final int EDIT_MENTOR = 4;
-    public static final int EDIT_GROUP = 5;
-    public static final int EDIT_LEVEL = 6;
-    public static final int DISPLAY_MENTORS = 7;
-    public static final int DISPLAY_GROUPS = 8;
-    public static final int DISPLAY_LEVELS = 9;
-    public static final int DELETE_MENTOR = 10;
-    public static final int DELETE_GROUP = 11;
-    public static final int DELETE_LEVEL = 12;
-
-
-    public static final int EXIT = 0;
+    private static final int CREATE_MENTOR = 1;
+    private static final int CREATE_GROUP = 2;
+    private static final int CREATE_LEVEL = 3;
+    private static final int EDIT_MENTOR = 4;
+    private static final int EDIT_GROUP = 5;
+    private static final int EDIT_LEVEL = 6;
+    private static final int DISPLAY_MENTORS = 7;
+    private static final int DISPLAY_GROUPS = 8;
+    private static final int DISPLAY_LEVELS = 9;
+    private static final int DELETE_MENTOR = 10;
+    private static final int DELETE_GROUP = 11;
+    private static final int DELETE_LEVEL = 12;
+    private static final int EXIT = 0;
 
     public boolean start() {
         view.displayAdminMenu();
@@ -84,14 +82,14 @@ public class AdminController implements Bootable {
                                       view.stringToDate(mentorData[4]));
 
         this.displayGroups();
-        ArrayList<Group> allGroups = groupDao.readAll();
+        ArrayList<Group> allGroups = groupDAO.readAll();
         String chosenGroupName = view.getInput("Enter name of a group you wish to assign this mentor to: ");
         for (Group group: allGroups){
             if (chosenGroupName.equals(group.getName())){
                 newMentor.setGroup(group);
             }
         }
-        mentorDao.create(newMentor);
+        mentorDAO.create(newMentor);
     }
 
     public void createGroup(){
@@ -100,7 +98,7 @@ public class AdminController implements Bootable {
 
         Group newGroup = new Group(groupData[0]);
 
-        groupDao.create(newGroup);
+        groupDAO.create(newGroup);
     }
 
     public void createLevel(){
@@ -109,18 +107,18 @@ public class AdminController implements Bootable {
 
         Level newLevel = new Level(Integer.parseInt(levelData[0]), Integer.parseInt(levelData[1]), levelData[2]);
 
-        levelDao.create(newLevel);
+        levelDAO.create(newLevel);
     }
 
     public void editMentor(){
         this.displayMentors();
 
-        ArrayList<Mentor> allMentors = mentorDao.readAll();
+        ArrayList<Mentor> allMentors = mentorDAO.readAll();
         String chosenMentorEmail = view.getInput("Enter email of a mentor you wish to edit: ");
 
         for (Mentor mentor: allMentors){
             if (chosenMentorEmail.equals(mentor.getEmail())){
-                mentorDao.update(mentor);
+                mentorDAO.update(mentor);
             }
         }
     }
@@ -128,12 +126,12 @@ public class AdminController implements Bootable {
     public void editGroup(){
         this.displayGroups();
 
-        ArrayList<Group> allGroups = groupDao.readAll();
+        ArrayList<Group> allGroups = groupDAO.readAll();
         String chosenGroupName = view.getInput("Enter name of a group you wish to edit: ");
 
         for (Group group: allGroups){
             if (chosenGroupName.equals(group.getName())){
-                groupDao.update(group);
+                groupDAO.update(group);
             }
         }
     }
@@ -141,18 +139,18 @@ public class AdminController implements Bootable {
     public void editLevel(){
         this.displayLevels();
 
-        ArrayList<Level> allLevels = levelDao.readAll();
+        ArrayList<Level> allLevels = levelDAO.readAll();
         String chosenLevelRank = view.getInput("Enter rank of a level you wish to edit: ");
 
         for (Level level: allLevels){
             if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
-                groupDao.update(level);
+                groupDAO.update(level);
             }
         }
     }
 
     public void displayMentors(){
-        ArrayList<Mentor> allMentors = mentorDao.readAll();
+        ArrayList<Mentor> allMentors = mentorDAO.readAll();
         ArrayList<String> mentorStrings = new ArrayList<String>();
 
         for (Mentor mentor: allMentors){
@@ -163,7 +161,7 @@ public class AdminController implements Bootable {
     }
 
     public void displayGroups(){
-        ArrayList<Group> allGroups = groupDao.readAll();
+        ArrayList<Group> allGroups = groupDAO.readAll();
         ArrayList<String> groupStrings = new ArrayList<String>();
 
         for (Group group: allGroups){
@@ -174,7 +172,7 @@ public class AdminController implements Bootable {
     }
 
     public void displayLevels(){
-        ArrayList<Level> allLevels = levelDao.readAll();
+        ArrayList<Level> allLevels = levelDAO.readAll();
         ArrayList<String> levelStrings = new ArrayList<String>();
 
         for (Level level: allLevels){
@@ -185,14 +183,42 @@ public class AdminController implements Bootable {
     }
 
     public void deleteMentor(){
+        this.displayMentors();
+
+        ArrayList<Mentor> allMentors = mentorDAO.readAll();
+        String chosenMentorEmail = view.getInput("Enter email of a mentor you wish to delete: ");
+
+        for (Mentor mentor: allMentors){
+            if (chosenMentorEmail.equals(mentor.getEmail())){
+                mentorDAO.delete(mentor);
+            }
+        }
 
     }
 
     public void deleteGroup(){
+        this.displayGroups();
 
+        ArrayList<Group> allGroups = groupDAO.readAll();
+        String chosenGroupName = view.getInput("Enter name of a group you wish to edit: ");
+
+        for (Group group: allGroups){
+            if (chosenGroupName.equals(group.getName())){
+                groupDAO.delete(group);
+            }
+        }
     }
 
     public void deleteLevel(){
+        this.displayLevels();
 
+        ArrayList<Level> allLevels = levelDAO.readAll();
+        String chosenLevelRank = view.getInput("Enter rank of a level you wish to edit: ");
+
+        for (Level level: allLevels){
+            if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
+                groupDAO.delete(level);
+            }
+        }
     }
 }
