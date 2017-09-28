@@ -187,13 +187,43 @@ public class AdminController implements Bootable {
     public void editLevel(){
         this.displayLevels();
 
+        Level changedLevel = null;
+
         ArrayList<Level> allLevels = levelDAO.readAll();
         String chosenLevelRank = view.getInput("Enter rank of a level you wish to edit: ");
 
         for (Level level: allLevels){
             if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
-                levelDAO.update(level);
+                changedLevel = level;
+            } else {
+                view.output("No such level.");
+                break;
             }
+        }
+
+        if (!changedLevel.equals(null)) {
+            final int EDIT_RANK = 1;
+            final int EDIT_REQEXP = 2;
+            final int EDIT_DESCRIPTION = 3;
+
+            ArrayList<String> editLevelOptions = new ArrayList<>(Arrays.asList("Edit rank", "Edit required experience,",
+                                                                                "Edit description"));
+            view.displayOptions(editLevelOptions);
+            int userChoice = view.getUserChoice();
+            view.clearTerminal();
+
+            switch(userChoice){
+                case EDIT_RANK:
+                    changedLevel.setRank(Integer.parseInt(view.getInput("Enter new rank: ")));
+                    break;
+                case EDIT_REQEXP:
+                    changedLevel.setRequiredExperience(Integer.parseInt(view.getInput("Enter new value: ")));
+                    break;
+                case EDIT_DESCRIPTION:
+                    changedLevel.setDescription(view.getInput("Enter new email: "));
+                    break;
+            }
+            levelDAO.update(changedLevel);
         }
     }
 
