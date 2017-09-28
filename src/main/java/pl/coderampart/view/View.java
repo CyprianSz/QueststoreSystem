@@ -18,8 +18,12 @@ public class View {
     private static final String dateRegEx = "^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
 
     public void displayAdminMenu(){
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new mentor", "Create new group", "Update mentor data",
-                                                                  "Display mentor data", "Create experience level"));
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new mentor.", "Create new group.",
+                                                                  "Create new experience level.",
+                                                                  "Edit mentor.", "Edit group.", "Edit experience level",
+                                                                  "Display all mentors.", "Display all groups.",
+                                                                  "Display all experience levels.", "Delete mentor.",
+                                                                  "Delete group.", "Delete experience level."));
 
         displayOptions(options);
         this.output("\n0. Exit");
@@ -70,13 +74,13 @@ public class View {
     }
 
     public String[] getUserData() {
-        String name = getInput("Name: ");
-        String surname = getInput("Surname: ");
+        String firstName = getInput("First name: ");
+        String lastName = getInput("Last name: ");
         String email = getEmailInput("E-mail: ");
         String password = getInput("Password: ");
         String dateOfBirth = getDateInput("Date of birth (yyyy-mm-dd): ");
 
-        String[] userData = new String[] {name, surname, email, password, dateOfBirth};
+        String[] userData = new String[] {firstName, lastName, email, password, dateOfBirth};
 
         return userData;
     }
@@ -135,6 +139,24 @@ public class View {
        String[] artifactData = new String[] {name, value};
 
        return artifactData;
+   }
+
+   public String[] getGroupData() {
+        String name = getInput("Name: ");
+
+        String[] groupData = new String[] {name};
+
+        return groupData;
+   }
+
+   public String[] getLevelData(){
+        String rank = getInput("Rank: ");
+        String requiredExperience = getInput("Required experience: ");
+        String description = getInput("Description: ");
+
+        String[] levelData = new String[] {rank, requiredExperience, description};
+
+        return levelData;
    }
 
    public String chooseQuestCategory() {
