@@ -5,5 +5,7 @@ CREATE TABLE mentors (
   date_of_birth DATE,
   email VARCHAR(255) UNIQUE,
   password VARCHAR(255),
-  PRIMARY KEY (id)
+  group_id VARCHAR(36),
+  PRIMARY KEY (id),
+  FOREIGN KEY (group_id) REFERENCES groups(id)
 );
