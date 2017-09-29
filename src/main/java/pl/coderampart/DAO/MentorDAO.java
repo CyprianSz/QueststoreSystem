@@ -1,5 +1,6 @@
 package pl.coderampart.DAO;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,10 +8,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import pl.coderampart.model.*;
 import pl.coderampart.services.User;
+import pl.coderampart.view.View;
 
 public class MentorDAO extends AbstractDAO implements User<Mentor> {
 
     private GroupDAO groupDAO = new GroupDAO();
+    private View view = new View();
 
     public Mentor getLogged(String email, String password) throws Exception{
         Mentor mentor = null;
@@ -24,6 +27,7 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         ResultSet resultSet = statement.executeQuery();
 
         mentor = this.createMentorFromResultSet(resultSet);
+        connection.close();
 
         return mentor;
     }
@@ -68,8 +72,8 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         try {
             Connection connection = this.connectToDataBase();
             String query = "UPDATE mentors SET id = ?, first_name = ?, " +
-                    "last_name = ?, email = ?, password = ?, " +
-                    "date_of_birth = ?, group_id = ?;";
+                    "last_name = ?, date_of_birth = ?, email = ?, " +
+                    "password = ?, group_id = ?;";
 
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, mentor);
@@ -99,12 +103,12 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         statement.setString(1, mentor.getID());
         statement.setString(2, mentor.getFirstName());
         statement.setString(3, mentor.getLastName());
-        statement.setString(4, mentor.getEmail());
-        statement.setString(5, mentor.getPassword());
-        statement.setString(6, mentor.getDateOfBirth().toString());
+        statement.setString(4, mentor.getDateOfBirth().toString());
+        statement.setString(5, mentor.getEmail());
+        statement.setString(6, mentor.getPassword());
         statement.setString(7, mentor.getGroup().getID());
 
-        return statement;
+        return statement;`
     }
 
     private Mentor createMentorFromResultSet(ResultSet resultSet) throws Exception {
@@ -112,7 +116,7 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         String firstName = resultSet.getString("first_name");
         String lastName = resultSet.getString("last_name");
         String dateOfBirth = resultSet.getString("date_of_birth");
-        LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
+        LocalDate dateOfBirthObject = view.stringToDate(dateOfBirth);
         String email = resultSet.getString("email");
         String password = resultSet.getString("password");
         String groupID = resultSet.getString("group_id");

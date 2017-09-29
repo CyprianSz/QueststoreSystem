@@ -27,6 +27,7 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
         ResultSet resultSet = statement.executeQuery();
 
         codecooler = this.createCodecoolerFromResultSet(resultSet);
+        connection.close();
 
         return codecooler;
     }

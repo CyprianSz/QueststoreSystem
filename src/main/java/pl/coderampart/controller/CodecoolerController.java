@@ -12,11 +12,11 @@ public class CodecoolerController implements Bootable<Codecooler> {
 
     private View view = new View();
 
-    public static final int DISPLAY_WALLET = 1;
-    public static final int BUY_ARTIFACT = 2;
-    public static final int BUY_WITH_GROUP = 3;
-    public static final int DISPLAY_LEVEL = 4;
-    public static final int EXIT = 0;
+    private static final int DISPLAY_WALLET = 1;
+    private static final int BUY_ARTIFACT = 2;
+    private static final int BUY_WITH_GROUP = 3;
+    private static final int DISPLAY_LEVEL = 4;
+    private static final int EXIT = 0;
 
     public boolean start(Codecooler codecooler) {
         view.displayCodecoolerMenu();
