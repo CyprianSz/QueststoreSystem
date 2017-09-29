@@ -120,8 +120,6 @@ public class AdminController implements Bootable<Admin> {
         for (Mentor mentor: allMentors){
             if (chosenMentorEmail.equals(mentor.getEmail())){
                 changedMentor = mentor;
-            } else {
-                view.output("No such mentor.");
                 break;
             }
         }
@@ -174,9 +172,6 @@ public class AdminController implements Bootable<Admin> {
         for (Group group: allGroups){
             if (chosenGroupName.equals(group.getName())){
                 changedGroup = group;
-            } else {
-                view.output("No such group.");
-                break;
             }
         }
 
@@ -198,9 +193,6 @@ public class AdminController implements Bootable<Admin> {
         for (Level level: allLevels){
             if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
                 changedLevel = level;
-            } else {
-                view.output("No such level.");
-                break;
             }
         }
 
@@ -232,13 +224,13 @@ public class AdminController implements Bootable<Admin> {
 
     public void displayMentors(){
         ArrayList<Mentor> allMentors = mentorDAO.readAll();
-        ArrayList<String> mentorStrings = new ArrayList<String>();
+        ArrayList<String> mentorData = new ArrayList<>();
 
         for (Mentor mentor: allMentors){
-            mentorStrings.add(mentor.toString());
+            mentorData.add(mentor.toString());
         }
 
-        view.outputTable(mentorStrings);
+        view.outputTable(mentorData);
     }
 
     public void displayGroups(){
@@ -263,7 +255,7 @@ public class AdminController implements Bootable<Admin> {
         view.outputTable(levelStrings);
     }
 
-    public void deleteMentor(){
+    public void deleteMentor() {
         this.displayMentors();
 
         ArrayList<Mentor> allMentors = mentorDAO.readAll();
@@ -272,6 +264,7 @@ public class AdminController implements Bootable<Admin> {
         for (Mentor mentor: allMentors){
             if (chosenMentorEmail.equals(mentor.getEmail())){
                 mentorDAO.delete(mentor);
+                break;
             }
         }
     }

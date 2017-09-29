@@ -22,6 +22,7 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
         ResultSet resultSet = statement.executeQuery();
 
         admin = this.createAdminFromResultSet(resultSet);
+        connection.close();
 
         return admin;
     }
