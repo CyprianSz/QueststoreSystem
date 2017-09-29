@@ -271,7 +271,6 @@ public class AdminController implements Bootable<Admin> {
                 mentorDAO.delete(mentor);
             }
         }
-
     }
 
     public void deleteGroup(){
