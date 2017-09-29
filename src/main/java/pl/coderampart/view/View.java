@@ -1,5 +1,8 @@
 package pl.coderampart.view;
 
+import pl.coderampart.model.Item;
+
+import java.util.Locale;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -9,9 +12,18 @@ import java.io.IOException;
 
 public class View {
 
+    public static final String emailRegEx = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+"
+            + "(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
+
+    public static final String dateRegEx = "^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
+
     public void displayAdminMenu(){
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new mentor", "Create new group", "Update mentor data",
-                                                                  "Display mentor data", "Create experience level"));
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new mentor.", "Create new group.",
+                                                                  "Create new experience level.",
+                                                                  "Edit mentor.", "Edit group.", "Edit experience level",
+                                                                  "Display all mentors.", "Display all groups.",
+                                                                  "Display all experience levels.", "Delete mentor.",
+                                                                  "Delete group.", "Delete experience level."));
 
         displayOptions(options);
         this.output("\n0. Exit");
@@ -62,24 +74,36 @@ public class View {
     }
 
     public String[] getUserData() {
-        String name = getInput("Name: ");
-        String surname = getInput("Surname: ");
-        String email = getInput("E-mail: ");
+        String firstName = getInput("First name: ");
+        String lastName = getInput("Last name: ");
         String dateOfBirth = getDateInput("Date of birth (yyyy-mm-dd): ");
+        String email = getEmailInput("E-mail: ");
+        String password = getInput("Password: ");
 
-        String[] userData = new String[] {name, surname, email, dateOfBirth};
+        return new String[] {firstName, lastName, dateOfBirth, email, password};
+    }
 
-        return userData;
+    public String getRegExInput(String regEx, String label) {
+        Scanner inputScan = new Scanner(System.in);
+        String input;
+
+        do {
+            this.output(label);
+            input = inputScan.next();
+        } while (!input.matches(regEx));
+
+        return input;
     }
 
     public String getInput(String label) {
         Scanner inputScan = new Scanner(System.in);
         this.output(label);
-        String input = inputScan.next();
+        String input = inputScan.nextLine();
 
         return input;
    }
 
+   //TODO: change name where used to 'getRegExInput' and remove
    public String getDateInput(String label) {
        Scanner inputScan = new Scanner(System.in);
        String input;
@@ -87,9 +111,28 @@ public class View {
        do {
            this.output(label);
            input = inputScan.next();
-       } while (!input.matches("^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"));
+       } while (!input.matches(dateRegEx));
 
        return input;
+   }
+
+    //TODO: change name where used to 'getRegExInput' and remove
+   public String getEmailInput(String label) {
+        Scanner inputScan = new Scanner(System.in);
+        String input;
+
+        do {
+            this.output(label);
+            input = inputScan.next();
+        } while (!input.matches(emailRegEx));
+
+        return input;
+   }
+
+   public LocalDate stringToDate(String date) {
+       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+
+       return LocalDate.parse(date, formatter);
    }
 
    public String[] getQuestData() {
@@ -108,6 +151,24 @@ public class View {
        String[] artifactData = new String[] {name, value};
 
        return artifactData;
+   }
+
+   public String[] getGroupData() {
+        String name = getInput("Name: ");
+
+        String[] groupData = new String[] {name};
+
+        return groupData;
+   }
+
+   public String[] getLevelData(){
+        String rank = getInput("Rank: ");
+        String requiredExperience = getInput("Required experience: ");
+        String description = getInput("Description: ");
+
+        String[] levelData = new String[] {rank, requiredExperience, description};
+
+        return levelData;
    }
 
    public String chooseQuestCategory() {
@@ -177,14 +238,26 @@ public class View {
         }
     }
 
-    public int chooseEdit() {
+    public int chooseEdit(ArrayList<String> options) {
         this.output("\nWhat do you want to change?: ");
 
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "Amount of coolcoins"));
         displayOptions(options);
         int userChoice = getUserChoice();
 
         return userChoice;
+    }
+
+    public void outputTable(ArrayList<String> table) {
+        for (String record: table){
+            this.output(record);
+        }
+    }
+
+    public void displayUserItems(ArrayList<Item> userItems) {
+        this.output("\nYour items:");
+        for (Item item: userItems) {
+            this.output(item.toString());
+        }
     }
 
     public void sayGoodbye(){

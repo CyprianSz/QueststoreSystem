@@ -1,5 +1,5 @@
 package pl.coderampart.services;
 
-public interface Bootable {
-    public boolean start();
+public interface Bootable<T> {
+    public boolean start(T User);
 }
