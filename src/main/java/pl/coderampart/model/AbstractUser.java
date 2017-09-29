@@ -45,7 +45,6 @@ public abstract class AbstractUser {
                         + "\nsurname: " + this.getLastName()
                         + "\nemail: " + this.getEmail();
 
-
         return userData;
     }
 }

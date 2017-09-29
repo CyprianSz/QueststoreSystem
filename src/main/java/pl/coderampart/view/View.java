@@ -98,7 +98,7 @@ public class View {
     public String getInput(String label) {
         Scanner inputScan = new Scanner(System.in);
         this.output(label);
-        String input = inputScan.next();
+        String input = inputScan.nextLine();
 
         return input;
    }

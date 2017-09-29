@@ -1,5 +1,5 @@
 INSERT INTO codecoolers
-(id, first_name, last_name, date_of_birth, email, password)
+(id, first_name, last_name, date_of_birth, email, password, group_id)
 VALUES
   ('f609bfcc-e1b6-4b45-a32b-d3df67daa8c1',
    'Mateusz',

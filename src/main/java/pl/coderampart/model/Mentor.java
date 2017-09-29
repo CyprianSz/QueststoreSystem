@@ -17,6 +17,17 @@ public class Mentor extends AbstractUser {
         this.group = group;
     }
 
+    public String toString() {
+        String userData = "\nID: " + this.getID()
+                + "\nname: " + this.getFirstName()
+                + "\ndate of birth: " + this.getDateOfBirth()
+                + "\nsurname: " + this.getLastName()
+                + "\nemail: " + this.getEmail()
+                + "\ngroup: " + this.getGroup().getName();
+
+        return userData;
+    }
+
     public Group getGroup() { return this.group; }
     public void setGroup(Group group) { this.group = group; }
     public void setFirstName(String firstName) { this.firstName = firstName; }

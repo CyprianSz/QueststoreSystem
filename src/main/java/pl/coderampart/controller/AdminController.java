@@ -81,10 +81,13 @@ public class AdminController implements Bootable<Admin> {
         ArrayList<Group> allGroups = groupDAO.readAll();
         String chosenGroupName = view.getInput("Enter name of a group you wish to assign this mentor to: ");
         for (Group group: allGroups){
-            if (chosenGroupName.equals(group.getName())){
+            String groupName = group.getName();
+
+            if (groupName.equals(chosenGroupName)){
                 newMentor.setGroup(group);
             }
         }
+
         mentorDAO.create(newMentor);
     }
 
@@ -271,7 +274,6 @@ public class AdminController implements Bootable<Admin> {
                 mentorDAO.delete(mentor);
             }
         }
-
     }
 
     public void deleteGroup(){
