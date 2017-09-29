@@ -41,7 +41,6 @@ public class CodecoolerController implements Bootable<Codecooler> {
                 return false;
         }
         view.enterToContinue();
-
         return true;
     }
 

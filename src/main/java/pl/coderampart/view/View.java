@@ -76,13 +76,11 @@ public class View {
     public String[] getUserData() {
         String firstName = getInput("First name: ");
         String lastName = getInput("Last name: ");
+        String dateOfBirth = getDateInput("Date of birth (yyyy-mm-dd): ");
         String email = getEmailInput("E-mail: ");
         String password = getInput("Password: ");
-        String dateOfBirth = getDateInput("Date of birth (yyyy-mm-dd): ");
 
-        String[] userData = new String[] {firstName, lastName, email, password, dateOfBirth};
-
-        return userData;
+        return new String[] {firstName, lastName, dateOfBirth, email, password};
     }
 
     public String getRegExInput(String regEx, String label) {
