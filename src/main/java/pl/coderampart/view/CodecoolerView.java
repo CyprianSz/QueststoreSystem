@@ -2,6 +2,8 @@ package pl.coderampart.view;
 
 import pl.coderampart.model.Item;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -30,12 +32,12 @@ public class CodecoolerView extends View {
     }
 
     public void displayUserItems(ArrayList<Item> userItems) {
+
         this.output("\nYour items:");
         for (Item item: userItems) {
-            this.output(item.toString());
+            this.output(item.getArtifact().toString());
+            this.output("Date: " + item.dateToString() );
         }
     }
-
-
 }
 

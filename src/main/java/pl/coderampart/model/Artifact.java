@@ -36,8 +36,7 @@ public class Artifact {
     public void setValue(Integer value) { this.value = value; }
 
     public String toString() {
-        String userData = "\nID: " + this.getID()
-                        + "\nname: " + this.getName()
+        String userData = "\nname: " + this.getName()
                         + "\ntype: " + this.getType()
                         + "\nvalue: " + this.getValue();
 
