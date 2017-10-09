@@ -82,7 +82,27 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void createCodecooler(){
+        this.displayCodecoolers();
 
+        String[] codecoolerData = view.getUserData();
+
+        Codecooler newCodecooler = new Codecooler(codecoolerData[0], codecoolerData[1], view.stringToDate(codecoolerData[2]),
+                                                  codecoolerData[3], codecoolerData[4]);
+
+        this.displayTeams();
+        ArrayList<Team> allTeams = teamDAO.readAll();
+        String chosenTeamName = view.getInput("Enter name of a team you wish to assign this Codecooler to, " +
+                                              "\nAdditionally, Codecooler will be assigned to the group that chosen team is in");
+        for (Team team: allTeams){
+            String teamName = team.getName();
+
+            if (teamName.equals(chosenTeamName)){
+                newCodecooler.setTeam(team);
+                newCodecooler.setGroup(team.getGroup());
+            }
+        }
+
+        codecoolerDAO.create(newCodecooler);
     }
 
     public void createQuest(){
