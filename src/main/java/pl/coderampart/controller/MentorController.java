@@ -3,13 +3,13 @@ package pl.coderampart.controller;
 import pl.coderampart.DAO.*;
 import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
-import pl.coderampart.view.View;
+import pl.coderampart.view.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MentorController implements Bootable<Mentor> {
 
-    private View view = new View();
+    private MentorView mentorView = new MentorView();
     private CodecoolerDAO codecoolerDAO = new CodecoolerDAO();
     private GroupDAO groupDAO = new GroupDAO();
     private TeamDAO teamDAO = new TeamDAO();
@@ -36,10 +36,10 @@ public class MentorController implements Bootable<Mentor> {
     private static final int EXIT = 0;
 
     public boolean start(Mentor mentor) {
-        view.displayMentorMenu();
-        int userChoice = view.getUserChoice();
+        mentorView.displayMentorMenu();
+        int userChoice = mentorView.getUserChoice();
 
-        view.clearTerminal();
+        mentorView.clearTerminal();
         // TODO: USE ENUM, DECLARE SUBMENUS FOR EACH CLASS
         switch(userChoice) {
 
@@ -77,21 +77,21 @@ public class MentorController implements Bootable<Mentor> {
                 return false;
         }
 
-        view.enterToContinue();
+        mentorView.enterToContinue();
         return true;
     }
 
     public void createCodecooler(){
         this.displayCodecoolers();
 
-        String[] codecoolerData = view.getUserData();
+        String[] codecoolerData = mentorView.getUserData();
 
-        Codecooler newCodecooler = new Codecooler(codecoolerData[0], codecoolerData[1], view.stringToDate(codecoolerData[2]),
+        Codecooler newCodecooler = new Codecooler(codecoolerData[0], codecoolerData[1], mentorView.stringToDate(codecoolerData[2]),
                                                   codecoolerData[3], codecoolerData[4]);
 
         this.displayTeams();
         ArrayList<Team> allTeams = teamDAO.readAll();
-        String chosenTeamName = view.getInput("Enter name of a team you wish to assign this Codecooler to, " +
+        String chosenTeamName = mentorView.getInput("Enter name of a team you wish to assign this Codecooler to, " +
                                               "\nAdditionally, Codecooler will be assigned to the group that chosen team is in");
         for (Team team: allTeams){
             String teamName = team.getName();
@@ -141,7 +141,7 @@ public class MentorController implements Bootable<Mentor> {
             codecoolerStrings.add(codecooler.toString());
         }
 
-        view.outputTable(codecoolerStrings);
+        mentorView.outputTable(codecoolerStrings);
     }
 
     public void displayQuests(){
@@ -152,7 +152,7 @@ public class MentorController implements Bootable<Mentor> {
             questStrings.add(quest.toString());
         }
 
-        view.outputTable(questStrings);
+        mentorView.outputTable(questStrings);
     }
 
     public void displayArtifacts(){
@@ -163,7 +163,7 @@ public class MentorController implements Bootable<Mentor> {
             artifactStrings.add(artifact.toString());
         }
 
-        view.outputTable(artifactStrings);
+        mentorView.outputTable(artifactStrings);
     }
 
     public void displayTeams(){
@@ -174,14 +174,14 @@ public class MentorController implements Bootable<Mentor> {
             teamStrings.add(team.toString());
         }
 
-        view.outputTable(teamStrings);
+        mentorView.outputTable(teamStrings);
     }
 
     public void deleteQuest(){
         this.displayQuests();
 
         ArrayList<Quest> allQuests = questDAO.readAll();
-        String chosenQuestName = view.getInput("Enter name of a quest you wish to delete: ");
+        String chosenQuestName = mentorView.getInput("Enter name of a quest you wish to delete: ");
 
         for (Quest quest: allQuests){
             if (chosenQuestName.equals(quest.getName())){
@@ -194,7 +194,7 @@ public class MentorController implements Bootable<Mentor> {
         this.displayArtifacts();
 
         ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
-        String chosenArtifactName = view.getInput("Enter name of an artifact you wish to delete: ");
+        String chosenArtifactName = mentorView.getInput("Enter name of an artifact you wish to delete: ");
 
         for (Artifact artifact: allArtifacts){
             if (chosenArtifactName.equals(artifact.getName())){
@@ -207,7 +207,7 @@ public class MentorController implements Bootable<Mentor> {
         this.displayTeams();
 
         ArrayList<Team> allTeams = teamDAO.readAll();
-        String chosenTeamName = view.getInput("Enter name of a team you wish to delete: ");
+        String chosenTeamName = mentorView.getInput("Enter name of a team you wish to delete: ");
 
         for (Team team: allTeams){
             if (chosenTeamName.equals(team.getName())){
