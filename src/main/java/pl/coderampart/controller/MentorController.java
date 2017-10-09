@@ -125,7 +125,14 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void displayQuests(){
+        ArrayList<Quest> allQuests = questDAO.readAll();
+        ArrayList<String> questStrings = new ArrayList<String>();
 
+        for (Quest quest: allQuests){
+            questStrings.add(quest.toString());
+        }
+
+        view.outputTable(questStrings);
     }
 
     public void displayArtifacts(){
