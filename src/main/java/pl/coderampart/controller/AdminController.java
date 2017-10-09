@@ -1,6 +1,10 @@
 package pl.coderampart.controller;
 
 import pl.coderampart.DAO.*;
+import pl.coderampart.enums.GroupSectionOption;
+import pl.coderampart.enums.LevelSectionOption;
+import pl.coderampart.enums.MentorSectionOption;
+import pl.coderampart.enums.AdminSubmenuOption;
 import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.AdminView;
@@ -14,59 +18,118 @@ public class AdminController implements Bootable<Admin> {
     private GroupDAO groupDAO = new GroupDAO();
     private LevelDAO levelDAO = new LevelDAO();
 
-    private static final int CREATE_MENTOR = 1;
-    private static final int CREATE_GROUP = 2;
-    private static final int CREATE_LEVEL = 3;
-    private static final int EDIT_MENTOR = 4;
-    private static final int EDIT_GROUP = 5;
-    private static final int EDIT_LEVEL = 6;
-    private static final int DISPLAY_MENTORS = 7;
-    private static final int DISPLAY_GROUPS = 8;
-    private static final int DISPLAY_LEVELS = 9;
-    private static final int DELETE_MENTOR = 10;
-    private static final int DELETE_GROUP = 11;
-    private static final int DELETE_LEVEL = 12;
-    private static final int EXIT = 0;
 
     public boolean start(Admin admin) {
+
         adminView.displayAdminMenu();
         int userChoice = adminView.getUserChoice();
 
+        AdminSubmenuOption adminSubmenuOption = AdminSubmenuOption.values()[userChoice];
         adminView.clearTerminal();
-        // TODO: USE ENUM, DECLARE SUBMENUS FOR EACH CLASS
-        switch(userChoice) {
+        switch (adminSubmenuOption) {
 
-            case CREATE_MENTOR: createMentor();
+            case DISPLAY_MENTOR_MANAGEMENT_MENU:
+                startMentorManagementMenu();
                 break;
-            case CREATE_GROUP: createGroup();
+            case DISPLAY_CODECOOLER_MANAGEMENT_MENU:
+                startGroupManagementMenu();
                 break;
-            case CREATE_LEVEL: createLevel();
-                break;
-            case EDIT_MENTOR: editMentor();
-                break;
-            case EDIT_GROUP: editGroup();
-                break;
-            case EDIT_LEVEL: editLevel();
-                break;
-            case DISPLAY_MENTORS: displayMentors();
-                break;
-            case DISPLAY_GROUPS: displayGroups();
-                break;
-            case DISPLAY_LEVELS: displayLevels();
-                break;
-            case DELETE_MENTOR: deleteMentor();
-                break;
-            case DELETE_GROUP: deleteGroup();
-                break;
-            case DELETE_LEVEL: deleteLevel();
+            case DISPLAY_LEVEL_MANAGEMENT_MENU:
+                startLevelManagementMenu();
                 break;
             case EXIT:
                 return false;
-        }
 
+        }
         adminView.enterToContinue();
         return true;
     }
+
+    public boolean startMentorManagementMenu() {
+
+        adminView.displayManagingMentorMenu();
+        int userChoice = adminView.getUserChoice();
+
+        MentorSectionOption mentorSectionOption = MentorSectionOption.values()[userChoice];
+        adminView.clearTerminal();
+        switch (mentorSectionOption) {
+            case CREATE_MENTOR:
+                createMentor();
+                break;
+            case DISPLAY_MENTORS:
+                displayMentors();
+                break;
+            case EDIT_MENTOR:
+                editMentor();
+                break;
+            case DELETE_MENTOR:
+                deleteMentor();
+                break;
+            case BACK_TO_MAIN_MENU:
+                return false;
+
+        }
+        adminView.enterToContinue();
+        return true;
+
+    }
+
+    public boolean startGroupManagementMenu() {
+
+        adminView.displayCodecoolerManagingMenu();
+        int userChoice = adminView.getUserChoice();
+
+        GroupSectionOption groupSectionOption = GroupSectionOption.values()[userChoice];
+        adminView.clearTerminal();
+
+        switch (groupSectionOption) {
+            case CREATE_GROUP:
+                createGroup();
+                break;
+            case EDIT_GROUP:
+                editGroup();
+                break;
+            case DISPLAY_GROUPS:
+                displayGroups();
+                break;
+            case DELETE_GROUP:
+                deleteGroup();
+                break;
+            case BACK_TO_MAIN_MENU:
+                return false;
+        }
+        adminView.enterToContinue();
+        return true;
+    }
+
+    public boolean startLevelManagementMenu() {
+
+        adminView.displayLevelManagingMenu();
+        int userChoice = adminView.getUserChoice();
+
+        LevelSectionOption levelSectionOption = LevelSectionOption.values()[userChoice];
+        adminView.clearTerminal();
+
+        switch (levelSectionOption) {
+            case CREATE_LEVEL:
+                createGroup();
+                break;
+            case EDIT_LEVEL:
+                editGroup();
+                break;
+            case DISPLAY_LEVELS:
+                displayGroups();
+                break;
+            case DELETE_LEVEL:
+                deleteGroup();
+                break;
+            case BACK_TO_MAIN_MENU:
+                return false;
+        }
+        adminView.enterToContinue();
+        return true;
+    }
+
 
     public void createMentor(){
 
