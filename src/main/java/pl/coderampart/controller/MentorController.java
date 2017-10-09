@@ -201,8 +201,8 @@ public class MentorController implements Bootable<Mentor> {
             final int EDIT_DESCR = 2;
             final int EDIT_REWARD = 3;
 
-            ArrayList<String> editQuestOptions = new ArrayList<>(Arrays.asList("Edit name: ", "Edit description: ",
-                                                                               "Edit reward: "));
+            ArrayList<String> editQuestOptions = new ArrayList<>(Arrays.asList("Edit name", "Edit description",
+                                                                               "Edit reward"));
             mentorView.displayOptions(editQuestOptions);
             int userChoice = mentorView.getUserChoice();
             mentorView.clearTerminal();
@@ -225,10 +225,52 @@ public class MentorController implements Bootable<Mentor> {
 
     public void editArtifact(){
 
+        Artifact changedArtifact = null;
+
+        ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
+        String chosenArtifactName = mentorView.getInput("Enter name of an artifact you wish to edit: ");
+
+        for (Artifact artifact: allArtifacts){
+            if(chosenArtifactName.equals(artifact.getName())){
+                changedArtifact = artifact;
+                break;
+            }
+        }
+
+        if (changedArtifact != null){
+
+            final int EDIT_NAME = 1;
+            final int EDIT_DESCRIPTION = 2;
+            final int EDIT_TYPE = 3;
+            final int EDIT_VALUE = 4;
+
+            ArrayList<String> editArtifactOptions = new ArrayList<>(Arrays.asList("Edit name", "Edit description",
+                                                                                  "Edit type", "Edit value"));
+            mentorView.displayOptions(editArtifactOptions);
+            int userChoice = mentorView.getUserChoice();
+            mentorView.clearTerminal();
+
+            switch(userChoice){
+
+                case EDIT_NAME:
+                    changedArtifact.setName(mentorView.getInput("Enter new name: "));
+                    break;
+                case EDIT_DESCRIPTION:
+                    changedArtifact.setDescription(mentorView.getInput("Enter new description: "));
+                    break;
+                case EDIT_TYPE:
+                    changedArtifact.setType(mentorView.getInput("Enter new type: "));
+                    break;
+                case EDIT_VALUE:
+                    changedArtifact.setValue(Integer.valueOf(mentorView.getInput("Enter new value: ")));
+                    break;
+            }
+
+            artifactDAO.update(changedArtifact);
+        }
     }
 
     public void editTeam(){
-        this.displayTeams();
 
         Team changedTeam = null;
 
@@ -242,7 +284,7 @@ public class MentorController implements Bootable<Mentor> {
         }
 
         if(!changedTeam.equals(null)){
-            changedTeam.setName(teamView.getInput("Enter new name: "));
+            changedTeam.setName(mentorView.getInput("Enter new name: "));
         }
 
         teamDAO.update(changedTeam);
@@ -293,8 +335,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void deleteQuest(){
-        this.displayQuests();
-
         ArrayList<Quest> allQuests = questDAO.readAll();
         String chosenQuestName = mentorView.getInput("Enter name of a quest you wish to delete: ");
 
@@ -306,8 +346,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void deleteArtifact(){
-        this.displayArtifacts();
-
         ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
         String chosenArtifactName = mentorView.getInput("Enter name of an artifact you wish to delete: ");
 
@@ -319,8 +357,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void deleteTeam() {
-        this.displayTeams();
-
         ArrayList<Team> allTeams = teamDAO.readAll();
         String chosenTeamName = mentorView.getInput("Enter name of a team you wish to delete: ");
 
