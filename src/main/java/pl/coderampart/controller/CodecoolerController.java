@@ -6,8 +6,6 @@ import pl.coderampart.services.Bootable;
 import pl.coderampart.view.View;
 import java.util.ArrayList;
 
-
-
 public class CodecoolerController implements Bootable<Codecooler> {
 
     private View view = new View();
