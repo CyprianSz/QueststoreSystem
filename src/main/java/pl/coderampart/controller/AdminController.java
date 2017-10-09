@@ -3,13 +3,13 @@ package pl.coderampart.controller;
 import pl.coderampart.DAO.*;
 import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
-import pl.coderampart.view.View;
+import pl.coderampart.view.AdminView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AdminController implements Bootable<Admin> {
 
-    private View view = new View();
+    private AdminView adminView = new AdminView();
     private MentorDAO mentorDAO = new MentorDAO();
     private GroupDAO groupDAO = new GroupDAO();
     private LevelDAO levelDAO = new LevelDAO();
@@ -29,10 +29,10 @@ public class AdminController implements Bootable<Admin> {
     private static final int EXIT = 0;
 
     public boolean start(Admin admin) {
-        view.displayAdminMenu();
-        int userChoice = view.getUserChoice();
+        adminView.displayAdminMenu();
+        int userChoice = adminView.getUserChoice();
 
-        view.clearTerminal();
+        adminView.clearTerminal();
         // TODO: USE ENUM, DECLARE SUBMENUS FOR EACH CLASS
         switch(userChoice) {
 
@@ -64,7 +64,7 @@ public class AdminController implements Bootable<Admin> {
                 return false;
         }
 
-        view.enterToContinue();
+        adminView.enterToContinue();
         return true;
     }
 
@@ -72,14 +72,14 @@ public class AdminController implements Bootable<Admin> {
 
         this.displayMentors();
 
-        String[] mentorData = view.getUserData();
+        String[] mentorData = adminView.getUserData();
 
-        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], view.stringToDate(mentorData[2]),
+        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], adminView.stringToDate(mentorData[2]),
                                       mentorData[3], mentorData[4]);
 
         this.displayGroups();
         ArrayList<Group> allGroups = groupDAO.readAll();
-        String chosenGroupName = view.getInput("Enter name of a group you wish to assign this mentor to: ");
+        String chosenGroupName = adminView.getInput("Enter name of a group you wish to assign this mentor to: ");
         for (Group group: allGroups){
             String groupName = group.getName();
 
@@ -93,7 +93,7 @@ public class AdminController implements Bootable<Admin> {
 
     public void createGroup(){
         this.displayGroups();
-        String[] groupData = view.getGroupData();
+        String[] groupData = adminView.getGroupData();
 
         Group newGroup = new Group(groupData[0]);
 
@@ -102,7 +102,7 @@ public class AdminController implements Bootable<Admin> {
 
     public void createLevel(){
         this.displayLevels();
-        String[] levelData = view.getLevelData();
+        String[] levelData = adminView.getLevelData();
 
         Level newLevel = new Level(Integer.parseInt(levelData[0]), Integer.parseInt(levelData[1]), levelData[2]);
 
@@ -115,7 +115,7 @@ public class AdminController implements Bootable<Admin> {
         Mentor changedMentor = null;
 
         ArrayList<Mentor> allMentors = mentorDAO.readAll();
-        String chosenMentorEmail = view.getInput("Enter email of a mentor you wish to edit: ");
+        String chosenMentorEmail = adminView.getInput("Enter email of a mentor you wish to edit: ");
 
         for (Mentor mentor: allMentors){
             if (chosenMentorEmail.equals(mentor.getEmail())){
@@ -134,25 +134,25 @@ public class AdminController implements Bootable<Admin> {
             ArrayList<String> editMentorOptions = new ArrayList<>(Arrays.asList("Edit first name", "Edit last name,",
                                                                                 "Edit email", "Edit password",
                                                                                 "Edit birthdate"));
-            view.displayOptions(editMentorOptions);
-            int userChoice = view.getUserChoice();
-            view.clearTerminal();
+            adminView.displayOptions(editMentorOptions);
+            int userChoice = adminView.getUserChoice();
+            adminView.clearTerminal();
 
             switch(userChoice){
                 case EDIT_FIRSTNAME:
-                    changedMentor.setFirstName(view.getInput("Enter new name: "));
+                    changedMentor.setFirstName(adminView.getInput("Enter new name: "));
                     break;
                 case EDIT_LASTNAME:
-                    changedMentor.setLastName(view.getInput("Enter new name: "));
+                    changedMentor.setLastName(adminView.getInput("Enter new name: "));
                     break;
                 case EDIT_EMAIL:
-                    changedMentor.setEmail(view.getRegExInput(View.emailRegEx, "Enter new email: "));
+                    changedMentor.setEmail(adminView.getRegExInput(adminView.emailRegEx, "Enter new email: "));
                     break;
                 case EDIT_PASSWORD:
-                    changedMentor.setPassword(view.getInput("Enter new password: "));
+                    changedMentor.setPassword(adminView.getInput("Enter new password: "));
                     break;
                 case EDIT_BIRTHDATE:
-                    changedMentor.setDateOfBirth(view.stringToDate(view.getRegExInput(View.dateRegEx,
+                    changedMentor.setDateOfBirth(adminView.stringToDate(adminView.getRegExInput(adminView.dateRegEx,
                                                                                       "Enter new date")));
                     break;
             }
@@ -167,7 +167,7 @@ public class AdminController implements Bootable<Admin> {
         Group changedGroup = null;
 
         ArrayList<Group> allGroups = groupDAO.readAll();
-        String chosenGroupName = view.getInput("Enter name of a group you wish to edit: ");
+        String chosenGroupName = adminView.getInput("Enter name of a group you wish to edit: ");
 
         for (Group group: allGroups){
             if (chosenGroupName.equals(group.getName())){
@@ -176,7 +176,7 @@ public class AdminController implements Bootable<Admin> {
         }
 
         if(!changedGroup.equals(null)){
-            changedGroup.setName(view.getInput("Enter new name: "));
+            changedGroup.setName(adminView.getInput("Enter new name: "));
         }
 
         groupDAO.update(changedGroup);
@@ -188,7 +188,7 @@ public class AdminController implements Bootable<Admin> {
         Level changedLevel = null;
 
         ArrayList<Level> allLevels = levelDAO.readAll();
-        String chosenLevelRank = view.getInput("Enter rank of a level you wish to edit: ");
+        String chosenLevelRank = adminView.getInput("Enter rank of a level you wish to edit: ");
 
         for (Level level: allLevels){
             if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
@@ -203,19 +203,19 @@ public class AdminController implements Bootable<Admin> {
 
             ArrayList<String> editLevelOptions = new ArrayList<>(Arrays.asList("Edit rank", "Edit required experience,",
                                                                                 "Edit description"));
-            view.displayOptions(editLevelOptions);
-            int userChoice = view.getUserChoice();
-            view.clearTerminal();
+            adminView.displayOptions(editLevelOptions);
+            int userChoice = adminView.getUserChoice();
+            adminView.clearTerminal();
 
             switch(userChoice){
                 case EDIT_RANK:
-                    changedLevel.setRank(Integer.parseInt(view.getInput("Enter new rank: ")));
+                    changedLevel.setRank(Integer.parseInt(adminView.getInput("Enter new rank: ")));
                     break;
                 case EDIT_REQEXP:
-                    changedLevel.setRequiredExperience(Integer.parseInt(view.getInput("Enter new value: ")));
+                    changedLevel.setRequiredExperience(Integer.parseInt(adminView.getInput("Enter new value: ")));
                     break;
                 case EDIT_DESCRIPTION:
-                    changedLevel.setDescription(view.getInput("Enter new email: "));
+                    changedLevel.setDescription(adminView.getInput("Enter new email: "));
                     break;
             }
             levelDAO.update(changedLevel);
@@ -230,7 +230,7 @@ public class AdminController implements Bootable<Admin> {
             mentorData.add(mentor.toString());
         }
 
-        view.outputTable(mentorData);
+        adminView.outputTable(mentorData);
     }
 
     public void displayGroups(){
@@ -241,7 +241,7 @@ public class AdminController implements Bootable<Admin> {
             groupStrings.add(group.toString());
         }
 
-        view.outputTable(groupStrings);
+        adminView.outputTable(groupStrings);
     }
 
     public void displayLevels(){
@@ -252,14 +252,14 @@ public class AdminController implements Bootable<Admin> {
             levelStrings.add(level.toString());
         }
 
-        view.outputTable(levelStrings);
+        adminView.outputTable(levelStrings);
     }
 
     public void deleteMentor() {
         this.displayMentors();
 
         ArrayList<Mentor> allMentors = mentorDAO.readAll();
-        String chosenMentorEmail = view.getInput("Enter email of a mentor you wish to delete: ");
+        String chosenMentorEmail = adminView.getInput("Enter email of a mentor you wish to delete: ");
 
         for (Mentor mentor: allMentors){
             if (chosenMentorEmail.equals(mentor.getEmail())){
@@ -273,7 +273,7 @@ public class AdminController implements Bootable<Admin> {
         this.displayGroups();
 
         ArrayList<Group> allGroups = groupDAO.readAll();
-        String chosenGroupName = view.getInput("Enter name of a group you wish to edit: ");
+        String chosenGroupName = adminView.getInput("Enter name of a group you wish to edit: ");
 
         for (Group group: allGroups){
             if (chosenGroupName.equals(group.getName())){
@@ -286,7 +286,7 @@ public class AdminController implements Bootable<Admin> {
         this.displayLevels();
 
         ArrayList<Level> allLevels = levelDAO.readAll();
-        String chosenLevelRank = view.getInput("Enter rank of a level you wish to edit: ");
+        String chosenLevelRank = adminView.getInput("Enter rank of a level you wish to edit: ");
 
         for (Level level: allLevels){
             if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
