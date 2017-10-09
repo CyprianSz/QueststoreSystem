@@ -108,7 +108,7 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         statement.setString(6, mentor.getPassword());
         statement.setString(7, mentor.getGroup().getID());
 
-        return statement;`
+        return statement;
     }
 
     private Mentor createMentorFromResultSet(ResultSet resultSet) throws Exception {

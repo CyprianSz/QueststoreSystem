@@ -1,7 +1,5 @@
 package pl.coderampart.view;
 
-import pl.coderampart.model.Item;
-
 import java.util.Locale;
 import java.util.Scanner;
 import java.time.LocalDate;
@@ -17,34 +15,6 @@ public class View {
 
     public static final String dateRegEx = "^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
 
-    public void displayAdminMenu(){
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new mentor.", "Create new group.",
-                                                                  "Create new experience level.",
-                                                                  "Edit mentor.", "Edit group.", "Edit experience level",
-                                                                  "Display all mentors.", "Display all groups.",
-                                                                  "Display all experience levels.", "Delete mentor.",
-                                                                  "Delete group.", "Delete experience level."));
-
-        displayOptions(options);
-        this.output("\n0. Exit");
-    }
-
-    public void displayMentorMenu() {
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new Codecooler", "Add quest", "Update quest",
-                                                                  "Set quest category", "Mark quest", "Add artifact", "Update artifact",
-                                                                  "Set artifact type", "Mark artifact", "Display wallet details"));
-
-        displayOptions(options);
-        this.output("\n0. Exit");
-    }
-
-    public void displayCodecoolerMenu() {
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Display wallet", "Buy artifact", "Buy artifact with group",
-                                                                  "Display level"));
-
-        displayOptions(options);
-        this.output("\n0. Exit");
-    }
 
     public void displayOptions(ArrayList<String> options) {
         Integer number = 1;
@@ -135,55 +105,7 @@ public class View {
        return LocalDate.parse(date, formatter);
    }
 
-   public String[] getQuestData() {
-       String name = getInput("Name: ");
-       String reward = getInput("Reward (coolcoins): ");
 
-       String[] questData = new String[] {name, reward};
-
-       return questData;
-   }
-
-   public String[] getArtifactData() {
-       String name = getInput("Name: ");
-       String value = getInput("Value (coolcoins): ");
-
-       String[] artifactData = new String[] {name, value};
-
-       return artifactData;
-   }
-
-   public String[] getGroupData() {
-        String name = getInput("Name: ");
-
-        String[] groupData = new String[] {name};
-
-        return groupData;
-   }
-
-   public String[] getLevelData(){
-        String rank = getInput("Rank: ");
-        String requiredExperience = getInput("Required experience: ");
-        String description = getInput("Description: ");
-
-        String[] levelData = new String[] {rank, requiredExperience, description};
-
-        return levelData;
-   }
-
-   public String chooseQuestCategory() {
-       // Demo:
-       this.output("Category:\n1. Basic\n2. Extra\n");
-       String category = "Basic";
-       return category;
-   }
-
-   public String chooseArtifactType() {
-       // Demo:
-       this.output("Category:\n1. Basic\n2. Magic\n");
-       String type = "Magic";
-       return type;
-   }
 
     public void displayLogingInfo() {
         Scanner inputScanner = new Scanner(System.in);
@@ -253,12 +175,6 @@ public class View {
         }
     }
 
-    public void displayUserItems(ArrayList<Item> userItems) {
-        this.output("\nYour items:");
-        for (Item item: userItems) {
-            this.output(item.toString());
-        }
-    }
 
     public void sayGoodbye(){
         this.output("\nGOOD BYE\n");
