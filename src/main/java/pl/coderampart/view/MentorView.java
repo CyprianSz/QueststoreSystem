@@ -28,6 +28,8 @@ public class MentorView extends View{
 
     public String[] getArtifactData() {
         String name = getInput("Name: ");
+        String description = getInput("Description: ");
+        String type = getInput("Type (single/group): ");
         String value = getInput("Value (coolcoins): ");
 
         String[] artifactData = new String[] {name, value};
