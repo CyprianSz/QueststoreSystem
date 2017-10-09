@@ -147,7 +147,14 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void displayTeams(){
+        ArrayList<Team> allTeams = teamDAO.readAll();
+        ArrayList<String> teamStrings = new ArrayList<String>();
 
+        for (Team team: allTeams){
+            teamStrings.add(team.toString());
+        }
+
+        view.outputTable(teamStrings);
     }
 
     public void deleteQuest(){
