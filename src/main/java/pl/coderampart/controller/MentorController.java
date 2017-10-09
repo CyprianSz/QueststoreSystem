@@ -158,7 +158,16 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void deleteQuest(){
+        this.displayQuests();
 
+        ArrayList<Quest> allQuests = questDAO.readAll();
+        String chosenQuestName = view.getInput("Enter name of a quest you wish to delete: ");
+
+        for (Quest quest: allQuests){
+            if (chosenQuestName.equals(quest.getName())){
+                questDAO.delete(quest);
+            }
+        }
     }
 
     public void deleteArtifact(){
