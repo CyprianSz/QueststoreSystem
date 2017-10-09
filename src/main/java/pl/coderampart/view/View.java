@@ -1,5 +1,7 @@
 package pl.coderampart.view;
 
+import pl.coderampart.DAO.ArtifactDAO;
+import pl.coderampart.model.Artifact;
 import pl.coderampart.model.Item;
 
 import java.util.Locale;
@@ -153,6 +155,17 @@ public class View {
        return artifactData;
    }
 
+    public void displayArtifacts(ArtifactDAO artifactDAO) {
+        ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
+        ArrayList<String> artifactStrings = new ArrayList<String>();
+
+        for (Artifact artifact: allArtifacts){
+            artifactStrings.add(artifact.toString());
+        }
+
+        this.outputTable(artifactStrings);
+    }
+
    public String[] getGroupData() {
         String name = getInput("Name: ");
 
@@ -259,6 +272,8 @@ public class View {
             this.output(item.toString());
         }
     }
+
+
 
     public void sayGoodbye(){
         this.output("\nGOOD BYE\n");

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class CodecoolerController implements Bootable<Codecooler> {
 
     private View view = new View();
+    private ArtifactDAO artifactDAO = new ArtifactDAO();
 
     private static final int DISPLAY_WALLET = 1;
     private static final int BUY_ARTIFACT = 2;
@@ -59,8 +60,12 @@ public class CodecoolerController implements Bootable<Codecooler> {
     }
 
     public void buyArtifact() {
-        // TODO:
-        // DEMO:
+        view.displayArtifacts(artifactDAO);
+
+        view.getInput("Enter artifact name: ");
+
+
+
         view.output("Current balance: 500cc");
         view.output("Choose an item:");
         view.output("\n1. Combat training, 50cc"
@@ -84,11 +89,8 @@ public class CodecoolerController implements Bootable<Codecooler> {
 
     public void updateLevel(Codecooler codecooler) {
         LevelDAO levelDao = new LevelDAO();
-
-        ArrayList<Level> levelList= levelDao.readAll();
-
-        Integer playerExperience;
-        playerExperience = codecooler.getWallet().getEarnedCoins();
+        ArrayList<Level> levelList = levelDao.readAll();
+        Integer playerExperience = codecooler.getWallet().getEarnedCoins();
 
         for (Level level: levelList) {
             if (playerExperience >= level.getRequiredExperience()) {

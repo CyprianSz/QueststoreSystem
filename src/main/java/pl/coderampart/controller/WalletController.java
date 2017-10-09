@@ -7,6 +7,7 @@ import pl.coderampart.model.Wallet;
 public class WalletController {
 
     private WalletDAO walletDAO = new WalletDAO();
+    private CodecoolerController codecoolerController = new CodecoolerController();
 
     public void changeBalance(Codecooler codecooler, Integer coins) {
         Integer balance = codecooler.getWallet().getBalance();
@@ -18,6 +19,7 @@ public class WalletController {
         wallet.setBalance(balance);
         wallet.setEarnedCoins(earnedCoins);
 
+        codecoolerController.updateLevel(codecooler);
         walletDAO.update(wallet);
     }
 }
