@@ -1,5 +1,6 @@
 package pl.coderampart.DAO;
 
+import com.sun.istack.internal.Nullable;
 import pl.coderampart.model.Artifact;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

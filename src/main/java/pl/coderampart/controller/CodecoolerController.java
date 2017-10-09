@@ -61,25 +61,6 @@ public class CodecoolerController implements Bootable<Codecooler> {
         codecoolerView.displayUserItems(userItems);
     }
 
-    public void buyArtifact(Codecooler codecooler) {
-        codecoolerView.displayArtifacts(artifactDAO);
-        String name = codecoolerView.getInput("Enter artifact name: ");
-        Artifact artifact = artifactDAO.getByName(name);
-        Integer balance = codecooler.getWallet().getBalance();
-        Integer artifactValue = artifact.getValue();
-
-        if (artifact == null) {
-            codecoolerView.output("No such artifact");
-        } else if (balance > artifactValue) {
-            Item item = new Item(artifact, codecooler.getWallet());
-            itemDAO.create(item);
-            codecoolerView.output("Bought: \n" + item.toString());
-            walletController.changeBalance(codecooler, artifact.getValue());
-        } else {
-            codecoolerView.output("To expensive");
-        }
-    }
-
     public void buyWithGroup(){
         // TODO: Demo:
         codecoolerView.output("Not enough codecoolers in your group. Recruit some noobs");
@@ -87,6 +68,24 @@ public class CodecoolerController implements Bootable<Codecooler> {
 
     public void displayLevel(Codecooler codecooler) {
         codecoolerView.output(codecooler.getLevel().toString());
+    }
+
+    public void buyArtifact(Codecooler codecooler) {
+        codecoolerView.displayArtifacts( artifactDAO );
+        String name = codecoolerView.getInput( "\nEnter artifact name: " );
+        Artifact artifact = artifactDAO.getByName( name );
+        Integer balance = codecooler.getWallet().getBalance();
+
+        if (artifact == null) {
+            codecoolerView.output( "No such artifact" );
+        } else if (balance > artifact.getValue()) {
+            Item item = new Item( artifact, codecooler.getWallet() );
+            itemDAO.create( item );
+            codecoolerView.output( "Bought: \n" + item.toString() );
+            walletController.changeBalance( codecooler, artifact.getValue() * (-1) );
+        } else {
+            codecoolerView.output( "Too expensive" );
+        }
     }
 
     public void updateLevel(Codecooler codecooler) {
