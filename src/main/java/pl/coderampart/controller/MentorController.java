@@ -133,6 +133,53 @@ public class MentorController implements Bootable<Mentor> {
 
     public void editCodecooler(){
 
+        Codecooler changedCodecooler = null;
+
+        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
+        String chosenCodecoolerEmail = mentorView.getInput("Enter email of a codecooler you wish to edit: ");
+
+        for (Codecooler codecooler: allCodecoolers){
+            if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
+                changedCodecooler = codecooler;
+                break;
+            }
+        }
+
+        if (changedCodecooler != null) {
+            final int EDIT_FIRST = 1;
+            final int EDIT_LAST = 2;
+            final int EDIT_EMAIL = 3;
+            final int EDIT_PASSWORD = 4;
+            final int EDIT_BIRTHDATE = 5;
+
+            ArrayList<String> editCodecoolerOptions = new ArrayList<>(Arrays.asList("Edit first name", "Edit last name,",
+                    "Edit email", "Edit password",
+                    "Edit birthdate"));
+            mentorView.displayOptions(editCodecoolerOptions);
+            int userChoice = mentorView.getUserChoice();
+            mentorView.clearTerminal();
+
+            switch(userChoice){
+                case EDIT_FIRST:
+                    changedCodecooler.setFirstName(mentorView.getInput("Enter new name: "));
+                    break;
+                case EDIT_LAST:
+                    changedCodecooler.setLastName(mentorView.getInput("Enter new name: "));
+                    break;
+                case EDIT_EMAIL:
+                    changedCodecooler.setEmail(mentorView.getRegExInput(mentorView.emailRegEx, "Enter new email: "));
+                    break;
+                case EDIT_PASSWORD:
+                    changedCodecooler.setPassword(mentorView.getInput("Enter new password: "));
+                    break;
+                case EDIT_BIRTHDATE:
+                    changedCodecooler.setDateOfBirth(mentorView.stringToDate(mentorView.getRegExInput(mentorView.dateRegEx,
+                            "Enter new date")));
+                    break;
+            }
+            codecoolerDAO.update(changedCodecooler);
+
+        }
     }
 
     public void editQuest(){
