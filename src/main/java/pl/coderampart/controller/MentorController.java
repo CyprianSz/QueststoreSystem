@@ -191,7 +191,24 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void editTeam(){
+        this.displayTeams();
 
+        Team changedTeam = null;
+
+        ArrayList<Team> allTeams = teamDAO.readAll();
+        String chosenTeamName = mentorView.getInput("Enter name of a group you wish to edit: ");
+
+        for (Team team: allTeams){
+            if (chosenTeamName.equals(team.getName())){
+                changedTeam = team;
+            }
+        }
+
+        if(!changedTeam.equals(null)){
+            changedTeam.setName(teamView.getInput("Enter new name: "));
+        }
+
+        teamDAO.update(changedTeam);
     }
 
     public void displayCodecoolers(){
