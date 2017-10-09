@@ -136,7 +136,14 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void displayArtifacts(){
+        ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
+        ArrayList<String> artifactStrings = new ArrayList<String>();
 
+        for (Artifact artifact: allArtifacts){
+            artifactStrings.add(artifact.toString());
+        }
+
+        view.outputTable(artifactStrings);
     }
 
     public void displayTeams(){
