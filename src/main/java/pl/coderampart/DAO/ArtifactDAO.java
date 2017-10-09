@@ -43,8 +43,6 @@ public class ArtifactDAO extends AbstractDAO {
             connection.close();
         } catch (Exception e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
 
         return artifactList;

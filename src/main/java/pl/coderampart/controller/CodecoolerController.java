@@ -3,12 +3,12 @@ package pl.coderampart.controller;
 import pl.coderampart.DAO.*;
 import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
-import pl.coderampart.view.View;
+import pl.coderampart.view.CodecoolerView;
 import java.util.ArrayList;
 
 public class CodecoolerController implements Bootable<Codecooler> {
 
-    private View view = new View();
+    private CodecoolerView codecoolerView = new CodecoolerView();
     private ArtifactDAO artifactDAO = new ArtifactDAO();
 
     private static final int DISPLAY_WALLET = 1;
@@ -18,10 +18,10 @@ public class CodecoolerController implements Bootable<Codecooler> {
     private static final int EXIT = 0;
 
     public boolean start(Codecooler codecooler) {
-        view.displayCodecoolerMenu();
-        int userChoice = view.getUserChoice();
+        codecoolerView.displayCodecoolerMenu();
+        int userChoice = codecoolerView.getUserChoice();
 
-        view.clearTerminal();
+        codecoolerView.clearTerminal();
 
         switch(userChoice) {
             case DISPLAY_WALLET:
@@ -39,7 +39,7 @@ public class CodecoolerController implements Bootable<Codecooler> {
             case EXIT:
                 return false;
         }
-        view.enterToContinue();
+        codecoolerView.enterToContinue();
         return true;
     }
 
@@ -55,36 +55,23 @@ public class CodecoolerController implements Bootable<Codecooler> {
         String walletData;
         walletData = codecooler.getWallet().toString();
 
-        view.output(walletData);
-        view.displayUserItems(userItems);
+        codecoolerView.output(walletData);
+        codecoolerView.displayUserItems(userItems);
     }
 
     public void buyArtifact() {
-        view.displayArtifacts(artifactDAO);
+        codecoolerView.displayArtifacts(artifactDAO);
 
-        view.getInput("Enter artifact name: ");
-
-
-
-        view.output("Current balance: 500cc");
-        view.output("Choose an item:");
-        view.output("\n1. Combat training, 50cc"
-                  + "\n2. Sanctuary, 300cc"
-                  + "\n3. Time Travel, 500cc");
-
-        Integer artifactChoice = view.getUserChoice();
-        if (artifactChoice >= 0) {
-            view.output("Item bought!");
-        }
+        codecoolerView.getInput("Enter artifact name: ");
     }
 
     public void buyWithGroup(){
         // TODO: Demo:
-        view.output("Not enough codecoolers in your group. Recruit some noobs");
+        codecoolerView.output("Not enough codecoolers in your group. Recruit some noobs");
     }
 
     public void displayLevel(Codecooler codecooler) {
-        view.output(codecooler.getLevel().toString());
+        codecoolerView.output(codecooler.getLevel().toString());
     }
 
     public void updateLevel(Codecooler codecooler) {
