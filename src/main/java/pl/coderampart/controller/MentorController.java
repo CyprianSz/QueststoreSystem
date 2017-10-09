@@ -283,7 +283,7 @@ public class MentorController implements Bootable<Mentor> {
             }
         }
 
-        if(!changedTeam.equals(null)){
+        if (changedTeam != null){
             changedTeam.setName(mentorView.getInput("Enter new name: "));
         }
 
