@@ -21,6 +21,8 @@ public class Wallet {
     public String getID() { return this.ID; }
     public Integer getBalance() { return this.balance; }
     public Integer getEarnedCoins() { return this.earnedCoins; }
+    public void setBalance(Integer balance) { this.balance = balance; }
+    public void setEarnedCoins(Integer earnedCoins) { this.earnedCoins = earnedCoins; }
 
 
     public String toString() {

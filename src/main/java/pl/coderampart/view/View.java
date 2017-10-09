@@ -1,12 +1,14 @@
 package pl.coderampart.view;
 
+import pl.coderampart.DAO.ArtifactDAO;
+import pl.coderampart.model.Artifact;
+
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.io.IOException;
 
 public class View {
 
@@ -23,6 +25,17 @@ public class View {
             this.output(String.format("%d. %s", number, option));
             number++;
         }
+    }
+
+    public void displayArtifacts(ArtifactDAO artifactDAO) {
+        ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
+        ArrayList<String> artifactStrings = new ArrayList<String>();
+
+        for (Artifact artifact: allArtifacts){
+            artifactStrings.add(artifact.toString());
+        }
+
+        this.outputTable(artifactStrings);
     }
 
     public int getUserChoice() {
@@ -105,8 +118,6 @@ public class View {
        return LocalDate.parse(date, formatter);
    }
 
-
-
     public void displayLogingInfo() {
         Scanner inputScanner = new Scanner(System.in);
         this.clearTerminal();
@@ -174,7 +185,6 @@ public class View {
             this.output(record);
         }
     }
-
 
     public void sayGoodbye(){
         this.output("\nGOOD BYE\n");

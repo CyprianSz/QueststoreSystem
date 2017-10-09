@@ -12,5 +12,4 @@ abstract class AbstractDAO {
 
         return connection;
     }
-
 }

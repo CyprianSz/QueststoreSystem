@@ -1,3 +1,4 @@
+--  TODO: change codecoolers to mentors !
 INSERT INTO codecoolers
 (id, first_name, last_name, date_of_birth, email, password, group_id)
 VALUES

@@ -6,12 +6,10 @@ import pl.coderampart.services.Bootable;
 import pl.coderampart.view.CodecoolerView;
 import java.util.ArrayList;
 
-
-
-
 public class CodecoolerController implements Bootable<Codecooler> {
 
     private CodecoolerView codecoolerView = new CodecoolerView();
+    private ArtifactDAO artifactDAO = new ArtifactDAO();
 
     private static final int DISPLAY_WALLET = 1;
     private static final int BUY_ARTIFACT = 2;
@@ -62,18 +60,9 @@ public class CodecoolerController implements Bootable<Codecooler> {
     }
 
     public void buyArtifact() {
-        // TODO:
-        // DEMO:
-        codecoolerView.output("Current balance: 500cc");
-        codecoolerView.output("Choose an item:");
-        codecoolerView.output("\n1. Combat training, 50cc"
-                  + "\n2. Sanctuary, 300cc"
-                  + "\n3. Time Travel, 500cc");
+        codecoolerView.displayArtifacts(artifactDAO);
 
-        Integer artifactChoice = codecoolerView.getUserChoice();
-        if (artifactChoice >= 0) {
-            codecoolerView.output("Item bought!");
-        }
+        codecoolerView.getInput("Enter artifact name: ");
     }
 
     public void buyWithGroup(){
@@ -87,11 +76,8 @@ public class CodecoolerController implements Bootable<Codecooler> {
 
     public void updateLevel(Codecooler codecooler) {
         LevelDAO levelDao = new LevelDAO();
-
-        ArrayList<Level> levelList= levelDao.readAll();
-
-        Integer playerExperience;
-        playerExperience = codecooler.getWallet().getEarnedCoins();
+        ArrayList<Level> levelList = levelDao.readAll();
+        Integer playerExperience = codecooler.getWallet().getEarnedCoins();
 
         for (Level level: levelList) {
             if (playerExperience >= level.getRequiredExperience()) {
