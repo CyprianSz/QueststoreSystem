@@ -18,15 +18,18 @@ public class MentorView extends View{
 
     public String[] getQuestData() {
         String name = getInput("Name: ");
+        String description = getInput("Description: ");
         String reward = getInput("Reward (coolcoins): ");
 
-        String[] questData = new String[] {name, reward};
+        String[] questData = new String[] {name, description, reward};
 
         return questData;
     }
 
     public String[] getArtifactData() {
         String name = getInput("Name: ");
+        String description = getInput("Description: ");
+        String type = getInput("Type (single/group): ");
         String value = getInput("Value (coolcoins): ");
 
         String[] artifactData = new String[] {name, value};
