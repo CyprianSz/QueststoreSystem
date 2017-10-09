@@ -184,6 +184,43 @@ public class MentorController implements Bootable<Mentor> {
 
     public void editQuest(){
 
+        Quest changedQuest = null;
+
+        ArrayList<Quest> allQuests = questDAO.readAll();
+        String chosenQuestName = mentorView.getInput("Enter name of a quest you wish to edit: ");
+        for (Quest quest: allQuests){
+            if(chosenQuestName.equals(quest.getName())){
+                changedQuest = quest;
+                break;
+            }
+        }
+
+        if (changedQuest != null){
+
+            final int EDIT_NAME = 1;
+            final int EDIT_DESCR = 2;
+            final int EDIT_REWARD = 3;
+
+            ArrayList<String> editQuestOptions = new ArrayList<>(Arrays.asList("Edit name: ", "Edit description: ",
+                                                                               "Edit reward: "));
+            mentorView.displayOptions(editQuestOptions);
+            int userChoice = mentorView.getUserChoice();
+            mentorView.clearTerminal();
+
+            switch(userChoice){
+                case EDIT_NAME:
+                    changedQuest.setName(mentorView.getInput("Enter new name: "));
+                    break;
+                case EDIT_DESCR:
+                    changedQuest.setDescription(mentorView.getInput("Enter new description: "));
+                    break;
+                case EDIT_REWARD:
+                    changedQuest.setReward(Integer.valueOf(mentorView.getInput("Enter new reward: ")));
+                    break;
+            }
+
+            questDAO.update(changedQuest);
+        }
     }
 
     public void editArtifact(){
