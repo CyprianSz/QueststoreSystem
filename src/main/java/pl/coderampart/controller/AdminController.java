@@ -8,6 +8,8 @@ import pl.coderampart.enums.AdminSubmenuOption;
 import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.AdminView;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -151,7 +153,11 @@ public class AdminController implements Bootable<Admin> {
             }
         }
 
+        try {
         mentorDAO.create(newMentor);
+        } catch (SQLException e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
     }
 
     public void createGroup(){
@@ -320,16 +326,18 @@ public class AdminController implements Bootable<Admin> {
 
     public void deleteMentor() {
         this.displayMentors();
+        try{
 
         ArrayList<Mentor> allMentors = mentorDAO.readAll();
         String chosenMentorEmail = adminView.getInput("Enter email of a mentor you wish to delete: ");
-
         for (Mentor mentor: allMentors){
             if (chosenMentorEmail.equals(mentor.getEmail())){
                 mentorDAO.delete(mentor);
                 break;
             }
         }
+        }catch ()
+
     }
 
     public void deleteGroup(){

@@ -4,6 +4,7 @@ package pl.coderampart.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import pl.coderampart.model.*;
@@ -14,8 +15,11 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
 
     private GroupDAO groupDAO = new GroupDAO();
     private View view = new View();
+//    private Connection connection;
 
-    public Mentor getLogged(String email, String password) throws Exception{
+
+
+    public Mentor getLogged(String email, String password) throws SQLException{
         Mentor mentor = null;
 
         Connection connection = this.connectToDataBase();
@@ -32,74 +36,64 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         return mentor;
     }
 
-    public ArrayList<Mentor> readAll() {
+    public ArrayList<Mentor> readAll() throws SQLException{
         ArrayList<Mentor> mentorList = new ArrayList<>();
 
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "SELECT * FROM mentors;";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
+        Connection connection = this.connectToDataBase();
+        String query = "SELECT * FROM mentors;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                Mentor mentor = this.createMentorFromResultSet(resultSet);
-                mentorList.add(mentor);
-            }
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        while (resultSet.next()) {
+            Mentor mentor = this.createMentorFromResultSet(resultSet);
+            mentorList.add(mentor);
         }
+        connection.close();
 
         return mentorList;
     }
 
-    public void create(Mentor mentor) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "INSERT INTO mentors VALUES (?, ?, ?, ?, ?, ?, ?);";
-            PreparedStatement statement = connection.prepareStatement(query);
-            PreparedStatement setStatement = setPreparedStatement(statement, mentor);
+    public void create(Mentor mentor) throws SQLException {
 
-            setStatement.executeUpdate();
+        Connection connection = this.connectToDataBase();
+        String query = "INSERT INTO mentors VALUES (?, ?, ?, ?, ?, ?, ?);";
+        PreparedStatement statement = connection.prepareStatement(query);
+        PreparedStatement setStatement = setPreparedStatement(statement, mentor);
 
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        setStatement.executeUpdate();
+
+        connection.close();
+
     }
 
-    public void update(Mentor mentor) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "UPDATE mentors SET id = ?, first_name = ?, " +
-                    "last_name = ?, date_of_birth = ?, email = ?, " +
-                    "password = ?, group_id = ?;";
+    public void update(Mentor mentor) throws SQLException{
 
-            PreparedStatement statement = connection.prepareStatement(query);
-            PreparedStatement setStatement = setPreparedStatement(statement, mentor);
-            setStatement.executeUpdate();
+        Connection connection = this.connectToDataBase();
+        String query = "UPDATE mentors SET id = ?, first_name = ?, " +
+                "last_name = ?, date_of_birth = ?, email = ?, " +
+                "password = ?, group_id = ?;";
 
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        PreparedStatement statement = connection.prepareStatement(query);
+        PreparedStatement setStatement = setPreparedStatement(statement, mentor);
+        setStatement.executeUpdate();
+
+        connection.close();
+
     }
 
-    public void delete(Mentor mentor) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM mentors WHERE id = ?;";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, mentor.getID());
-            statement.executeUpdate();
+    public void delete(Mentor mentor) throws SQLException {
 
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        Connection connection = this.connectToDataBase();
+        String query = "DELETE FROM mentors WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, mentor.getID());
+        statement.executeUpdate();
+
+        connection.close();
+
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Mentor mentor) throws Exception {
+    private PreparedStatement setPreparedStatement(PreparedStatement statement, Mentor mentor) throws SQLException {
         statement.setString(1, mentor.getID());
         statement.setString(2, mentor.getFirstName());
         statement.setString(3, mentor.getLastName());
@@ -111,7 +105,7 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         return statement;
     }
 
-    private Mentor createMentorFromResultSet(ResultSet resultSet) throws Exception {
+    private Mentor createMentorFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName = resultSet.getString("last_name");
