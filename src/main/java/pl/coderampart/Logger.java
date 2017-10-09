@@ -50,7 +50,7 @@ public class Logger {
                     proceed = this.adminController.start(loggedAdmin);
                 }
             } else {
-                view.output( "Wrong data" );
+                view.output("Wrong data");
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());

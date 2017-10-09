@@ -19,11 +19,10 @@ public class Mentor extends AbstractUser {
 
     public String toString() {
         String userData = "\nID: " + this.getID()
-                + "\nname: " + this.getFirstName()
-                + "\ndate of birth: " + this.getDateOfBirth()
-                + "\nsurname: " + this.getLastName()
-                + "\nemail: " + this.getEmail()
-                + "\ngroup: " + this.getGroup().getName();
+                        + "\nname: " + this.getFirstName()
+                        + "\ndate of birth: " + this.getDateOfBirth()
+                        + "\nsurname: " + this.getLastName()
+                        + "\nemail: " + this.getEmail();
 
         return userData;
     }
