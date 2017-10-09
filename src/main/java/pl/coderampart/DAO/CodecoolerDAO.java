@@ -130,8 +130,6 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
         String teamID = resultSet.getString("team_ID");
         Team teamObject = this.teamDAO.getByID(teamID);
 
-
-
         return new Codecooler(ID, firstName, lastName, dateOfBirthObject, email, password,
                              walletObject, groupObject, levelObject, teamObject);
     }

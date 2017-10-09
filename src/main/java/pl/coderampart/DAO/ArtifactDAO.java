@@ -1,5 +1,6 @@
 package pl.coderampart.DAO;
 
+import com.sun.istack.internal.Nullable;
 import pl.coderampart.model.Artifact;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +17,25 @@ public class ArtifactDAO extends AbstractDAO {
             String query = "SELECT * FROM artifacts WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, ID);
+            ResultSet resultSet = statement.executeQuery();
+
+            artifact = this.createArtifactFromResultSet(resultSet);
+            connection.close();
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+
+        return artifact;
+    }
+
+    public Artifact getByName(String name) {
+        Artifact artifact = null;
+
+        try {
+            Connection connection = this.connectToDataBase();
+            String query = "SELECT * FROM artifacts WHERE name = ?;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
 
             artifact = this.createArtifactFromResultSet(resultSet);

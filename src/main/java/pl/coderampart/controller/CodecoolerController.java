@@ -11,6 +11,8 @@ public class CodecoolerController implements Bootable<Codecooler> {
 
     private CodecoolerView codecoolerView = new CodecoolerView();
     private ArtifactDAO artifactDAO = new ArtifactDAO();
+    private ItemDAO itemDAO = new ItemDAO();
+    private WalletController walletController = new WalletController();
 
     public boolean start(Codecooler codecooler) {
 
@@ -26,7 +28,7 @@ public class CodecoolerController implements Bootable<Codecooler> {
                 displayWallet(codecooler);
                 break;
             case BUY_ARTIFACT:
-                buyArtifact();
+                buyArtifact(codecooler);
                 break;
             case BUY_WITH_GROUP:
                 buyWithGroup();
@@ -58,12 +60,6 @@ public class CodecoolerController implements Bootable<Codecooler> {
         codecoolerView.displayUserItems(userItems);
     }
 
-    public void buyArtifact() {
-        codecoolerView.displayArtifacts(artifactDAO);
-
-        codecoolerView.getInput("Enter artifact name: ");
-    }
-
     public void buyWithGroup(){
         // TODO: Demo:
         codecoolerView.output("Not enough codecoolers in your group. Recruit some noobs");
@@ -71,6 +67,24 @@ public class CodecoolerController implements Bootable<Codecooler> {
 
     public void displayLevel(Codecooler codecooler) {
         codecoolerView.output(codecooler.getLevel().toString());
+    }
+
+    public void buyArtifact(Codecooler codecooler) {
+        codecoolerView.displayArtifacts( artifactDAO );
+        String name = codecoolerView.getInput( "\nEnter artifact name: " );
+        Artifact artifact = artifactDAO.getByName( name );
+        Integer balance = codecooler.getWallet().getBalance();
+
+        if (artifact == null) {
+            codecoolerView.output( "No such artifact" );
+        } else if (balance > artifact.getValue()) {
+            Item item = new Item( artifact, codecooler.getWallet() );
+            itemDAO.create( item );
+            codecoolerView.output( "Bought: \n" + item.toString() );
+            walletController.changeBalance( codecooler, artifact.getValue() * (-1) );
+        } else {
+            codecoolerView.output( "Too expensive" );
+        }
     }
 
     public void updateLevel(Codecooler codecooler) {
