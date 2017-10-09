@@ -56,7 +56,9 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
     public void create(Codecooler codecooler) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "INSERT INTO codecoolers VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            String query = "INSERT INTO codecoolers (first_name, last_name, date_of_birth, email, password, "
+                         + "wallet_id, group_id, level_id, team_id, id) "
+                         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, codecooler);
             setStatement.executeUpdate();
@@ -70,9 +72,9 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
     public void update(Codecooler codecooler) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE codecoolers SET id = ?, first_name = ?, " +
+            String query = "UPDATE codecoolers SET first_name = ?, " +
                            "last_name = ?, date_of_birth = ?, email = ?, password = ?, " +
-                           "wallet_id = ?, group_id = ?, level_id = ?, team_id = ?;";
+                           "wallet_id = ?, group_id = ?, level_id = ?, team_id = ? WHERE id = ?;";
 
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, codecooler);
@@ -99,16 +101,16 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
     }
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Codecooler codecooler) throws Exception {
-        statement.setString(1, codecooler.getID());
-        statement.setString(2, codecooler.getFirstName());
-        statement.setString(3, codecooler.getLastName());
-        statement.setString(4, codecooler.getEmail());
-        statement.setString(5, codecooler.getPassword());
-        statement.setString(6, codecooler.getDateOfBirth().toString());
-        statement.setString(7, codecooler.getWallet().getID());
-        statement.setString(8, codecooler.getGroup().getID());
-        statement.setString(9, codecooler.getLevel().getID());
-        statement.setString(10, codecooler.getTeam().getID());
+        statement.setString(1, codecooler.getFirstName());
+        statement.setString(2, codecooler.getLastName());
+        statement.setString(3, codecooler.getEmail());
+        statement.setString(4, codecooler.getPassword());
+        statement.setString(5, codecooler.getDateOfBirth().toString());
+        statement.setString(6, codecooler.getWallet().getID());
+        statement.setString(7, codecooler.getGroup().getID());
+        statement.setString(8, codecooler.getLevel().getID());
+        statement.setString(9, codecooler.getTeam().getID());
+        statement.setString(10, codecooler.getID());
 
         return statement;
     }

@@ -80,7 +80,7 @@ public class CodecoolerController implements Bootable<Codecooler> {
         } else if (balance > artifact.getValue()) {
             Item item = new Item( artifact, codecooler.getWallet() );
             itemDAO.create( item );
-            codecoolerView.output( "Bought: \n" + item.toString() );
+            codecoolerView.output( "Bought: \n" + item.getArtifact().toString() );
             walletController.changeBalance( codecooler, artifact.getValue() * (-1) );
         } else {
             codecoolerView.output( "Too expensive" );

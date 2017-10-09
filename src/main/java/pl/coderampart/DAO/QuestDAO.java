@@ -46,7 +46,7 @@ public class QuestDAO extends AbstractDAO {
     public void update(Quest quest) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE quests SET id = ?, name = ?, description = ?, reward = ?;";
+            String query = "UPDATE quests SET name = ?, description = ?, reward = ? WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, quest);
             setStatement.executeUpdate();
