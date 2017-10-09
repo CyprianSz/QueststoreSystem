@@ -10,6 +10,8 @@ public class CodecoolerController implements Bootable<Codecooler> {
 
     private CodecoolerView codecoolerView = new CodecoolerView();
     private ArtifactDAO artifactDAO = new ArtifactDAO();
+    private ItemDAO itemDAO = new ItemDAO();
+    private WalletController walletController = new WalletController();
 
     private static final int DISPLAY_WALLET = 1;
     private static final int BUY_ARTIFACT = 2;
@@ -28,7 +30,7 @@ public class CodecoolerController implements Bootable<Codecooler> {
                 displayWallet(codecooler);
                 break;
             case BUY_ARTIFACT:
-                buyArtifact();
+                buyArtifact(codecooler);
                 break;
             case BUY_WITH_GROUP:
                 buyWithGroup();
@@ -59,10 +61,23 @@ public class CodecoolerController implements Bootable<Codecooler> {
         codecoolerView.displayUserItems(userItems);
     }
 
-    public void buyArtifact() {
+    public void buyArtifact(Codecooler codecooler) {
         codecoolerView.displayArtifacts(artifactDAO);
+        String name = codecoolerView.getInput("Enter artifact name: ");
+        Artifact artifact = artifactDAO.getByName(name);
+        Integer balance = codecooler.getWallet().getBalance();
+        Integer artifactValue = artifact.getValue();
 
-        codecoolerView.getInput("Enter artifact name: ");
+        if (artifact == null) {
+            codecoolerView.output("No such artifact");
+        } else if (balance > artifactValue) {
+            Item item = new Item(artifact, codecooler.getWallet());
+            itemDAO.create(item);
+            codecoolerView.output("Bought: \n" + item.toString());
+            walletController.changeBalance(codecooler, artifact.getValue());
+        } else {
+            codecoolerView.output("To expensive");
+        }
     }
 
     public void buyWithGroup(){
