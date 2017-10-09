@@ -80,4 +80,71 @@ public class MentorController implements Bootable<Mentor> {
         view.enterToContinue();
         return true;
     }
+
+    public void createCodecooler(){
+
+    }
+
+    public void createQuest(){
+
+    }
+
+    public void createArtifact(){
+
+    }
+
+    public void createTeam(){
+
+    }
+
+    public void editCodecooler(){
+
+    }
+
+    public void editQuest(){
+
+    }
+
+    public void editArtifact(){
+
+    }
+
+    public void editTeam(){
+
+    }
+
+    public void displayCodecoolers(){
+        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
+        ArrayList<String> codecoolerStrings = new ArrayList<String>();
+
+        for (Codecooler codecooler: allCodecoolers){
+            codecoolerStrings.add(codecooler.toString());
+        }
+
+        view.outputTable(codecoolerStrings);
+    }
+
+    public void displayQuests(){
+
+    }
+
+    public void displayArtifacts(){
+
+    }
+
+    public void displayTeams(){
+
+    }
+
+    public void deleteQuest(){
+
+    }
+
+    public void deleteArtifact(){
+
+    }
+
+    public void deleteTeam() {
+
+    }
 }
