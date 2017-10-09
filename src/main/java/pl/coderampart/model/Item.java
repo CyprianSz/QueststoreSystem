@@ -2,6 +2,8 @@ package pl.coderampart.model;
 
 import pl.coderampart.controller.UUIDController;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 public class Item {
 
@@ -36,14 +38,11 @@ public class Item {
         this.isSpent = true;
     }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "ID='" + ID + '\'' +
-                ", artifact=" + artifact +
-                ", wallet=" + wallet +
-                ", creationDate=" + creationDate +
-                ", isSpent=" + isSpent +
-                '}';
+    public String dateToString() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        return this.creationDate.format(formatter);
     }
+
 }
