@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 public class MentorController implements Bootable<Mentor> {
 
+    private Mentor selfMentor;
     private MentorView mentorView = new MentorView();
     private CodecoolerDAO codecoolerDAO = new CodecoolerDAO();
     private GroupDAO groupDAO = new GroupDAO();
@@ -37,6 +38,8 @@ public class MentorController implements Bootable<Mentor> {
 
     public boolean start(Mentor mentor) {
         mentorView.displayMentorMenu();
+        selfMentor = mentor;
+
         int userChoice = mentorView.getUserChoice();
 
         mentorView.clearTerminal();
@@ -92,15 +95,8 @@ public class MentorController implements Bootable<Mentor> {
         this.displayTeams();
         ArrayList<Team> allTeams = teamDAO.readAll();
         String chosenTeamName = mentorView.getInput("Enter name of a team you wish to assign this Codecooler to, " +
-                                              "\nAdditionally, Codecooler will be assigned to the group that chosen team is in");
-        for (Team team: allTeams){
-            String teamName = team.getName();
-
-            if (teamName.equals(chosenTeamName)){
-                newCodecooler.setTeam(team);
-                newCodecooler.setGroup(team.getGroup());
-            }
-        }
+                                              "\nAdditionally, Codecooler will be assigned to the group of this mentor");
+        newCodecooler.setGroup(selfMentor.getGroup());
 
         codecoolerDAO.create(newCodecooler);
     }
@@ -112,6 +108,7 @@ public class MentorController implements Bootable<Mentor> {
 
         Quest newQuest = new Quest(questData[0], questData[1], Integer.valueOf(questData[2]));
 
+        questDAO.create(newQuest);
     }
 
     public void createArtifact(){
@@ -120,10 +117,18 @@ public class MentorController implements Bootable<Mentor> {
         String[] artifactData = mentorView.getArtifactData();
 
         Artifact newArtifact = new Artifact(artifactData[0], artifactData[1], artifactData[2], Integer.valueOf(artifactData[3]));
+
+        artifactDAO.create(newArtifact);
     }
 
     public void createTeam(){
+        this.displayTeams();
 
+        String teamName = mentorView.getInput("Enter name of a new team: ");
+
+        Team newTeam = new Team(teamName, selfMentor.getGroup());
+
+        teamDAO.create(newTeam);
     }
 
     public void editCodecooler(){
