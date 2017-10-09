@@ -22,6 +22,9 @@
 hs_err_pid*
 
 .idea
+.classpath
+.project
+.settings
 *.db
 *.lst
 *.iml
