@@ -106,6 +106,11 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void createQuest(){
+        this.displayQuests();
+
+        String[] questData = mentorView.getQuestData();
+
+        Quest newQuest = new Quest(questData[0], questData[1], Integer.valueOf(questData[2]));
 
     }
 
