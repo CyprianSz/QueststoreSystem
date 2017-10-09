@@ -171,7 +171,16 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void deleteArtifact(){
+        this.displayArtifacts();
 
+        ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
+        String chosenArtifactName = view.getInput("Enter name of an artifact you wish to delete: ");
+
+        for (Artifact artifact: allArtifacts){
+            if (chosenArtifactName.equals(artifact.getName())){
+                artifactDAO.delete(artifact);
+            }
+        }
     }
 
     public void deleteTeam() {
