@@ -115,7 +115,11 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void createArtifact(){
+        this.displayArtifacts();
 
+        String[] artifactData = mentorView.getArtifactData();
+
+        Artifact newArtifact = new Artifact(artifactData[0], artifactData[1], artifactData[2], Integer.valueOf(artifactData[3]));
     }
 
     public void createTeam(){
