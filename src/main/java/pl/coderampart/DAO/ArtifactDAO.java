@@ -27,6 +27,25 @@ public class ArtifactDAO extends AbstractDAO {
         return artifact;
     }
 
+    public Artifact getByName(String name) {
+        Artifact artifact = null;
+
+        try {
+            Connection connection = this.connectToDataBase();
+            String query = "SELECT * FROM artifacts WHERE name = ?;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
+
+            artifact = this.createArtifactFromResultSet(resultSet);
+            connection.close();
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+
+        return artifact;
+    }
+
     public ArrayList<Artifact> readAll() {
         ArrayList<Artifact> artifactList = new ArrayList<>();
 
