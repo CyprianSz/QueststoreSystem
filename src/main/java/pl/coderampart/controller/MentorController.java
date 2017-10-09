@@ -184,6 +184,15 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void deleteTeam() {
+        this.displayTeams();
 
+        ArrayList<Team> allTeams = teamDAO.readAll();
+        String chosenTeamName = view.getInput("Enter name of a team you wish to delete: ");
+
+        for (Team team: allTeams){
+            if (chosenTeamName.equals(team.getName())){
+                teamDAO.delete(team);
+            }
+        }
     }
 }
