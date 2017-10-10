@@ -26,8 +26,8 @@ public class AdminController implements Bootable<Admin> {
 
         AdminSubmenuOption adminSubmenuOption = AdminSubmenuOption.values()[userChoice];
         adminView.clearTerminal();
-        switch (adminSubmenuOption) {
 
+        switch (adminSubmenuOption) {
             case DISPLAY_MENTOR_MANAGEMENT_MENU:
                 startMentorManagementMenu();
                 break;
@@ -39,7 +39,6 @@ public class AdminController implements Bootable<Admin> {
                 break;
             case EXIT:
                 return false;
-
         }
         adminView.enterToContinue();
         return true;
@@ -52,6 +51,7 @@ public class AdminController implements Bootable<Admin> {
 
         MentorSectionOption mentorSectionOption = MentorSectionOption.values()[userChoice];
         adminView.clearTerminal();
+
         switch (mentorSectionOption) {
             case CREATE_MENTOR:
                 createMentor();
@@ -67,10 +67,8 @@ public class AdminController implements Bootable<Admin> {
                 break;
             case BACK_TO_MAIN_MENU:
                 return false;
-
         }
         return true;
-
     }
 
     public boolean startGroupManagementMenu() {
