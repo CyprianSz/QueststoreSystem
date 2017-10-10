@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 public class MentorView extends View{
 
-
     public void displayMentorMenu() {
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new Codecooler", "Add quest", "Update quest",
                 "Set quest category", "Mark quest", "Add artifact", "Update artifact",
@@ -15,6 +14,37 @@ public class MentorView extends View{
         this.output("\n0. Exit");
     }
 
+    public void displayCodecoolerMM(){
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new Codecooler", "Edit a Codecooler",
+                "Display all Codecoolers", "createAchievement", "markItem", "displayWallet"));
+
+        displayOptions(options);
+        this.output("\n0. Back to main menu");
+    }
+
+    public void displayQuestMM(){
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new quest", "Edit a quest",
+                "Display all quests", "Delete a quest"));
+
+        displayOptions(options);
+        this.output("\n0. Back to main menu");
+    }
+
+    public void displayArtifactMM(){
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new artifact", "Edit an artifact",
+                "Display all artifacts", "Delete an artifact"));
+
+        displayOptions(options);
+        this.output("\n0. Back to main menu");
+    }
+
+    public void displayTeamMM(){
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new team", "Edit a team",
+                "Display all teams", "Delete a team"));
+
+        displayOptions(options);
+        this.output("\n0. Back to main menu");
+    }
 
     public String[] getQuestData() {
         String name = getInput("Name: ");
