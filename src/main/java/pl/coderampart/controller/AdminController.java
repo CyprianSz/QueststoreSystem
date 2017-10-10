@@ -69,7 +69,6 @@ public class AdminController implements Bootable<Admin> {
                 return false;
 
         }
-        adminView.enterToContinue();
         return true;
 
     }
@@ -98,7 +97,6 @@ public class AdminController implements Bootable<Admin> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        adminView.enterToContinue();
         return true;
     }
 
@@ -126,7 +124,6 @@ public class AdminController implements Bootable<Admin> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        adminView.enterToContinue();
         return true;
     }
 
