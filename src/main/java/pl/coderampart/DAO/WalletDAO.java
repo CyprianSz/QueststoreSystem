@@ -1,84 +1,72 @@
 package pl.coderampart.DAO;
 
-import pl.coderampart.model.Artifact;
 import pl.coderampart.model.Wallet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class WalletDAO extends AbstractDAO {
 
-    public Wallet getByID(String ID) {
+    private Connection connection;
+
+    public WalletDAO(Connection connectionToDB) {
+
+        connection = connectionToDB;
+
+    }
+
+    public Wallet getByID(String ID) throws SQLException {
+
         Wallet wallet = null;
 
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "SELECT * FROM wallets WHERE id = ?;";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, ID);
-            ResultSet resultSet = statement.executeQuery();
+        String query = "SELECT * FROM wallets WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, ID);
+        ResultSet resultSet = statement.executeQuery();
 
-            wallet = this.createWalletFromResultSet(resultSet);
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        wallet = this.createWalletFromResultSet(resultSet);
 
         return wallet;
     }
 
-    public void create(Wallet wallet) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "INSERT INTO wallets (balance, earned_coins, id) VALUES (?, ?, ?);";
-            PreparedStatement statement = connection.prepareStatement(query);
-            PreparedStatement setStatement = setPreparedStatement(statement, wallet);
 
-            setStatement.executeUpdate();
+    public void create(Wallet wallet) throws SQLException {
 
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        String query = "INSERT INTO wallets (balance, earned_coins, id) VALUES (?, ?, ?);";
+        PreparedStatement statement = connection.prepareStatement(query);
+        PreparedStatement setStatement = setPreparedStatement(statement, wallet);
+
+        setStatement.executeUpdate();
     }
 
-    public void update(Wallet wallet) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "UPDATE wallets SET balance = ?, earned_coins = ? WHERE id = ?;";
-            PreparedStatement statement = connection.prepareStatement(query);
-            PreparedStatement setStatement = setPreparedStatement(statement, wallet);
-            setStatement.executeUpdate();
 
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+    public void update(Wallet wallet) throws SQLException {
+        String query = "UPDATE wallets SET balance = ?, earned_coins = ? WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        PreparedStatement setStatement = setPreparedStatement(statement, wallet);
+        setStatement.executeUpdate();
+
     }
 
-    public void delete(Wallet wallet) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM wallets WHERE id = ?;";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, wallet.getID());
-            statement.executeUpdate();
+    public void delete(Wallet wallet) throws SQLException {
 
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        String query = "DELETE FROM wallets WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, wallet.getID());
+        statement.executeUpdate();
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Wallet wallet) throws Exception {
+
+    private PreparedStatement setPreparedStatement(PreparedStatement statement, Wallet wallet) throws SQLException {
         statement.setInt(1, wallet.getBalance());
         statement.setInt(2, wallet.getEarnedCoins());
         statement.setString(3, wallet.getID());
 
         return statement;
     }
-    
-    private Wallet createWalletFromResultSet(ResultSet resultSet) throws Exception {
+
+    private Wallet createWalletFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         Integer balance = resultSet.getInt("balance");
         Integer earnedCoins = resultSet.getInt("earned_coins");

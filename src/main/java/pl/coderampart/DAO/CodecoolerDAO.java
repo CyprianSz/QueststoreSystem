@@ -3,22 +3,34 @@ package pl.coderampart.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import pl.coderampart.model.*;
 import pl.coderampart.services.User;
+import pl.coderampart.view.CodecoolerView;
 
 public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
 
-    private WalletDAO walletDAO = new WalletDAO();
-    private GroupDAO groupDAO = new GroupDAO();
-    private LevelDAO levelDAO = new LevelDAO();
-    private TeamDAO teamDAO = new TeamDAO();
+    private WalletDAO walletDAO;
+    private GroupDAO groupDAO;
+    private LevelDAO levelDAO;
+    private TeamDAO teamDAO;
+    private Connection connection;
 
-    public Codecooler getLogged(String email, String password) throws Exception {
+    public CodecoolerDAO(Connection connectionToDB) {
+
+        connection = connectionToDB;
+        walletDAO = new WalletDAO(connection);
+        groupDAO = new GroupDAO(connection);
+        levelDAO = new LevelDAO(connection);
+        teamDAO  = new TeamDAO(connection);
+    }
+
+    public Codecooler getLogged(String email, String password) throws SQLException {
+
         Codecooler codecooler = null;
 
-        Connection connection = this.connectToDataBase();
         String query = "SELECT * FROM codecoolers WHERE email = ? AND password = ?;";
 
         PreparedStatement statement = connection.prepareStatement(query);
@@ -27,80 +39,59 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
         ResultSet resultSet = statement.executeQuery();
 
         codecooler = this.createCodecoolerFromResultSet(resultSet);
-        connection.close();
 
         return codecooler;
     }
 
-    public ArrayList<Codecooler> readAll() {
+    public ArrayList<Codecooler> readAll() throws SQLException {
+
         ArrayList<Codecooler> codecoolerList = new ArrayList<>();
 
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "SELECT * FROM codecoolers;";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
+        String query = "SELECT * FROM codecoolers;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                Codecooler codecooler = this.createCodecoolerFromResultSet(resultSet);
-                codecoolerList.add(codecooler);
-            }
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        while (resultSet.next()) {
+            Codecooler codecooler = this.createCodecoolerFromResultSet(resultSet);
+            codecoolerList.add(codecooler);
         }
 
         return codecoolerList;
     }
 
-    public void create(Codecooler codecooler) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "INSERT INTO codecoolers (first_name, last_name, date_of_birth, email, password, "
-                         + "wallet_id, group_id, level_id, team_id, id) "
-                         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-            PreparedStatement statement = connection.prepareStatement(query);
-            PreparedStatement setStatement = setPreparedStatement(statement, codecooler);
-            setStatement.executeUpdate();
 
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+    public void create(Codecooler codecooler) throws SQLException {
+
+        String query = "INSERT INTO codecoolers (first_name, last_name, date_of_birth, email, password, "
+                + "wallet_id, group_id, level_id, team_id, id) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        PreparedStatement statement = connection.prepareStatement(query);
+        PreparedStatement setStatement = setPreparedStatement(statement, codecooler);
+        setStatement.executeUpdate();
+
     }
 
-    public void update(Codecooler codecooler) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "UPDATE codecoolers SET first_name = ?, " +
+    public void update(Codecooler codecooler) throws SQLException {
+
+        String query = "UPDATE codecoolers SET first_name = ?, " +
                            "last_name = ?, date_of_birth = ?, email = ?, password = ?, " +
                            "wallet_id = ?, group_id = ?, level_id = ?, team_id = ? WHERE id = ?;";
-
-            PreparedStatement statement = connection.prepareStatement(query);
-            PreparedStatement setStatement = setPreparedStatement(statement, codecooler);
-            setStatement.executeUpdate();
-
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        PreparedStatement statement = connection.prepareStatement(query);
+        PreparedStatement setStatement = setPreparedStatement(statement, codecooler);
+        setStatement.executeUpdate();
     }
 
-    public void delete(Codecooler codecooler) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM codecoolers WHERE id = ?;";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, codecooler.getID());
-            statement.executeUpdate();
 
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+    public void delete(Codecooler codecooler) throws SQLException {
+
+        String query = "DELETE FROM codecoolers WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, codecooler.getID());
+        statement.executeUpdate();
+
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Codecooler codecooler) throws Exception {
+    private PreparedStatement setPreparedStatement(PreparedStatement statement, Codecooler codecooler) throws SQLException {
         statement.setString(1, codecooler.getFirstName());
         statement.setString(2, codecooler.getLastName());
         statement.setString(3, codecooler.getEmail());
@@ -115,7 +106,7 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
         return statement;
     }
 
-    private Codecooler createCodecoolerFromResultSet(ResultSet resultSet) throws Exception {
+    private Codecooler createCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName= resultSet.getString("last_name");

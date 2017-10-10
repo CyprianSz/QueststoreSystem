@@ -3,6 +3,7 @@ package pl.coderampart.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import pl.coderampart.model.*;
@@ -10,10 +11,20 @@ import pl.coderampart.services.User;
 
 public class AdminDAO extends AbstractDAO implements User<Admin> {
 
-    public Admin getLogged(String email, String password) throws Exception {
+
+    private Connection connection;
+
+    public AdminDAO(Connection connectionToDB) {
+
+        connection = connectionToDB;
+    }
+
+
+
+    public Admin getLogged(String email, String password) throws SQLException {
         Admin admin = null;
 
-        Connection connection = this.connectToDataBase();
+//        connection = this.connectToDataBase();
         String query = "SELECT * FROM admins WHERE email = ? AND password = ?;";
 
         PreparedStatement statement = connection.prepareStatement(query);
@@ -22,79 +33,59 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
         ResultSet resultSet = statement.executeQuery();
 
         admin = this.createAdminFromResultSet(resultSet);
-        connection.close();
+//        connection.close();
 
         return admin;
     }
 
-    public ArrayList<Admin> readAll() {
+    public ArrayList<Admin> readAll() throws SQLException{
         ArrayList<Admin> adminList = new ArrayList<>();
 
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "SELECT * FROM admins;";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
+//        Connection connection = this.connectToDataBase();
+        String query = "SELECT * FROM admins;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                Admin admin = this.createAdminFromResultSet(resultSet);
-                adminList.add(admin);
-            }
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        while (resultSet.next()) {
+            Admin admin = this.createAdminFromResultSet(resultSet);
+            adminList.add(admin);
         }
+//        connection.close();
 
         return adminList;
     }
 
-    public void create(Admin admin) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "INSERT INTO admins (first_name, last_name, email, password, date_of_birth, id) "
+
+    public void create(Admin admin) throws SQLException {
+
+        String query = "INSERT INTO admins (first_name, last_name, email, password, date_of_birth, id) "
                          + "VALUES (?, ?, ?, ?, ?, ?);";
-            PreparedStatement statement = connection.prepareStatement(query);
-            PreparedStatement setStatement = setPreparedStatement(statement, admin);
-            statement.executeUpdate();
-
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        PreparedStatement statement = connection.prepareStatement(query);
+        PreparedStatement setStatement = setPreparedStatement(statement, admin);
+        statement.executeUpdate();
     }
 
-    public void update(Admin admin) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "UPDATE admins SET first_name = ?, " +
-                           "last_name = ?, email = ?, password = ?, " +
-                           "date_of_birth = ? WHERE id = ?;";
+    public void update(Admin admin) throws SQLException{
 
-            PreparedStatement statement = connection.prepareStatement(query);
-            PreparedStatement setStatement = setPreparedStatement(statement, admin);
-            setStatement.executeUpdate();
+        String query = "UPDATE admins SET first_name = ?, " +
+                "last_name = ?, email = ?, password = ?, " +
+                "date_of_birth = ? WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        PreparedStatement setStatement = setPreparedStatement(statement, admin);
+        setStatement.executeUpdate();
 
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
     }
 
-    public void delete(Admin admin) {
-        try {
-            Connection connection = this.connectToDataBase();
-            String query = "DELETE FROM admins WHERE id = ?;";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, admin.getID());
-            statement.executeUpdate();
+    public void delete(Admin admin) throws SQLException{
 
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+//        Connection connection = this.connectToDataBase();
+        String query = "DELETE FROM admins WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, admin.getID());
+        statement.executeUpdate();
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Admin admin) throws Exception {
+    private PreparedStatement setPreparedStatement(PreparedStatement statement, Admin admin) throws SQLException {
         statement.setString(1, admin.getFirstName());
         statement.setString(2, admin.getLastName());
         statement.setString(3, admin.getEmail());
@@ -105,7 +96,7 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
         return statement;
     }
 
-    private Admin createAdminFromResultSet(ResultSet resultSet) throws Exception {
+    private Admin createAdminFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName = resultSet.getString("last_name");

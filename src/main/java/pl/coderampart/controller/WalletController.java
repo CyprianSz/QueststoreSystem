@@ -4,9 +4,20 @@ import pl.coderampart.DAO.WalletDAO;
 import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Wallet;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
+
 public class WalletController {
 
-    private WalletDAO walletDAO = new WalletDAO();
+    private WalletDAO walletDAO;
+    private Connection connection;
+
+    public WalletController(Connection connectionToDB) {
+
+        connection = connectionToDB;
+        walletDAO  = new WalletDAO(connection);
+    }
 
     public void changeBalance(Codecooler codecooler, Integer coins) {
         Integer balance = codecooler.getWallet().getBalance();
@@ -14,8 +25,11 @@ public class WalletController {
 
         Wallet wallet = codecooler.getWallet();
         wallet.setBalance(balance);
-
-        walletDAO.update(wallet);
+        try{
+            walletDAO.update(wallet);
+        } catch (SQLException e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
     }
 
     public void addExperience(Codecooler codecooler, Integer coins) {
@@ -25,6 +39,10 @@ public class WalletController {
         Wallet wallet = codecooler.getWallet();
         wallet.setEarnedCoins(experience);
 
-        walletDAO.update(wallet);
+        try {
+            walletDAO.update(wallet);
+        } catch (SQLException e){
+          System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
     }
 }
