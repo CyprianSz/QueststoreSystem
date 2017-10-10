@@ -26,8 +26,8 @@ public class AdminController implements Bootable<Admin> {
 
         AdminSubmenuOption adminSubmenuOption = AdminSubmenuOption.values()[userChoice];
         adminView.clearTerminal();
-
         switch (adminSubmenuOption) {
+
             case DISPLAY_MENTOR_MANAGEMENT_MENU:
                 startMentorManagementMenu();
                 break;
@@ -51,7 +51,6 @@ public class AdminController implements Bootable<Admin> {
 
         MentorSectionOption mentorSectionOption = MentorSectionOption.values()[userChoice];
         adminView.clearTerminal();
-
         switch (mentorSectionOption) {
             case CREATE_MENTOR:
                 createMentor();
@@ -68,8 +67,8 @@ public class AdminController implements Bootable<Admin> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        adminView.enterToContinue();
         return true;
+
     }
 
     public boolean startGroupManagementMenu() {
@@ -96,7 +95,6 @@ public class AdminController implements Bootable<Admin> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        adminView.enterToContinue();
         return true;
     }
 
@@ -124,31 +122,36 @@ public class AdminController implements Bootable<Admin> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        adminView.enterToContinue();
         return true;
     }
 
-    public void createMentor() {
+
+    public void createMentor(){
+        String chosenGroupName;
+        ArrayList<Group> allGroups = groupDAO.readAll();
+        ArrayList<String> groupsNames = new ArrayList<>();
         String[] mentorData = adminView.getUserData();
 
-        try {
-            Mentor newMentor = new Mentor( mentorData[0], mentorData[1], adminView.stringToDate( mentorData[2] ), mentorData[3], mentorData[4] );
+        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], adminView.stringToDate(mentorData[2]),
+                                      mentorData[3], mentorData[4]);
+        this.displayGroups();
 
-            this.displayGroups();
-            ArrayList<Group> allGroups = groupDAO.readAll();
-            String chosenGroupName = adminView.getInput( "Enter name of a group you wish to assign this mentor to: " );
-            for (Group group : allGroups) {
-                String groupName = group.getName();
-
-                if (groupName.equals( chosenGroupName )) {
-                    newMentor.setGroup( group );
-                }
-            }
-
-            mentorDAO.create( newMentor );
-        } catch (NullPointerException e) {
-            adminView.output("No such group" + e);
+        for (Group group: allGroups){
+            String groupName = group.getName();
+            groupsNames.add(groupName);
         }
+
+        do {
+            chosenGroupName = adminView.getInput("Enter name of a group you wish to assign this mentor to: ");
+        } while (!groupsNames.contains(chosenGroupName));
+
+        for (Group group : allGroups) {
+            if (group.getName().equals(chosenGroupName)) {
+                newMentor.setGroup( group );
+            }
+        }
+
+        mentorDAO.create(newMentor);
     }
 
     public void createGroup(){
