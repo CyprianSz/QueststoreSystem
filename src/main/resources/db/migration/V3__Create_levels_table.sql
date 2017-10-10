@@ -1,7 +1,7 @@
 CREATE TABLE levels (
   id VARCHAR(36),
-  rank INTEGER,
-  required_experience INTEGER,
+  rank INTEGER UNIQUE,
+  required_experience INTEGER UNIQUE,
   description TEXT,
   PRIMARY KEY (id)
 );

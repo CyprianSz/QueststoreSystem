@@ -155,7 +155,6 @@ public class AdminController implements Bootable<Admin> {
     }
 
     public void createGroup(){
-        this.displayGroups();
         String[] groupData = adminView.getGroupData();
 
         Group newGroup = new Group(groupData[0]);
@@ -259,7 +258,7 @@ public class AdminController implements Bootable<Admin> {
             }
         }
 
-        if (!changedLevel.equals(null)) {
+        if (changedLevel != null) {
             final int EDIT_RANK = 1;
             final int EDIT_REQEXP = 2;
             final int EDIT_DESCRIPTION = 3;
@@ -275,10 +274,10 @@ public class AdminController implements Bootable<Admin> {
                     changedLevel.setRank(Integer.parseInt(adminView.getInput("Enter new rank: ")));
                     break;
                 case EDIT_REQEXP:
-                    changedLevel.setRequiredExperience(Integer.parseInt(adminView.getInput("Enter new value: ")));
+                    changedLevel.setRequiredExperience(Integer.parseInt(adminView.getInput("Enter new required experience: ")));
                     break;
                 case EDIT_DESCRIPTION:
-                    changedLevel.setDescription(adminView.getInput("Enter new email: "));
+                    changedLevel.setDescription(adminView.getInput("Enter new description: "));
                     break;
             }
             levelDAO.update(changedLevel);
