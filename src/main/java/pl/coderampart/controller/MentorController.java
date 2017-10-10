@@ -74,7 +74,6 @@ public class MentorController implements Bootable<Mentor> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        mentorView.enterToContinue();
         return true;
     }
 
@@ -97,7 +96,6 @@ public class MentorController implements Bootable<Mentor> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        mentorView.enterToContinue();
         return true;
     }
 
@@ -120,7 +118,6 @@ public class MentorController implements Bootable<Mentor> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        mentorView.enterToContinue();
         return true;
     }
 
@@ -141,7 +138,6 @@ public class MentorController implements Bootable<Mentor> {
             case DELETE_TEAM: deleteArtifact();
                 return false;
         }
-        mentorView.enterToContinue();
         return true;
     }
 
