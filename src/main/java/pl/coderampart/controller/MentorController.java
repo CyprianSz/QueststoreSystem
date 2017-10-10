@@ -181,8 +181,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void createQuest(){
-        this.displayQuests();
-
         String[] questData = mentorView.getQuestData();
 
         Quest newQuest = new Quest(questData[0], questData[1], Integer.valueOf(questData[2]));
@@ -195,8 +193,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void createArtifact(){
-        this.displayArtifacts();
-
         String[] artifactData = mentorView.getArtifactData();
 
         Artifact newArtifact = new Artifact(artifactData[0], artifactData[1], artifactData[2], Integer.valueOf(artifactData[3]));
@@ -209,8 +205,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void createTeam(){
-        this.displayTeams();
-
         String teamName = mentorView.getInput("Enter name of a new team: ");
 
         Team newTeam = new Team(teamName, selfMentor.getGroup());

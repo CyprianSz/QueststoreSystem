@@ -65,6 +65,8 @@ public class Logger {
         }
     }
 
+    // TODO: write one method insted of this three
+
     private void logInAsAdmin() {
         String email = view.getInput("Email: ");
         String password = view.getInput("Password: ");
