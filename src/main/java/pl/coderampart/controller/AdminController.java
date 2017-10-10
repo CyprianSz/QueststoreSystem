@@ -108,16 +108,16 @@ public class AdminController implements Bootable<Admin> {
 
         switch (levelSectionOption) {
             case CREATE_LEVEL:
-                createGroup();
+                createLevel();
                 break;
             case EDIT_LEVEL:
-                editGroup();
+                editLevel();
                 break;
             case DISPLAY_LEVELS:
-                displayGroups();
+                displayLevels();
                 break;
             case DELETE_LEVEL:
-                deleteGroup();
+                deleteLevel();
                 break;
             case BACK_TO_MAIN_MENU:
                 return false;
@@ -155,7 +155,6 @@ public class AdminController implements Bootable<Admin> {
     }
 
     public void createGroup(){
-        this.displayGroups();
         String[] groupData = adminView.getGroupData();
 
         Group newGroup = new Group(groupData[0]);
