@@ -16,12 +16,10 @@ public class MentorController implements Bootable<Mentor> {
     private Mentor selfMentor;
     private MentorView mentorView = new MentorView();
     private CodecoolerDAO codecoolerDAO;
-    private GroupDAO groupDAO;
     private TeamDAO teamDAO;
     private ArtifactDAO artifactDAO;
     private AchievementDAO achievementDAO;
     private ItemDAO itemDAO;
-    private WalletDAO walletDAO;
     private QuestDAO questDAO;
     private Connection connection;
 
@@ -29,12 +27,10 @@ public class MentorController implements Bootable<Mentor> {
 
         connection = connectionToDB;
         codecoolerDAO = new CodecoolerDAO(connection);
-        groupDAO = new GroupDAO(connection);
         teamDAO = new TeamDAO(connection);
         artifactDAO = new ArtifactDAO(connection);
         achievementDAO = new AchievementDAO(connection);
         itemDAO = new ItemDAO(connection);
-        walletDAO = new WalletDAO(connection);
         questDAO = new QuestDAO(connection);
     }
 
@@ -44,13 +40,10 @@ public class MentorController implements Bootable<Mentor> {
         selfMentor = mentor;
 
         int userChoice = mentorView.getUserChoice();
-
         MentorSubmenuOption mentorSubmenuOption = MentorSubmenuOption.values()[userChoice];
-
         mentorView.clearTerminal();
 
         switch(mentorSubmenuOption) {
-
             case DISPLAY_CODECOOLER_MANAGEMENT_MENU:
                 startCodecoolerMM();
                 break;
@@ -74,9 +67,9 @@ public class MentorController implements Bootable<Mentor> {
 
         mentorView.displayCodecoolerMM();
         int userChoice = mentorView.getUserChoice();
-
         CodecoolerMMOptions codecoolerMMOptions = CodecoolerMMOptions.values()[userChoice];
         mentorView.clearTerminal();
+
         switch (codecoolerMMOptions){
             case CREATE_CODECOOLER: createCodecooler();
                 break;
@@ -161,7 +154,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void createCodecooler(){
-        this.displayCodecoolers();
 
         String[] codecoolerData = mentorView.getUserData();
 
@@ -169,6 +161,7 @@ public class MentorController implements Bootable<Mentor> {
                                                   codecoolerData[3], codecoolerData[4], connection);
 
         this.displayTeams();
+
         try{
             ArrayList<Team> allTeams = teamDAO.readAll();
             String chosenTeamName = mentorView.getInput("Enter name of a team you wish to assign this Codecooler to, " +
@@ -189,8 +182,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void createQuest(){
-        this.displayQuests();
-
         String[] questData = mentorView.getQuestData();
 
         Quest newQuest = new Quest(questData[0], questData[1], Integer.valueOf(questData[2]));
@@ -203,8 +194,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void createArtifact(){
-        this.displayArtifacts();
-
         String[] artifactData = mentorView.getArtifactData();
 
         Artifact newArtifact = new Artifact(artifactData[0], artifactData[1], artifactData[2], Integer.valueOf(artifactData[3]));
@@ -217,8 +206,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void createTeam(){
-        this.displayTeams();
-
         String teamName = mentorView.getInput("Enter name of a new team: ");
 
         Team newTeam = new Team(teamName, selfMentor.getGroup());
@@ -256,9 +243,11 @@ public class MentorController implements Bootable<Mentor> {
             final int EDIT_PASSWORD = 4;
             final int EDIT_BIRTHDATE = 5;
 
-            ArrayList<String> editCodecoolerOptions = new ArrayList<>(Arrays.asList("Edit first name", "Edit last name,",
-                    "Edit email", "Edit password",
-                    "Edit birthdate"));
+            ArrayList<String> editCodecoolerOptions = new ArrayList<>(Arrays.asList("Edit first name",
+                                                                                    "Edit last name,",
+                                                                                    "Edit email",
+                                                                                    "Edit password",
+                                                                                    "Edit birthdate"));
             mentorView.displayOptions(editCodecoolerOptions);
             int userChoice = mentorView.getUserChoice();
             mentorView.clearTerminal();
@@ -480,6 +469,7 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void deleteQuest(){
+
         try {
             ArrayList<Quest> allQuests = questDAO.readAll();
             String chosenQuestName = mentorView.getInput("Enter name of a quest you wish to delete: ");
@@ -567,7 +557,6 @@ public class MentorController implements Bootable<Mentor> {
                     chosenCodecooler = codecooler;
                 }
             }
-
             mentorView.output(chosenCodecooler.getWallet().toString());
         } catch (SQLException e){
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -586,7 +575,6 @@ public class MentorController implements Bootable<Mentor> {
                     chosenCodecooler = codecooler;
                 }
             }
-
             ArrayList<Quest> allQuests = questDAO.readAll();
             String chosenQuestName = mentorView.getInput("Enter name of a quest:");
             Quest chosenQuest = null;
@@ -596,7 +584,6 @@ public class MentorController implements Bootable<Mentor> {
                     chosenQuest = quest;
                 }
             }
-
             Achievement newAchievement = new Achievement(chosenQuest, chosenCodecooler);
             achievementDAO.create(newAchievement);
         } catch (SQLException e) {

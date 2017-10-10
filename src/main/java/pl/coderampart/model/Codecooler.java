@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import pl.coderampart.DAO.LevelDAO;
+import pl.coderampart.DAO.WalletDAO;
 
 public class Codecooler extends AbstractUser {
 
@@ -20,16 +21,17 @@ public class Codecooler extends AbstractUser {
         this.connection = connectionToDB;
         this.wallet = new Wallet();
         this.group = null;
-        LevelDAO levelDAO = new LevelDAO(this.connection);
+        this.team = null;
+        this.achievementList = new ArrayList<Achievement>();
 
         try{
+            WalletDAO walletDAO = new WalletDAO(this.connection);
+            LevelDAO levelDAO = new LevelDAO(this.connection);
             this.level = levelDAO.getFirstLevel();
+            walletDAO.create(this.wallet);
         } catch (SQLException e){
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-
-        this.team = null;
-        this.achievementList = new ArrayList<Achievement>();
     }
 
     public Codecooler(String ID, String name, String surname, LocalDate dateOfBirth,

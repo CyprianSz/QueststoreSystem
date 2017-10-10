@@ -2,8 +2,6 @@ package pl.coderampart.view;
 
 import pl.coderampart.model.Item;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -17,20 +15,6 @@ public class CodecoolerView extends View {
         this.output("\n0. Exit");
     }
 
-    public String chooseQuestCategory() {
-        // Demo:
-        this.output("Category:\n1. Basic\n2. Extra\n");
-        String category = "Basic";
-        return category;
-    }
-
-    public String chooseArtifactType() {
-        // Demo:
-        this.output("Category:\n1. Basic\n2. Magic\n");
-        String type = "Magic";
-        return type;
-    }
-
     public void displayUserItems(ArrayList<Item> userItems) {
 
         this.output("\nYour items:");
@@ -39,5 +23,7 @@ public class CodecoolerView extends View {
             this.output("Date: " + item.dateToString() );
         }
     }
+
+
 }
 
