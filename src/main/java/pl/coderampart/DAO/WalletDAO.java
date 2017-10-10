@@ -11,9 +11,7 @@ public class WalletDAO extends AbstractDAO {
     private Connection connection;
 
     public WalletDAO(Connection connectionToDB) {
-
         connection = connectionToDB;
-
     }
 
     public Wallet getByID(String ID) throws SQLException {
@@ -30,33 +28,26 @@ public class WalletDAO extends AbstractDAO {
         return wallet;
     }
 
-
     public void create(Wallet wallet) throws SQLException {
-
         String query = "INSERT INTO wallets (balance, earned_coins, id) VALUES (?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, wallet);
-
         setStatement.executeUpdate();
     }
-
 
     public void update(Wallet wallet) throws SQLException {
         String query = "UPDATE wallets SET balance = ?, earned_coins = ? WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, wallet);
         setStatement.executeUpdate();
-
     }
 
     public void delete(Wallet wallet) throws SQLException {
-
         String query = "DELETE FROM wallets WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, wallet.getID());
         statement.executeUpdate();
     }
-
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Wallet wallet) throws SQLException {
         statement.setInt(1, wallet.getBalance());

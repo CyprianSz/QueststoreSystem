@@ -5,7 +5,6 @@ import pl.coderampart.enums.CodecoolerMenuOption;
 import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.CodecoolerView;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,12 +18,10 @@ public class CodecoolerController implements Bootable<Codecooler> {
     private WalletController walletController;
 
     public CodecoolerController(Connection connectionToDB) {
-
         connection = connectionToDB;
         artifactDAO = new ArtifactDAO(connection);
         itemDAO = new ItemDAO(connection);
         walletController = new WalletController(connection);
-
     }
 
     public boolean start(Codecooler codecooler) {
@@ -32,11 +29,9 @@ public class CodecoolerController implements Bootable<Codecooler> {
         codecoolerView.displayCodecoolerMenu();
         int userChoice = codecoolerView.getUserChoice();
         CodecoolerMenuOption codecoolerMenuOption = CodecoolerMenuOption.values()[userChoice];
-
         codecoolerView.clearTerminal();
 
         switch(codecoolerMenuOption) {
-
             case DISPLAY_WALLET:
                 displayWallet(codecooler);
                 break;
@@ -56,13 +51,12 @@ public class CodecoolerController implements Bootable<Codecooler> {
         return true;
     }
 
-
     public void displayWallet(Codecooler codecooler) {
 
         String codecoolerWalletID;
         codecoolerWalletID = codecooler.getWallet().getID();
-
         ArrayList<Item> userItems;
+
         try{
             userItems = itemDAO.getUserItems(codecoolerWalletID);
 
@@ -86,8 +80,8 @@ public class CodecoolerController implements Bootable<Codecooler> {
     }
 
     public void buyArtifact(Codecooler codecooler) {
-
-//        codecoolerView.displayArtifacts( artifactDAO );
+        //TODO: add displayArtifacts method to CodecoolerView
+        //codecoolerView.displayArtifacts( artifactDAO );
         String name = codecoolerView.getInput( "\nEnter artifact name: " );
 
         try{
@@ -99,11 +93,7 @@ public class CodecoolerController implements Bootable<Codecooler> {
                 codecoolerView.output( "No such artifact" );
             } else if (balance > artifact.getValue()) {
                 Item item = new Item( artifact, codecooler.getWallet() );
-                try {
-                    itemDAO.create( item );
-                } catch (SQLException e){
-                  System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                }
+                itemDAO.create( item );
                 codecoolerView.output( "Bought: \n" + item.toString() );
                 walletController.changeBalance( codecooler, artifact.getValue() * (-1) );
             } else {
@@ -112,15 +102,12 @@ public class CodecoolerController implements Bootable<Codecooler> {
         } catch (SQLException e){
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-
     }
 
     public void updateLevel(Codecooler codecooler) {
-
         LevelDAO levelDao = new LevelDAO(connection);
 
         try {
-
             ArrayList<Level> levelList = levelDao.readAll();
             Integer playerExperience = codecooler.getWallet().getEarnedCoins();
 
