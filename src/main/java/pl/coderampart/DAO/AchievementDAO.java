@@ -10,12 +10,14 @@ import java.util.ArrayList;
 
 public class AchievementDAO extends AbstractDAO {
 
-    private QuestDAO questDAO = new QuestDAO();
-    private CodecoolerDAO codecoolerDAO = new CodecoolerDAO();
+    private QuestDAO questDAO;
+    private CodecoolerDAO codecoolerDAO;
     private Connection connection;
 
     public AchievementDAO(Connection connectionToDB) {
         connection = connectionToDB;
+        questDAO = new QuestDAO(connection);
+        codecoolerDAO = new CodecoolerDAO(connection);
     }
 
     public ArrayList<Achievement> readAll() throws SQLException {
@@ -49,7 +51,7 @@ public class AchievementDAO extends AbstractDAO {
         return statement;
     }
 
-    private Item createAchievementFromResultSet(ResultSet resultSet) throws SQLException {
+    private Achievement createAchievementFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String quest_id = resultSet.getString("quest_id");
         Quest quest = questDAO.getByID(quest_id);
