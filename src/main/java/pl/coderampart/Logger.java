@@ -14,7 +14,7 @@ public class Logger {
     private MentorDAO mentorDAO;
     private CodecoolerDAO codecoolerDAO;
     private AdminController adminController;
-    //private MentorController mentorController = new MentorController();
+    private MentorController mentorController;
     private CodecoolerController codecoolerController;
     private ConnectionToDB connectionToDB;
     private Connection connection;
@@ -29,13 +29,15 @@ public class Logger {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
 
-        this.adminDAO = new AdminDAO(connection);
+        adminDAO = new AdminDAO(connection);
         mentorDAO  = new MentorDAO(connection);
         adminController = new AdminController(connection);
         codecoolerController = new CodecoolerController(connection);
         codecoolerDAO = new CodecoolerDAO(connection);
+//        mentorController  = new MentorController(connection);
         logIn();
     }
+
 
     public void logIn() {
 
@@ -91,9 +93,9 @@ public class Logger {
         Mentor loggedMentor = null;
 
         try {
-            loggedMentor = this.mentorDAO.getLogged(email, password);
+            loggedMentor = mentorDAO.getLogged(email, password);
             if (loggedMentor != null) {
-                //this.mentorController.start(loggedMentor);
+                mentorController.start(loggedMentor);
             } else {
                 view.output("Wrong data");
             }

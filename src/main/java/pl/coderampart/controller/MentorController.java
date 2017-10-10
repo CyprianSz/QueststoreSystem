@@ -1,5 +1,7 @@
 package pl.coderampart.controller;
 
+import com.sun.org.apache.bcel.internal.classfile.Code;
+import org.omg.IOP.Codec;
 import pl.coderampart.DAO.*;
 import pl.coderampart.enums.*;
 import pl.coderampart.model.*;
@@ -24,7 +26,7 @@ public class MentorController implements Bootable<Mentor> {
 
 
     public boolean start(Mentor mentor) {
-        mentorView.displayMentorMenu();
+        mentorView.displayMentorManagementMenu();
         selfMentor = mentor;
 
         int userChoice = mentorView.getUserChoice();
@@ -135,7 +137,7 @@ public class MentorController implements Bootable<Mentor> {
                 break;
             case DISPLAY_TEAMS: displayTeams();
                 break;
-            case DELETE_TEAM: deleteArtifact();
+            case DELETE_TEAM: deleteTeam();
                 return false;
         }
         return true;
@@ -153,6 +155,13 @@ public class MentorController implements Bootable<Mentor> {
         ArrayList<Team> allTeams = teamDAO.readAll();
         String chosenTeamName = mentorView.getInput("Enter name of a team you wish to assign this Codecooler to, " +
                                               "\nAdditionally, Codecooler will be assigned to the group of this mentor");
+        for (Team team: allTeams){
+            String teamName = team.getName();
+
+            if (teamName.equals(chosenTeamName)){
+                newCodecooler.setTeam(team);
+            }
+        }
         newCodecooler.setGroup(selfMentor.getGroup());
 
         codecoolerDAO.create(newCodecooler);
@@ -421,5 +430,68 @@ public class MentorController implements Bootable<Mentor> {
                 teamDAO.delete(team);
             }
         }
+    }
+
+    public void markItem(){
+        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
+        String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
+        Codecooler chosenCodecooler = null;
+
+        for (Codecooler codecooler: allCodecoolers){
+            if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
+                chosenCodecooler = codecooler;
+            }
+        }
+
+        ArrayList<Item> codecoolerItems = itemDAO.getUserItems(chosenCodecooler.getWallet().getID());
+        mentorView.displayUserItems(codecoolerItems);
+
+        String chosenItemIndex = mentorView.getInput("Enter index of item: ");
+        Item chosenItem = codecoolerItems.get(Integer.valueOf(chosenItemIndex));
+
+        if (chosenItem.getMark()){
+            mentorView.output("Item is already marked.");
+        } else {
+            chosenItem.setMark();
+        }
+    }
+
+    public void displayWallet(){
+        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
+        String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
+        Codecooler chosenCodecooler = null;
+
+        for (Codecooler codecooler: allCodecoolers){
+            if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
+                chosenCodecooler = codecooler;
+            }
+        }
+
+        mentorView.output(chosenCodecooler.getWallet().toString());
+    }
+
+    public void createAchievement(){
+        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
+        String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
+        Codecooler chosenCodecooler = null;
+
+        for (Codecooler codecooler: allCodecoolers){
+            if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
+                chosenCodecooler = codecooler;
+            }
+        }
+
+        ArrayList<Quest> allQuests = questDAO.readAll();
+        String chosenQuestName = mentorView.getInput("Enter name of a quest:");
+        Quest chosenQuest = null;
+
+        for (Quest quest: allQuests){
+            if (chosenQuestName.equals(quest.getName())){
+                chosenQuest = quest;
+            }
+        }
+
+        Achievement newAchievement(chosenQuest chosenCodecooler);
+        achievementDAO.create(newAchievement);
     }
 }
