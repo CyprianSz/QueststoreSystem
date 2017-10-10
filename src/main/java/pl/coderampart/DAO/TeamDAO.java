@@ -53,7 +53,7 @@ public class TeamDAO extends AbstractDAO {
     public void create(Team team) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "INSERT INTO teams VALUES (?, ?, ?);";
+            String query = "INSERT INTO teams (names, group_id, id) VALUES (?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, team);
             statement.executeUpdate();
@@ -67,7 +67,7 @@ public class TeamDAO extends AbstractDAO {
     public void update(Team team) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE teams SET id = ?, group_id = ?, name = ?;";
+            String query = "UPDATE teams SET group_id = ?, name = ? WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, team);
             setStatement.executeUpdate();
@@ -93,9 +93,9 @@ public class TeamDAO extends AbstractDAO {
     }
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Team team) throws Exception {
-        statement.setString(1, team.getID());
-        statement.setString(2, team.getName());
-        statement.setString(3, team.getGroup().getID());
+        statement.setString(1, team.getName());
+        statement.setString(2, team.getGroup().getID());
+        statement.setString(3, team.getID());
 
         return statement;
     }

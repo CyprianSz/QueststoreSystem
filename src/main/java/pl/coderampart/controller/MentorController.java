@@ -178,7 +178,6 @@ public class MentorController implements Bootable<Mentor> {
                     break;
             }
             codecoolerDAO.update(changedCodecooler);
-
         }
     }
 

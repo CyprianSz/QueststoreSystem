@@ -30,7 +30,7 @@ public class WalletDAO extends AbstractDAO {
     public void create(Wallet wallet) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "INSERT INTO wallets VALUES (?, ?, ?);";
+            String query = "INSERT INTO wallets (balance, earned_coins, id) VALUES (?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, wallet);
 
@@ -45,7 +45,7 @@ public class WalletDAO extends AbstractDAO {
     public void update(Wallet wallet) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE wallets SET id = ?, balance = ?, earned_coins = ?;";
+            String query = "UPDATE wallets SET balance = ?, earned_coins = ? WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, wallet);
             setStatement.executeUpdate();
@@ -71,9 +71,9 @@ public class WalletDAO extends AbstractDAO {
     }
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Wallet wallet) throws Exception {
-        statement.setString(1, wallet.getID());
-        statement.setInt(2, wallet.getBalance());
-        statement.setInt(3, wallet.getEarnedCoins());
+        statement.setInt(1, wallet.getBalance());
+        statement.setInt(2, wallet.getEarnedCoins());
+        statement.setString(3, wallet.getID());
 
         return statement;
     }
@@ -85,5 +85,4 @@ public class WalletDAO extends AbstractDAO {
 
         return new Wallet(ID, balance, earnedCoins);
     }
-
 }

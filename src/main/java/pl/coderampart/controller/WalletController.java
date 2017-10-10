@@ -3,7 +3,6 @@ package pl.coderampart.controller;
 import pl.coderampart.DAO.WalletDAO;
 import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Wallet;
-import static java.lang.Math.abs;
 
 public class WalletController {
 
@@ -11,13 +10,20 @@ public class WalletController {
 
     public void changeBalance(Codecooler codecooler, Integer coins) {
         Integer balance = codecooler.getWallet().getBalance();
-        Integer earnedCoins = codecooler.getWallet().getEarnedCoins();
         balance += coins;
-        earnedCoins += abs(coins);
 
         Wallet wallet = codecooler.getWallet();
         wallet.setBalance(balance);
-        wallet.setEarnedCoins(earnedCoins);
+
+        walletDAO.update(wallet);
+    }
+
+    public void addExperience(Codecooler codecooler, Integer coins) {
+        Integer experience = codecooler.getWallet().getEarnedCoins();
+        experience += coins;
+
+        Wallet wallet = codecooler.getWallet();
+        wallet.setEarnedCoins(experience);
 
         walletDAO.update(wallet);
     }

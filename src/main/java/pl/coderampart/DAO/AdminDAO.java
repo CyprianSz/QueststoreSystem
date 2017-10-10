@@ -51,7 +51,8 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
     public void create(Admin admin) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "INSERT INTO admins VALUES (?, ?, ?, ?, ?, ?);";
+            String query = "INSERT INTO admins (first_name, last_name, email, password, date_of_birth, id) "
+                         + "VALUES (?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, admin);
             statement.executeUpdate();
@@ -65,9 +66,9 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
     public void update(Admin admin) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE admins SET id = ?, first_name = ?, " +
+            String query = "UPDATE admins SET first_name = ?, " +
                            "last_name = ?, email = ?, password = ?, " +
-                           "date_of_birth = ?;";
+                           "date_of_birth = ? WHERE id = ?;";
 
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, admin);
@@ -94,12 +95,12 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
     }
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Admin admin) throws Exception {
-        statement.setString(1, admin.getID());
-        statement.setString(2, admin.getFirstName());
-        statement.setString(3, admin.getLastName());
-        statement.setString(4, admin.getEmail());
-        statement.setString(5, admin.getPassword());
-        statement.setString(6, admin.getDateOfBirth().toString());
+        statement.setString(1, admin.getFirstName());
+        statement.setString(2, admin.getLastName());
+        statement.setString(3, admin.getEmail());
+        statement.setString(4, admin.getPassword());
+        statement.setString(5, admin.getDateOfBirth().toString());
+        statement.setString(6, admin.getID());
 
         return statement;
     }

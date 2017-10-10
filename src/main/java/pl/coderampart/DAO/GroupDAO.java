@@ -51,7 +51,7 @@ public class GroupDAO extends AbstractDAO {
     public void create(Group group) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "INSERT INTO groups VALUES (?, ?);";
+            String query = "INSERT INTO groups (name, id) VALUES (?, ?);";
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, group);
             statement.executeUpdate();
@@ -65,7 +65,7 @@ public class GroupDAO extends AbstractDAO {
     public void update(Group group) {
         try {
             Connection connection = this.connectToDataBase();
-            String query = "UPDATE groups SET id = ?, name = ?;";
+            String query = "UPDATE groups SET name = ? WHERE id = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             PreparedStatement setStatement = setPreparedStatement(statement, group);
             setStatement.executeUpdate();
@@ -91,8 +91,8 @@ public class GroupDAO extends AbstractDAO {
     }
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Group group) throws Exception {
-        statement.setString(1, group.getID());
-        statement.setString(2, group.getName());
+        statement.setString(1, group.getName());
+        statement.setString(2, group.getID());
 
         return statement;
     }
