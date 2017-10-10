@@ -1,5 +1,7 @@
 package pl.coderampart.controller;
 
+import com.sun.org.apache.bcel.internal.classfile.Code;
+import org.omg.IOP.Codec;
 import pl.coderampart.DAO.*;
 import pl.coderampart.enums.*;
 import pl.coderampart.model.*;
@@ -24,7 +26,7 @@ public class MentorController implements Bootable<Mentor> {
 
 
     public boolean start(Mentor mentor) {
-        mentorView.displayMentorMenu();
+        mentorView.displayMentorManagementMenu();
         selfMentor = mentor;
 
         int userChoice = mentorView.getUserChoice();
@@ -74,7 +76,6 @@ public class MentorController implements Bootable<Mentor> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        mentorView.enterToContinue();
         return true;
     }
 
@@ -97,7 +98,6 @@ public class MentorController implements Bootable<Mentor> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        mentorView.enterToContinue();
         return true;
     }
 
@@ -120,7 +120,6 @@ public class MentorController implements Bootable<Mentor> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        mentorView.enterToContinue();
         return true;
     }
 
@@ -138,10 +137,9 @@ public class MentorController implements Bootable<Mentor> {
                 break;
             case DISPLAY_TEAMS: displayTeams();
                 break;
-            case DELETE_TEAM: deleteArtifact();
+            case DELETE_TEAM: deleteTeam();
                 return false;
         }
-        mentorView.enterToContinue();
         return true;
     }
 
@@ -157,6 +155,13 @@ public class MentorController implements Bootable<Mentor> {
         ArrayList<Team> allTeams = teamDAO.readAll();
         String chosenTeamName = mentorView.getInput("Enter name of a team you wish to assign this Codecooler to, " +
                                               "\nAdditionally, Codecooler will be assigned to the group of this mentor");
+        for (Team team: allTeams){
+            String teamName = team.getName();
+
+            if (teamName.equals(chosenTeamName)){
+                newCodecooler.setTeam(team);
+            }
+        }
         newCodecooler.setGroup(selfMentor.getGroup());
 
         codecoolerDAO.create(newCodecooler);
@@ -424,6 +429,30 @@ public class MentorController implements Bootable<Mentor> {
             if (chosenTeamName.equals(team.getName())){
                 teamDAO.delete(team);
             }
+        }
+    }
+
+    public void markItem(){
+        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
+        String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
+        Codecooler chosenCodecooler = null;
+
+        for (Codecooler codecooler: allCodecoolers){
+            if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
+                chosenCodecooler = codecooler;
+            }
+        }
+
+        ArrayList<Item> codecoolerItems = itemDAO.getUserItems(chosenCodecooler.getWallet().getID());
+        mentorView.displayUserItems(codecoolerItems);
+
+        String chosenItemIndex = mentorView.getInput("Enter index of item: ");
+        Item chosenItem = codecoolerItems.get(Integer.valueOf(chosenItemIndex));
+
+        if (chosenItem.getMark()){
+            mentorView.output("Item is already marked.");
+        } else {
+            chosenItem.setMark();
         }
     }
 }
