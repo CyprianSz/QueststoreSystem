@@ -1,5 +1,7 @@
 package pl.coderampart.model;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import pl.coderampart.DAO.LevelDAO;
@@ -11,13 +13,21 @@ public class Codecooler extends AbstractUser {
     private Level level;
     private Team team;
     private ArrayList<Achievement> achievementList;
+    private Connection connection;
 
-    public Codecooler(String firstName, String lastName, LocalDate dateOfBirth, String email, String password) {
+    public Codecooler(String firstName, String lastName, LocalDate dateOfBirth, String email, String password, Connection connectionToDB) {
         super(firstName, lastName, dateOfBirth, email, password);
+        this.connection = connectionToDB;
         this.wallet = new Wallet();
         this.group = null;
-        LevelDAO levelDAO = new LevelDAO();
-        this.level = levelDAO.getFirstLevel();
+        LevelDAO levelDAO = new LevelDAO(this.connection);
+
+        try{
+            this.level = levelDAO.getFirstLevel();
+        } catch (SQLException e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
         this.team = null;
         this.achievementList = new ArrayList<Achievement>();
     }
