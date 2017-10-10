@@ -128,28 +128,27 @@ public class AdminController implements Bootable<Admin> {
         return true;
     }
 
-
-    public void createMentor(){
-
-        this.displayMentors();
-
+    public void createMentor() {
         String[] mentorData = adminView.getUserData();
 
-        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], adminView.stringToDate(mentorData[2]),
-                                      mentorData[3], mentorData[4]);
+        try {
+            Mentor newMentor = new Mentor( mentorData[0], mentorData[1], adminView.stringToDate( mentorData[2] ), mentorData[3], mentorData[4] );
 
-        this.displayGroups();
-        ArrayList<Group> allGroups = groupDAO.readAll();
-        String chosenGroupName = adminView.getInput("Enter name of a group you wish to assign this mentor to: ");
-        for (Group group: allGroups){
-            String groupName = group.getName();
+            this.displayGroups();
+            ArrayList<Group> allGroups = groupDAO.readAll();
+            String chosenGroupName = adminView.getInput( "Enter name of a group you wish to assign this mentor to: " );
+            for (Group group : allGroups) {
+                String groupName = group.getName();
 
-            if (groupName.equals(chosenGroupName)){
-                newMentor.setGroup(group);
+                if (groupName.equals( chosenGroupName )) {
+                    newMentor.setGroup( group );
+                }
             }
-        }
 
-        mentorDAO.create(newMentor);
+            mentorDAO.create( newMentor );
+        } catch (NullPointerException e) {
+            adminView.output("No such group" + e);
+        }
     }
 
     public void createGroup(){
