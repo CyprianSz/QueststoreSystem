@@ -2,6 +2,7 @@ package pl.coderampart.controller;
 
 import pl.coderampart.DAO.*;
 import pl.coderampart.enums.CodecoolerMMOptions;
+import pl.coderampart.enums.QuestMMOptions;
 import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.*;
@@ -70,6 +71,29 @@ public class MentorController implements Bootable<Mentor> {
             case MARK_ITEM: markItem();
                 break;
             case DISPLAY_WALLET: displayWallet();
+                break;
+            case BACK_TO_MAIN_MENU:
+                return false;
+        }
+        mentorView.enterToContinue();
+        return true;
+    }
+
+    public boolean startQuestMM(){
+
+        mentorView.displayQuestMM();
+        int userChoice = mentorView.getUserChoice();
+
+        QuestMMOptions questMMOptions = QuestMMOptions.values()[userChoice];
+        mentorView.clearTerminal();
+        switch (questMMOptions){
+            case CREATE_QUEST: createQuest();
+                break;
+            case EDIT_QUEST: editQuest();
+                break;
+            case DISPLAY_QUESTS: displayQuests();
+                break;
+            case DELETE_QUEST: deleteQuest();
                 break;
             case BACK_TO_MAIN_MENU:
                 return false;
