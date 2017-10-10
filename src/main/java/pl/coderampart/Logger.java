@@ -65,6 +65,8 @@ public class Logger {
         }
     }
 
+    // TODO: write one method insted of this three
+
     private void logInAsAdmin() {
         String email = view.getInput("Email: ");
         String password = view.getInput("Password: ");
@@ -86,7 +88,6 @@ public class Logger {
         }
     }
 
-
     private void logInAsMentor() {
         String email = view.getInput("Email: ");
         String password = view.getInput("Password: ");
@@ -94,8 +95,12 @@ public class Logger {
 
         try {
             loggedMentor = mentorDAO.getLogged(email, password);
+
             if (loggedMentor != null) {
-                mentorController.start(loggedMentor);
+                boolean proceed = true;
+                while (proceed) {
+                    proceed = mentorController.start( loggedMentor );
+                }
             } else {
                 view.output("Wrong data");
             }
@@ -103,7 +108,6 @@ public class Logger {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
-
 
     private void logInAsCodecooler() {
         String email = view.getInput("Email: ");

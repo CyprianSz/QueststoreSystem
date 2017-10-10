@@ -76,7 +76,7 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
     public void create(Codecooler codecooler) throws SQLException {
 
         String query = "INSERT INTO codecoolers (first_name, last_name, date_of_birth, email, password, "
-                + "wallet_id, group_id, level_id, team_id, id) "
+                + "wallet_id, group_id, team_id, level_id, id) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, codecooler);

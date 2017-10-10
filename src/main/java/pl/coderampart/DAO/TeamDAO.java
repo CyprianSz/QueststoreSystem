@@ -51,7 +51,7 @@ public class TeamDAO extends AbstractDAO {
 
     public void create(Team team) throws SQLException {
 
-        String query = "INSERT INTO teams (names, group_id, id) VALUES (?, ?, ?);";
+        String query = "INSERT INTO teams (name, group_id, id) VALUES (?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, team);
         statement.executeUpdate();
