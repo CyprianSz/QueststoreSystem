@@ -522,7 +522,7 @@ public class MentorController implements Bootable<Mentor> {
             String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
             Codecooler chosenCodecooler = null;
 
-            for (Codecooler codecooler: allCodecoolers){
+            for (Codecooler codecooler : allCodecoolers){
                 if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
                     chosenCodecooler = codecooler;
                 }
@@ -537,11 +537,11 @@ public class MentorController implements Bootable<Mentor> {
                 mentorView.output("Item is already marked.");
             } else {
                 chosenItem.setMark();
+                itemDAO.update(chosenItem);
             }
         } catch (SQLException e){
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-
     }
 
     public void displayWallet(){
