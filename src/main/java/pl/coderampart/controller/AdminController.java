@@ -26,8 +26,8 @@ public class AdminController implements Bootable<Admin> {
 
         AdminSubmenuOption adminSubmenuOption = AdminSubmenuOption.values()[userChoice];
         adminView.clearTerminal();
-
         switch (adminSubmenuOption) {
+
             case DISPLAY_MENTOR_MANAGEMENT_MENU:
                 startMentorManagementMenu();
                 break;
@@ -51,7 +51,6 @@ public class AdminController implements Bootable<Admin> {
 
         MentorSectionOption mentorSectionOption = MentorSectionOption.values()[userChoice];
         adminView.clearTerminal();
-
         switch (mentorSectionOption) {
             case CREATE_MENTOR:
                 createMentor();
@@ -69,6 +68,7 @@ public class AdminController implements Bootable<Admin> {
                 return false;
         }
         return true;
+
     }
 
     public boolean startGroupManagementMenu() {
@@ -127,22 +127,27 @@ public class AdminController implements Bootable<Admin> {
 
 
     public void createMentor(){
-
-        this.displayMentors();
-
+        String chosenGroupName;
+        ArrayList<Group> allGroups = groupDAO.readAll();
+        ArrayList<String> groupsNames = new ArrayList<>();
         String[] mentorData = adminView.getUserData();
 
         Mentor newMentor = new Mentor(mentorData[0], mentorData[1], adminView.stringToDate(mentorData[2]),
                                       mentorData[3], mentorData[4]);
-
         this.displayGroups();
-        ArrayList<Group> allGroups = groupDAO.readAll();
-        String chosenGroupName = adminView.getInput("Enter name of a group you wish to assign this mentor to: ");
+
         for (Group group: allGroups){
             String groupName = group.getName();
+            groupsNames.add(groupName);
+        }
 
-            if (groupName.equals(chosenGroupName)){
-                newMentor.setGroup(group);
+        do {
+            chosenGroupName = adminView.getInput("Enter name of a group you wish to assign this mentor to: ");
+        } while (!groupsNames.contains(chosenGroupName));
+
+        for (Group group : allGroups) {
+            if (group.getName().equals(chosenGroupName)) {
+                newMentor.setGroup( group );
             }
         }
 
