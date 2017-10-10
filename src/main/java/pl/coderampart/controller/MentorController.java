@@ -1,6 +1,7 @@
 package pl.coderampart.controller;
 
 import pl.coderampart.DAO.*;
+import pl.coderampart.enums.ArtifactMMOptions;
 import pl.coderampart.enums.CodecoolerMMOptions;
 import pl.coderampart.enums.QuestMMOptions;
 import pl.coderampart.model.*;
@@ -94,6 +95,29 @@ public class MentorController implements Bootable<Mentor> {
             case DISPLAY_QUESTS: displayQuests();
                 break;
             case DELETE_QUEST: deleteQuest();
+                break;
+            case BACK_TO_MAIN_MENU:
+                return false;
+        }
+        mentorView.enterToContinue();
+        return true;
+    }
+
+    public boolean startArtifactMM(){
+
+        mentorView.displayArtifactMM();
+        int userChoice = mentorView.getUserChoice();
+
+        ArtifactMMOptions artifactMMOptions = ArtifactMMOptions.values()[userChoice];
+        mentorView.clearTerminal();
+        switch (artifactMMOptions){
+            case CREATE_ARTIFACT: createArtifact();
+                break;
+            case EDIT_ARTIFACT: editArtifact();
+                break;
+            case DISPLAY_ARTIFACTS: displayArtifacts();
+                break;
+            case DELETE_ARTIFACT: deleteArtifact();
                 break;
             case BACK_TO_MAIN_MENU:
                 return false;
