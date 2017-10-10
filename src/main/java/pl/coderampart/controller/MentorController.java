@@ -1,13 +1,11 @@
 package pl.coderampart.controller;
 
 import pl.coderampart.DAO.*;
-import pl.coderampart.enums.ArtifactMMOptions;
-import pl.coderampart.enums.CodecoolerMMOptions;
-import pl.coderampart.enums.QuestMMOptions;
+import pl.coderampart.enums.*;
 import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.*;
-import pl.coderampart.enums.MentorSubmenuOption;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -120,6 +118,27 @@ public class MentorController implements Bootable<Mentor> {
             case DELETE_ARTIFACT: deleteArtifact();
                 break;
             case BACK_TO_MAIN_MENU:
+                return false;
+        }
+        mentorView.enterToContinue();
+        return true;
+    }
+
+    public boolean startTeamMM(){
+
+        mentorView.displayTeamMM();
+        int userChoice = mentorView.getUserChoice();
+
+        TeamMMOptions teamMMOptions = TeamMMOptions.values()[userChoice];
+        mentorView.clearTerminal();
+        switch (teamMMOptions){
+            case CREATE_TEAM: createTeam();
+                break;
+            case EDIT_TEAM: editTeam();
+                break;
+            case DISPLAY_TEAMS: displayTeams();
+                break;
+            case DELETE_TEAM: deleteArtifact();
                 return false;
         }
         mentorView.enterToContinue();
