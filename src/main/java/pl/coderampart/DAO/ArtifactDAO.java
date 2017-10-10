@@ -57,6 +57,7 @@ public class ArtifactDAO extends AbstractDAO {
         return artifactList;
     }
 
+
     public void create(Artifact artifact) throws SQLException{
 
         String query = "INSERT INTO artifacts VALUES (?, ?, ?, ?, ?);";
@@ -67,7 +68,7 @@ public class ArtifactDAO extends AbstractDAO {
 
     public void update(Artifact artifact) throws SQLException {
 
-        String query = "UPDATE artifacts SET id = ?, name = ?, type = ?, description = ?, value = ?";
+        String query = "UPDATE artifacts SET name = ?, type = ?, description = ?, value = ? WHERE id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, artifact);
         setStatement.executeUpdate();
@@ -81,12 +82,14 @@ public class ArtifactDAO extends AbstractDAO {
         statement.executeUpdate();
     }
 
+
+
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Artifact artifact) throws SQLException {
-        statement.setString(1, artifact.getID());
-        statement.setString(2, artifact.getName());
-        statement.setString(3, artifact.getDescription());
-        statement.setString(4, artifact.getType());
-        statement.setInt(5, artifact.getValue());
+        statement.setString(1, artifact.getName());
+        statement.setString(2, artifact.getDescription());
+        statement.setString(3, artifact.getType());
+        statement.setInt(4, artifact.getValue());
+        statement.setString(5, artifact.getID());
 
         return statement;
     }

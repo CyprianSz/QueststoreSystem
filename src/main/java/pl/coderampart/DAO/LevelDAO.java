@@ -56,21 +56,22 @@ public class LevelDAO extends AbstractDAO {
 
     public void create(Level level) throws SQLException {
 
-        String query = "INSERT INTO levels VALUES (?, ?, ?, ?);";
+        String query = "INSERT INTO levels (rank, required_experience, description, id) VALUES (?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, level);
         statement.executeUpdate();
 
     }
 
+
     public void update(Level level) throws SQLException {
 
-        String query = "UPDATE levels SET id = ?, rank = ?, required_experience = ?, description = ?;";
+        String query = "UPDATE levels SET rank = ?, required_experience = ?, description = ? WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, level);
         setStatement.executeUpdate();
-
     }
+
 
     public void delete(Level level) throws SQLException {
 
@@ -80,11 +81,12 @@ public class LevelDAO extends AbstractDAO {
         statement.executeUpdate();
     }
 
+
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Level level) throws SQLException {
-        statement.setString(1, level.getID());
         statement.setInt(2, level.getRank());
         statement.setInt(3, level.getRequiredExperience());
         statement.setString(4, level.getDescription());
+        statement.setString(1, level.getID());
 
         return statement;
     }

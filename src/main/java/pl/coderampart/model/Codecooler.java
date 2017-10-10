@@ -44,15 +44,32 @@ public class Codecooler extends AbstractUser {
     }
 
     public Wallet getWallet() { return this.wallet; }
-
     public void setLevel(Level level) {
         this.level = level;
     }
-
     public Level getLevel() { return this.level; }
     public Group getGroup() { return this.group; }
     public Team getTeam() {return this.team; }
     public void setGroup(Group group) { this.group = group; }
     public void setTeam(Team team) { this.team = team; }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 }

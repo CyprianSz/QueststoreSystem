@@ -54,29 +54,26 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         return mentorList;
     }
 
+
     public void create(Mentor mentor) throws SQLException {
 
-        String query = "INSERT INTO mentors VALUES (?, ?, ?, ?, ?, ?, ?);";
+        String query = "INSERT INTO mentors (first_name, last_name, date_of_birth, email, password, group_id, id) "
+                         + "VALUES (?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, mentor);
-
         setStatement.executeUpdate();
 
     }
 
+
     public void update(Mentor mentor) throws SQLException{
 
-//        Connection connection = this.connectToDataBase();
-        String query = "UPDATE mentors SET id = ?, first_name = ?, " +
-                "last_name = ?, date_of_birth = ?, email = ?, " +
-                "password = ?, group_id = ?;";
-
+        String query = "UPDATE mentors SET first_name = ?, " +
+                    "last_name = ?, date_of_birth = ?, email = ?, " +
+                    "password = ?, group_id = ? WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, mentor);
         setStatement.executeUpdate();
-
-//        connection.close();
-
     }
 
     public void delete(Mentor mentor) throws SQLException {
@@ -87,14 +84,15 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         statement.executeUpdate();
     }
 
+
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Mentor mentor) throws SQLException {
-        statement.setString(1, mentor.getID());
-        statement.setString(2, mentor.getFirstName());
-        statement.setString(3, mentor.getLastName());
-        statement.setString(4, mentor.getDateOfBirth().toString());
-        statement.setString(5, mentor.getEmail());
-        statement.setString(6, mentor.getPassword());
-        statement.setString(7, mentor.getGroup().getID());
+        statement.setString(1, mentor.getFirstName());
+        statement.setString(2, mentor.getLastName());
+        statement.setString(3, mentor.getDateOfBirth().toString());
+        statement.setString(4, mentor.getEmail());
+        statement.setString(5, mentor.getPassword());
+        statement.setString(6, mentor.getGroup().getID());
+        statement.setString(7, mentor.getID());
 
         return statement;
     }

@@ -50,7 +50,6 @@ public class AdminController implements Bootable<Admin> {
                 break;
             case EXIT:
                 return false;
-
         }
         adminView.enterToContinue();
         return true;
@@ -78,9 +77,7 @@ public class AdminController implements Bootable<Admin> {
                 break;
             case BACK_TO_MAIN_MENU:
                 return false;
-
         }
-        adminView.enterToContinue();
         return true;
 
     }
@@ -109,7 +106,6 @@ public class AdminController implements Bootable<Admin> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        adminView.enterToContinue();
         return true;
     }
 
@@ -137,39 +133,45 @@ public class AdminController implements Bootable<Admin> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
-        adminView.enterToContinue();
         return true;
     }
 
 
     public void createMentor(){
+        String chosenGroupName;
+        try{
 
-        this.displayMentors();
-
+        ArrayList<Group> allGroups = groupDAO.readAll();
+        ArrayList<String> groupsNames = new ArrayList<>();
         String[] mentorData = adminView.getUserData();
 
         Mentor newMentor = new Mentor(mentorData[0], mentorData[1], adminView.stringToDate(mentorData[2]),
                                       mentorData[3], mentorData[4]);
-
         this.displayGroups();
-        try {
-            ArrayList<Group> allGroups = groupDAO.readAll();
-            String chosenGroupName = adminView.getInput("Enter name of a group you wish to assign this mentor to: ");
-            for (Group group: allGroups){
-                String groupName = group.getName();
 
-                if (groupName.equals(chosenGroupName)){
-                    newMentor.setGroup(group);
-                }
+
+        for (Group group: allGroups){
+            String groupName = group.getName();
+            groupsNames.add(groupName);
+        }
+
+        do {
+            chosenGroupName = adminView.getInput("Enter name of a group you wish to assign this mentor to: ");
+        } while (!groupsNames.contains(chosenGroupName));
+
+        for (Group group : allGroups) {
+            if (group.getName().equals(chosenGroupName)) {
+                newMentor.setGroup( group );
+
             }
-            mentorDAO.create(newMentor);
+        }
+        mentorDAO.create(newMentor);
         } catch (SQLException e){
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
     public void createGroup(){
-        this.displayGroups();
         String[] groupData = adminView.getGroupData();
 
         Group newGroup = new Group(groupData[0]);
@@ -300,7 +302,7 @@ public class AdminController implements Bootable<Admin> {
           System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
 
-        if (!changedLevel.equals(null)) {
+        if (changedLevel != null) {
             final int EDIT_RANK = 1;
             final int EDIT_REQEXP = 2;
             final int EDIT_DESCRIPTION = 3;
@@ -316,10 +318,10 @@ public class AdminController implements Bootable<Admin> {
                     changedLevel.setRank(Integer.parseInt(adminView.getInput("Enter new rank: ")));
                     break;
                 case EDIT_REQEXP:
-                    changedLevel.setRequiredExperience(Integer.parseInt(adminView.getInput("Enter new value: ")));
+                    changedLevel.setRequiredExperience(Integer.parseInt(adminView.getInput("Enter new required experience: ")));
                     break;
                 case EDIT_DESCRIPTION:
-                    changedLevel.setDescription(adminView.getInput("Enter new email: "));
+                    changedLevel.setDescription(adminView.getInput("Enter new description: "));
                     break;
             }
             try {

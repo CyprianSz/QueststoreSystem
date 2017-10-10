@@ -89,6 +89,7 @@ public class CodecoolerController implements Bootable<Codecooler> {
 
 //        codecoolerView.displayArtifacts( artifactDAO );
         String name = codecoolerView.getInput( "\nEnter artifact name: " );
+
         try{
 
             Artifact artifact = artifactDAO.getByName( name );

@@ -9,7 +9,6 @@ public class Achievement {
     private Quest quest;
     private LocalDate creationDate;
 
-
     public Achievement(Quest quest) {
         this.ID = UUIDController.createUUID();
         this.quest = quest;

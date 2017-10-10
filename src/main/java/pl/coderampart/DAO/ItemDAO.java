@@ -53,18 +53,22 @@ public class ItemDAO extends AbstractDAO {
         return itemList;
     }
 
+
+
     public void create(Item item) throws SQLException {
 
-        String query = "INSERT INTO items VALUES (?, ?, ?, ?, ?);";
+        String query = "INSERT INTO items (artifact_id, wallet_id, creation_date, is_spent, id) VALUES (?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, item);
         statement.executeUpdate();
     }
 
+
+
     public void update(Item item) throws SQLException {
 
-        String query = "UPDATE items SET id = ?, artifact_id = ?, wallet_id = ?, " +
-                       "creation_date = ?, is_spent = ?";
+        String query = "UPDATE items SET artifact_id = ?, wallet_id = ?, " +
+                "creation_date = ?, is_spent = ? WHERE id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, item);
         setStatement.executeUpdate();
@@ -79,12 +83,13 @@ public class ItemDAO extends AbstractDAO {
 
     }
 
+
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Item item) throws SQLException {
-        statement.setString(1, item.getID());
-        statement.setString(2, item.getArtifact().getID());
-        statement.setString(3, item.getWallet().getID());
-        statement.setString(4, item.getCreationDate().toString());
-        statement.setBoolean(5, item.getMark());
+        statement.setString(1, item.getArtifact().getID());
+        statement.setString(2, item.getWallet().getID());
+        statement.setString(3, item.getCreationDate().toString());
+        statement.setBoolean(4, item.getMark());
+        statement.setString(5, item.getID());
 
         return statement;
     }

@@ -39,12 +39,14 @@ public class QuestDAO extends AbstractDAO {
         statement.executeUpdate();
     }
 
+
     public void update(Quest quest) throws SQLException {
 
-        String query = "UPDATE quests SET id = ?, name = ?, description = ?, reward = ?;";
+        String query = "UPDATE quests SET name = ?, description = ?, reward = ? WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, quest);
         setStatement.executeUpdate();
+
     }
 
     public void delete(Quest quest) throws SQLException {
@@ -57,10 +59,10 @@ public class QuestDAO extends AbstractDAO {
     }
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Quest quest) throws SQLException {
-        statement.setString(1, quest.getID());
-        statement.setString(2, quest.getName());
-        statement.setString(3, quest.getDescription());
-        statement.setInt(4, quest.getReward());
+        statement.setString(1, quest.getName());
+        statement.setString(2, quest.getDescription());
+        statement.setInt(3, quest.getReward());
+        statement.setString(4, quest.getID());
 
         return statement;
     }
