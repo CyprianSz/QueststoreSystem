@@ -12,7 +12,7 @@ public class Logger {
     private MentorDAO mentorDAO = new MentorDAO();
     private CodecoolerDAO codecoolerDAO = new CodecoolerDAO();
     private AdminController adminController = new AdminController();
-    //private MentorController mentorController = new MentorController();
+    private MentorController mentorController = new MentorController();
     private CodecoolerController codecoolerController = new CodecoolerController();
 
     public void logIn() {
@@ -65,7 +65,7 @@ public class Logger {
         try {
             loggedMentor = this.mentorDAO.getLogged(email, password);
             if (loggedMentor != null) {
-                //this.mentorController.start(loggedMentor);
+                this.mentorController.start(loggedMentor);
             } else {
                 view.output("Wrong data");
             }
