@@ -85,12 +85,12 @@ public class MentorController implements Bootable<Mentor> {
                 break;
             case DISPLAY_CODECOOLERS: displayCodecoolers();
                 break;
-//            case CREATE_ACHIEVEMENT: createAchievement();
-//                break;
-//            case MARK_ITEM: markItem();
-//                break;
-//            case DISPLAY_WALLET: displayWallet();
-//                break;
+            case CREATE_ACHIEVEMENT: createAchievement();
+                break;
+            case MARK_ITEM: markItem();
+                break;
+            case DISPLAY_WALLET: displayWallet();
+                break;
             case BACK_TO_MAIN_MENU:
                 return false;
         }
@@ -117,6 +117,7 @@ public class MentorController implements Bootable<Mentor> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
+        mentorView.enterToContinue();
         return true;
     }
 
@@ -139,6 +140,7 @@ public class MentorController implements Bootable<Mentor> {
             case BACK_TO_MAIN_MENU:
                 return false;
         }
+        mentorView.enterToContinue();
         return true;
     }
 
@@ -159,6 +161,7 @@ public class MentorController implements Bootable<Mentor> {
             case DELETE_TEAM: deleteTeam();
                 return false;
         }
+        mentorView.enterToContinue();
         return true;
     }
 
