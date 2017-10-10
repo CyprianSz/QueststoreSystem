@@ -455,4 +455,18 @@ public class MentorController implements Bootable<Mentor> {
             chosenItem.setMark();
         }
     }
+
+    public void displayWallet(){
+        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
+        String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
+        Codecooler chosenCodecooler = null;
+
+        for (Codecooler codecooler: allCodecoolers){
+            if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
+                chosenCodecooler = codecooler;
+            }
+        }
+
+        mentorView.output(chosenCodecooler.getWallet().toString());
+    }
 }
