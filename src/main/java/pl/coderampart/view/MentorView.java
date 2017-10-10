@@ -1,14 +1,15 @@
 package pl.coderampart.view;
 
+import pl.coderampart.model.Item;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MentorView extends View{
 
-    public void displayMentorMenu() {
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new Codecooler", "Add quest", "Update quest",
-                "Set quest category", "Mark quest", "Add artifact", "Update artifact",
-                "Set artifact type", "Mark artifact", "Display wallet details"));
+    public void displayMentorManagementMenu() {
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Codecooler Management Menu", "Quest Management Menu",
+                "Artifact Management Menu", "Team Management Menu"));
 
         displayOptions(options);
         this.output("\n0. Exit");
@@ -16,7 +17,7 @@ public class MentorView extends View{
 
     public void displayCodecoolerMM(){
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new Codecooler", "Edit a Codecooler",
-                "Display all Codecoolers", "createAchievement", "markItem", "displayWallet"));
+                "Display all Codecoolers", "Reward an achievement", "Mark an item", "Display wallet"));
 
         displayOptions(options);
         this.output("\n0. Back to main menu");
@@ -65,6 +66,17 @@ public class MentorView extends View{
         String[] artifactData = new String[] {name, value};
 
         return artifactData;
+    }
+
+    public void displayUserItems(ArrayList<Item> userItems) {
+
+        this.output("\nCodecooler items:");
+        int itemIndex = 0;
+        for (Item item: userItems) {
+            this.output(String.valueOf(itemIndex) + ". " + item.getArtifact().toString());
+            this.output("Date: " + item.dateToString() );
+            itemIndex ++;
+        }
     }
 
 
