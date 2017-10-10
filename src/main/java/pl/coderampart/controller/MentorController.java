@@ -17,7 +17,7 @@ public class MentorController implements Bootable<Mentor> {
     private GroupDAO groupDAO = new GroupDAO();
     private TeamDAO teamDAO = new TeamDAO();
     private ArtifactDAO artifactDAO = new ArtifactDAO();
-    private AchievementDAO achievementDAO = new AchievementDAO();
+//    private AchievementDAO achievementDAO = new AchievementDAO();
     private ItemDAO itemDAO = new ItemDAO();
     private WalletDAO walletDAO = new WalletDAO();
     private QuestDAO questDAO = new QuestDAO();
@@ -65,12 +65,12 @@ public class MentorController implements Bootable<Mentor> {
                 break;
             case DISPLAY_CODECOOLERS: displayCodecoolers();
                 break;
-            case CREATE_ACHIEVEMENT: createAchievement();
-                break;
-            case MARK_ITEM: markItem();
-                break;
-            case DISPLAY_WALLET: displayWallet();
-                break;
+//            case CREATE_ACHIEVEMENT: createAchievement();
+//                break;
+//            case MARK_ITEM: markItem();
+//                break;
+//            case DISPLAY_WALLET: displayWallet();
+//                break;
             case BACK_TO_MAIN_MENU:
                 return false;
         }
