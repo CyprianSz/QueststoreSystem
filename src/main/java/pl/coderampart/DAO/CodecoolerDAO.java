@@ -59,6 +59,19 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
         return codecoolerList;
     }
 
+    public Codecooler getByID(String ID) throws SQLException {
+
+        Codecooler codecooler = null;
+        String query = "SELECT * FROM codecoolers WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, ID);
+        ResultSet resultSet = statement.executeQuery();
+
+        codecooler = this.createCodecoolerFromResultSet(resultSet);
+
+        return codecooler;
+    }
+
 
     public void create(Codecooler codecooler) throws SQLException {
 

@@ -12,9 +12,7 @@ public class ArtifactDAO extends AbstractDAO {
     private  Connection connection;
 
     public ArtifactDAO(Connection connectionToDB) {
-
         connection = connectionToDB;
-
     }
 
     public Artifact getByID(String ID) throws SQLException {

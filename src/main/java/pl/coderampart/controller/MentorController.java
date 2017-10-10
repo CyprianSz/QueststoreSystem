@@ -38,6 +38,7 @@ public class MentorController implements Bootable<Mentor> {
         questDAO = new QuestDAO(connection);
     }
 
+
     public boolean start(Mentor mentor) {
         mentorView.displayMentorManagementMenu();
         selfMentor = mentor;
@@ -84,12 +85,12 @@ public class MentorController implements Bootable<Mentor> {
                 break;
             case DISPLAY_CODECOOLERS: displayCodecoolers();
                 break;
-            case CREATE_ACHIEVEMENT: createAchievement();
-                break;
-            case MARK_ITEM: markItem();
-                break;
-            case DISPLAY_WALLET: displayWallet();
-                break;
+//            case CREATE_ACHIEVEMENT: createAchievement();
+//                break;
+//            case MARK_ITEM: markItem();
+//                break;
+//            case DISPLAY_WALLET: displayWallet();
+//                break;
             case BACK_TO_MAIN_MENU:
                 return false;
         }
@@ -575,15 +576,15 @@ public class MentorController implements Bootable<Mentor> {
         }
     }
 
-    public void createAchievement(){
+    public void createAchievement() {
 
         try {
             ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
             String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
             Codecooler chosenCodecooler = null;
 
-            for (Codecooler codecooler: allCodecoolers){
-                if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
+            for (Codecooler codecooler : allCodecoolers) {
+                if (chosenCodecoolerEmail.equals(codecooler.getEmail())) {
                     chosenCodecooler = codecooler;
                 }
             }
@@ -592,15 +593,16 @@ public class MentorController implements Bootable<Mentor> {
             String chosenQuestName = mentorView.getInput("Enter name of a quest:");
             Quest chosenQuest = null;
 
-            for (Quest quest: allQuests){
-                if (chosenQuestName.equals(quest.getName())){
+            for (Quest quest : allQuests) {
+                if (chosenQuestName.equals(quest.getName())) {
                     chosenQuest = quest;
                 }
             }
 
-            Achievement newAchievement(chosenQuest chosenCodecooler);
+            Achievement newAchievement = new Achievement(chosenQuest, chosenCodecooler);
             achievementDAO.create(newAchievement);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
+    }
 }
