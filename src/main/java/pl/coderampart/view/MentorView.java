@@ -15,6 +15,13 @@ public class MentorView extends View{
         this.output("\n0. Exit");
     }
 
+    public void displayCodecoolerMM(){
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new Codecooler", "Edit a Codecooler",
+                "Display all Codecoolers", "createAchievement", "markItem", "displayWallet"));
+
+        displayOptions(options);
+        this.output("\n0. Back to main menu");
+    }
 
     public String[] getQuestData() {
         String name = getInput("Name: ");
