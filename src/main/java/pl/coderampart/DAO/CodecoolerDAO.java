@@ -107,13 +107,13 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Codecooler codecooler) throws SQLException {
         statement.setString(1, codecooler.getFirstName());
         statement.setString(2, codecooler.getLastName());
-        statement.setString(3, codecooler.getEmail());
-        statement.setString(4, codecooler.getPassword());
-        statement.setString(5, codecooler.getDateOfBirth().toString());
+        statement.setString(3, codecooler.getDateOfBirth().toString());
+        statement.setString(4, codecooler.getEmail());
+        statement.setString(5, codecooler.getPassword());
         statement.setString(6, codecooler.getWallet().getID());
         statement.setString(7, codecooler.getGroup().getID());
-        statement.setString(8, codecooler.getLevel().getID());
-        statement.setString(9, codecooler.getTeam().getID());
+        statement.setString(8, codecooler.getTeam().getID());
+        statement.setString(9, codecooler.getLevel().getID());
         statement.setString(10, codecooler.getID());
 
         return statement;

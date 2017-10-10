@@ -34,7 +34,7 @@ public class Logger {
         adminController = new AdminController(connection);
         codecoolerController = new CodecoolerController(connection);
         codecoolerDAO = new CodecoolerDAO(connection);
-//        mentorController  = new MentorController(connection);
+        mentorController  = new MentorController(connection);
         logIn();
     }
 
