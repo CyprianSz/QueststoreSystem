@@ -13,16 +13,19 @@ import pl.coderampart.view.View;
 
 public class MentorDAO extends AbstractDAO implements User<Mentor> {
 
-    private GroupDAO groupDAO = new GroupDAO();
+    private GroupDAO groupDAO;
     private View view = new View();
-//    private Connection connection;
+    private Connection connection;
 
+    public MentorDAO(Connection connectionToDB) {
+
+        connection = connectionToDB;
+        groupDAO = new GroupDAO(connection);
+    }
 
 
     public Mentor getLogged(String email, String password) throws SQLException{
         Mentor mentor = null;
-
-        Connection connection = this.connectToDataBase();
         String query = "SELECT * FROM mentors WHERE email = ? AND password = ?;";
 
         PreparedStatement statement = connection.prepareStatement(query);
@@ -31,15 +34,14 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         ResultSet resultSet = statement.executeQuery();
 
         mentor = this.createMentorFromResultSet(resultSet);
-        connection.close();
 
         return mentor;
     }
 
     public ArrayList<Mentor> readAll() throws SQLException{
-        ArrayList<Mentor> mentorList = new ArrayList<>();
 
-        Connection connection = this.connectToDataBase();
+
+        ArrayList<Mentor> mentorList = new ArrayList<>();
         String query = "SELECT * FROM mentors;";
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
@@ -48,27 +50,23 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
             Mentor mentor = this.createMentorFromResultSet(resultSet);
             mentorList.add(mentor);
         }
-        connection.close();
 
         return mentorList;
     }
 
     public void create(Mentor mentor) throws SQLException {
 
-        Connection connection = this.connectToDataBase();
         String query = "INSERT INTO mentors VALUES (?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, mentor);
 
         setStatement.executeUpdate();
 
-        connection.close();
-
     }
 
     public void update(Mentor mentor) throws SQLException{
 
-        Connection connection = this.connectToDataBase();
+//        Connection connection = this.connectToDataBase();
         String query = "UPDATE mentors SET id = ?, first_name = ?, " +
                 "last_name = ?, date_of_birth = ?, email = ?, " +
                 "password = ?, group_id = ?;";
@@ -77,20 +75,16 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         PreparedStatement setStatement = setPreparedStatement(statement, mentor);
         setStatement.executeUpdate();
 
-        connection.close();
+//        connection.close();
 
     }
 
     public void delete(Mentor mentor) throws SQLException {
 
-        Connection connection = this.connectToDataBase();
         String query = "DELETE FROM mentors WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, mentor.getID());
         statement.executeUpdate();
-
-        connection.close();
-
     }
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Mentor mentor) throws SQLException {

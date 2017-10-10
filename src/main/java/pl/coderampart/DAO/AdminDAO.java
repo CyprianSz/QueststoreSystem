@@ -14,20 +14,17 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
 
     private Connection connection;
 
-    public AdminDAO() {
+    public AdminDAO(Connection connectionToDB) {
 
-        try {
-
-            connection = super.getInstance();
-        }catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        connection = connectionToDB;
     }
+
+
 
     public Admin getLogged(String email, String password) throws SQLException {
         Admin admin = null;
 
-        connection = this.connectToDataBase();
+//        connection = this.connectToDataBase();
         String query = "SELECT * FROM admins WHERE email = ? AND password = ?;";
 
         PreparedStatement statement = connection.prepareStatement(query);
@@ -36,7 +33,7 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
         ResultSet resultSet = statement.executeQuery();
 
         admin = this.createAdminFromResultSet(resultSet);
-        connection.close();
+//        connection.close();
 
         return admin;
     }
@@ -44,7 +41,7 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
     public ArrayList<Admin> readAll() throws SQLException{
         ArrayList<Admin> adminList = new ArrayList<>();
 
-        Connection connection = this.connectToDataBase();
+//        Connection connection = this.connectToDataBase();
         String query = "SELECT * FROM admins;";
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
@@ -53,25 +50,25 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
             Admin admin = this.createAdminFromResultSet(resultSet);
             adminList.add(admin);
         }
-        connection.close();
+//        connection.close();
 
         return adminList;
     }
 
     public void create(Admin admin) throws SQLException {
 
-        Connection connection = this.connectToDataBase();
+//        Connection connection = this.connectToDataBase();
         String query = "INSERT INTO admins VALUES (?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, admin);
         statement.executeUpdate();
 
-        connection.close();
+//        connection.close();
     }
 
     public void update(Admin admin) throws SQLException{
 
-        Connection connection = this.connectToDataBase();
+//        Connection connection = this.connectToDataBase();
         String query = "UPDATE admins SET id = ?, first_name = ?, " +
                        "last_name = ?, email = ?, password = ?, " +
                        "date_of_birth = ?;";
@@ -80,19 +77,19 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
         PreparedStatement setStatement = setPreparedStatement(statement, admin);
         setStatement.executeUpdate();
 
-        connection.close();
+//        connection.close();
 
     }
 
     public void delete(Admin admin) throws SQLException{
 
-        Connection connection = this.connectToDataBase();
+//        Connection connection = this.connectToDataBase();
         String query = "DELETE FROM admins WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, admin.getID());
         statement.executeUpdate();
 
-        connection.close();
+//        connection.close();
     }
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Admin admin) throws SQLException {
