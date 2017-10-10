@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 public class MentorView extends View{
 
-
     public void displayMentorMenu() {
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new Codecooler", "Add quest", "Update quest",
                 "Set quest category", "Mark quest", "Add artifact", "Update artifact",
@@ -26,6 +25,14 @@ public class MentorView extends View{
     public void displayQuestMM(){
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new quest", "Edit a quest",
                 "Display all quests", "Delete a quest"));
+
+        displayOptions(options);
+        this.output("\n0. Back to main menu");
+    }
+
+    public void displayArtifactMM(){
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new artifact", "Edit an artifact",
+                "Display all artifacts", "Delete an artifact"));
 
         displayOptions(options);
         this.output("\n0. Back to main menu");
