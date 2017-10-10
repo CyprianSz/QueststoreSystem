@@ -469,4 +469,29 @@ public class MentorController implements Bootable<Mentor> {
 
         mentorView.output(chosenCodecooler.getWallet().toString());
     }
+
+    public void createAchievement(){
+        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
+        String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
+        Codecooler chosenCodecooler = null;
+
+        for (Codecooler codecooler: allCodecoolers){
+            if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
+                chosenCodecooler = codecooler;
+            }
+        }
+
+        ArrayList<Quest> allQuests = questDAO.readAll();
+        String chosenQuestName = mentorView.getInput("Enter name of a quest:");
+        Quest chosenQuest = null;
+
+        for (Quest quest: allQuests){
+            if (chosenQuestName.equals(quest.getName())){
+                chosenQuest = quest;
+            }
+        }
+
+        Achievement newAchievement(chosenQuest chosenCodecooler);
+        achievementDAO.create(newAchievement);
+    }
 }
