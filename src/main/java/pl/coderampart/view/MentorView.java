@@ -23,6 +23,14 @@ public class MentorView extends View{
         this.output("\n0. Back to main menu");
     }
 
+    public void displayQuestMM(){
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Create new quest", "Edit a quest",
+                "Display all quests", "Delete a quest"));
+
+        displayOptions(options);
+        this.output("\n0. Back to main menu");
+    }
+
     public String[] getQuestData() {
         String name = getInput("Name: ");
         String description = getInput("Description: ");
