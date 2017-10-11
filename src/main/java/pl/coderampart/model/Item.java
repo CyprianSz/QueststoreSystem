@@ -45,4 +45,10 @@ public class Item {
         return this.creationDate.format(formatter);
     }
 
+    @Override
+    public String toString() {
+
+        return this.artifact.getName();
+    }
+
 }

@@ -19,30 +19,24 @@ public class WalletController {
         walletDAO  = new WalletDAO(connection);
     }
 
-    public void changeBalance(Codecooler codecooler, Integer coins) {
+    public void changeBalance(Codecooler codecooler, Integer coins) throws SQLException {
         Integer balance = codecooler.getWallet().getBalance();
         balance += coins;
 
         Wallet wallet = codecooler.getWallet();
         wallet.setBalance(balance);
-        try{
-            walletDAO.update(wallet);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+
+        walletDAO.update(wallet);
+
     }
 
-    public void addExperience(Codecooler codecooler, Integer coins) {
+    public void addExperience(Codecooler codecooler, Integer coins) throws SQLException {
         Integer experience = codecooler.getWallet().getEarnedCoins();
         experience += coins;
 
         Wallet wallet = codecooler.getWallet();
         wallet.setEarnedCoins(experience);
 
-        try {
-            walletDAO.update(wallet);
-        } catch (SQLException e){
-          System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+        walletDAO.update(wallet);
     }
 }
