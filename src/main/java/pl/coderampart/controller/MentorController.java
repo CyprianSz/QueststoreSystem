@@ -24,7 +24,6 @@ public class MentorController implements Bootable<Mentor> {
     private Connection connection;
 
     public MentorController(Connection connectionToDB) {
-
         connection = connectionToDB;
         codecoolerDAO = new CodecoolerDAO(connection);
         teamDAO = new TeamDAO(connection);
@@ -50,7 +49,7 @@ public class MentorController implements Bootable<Mentor> {
             case DISPLAY_QUEST_MANAGEMENT_MENU:
                 startQuestMM();
                 break;
-            case DISPLAY_ARTIFACT_MANAGEMENT_MENU:git
+            case DISPLAY_ARTIFACT_MANAGEMENT_MENU:
                 startArtifactMM();
                 break;
             case DISPLAY_TEAM_MANAGEMENT_MENU:
@@ -63,7 +62,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public boolean startCodecoolerMM() throws SQLException {
-
         mentorView.displayCodecoolerMM();
         int userChoice = mentorView.getUserChoice();
         CodecoolerMMOptions codecoolerMMOptions = CodecoolerMMOptions.values()[userChoice];
@@ -89,7 +87,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public boolean startQuestMM() throws SQLException {
-
         mentorView.displayQuestMM();
         int userChoice = mentorView.getUserChoice();
 
@@ -111,7 +108,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public boolean startArtifactMM() throws SQLException {
-
         mentorView.displayArtifactMM();
         int userChoice = mentorView.getUserChoice();
 
@@ -133,7 +129,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public boolean startTeamMM() throws SQLException {
-
         mentorView.displayTeamMM();
         int userChoice = mentorView.getUserChoice();
 
@@ -153,25 +148,14 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void createCodecooler() throws SQLException {
-
         String[] codecoolerData = mentorView.getUserData();
 
         Codecooler newCodecooler = new Codecooler(codecoolerData[0], codecoolerData[1], mentorView.stringToDate(codecoolerData[2]),
                                                   codecoolerData[3], codecoolerData[4], connection);
 
         this.displayTeams();
-
-
-        ArrayList<Team> allTeams = teamDAO.readAll();
-        String chosenTeamName = mentorView.getInput("Enter name of a team you wish to assign this Codecooler to, " +
-                                              "\nAdditionally, Codecooler will be assigned to the group of this mentor");
-        for (Team team: allTeams){
-            String teamName = team.getName();
-
-            if (teamName.equals(chosenTeamName)){
-                newCodecooler.setTeam(team);
-            }
-        }
+        Team chosenTeam = getTeamByName();
+        newCodecooler.setTeam(chosenTeam);
         newCodecooler.setGroup(selfMentor.getGroup());
 
         codecoolerDAO.create(newCodecooler);
@@ -202,40 +186,19 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void editCodecooler() throws SQLException{
-
-        Codecooler changedCodecooler = null;
-
-
-        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
-        String chosenCodecoolerEmail = mentorView.getInput("Enter email of a codecooler you wish to edit: ");
-        for (Codecooler codecooler: allCodecoolers){
-            if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
-                changedCodecooler = codecooler;
-                break;
-            }
-        }
+        Codecooler changedCodecooler = getCodecoolerByEmail();
 
         if (changedCodecooler != null) {
-            final int EDIT_FIRST = 1;
-            final int EDIT_LAST = 2;
-            final int EDIT_EMAIL = 3;
-            final int EDIT_PASSWORD = 4;
-            final int EDIT_BIRTHDATE = 5;
-
-            ArrayList<String> editCodecoolerOptions = new ArrayList<>(Arrays.asList("Edit first name",
-                                                                                    "Edit last name,",
-                                                                                    "Edit email",
-                                                                                    "Edit password",
-                                                                                    "Edit birthdate"));
-            mentorView.displayOptions(editCodecoolerOptions);
+            mentorView.displayEditCodecoolerMenu();
             int userChoice = mentorView.getUserChoice();
+            MentorEditCodecooler editCodecoolerOptions = MentorEditCodecooler.values()[userChoice];
             mentorView.clearTerminal();
 
-            switch(userChoice){
-                case EDIT_FIRST:
+            switch(editCodecoolerOptions){
+                case EDIT_FIRST_NAME:
                     changedCodecooler.setFirstName(mentorView.getInput("Enter new name: "));
                     break;
-                case EDIT_LAST:
+                case EDIT_LAST_NAME:
                     changedCodecooler.setLastName(mentorView.getInput("Enter new name: "));
                     break;
                 case EDIT_EMAIL:
@@ -255,35 +218,19 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void editQuest() throws SQLException {
-
-        Quest changedQuest = null;
-
-        ArrayList<Quest> allQuests = questDAO.readAll();
-        String chosenQuestName = mentorView.getInput("Enter name of a quest you wish to edit: ");
-        for (Quest quest: allQuests){
-            if(chosenQuestName.equals(quest.getName())){
-                changedQuest = quest;
-                break;
-            }
-        }
+        Quest changedQuest = getQuestByName();
 
         if (changedQuest != null){
-
-            final int EDIT_NAME = 1;
-            final int EDIT_DESCR = 2;
-            final int EDIT_REWARD = 3;
-
-            ArrayList<String> editQuestOptions = new ArrayList<>(Arrays.asList("Edit name", "Edit description",
-                                                                               "Edit reward"));
-            mentorView.displayOptions(editQuestOptions);
+            mentorView.displayEditQuestMenu();
             int userChoice = mentorView.getUserChoice();
+            MentorEditQuest editQuestOptions = MentorEditQuest.values()[userChoice];
             mentorView.clearTerminal();
 
-            switch(userChoice){
+            switch(editQuestOptions){
                 case EDIT_NAME:
                     changedQuest.setName(mentorView.getInput("Enter new name: "));
                     break;
-                case EDIT_DESCR:
+                case EDIT_DESCRIPTION:
                     changedQuest.setDescription(mentorView.getInput("Enter new description: "));
                     break;
                 case EDIT_REWARD:
@@ -296,35 +243,15 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void editArtifact() throws SQLException {
-
-        Artifact changedArtifact = null;
-
-
-        ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
-        String chosenArtifactName = mentorView.getInput("Enter name of an artifact you wish to edit: ");
-
-        for (Artifact artifact: allArtifacts){
-            if(chosenArtifactName.equals(artifact.getName())){
-                changedArtifact = artifact;
-                break;
-            }
-        }
+        Artifact changedArtifact = getArtifactByName();
 
         if (changedArtifact != null){
-
-            final int EDIT_NAME = 1;
-            final int EDIT_DESCRIPTION = 2;
-            final int EDIT_TYPE = 3;
-            final int EDIT_VALUE = 4;
-
-            ArrayList<String> editArtifactOptions = new ArrayList<>(Arrays.asList("Edit name", "Edit description",
-                                                                                  "Edit type", "Edit value"));
-            mentorView.displayOptions(editArtifactOptions);
+            mentorView.displayEditArtifactMenu();
             int userChoice = mentorView.getUserChoice();
+            MentorEditArtifact editArtifactOptions = MentorEditArtifact.values()[userChoice];
             mentorView.clearTerminal();
 
-            switch(userChoice){
-
+            switch(editArtifactOptions){
                 case EDIT_NAME:
                     changedArtifact.setName(mentorView.getInput("Enter new name: "));
                     break;
@@ -344,17 +271,7 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void editTeam() throws SQLException {
-
-        Team changedTeam = null;
-
-        ArrayList<Team> allTeams = teamDAO.readAll();
-        String chosenTeamName = mentorView.getInput("Enter name of a team you wish to edit: ");
-
-        for (Team team: allTeams){
-            if (chosenTeamName.equals(team.getName())){
-                changedTeam = team;
-            }
-        }
+        Team changedTeam = getTeamByName();
 
         if (changedTeam != null){
             changedTeam.setName(mentorView.getInput("Enter new name: "));
@@ -363,7 +280,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void displayCodecoolers() throws SQLException {
-
         ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
         ArrayList<String> codecoolerStrings = new ArrayList<String>();
 
@@ -375,7 +291,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void displayQuests() throws SQLException {
-
         ArrayList<Quest> allQuests = questDAO.readAll();
         ArrayList<String> questStrings = new ArrayList<String>();
 
@@ -387,7 +302,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void displayArtifacts() throws SQLException {
-
         ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
         ArrayList<String> artifactStrings = new ArrayList<String>();
 
@@ -399,7 +313,6 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void displayTeams() throws SQLException{
-
         ArrayList<Team> allTeams = teamDAO.readAll();
         ArrayList<String> teamStrings = new ArrayList<String>();
 
@@ -411,52 +324,31 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void deleteQuest() throws SQLException{
+        Quest chosenQuest = getQuestByName();
 
-        ArrayList<Quest> allQuests = questDAO.readAll();
-        String chosenQuestName = mentorView.getInput("Enter name of a quest you wish to delete: ");
-
-        for (Quest quest: allQuests){
-            if (chosenQuestName.equals(quest.getName())){
-                questDAO.delete(quest);
-            }
+        if (chosenQuest != null){
+            questDAO.delete(chosenQuest);
         }
     }
 
     public void deleteArtifact() throws SQLException{
+        Artifact chosenArtifact = getArtifactByName();
 
-        ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
-        String chosenArtifactName = mentorView.getInput("Enter name of an artifact you wish to delete: ");
-
-        for (Artifact artifact: allArtifacts){
-            if (chosenArtifactName.equals(artifact.getName())){
-                artifactDAO.delete(artifact);
-            }
+        if (chosenArtifact != null){
+            artifactDAO.delete(chosenArtifact);
         }
     }
 
     public void deleteTeam() throws SQLException{
+        Team chosenTeam = getTeamByName();
 
-        ArrayList<Team> allTeams = teamDAO.readAll();
-        String chosenTeamName = mentorView.getInput("Enter name of a team you wish to delete: ");
-
-        for (Team team: allTeams){
-            if (chosenTeamName.equals(team.getName())){
-                teamDAO.delete(team);
-            }
+        if (chosenTeam != null){
+            teamDAO.delete(chosenTeam);
         }
     }
 
     public void markItem() throws SQLException{
-
-        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
-        String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
-        Codecooler chosenCodecooler = null;
-
-        for (Codecooler codecooler : allCodecoolers){
-            if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
-                chosenCodecooler = codecooler;
-            }
-        }
+        Codecooler chosenCodecooler = getCodecoolerByEmail();
         ArrayList<Item> codecoolerItems = itemDAO.getUserItems(chosenCodecooler.getWallet().getID());
         mentorView.displayUserItems(codecoolerItems);
 
@@ -472,22 +364,18 @@ public class MentorController implements Bootable<Mentor> {
     }
 
     public void displayWallet() throws SQLException {
-
-        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
-        String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
-        Codecooler chosenCodecooler = null;
-
-        for (Codecooler codecooler: allCodecoolers){
-            if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
-                chosenCodecooler = codecooler;
-            }
-        }
-
+        Codecooler chosenCodecooler = getCodecoolerByEmail();
         mentorView.output(chosenCodecooler.getWallet().toString());
     }
 
     public void createAchievement() throws SQLException {
+        Codecooler chosenCodecooler = getCodecoolerByEmail();
+        Quest chosenQuest = getQuestByName();
+        Achievement newAchievement = new Achievement(chosenQuest, chosenCodecooler);
+        achievementDAO.create(newAchievement);
+    }
 
+    public Codecooler getCodecoolerByEmail() throws SQLException{
         ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
         String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
         Codecooler chosenCodecooler = null;
@@ -497,6 +385,10 @@ public class MentorController implements Bootable<Mentor> {
                 chosenCodecooler = codecooler;
             }
         }
+        return chosenCodecooler;
+    }
+
+    public Quest getQuestByName() throws SQLException{
         ArrayList<Quest> allQuests = questDAO.readAll();
         String chosenQuestName = mentorView.getInput("Enter name of a quest:");
         Quest chosenQuest = null;
@@ -506,7 +398,32 @@ public class MentorController implements Bootable<Mentor> {
                 chosenQuest = quest;
             }
         }
-        Achievement newAchievement = new Achievement(chosenQuest, chosenCodecooler);
-        achievementDAO.create(newAchievement);
+        return chosenQuest;
+    }
+
+    public Artifact getArtifactByName() throws SQLException{
+        ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
+        String chosenArtifactName = mentorView.getInput("Enter name of an artifact: ");
+        Artifact chosenArtifact = null;
+
+        for (Artifact artifact: allArtifacts){
+            if (chosenArtifactName.equals(artifact.getName())){
+                chosenArtifact = artifact;
+            }
+        }
+        return chosenArtifact;
+    }
+
+    public Team getTeamByName() throws SQLException{
+        ArrayList<Team> allTeams = teamDAO.readAll();
+        String chosenTeamName = mentorView.getInput("Enter name of a team: ");
+        Team chosenTeam = null;
+
+        for (Team team: allTeams){
+            if (chosenTeamName.equals(team.getName())){
+                chosenTeam = team;
+            }
+        }
+        return chosenTeam;
     }
 }
