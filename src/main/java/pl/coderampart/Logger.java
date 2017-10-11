@@ -19,15 +19,11 @@ public class Logger {
     private ConnectionToDB connectionToDB;
     private Connection connection;
 
-    public Logger() {
+    public Logger() throws SQLException {
 
         connectionToDB = ConnectionToDB.getInstance();
 
-        try {
-            connection = connectionToDB.connectToDataBase();
-        } catch (SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+        connection = connectionToDB.connectToDataBase();
 
         adminDAO = new AdminDAO(connection);
         mentorDAO  = new MentorDAO(connection);
@@ -39,7 +35,7 @@ public class Logger {
     }
 
 
-    public void logIn() {
+    public void logIn() throws SQLException {
 
         view.displayLoggerMenu();
         String chosenOption = view.getRegExInput("^[0-3]$", "Choose option (0-3): ");
@@ -56,77 +52,63 @@ public class Logger {
                 this.logInAsCodecooler();
                 break;
             case "0":
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                }
+                connection.close();
                 System.exit(0);
         }
     }
 
     // TODO: write one method insted of this three
 
-    private void logInAsAdmin() {
+    private void logInAsAdmin() throws SQLException {
         String email = view.getInput("Email: ");
         String password = view.getInput("Password: ");
         Admin loggedAdmin = null;
 
-        try {
-            loggedAdmin = this.adminDAO.getLogged(email, password);
+        loggedAdmin = this.adminDAO.getLogged(email, password);
 
-            if (loggedAdmin != null) {
-                boolean proceed = true;
-                while (proceed) {
-                    proceed = this.adminController.start(loggedAdmin);
-                }
-            } else {
-                view.output("Wrong data");
+        if (loggedAdmin != null) {
+            boolean proceed = true;
+            while (proceed) {
+                proceed = this.adminController.start(loggedAdmin);
             }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        } else {
+            view.output("Wrong data");
         }
+
     }
 
-    private void logInAsMentor() {
+    private void logInAsMentor() throws SQLException {
         String email = view.getInput("Email: ");
         String password = view.getInput("Password: ");
         Mentor loggedMentor = null;
 
-        try {
-            loggedMentor = mentorDAO.getLogged(email, password);
 
-            if (loggedMentor != null) {
-                boolean proceed = true;
-                while (proceed) {
-                    proceed = mentorController.start( loggedMentor );
-                }
-            } else {
-                view.output("Wrong data");
+        loggedMentor = mentorDAO.getLogged(email, password);
+
+        if (loggedMentor != null) {
+            boolean proceed = true;
+            while (proceed) {
+                proceed = mentorController.start( loggedMentor );
             }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        } else {
+            view.output("Wrong data");
         }
     }
 
-    private void logInAsCodecooler() {
+    private void logInAsCodecooler() throws SQLException {
         String email = view.getInput("Email: ");
         String password = view.getInput("Password: ");
         Codecooler loggedCodecooler = null;
 
-        try {
-            loggedCodecooler = codecoolerDAO.getLogged(email, password);
+        loggedCodecooler = codecoolerDAO.getLogged(email, password);
 
-            if (loggedCodecooler != null) {
-                boolean proceed = true;
-                while (proceed) {
-                    proceed = codecoolerController.start(loggedCodecooler);
-                }
-            } else {
-                view.output("Wrong data");
+        if (loggedCodecooler != null) {
+            boolean proceed = true;
+            while (proceed) {
+                proceed = codecoolerController.start(loggedCodecooler);
             }
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } else {
+            view.output("Wrong data");
         }
     }
 }
