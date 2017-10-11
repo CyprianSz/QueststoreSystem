@@ -24,7 +24,6 @@ public class MentorController implements Bootable<Mentor> {
     private Connection connection;
 
     public MentorController(Connection connectionToDB) {
-
         connection = connectionToDB;
         codecoolerDAO = new CodecoolerDAO(connection);
         teamDAO = new TeamDAO(connection);
@@ -35,7 +34,7 @@ public class MentorController implements Bootable<Mentor> {
     }
 
 
-    public boolean start(Mentor mentor) {
+    public boolean start(Mentor mentor) throws SQLException{
         mentorView.displayMentorManagementMenu();
         selfMentor = mentor;
 
@@ -63,8 +62,7 @@ public class MentorController implements Bootable<Mentor> {
         return true;
     }
 
-    public boolean startCodecoolerMM(){
-
+    public boolean startCodecoolerMM() throws SQLException {
         mentorView.displayCodecoolerMM();
         int userChoice = mentorView.getUserChoice();
         CodecoolerMMOptions codecoolerMMOptions = CodecoolerMMOptions.values()[userChoice];
@@ -89,8 +87,7 @@ public class MentorController implements Bootable<Mentor> {
         return true;
     }
 
-    public boolean startQuestMM(){
-
+    public boolean startQuestMM() throws SQLException {
         mentorView.displayQuestMM();
         int userChoice = mentorView.getUserChoice();
 
@@ -111,8 +108,7 @@ public class MentorController implements Bootable<Mentor> {
         return true;
     }
 
-    public boolean startArtifactMM(){
-
+    public boolean startArtifactMM() throws SQLException {
         mentorView.displayArtifactMM();
         int userChoice = mentorView.getUserChoice();
 
@@ -133,8 +129,7 @@ public class MentorController implements Bootable<Mentor> {
         return true;
     }
 
-    public boolean startTeamMM(){
-
+    public boolean startTeamMM() throws SQLException {
         mentorView.displayTeamMM();
         int userChoice = mentorView.getUserChoice();
 
@@ -153,110 +148,58 @@ public class MentorController implements Bootable<Mentor> {
         return true;
     }
 
-    public void createCodecooler(){
-
+    public void createCodecooler() throws SQLException {
         String[] codecoolerData = mentorView.getUserData();
 
         Codecooler newCodecooler = new Codecooler(codecoolerData[0], codecoolerData[1], mentorView.stringToDate(codecoolerData[2]),
                                                   codecoolerData[3], codecoolerData[4], connection);
 
         this.displayTeams();
+        Team chosenTeam = getTeamByName();
+        newCodecooler.setTeam(chosenTeam);
+        newCodecooler.setGroup(selfMentor.getGroup());
 
-        try{
-            ArrayList<Team> allTeams = teamDAO.readAll();
-            String chosenTeamName = mentorView.getInput("Enter name of a team you wish to assign this Codecooler to, " +
-                                                  "\nAdditionally, Codecooler will be assigned to the group of this mentor");
-            for (Team team: allTeams){
-                String teamName = team.getName();
-
-                if (teamName.equals(chosenTeamName)){
-                    newCodecooler.setTeam(team);
-                }
-            }
-            newCodecooler.setGroup(selfMentor.getGroup());
-
-            codecoolerDAO.create(newCodecooler);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+        codecoolerDAO.create(newCodecooler);
     }
 
-    public void createQuest(){
+    public void createQuest() throws SQLException {
         String[] questData = mentorView.getQuestData();
 
         Quest newQuest = new Quest(questData[0], questData[1], Integer.valueOf(questData[2]));
 
-        try {
-            questDAO.create(newQuest);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+        questDAO.create(newQuest);
     }
 
-    public void createArtifact(){
+    public void createArtifact() throws SQLException {
         String[] artifactData = mentorView.getArtifactData();
 
         Artifact newArtifact = new Artifact(artifactData[0], artifactData[1], artifactData[2], Integer.valueOf(artifactData[3]));
 
-        try {
-            artifactDAO.create(newArtifact);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+        artifactDAO.create(newArtifact);
     }
 
-    public void createTeam(){
+    public void createTeam() throws SQLException {
         String teamName = mentorView.getInput("Enter name of a new team: ");
 
         Team newTeam = new Team(teamName, selfMentor.getGroup());
 
-        try {
-            teamDAO.create(newTeam);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+        teamDAO.create(newTeam);
     }
 
-    public void editCodecooler(){
-
-        Codecooler changedCodecooler = null;
-
-        try {
-            ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
-            String chosenCodecoolerEmail = mentorView.getInput("Enter email of a codecooler you wish to edit: ");
-            for (Codecooler codecooler: allCodecoolers){
-                if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
-                    changedCodecooler = codecooler;
-                    break;
-                }
-            }
-
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-
+    public void editCodecooler() throws SQLException{
+        Codecooler changedCodecooler = getCodecoolerByEmail();
 
         if (changedCodecooler != null) {
-            final int EDIT_FIRST = 1;
-            final int EDIT_LAST = 2;
-            final int EDIT_EMAIL = 3;
-            final int EDIT_PASSWORD = 4;
-            final int EDIT_BIRTHDATE = 5;
-
-            ArrayList<String> editCodecoolerOptions = new ArrayList<>(Arrays.asList("Edit first name",
-                                                                                    "Edit last name,",
-                                                                                    "Edit email",
-                                                                                    "Edit password",
-                                                                                    "Edit birthdate"));
-            mentorView.displayOptions(editCodecoolerOptions);
+            mentorView.displayEditCodecoolerMenu();
             int userChoice = mentorView.getUserChoice();
+            MentorEditCodecooler editCodecoolerOptions = MentorEditCodecooler.values()[userChoice];
             mentorView.clearTerminal();
 
-            switch(userChoice){
-                case EDIT_FIRST:
+            switch(editCodecoolerOptions){
+                case EDIT_FIRST_NAME:
                     changedCodecooler.setFirstName(mentorView.getInput("Enter new name: "));
                     break;
-                case EDIT_LAST:
+                case EDIT_LAST_NAME:
                     changedCodecooler.setLastName(mentorView.getInput("Enter new name: "));
                     break;
                 case EDIT_EMAIL:
@@ -270,95 +213,46 @@ public class MentorController implements Bootable<Mentor> {
                             "Enter new date")));
                     break;
             }
-            try{
-                codecoolerDAO.update(changedCodecooler);
-            } catch (SQLException e){
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            }
+
+            codecoolerDAO.update(changedCodecooler);
         }
     }
 
-    public void editQuest(){
-
-        Quest changedQuest = null;
-
-        try {
-            ArrayList<Quest> allQuests = questDAO.readAll();
-            String chosenQuestName = mentorView.getInput("Enter name of a quest you wish to edit: ");
-            for (Quest quest: allQuests){
-                if(chosenQuestName.equals(quest.getName())){
-                    changedQuest = quest;
-                    break;
-                }
-            }
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+    public void editQuest() throws SQLException {
+        Quest changedQuest = getQuestByName();
 
         if (changedQuest != null){
-
-            final int EDIT_NAME = 1;
-            final int EDIT_DESCR = 2;
-            final int EDIT_REWARD = 3;
-
-            ArrayList<String> editQuestOptions = new ArrayList<>(Arrays.asList("Edit name", "Edit description",
-                                                                               "Edit reward"));
-            mentorView.displayOptions(editQuestOptions);
+            mentorView.displayEditQuestMenu();
             int userChoice = mentorView.getUserChoice();
+            MentorEditQuest editQuestOptions = MentorEditQuest.values()[userChoice];
             mentorView.clearTerminal();
 
-            switch(userChoice){
+            switch(editQuestOptions){
                 case EDIT_NAME:
                     changedQuest.setName(mentorView.getInput("Enter new name: "));
                     break;
-                case EDIT_DESCR:
+                case EDIT_DESCRIPTION:
                     changedQuest.setDescription(mentorView.getInput("Enter new description: "));
                     break;
                 case EDIT_REWARD:
                     changedQuest.setReward(Integer.valueOf(mentorView.getInput("Enter new reward: ")));
                     break;
             }
-            try {
-                questDAO.update(changedQuest);
-            } catch (SQLException e){
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            }
+
+            questDAO.update(changedQuest);
         }
     }
 
-    public void editArtifact(){
-
-        Artifact changedArtifact = null;
-
-        try {
-            ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
-            String chosenArtifactName = mentorView.getInput("Enter name of an artifact you wish to edit: ");
-
-            for (Artifact artifact: allArtifacts){
-                if(chosenArtifactName.equals(artifact.getName())){
-                    changedArtifact = artifact;
-                    break;
-                }
-            }
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+    public void editArtifact() throws SQLException {
+        Artifact changedArtifact = getArtifactByName();
 
         if (changedArtifact != null){
-
-            final int EDIT_NAME = 1;
-            final int EDIT_DESCRIPTION = 2;
-            final int EDIT_TYPE = 3;
-            final int EDIT_VALUE = 4;
-
-            ArrayList<String> editArtifactOptions = new ArrayList<>(Arrays.asList("Edit name", "Edit description",
-                                                                                  "Edit type", "Edit value"));
-            mentorView.displayOptions(editArtifactOptions);
+            mentorView.displayEditArtifactMenu();
             int userChoice = mentorView.getUserChoice();
+            MentorEditArtifact editArtifactOptions = MentorEditArtifact.values()[userChoice];
             mentorView.clearTerminal();
 
-            switch(userChoice){
-
+            switch(editArtifactOptions){
                 case EDIT_NAME:
                     changedArtifact.setName(mentorView.getInput("Enter new name: "));
                     break;
@@ -372,222 +266,165 @@ public class MentorController implements Bootable<Mentor> {
                     changedArtifact.setValue(Integer.valueOf(mentorView.getInput("Enter new value: ")));
                     break;
             }
-            try{
-                artifactDAO.update(changedArtifact);
-            } catch (SQLException e){
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            }
+
+            artifactDAO.update(changedArtifact);
         }
     }
 
-    public void editTeam(){
+    public void editTeam() throws SQLException {
+        Team changedTeam = getTeamByName();
 
-        Team changedTeam = null;
-
-        try {
-            ArrayList<Team> allTeams = teamDAO.readAll();
-            String chosenTeamName = mentorView.getInput("Enter name of a group you wish to edit: ");
-
-            for (Team team: allTeams){
-                if (chosenTeamName.equals(team.getName())){
-                    changedTeam = team;
-                }
-            }
-
-            if (changedTeam != null){
-                changedTeam.setName(mentorView.getInput("Enter new name: "));
-            }
-
+        if (changedTeam != null){
+            changedTeam.setName(mentorView.getInput("Enter new name: "));
             teamDAO.update(changedTeam);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
-    public void displayCodecoolers(){
+    public void displayCodecoolers() throws SQLException {
+        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
+        ArrayList<String> codecoolerStrings = new ArrayList<String>();
 
-        try {
-            ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
-            ArrayList<String> codecoolerStrings = new ArrayList<String>();
+        for (Codecooler codecooler: allCodecoolers){
+            codecoolerStrings.add(codecooler.toString());
+        }
 
-            for (Codecooler codecooler: allCodecoolers){
-                codecoolerStrings.add(codecooler.toString());
-            }
+        mentorView.outputTable(codecoolerStrings);
+    }
 
-            mentorView.outputTable(codecoolerStrings);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    public void displayQuests() throws SQLException {
+        ArrayList<Quest> allQuests = questDAO.readAll();
+        ArrayList<String> questStrings = new ArrayList<String>();
+
+        for (Quest quest: allQuests){
+            questStrings.add(quest.toString());
+        }
+
+        mentorView.outputTable(questStrings);
+    }
+
+    public void displayArtifacts() throws SQLException {
+        ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
+        ArrayList<String> artifactStrings = new ArrayList<String>();
+
+        for (Artifact artifact: allArtifacts){
+            artifactStrings.add(artifact.toString());
+        }
+
+        mentorView.outputTable(artifactStrings);
+    }
+
+    public void displayTeams() throws SQLException{
+        ArrayList<Team> allTeams = teamDAO.readAll();
+        ArrayList<String> teamStrings = new ArrayList<String>();
+
+        for (Team team: allTeams){
+            teamStrings.add(team.toString());
+        }
+
+        mentorView.outputTable(teamStrings);
+    }
+
+    public void deleteQuest() throws SQLException{
+        Quest chosenQuest = getQuestByName();
+
+        if (chosenQuest != null){
+            questDAO.delete(chosenQuest);
         }
     }
 
-    public void displayQuests(){
+    public void deleteArtifact() throws SQLException{
+        Artifact chosenArtifact = getArtifactByName();
 
-        try {
-            ArrayList<Quest> allQuests = questDAO.readAll();
-            ArrayList<String> questStrings = new ArrayList<String>();
-
-            for (Quest quest: allQuests){
-                questStrings.add(quest.toString());
-            }
-
-            mentorView.outputTable(questStrings);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        if (chosenArtifact != null){
+            artifactDAO.delete(chosenArtifact);
         }
     }
 
-    public void displayArtifacts(){
+    public void deleteTeam() throws SQLException{
+        Team chosenTeam = getTeamByName();
 
-        try {
-            ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
-            ArrayList<String> artifactStrings = new ArrayList<String>();
-
-            for (Artifact artifact: allArtifacts){
-                artifactStrings.add(artifact.toString());
-            }
-
-            mentorView.outputTable(artifactStrings);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        if (chosenTeam != null){
+            teamDAO.delete(chosenTeam);
         }
     }
 
-    public void displayTeams(){
+    public void markItem() throws SQLException{
+        Codecooler chosenCodecooler = getCodecoolerByEmail();
+        ArrayList<Item> codecoolerItems = itemDAO.getUserItems(chosenCodecooler.getWallet().getID());
+        mentorView.displayUserItems(codecoolerItems);
 
-        try {
-            ArrayList<Team> allTeams = teamDAO.readAll();
-            ArrayList<String> teamStrings = new ArrayList<String>();
+        String chosenItemIndex = mentorView.getInput("Enter index of item: ");
+        Item chosenItem = codecoolerItems.get(Integer.valueOf(chosenItemIndex));
 
-            for (Team team: allTeams){
-                teamStrings.add(team.toString());
-            }
-
-            mentorView.outputTable(teamStrings);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        if (chosenItem.getMark()){
+            mentorView.output("Item is already marked.");
+        } else {
+            chosenItem.setMark();
+            itemDAO.update(chosenItem);
         }
     }
 
-    public void deleteQuest(){
-
-        try {
-            ArrayList<Quest> allQuests = questDAO.readAll();
-            String chosenQuestName = mentorView.getInput("Enter name of a quest you wish to delete: ");
-
-            for (Quest quest: allQuests){
-                if (chosenQuestName.equals(quest.getName())){
-                    questDAO.delete(quest);
-                }
-            }
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+    public void displayWallet() throws SQLException {
+        Codecooler chosenCodecooler = getCodecoolerByEmail();
+        mentorView.output(chosenCodecooler.getWallet().toString());
     }
 
-    public void deleteArtifact(){
-
-        try {
-            ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
-            String chosenArtifactName = mentorView.getInput("Enter name of an artifact you wish to delete: ");
-
-            for (Artifact artifact: allArtifacts){
-                if (chosenArtifactName.equals(artifact.getName())){
-                    artifactDAO.delete(artifact);
-                }
-            }
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+    public void createAchievement() throws SQLException {
+        Codecooler chosenCodecooler = getCodecoolerByEmail();
+        Quest chosenQuest = getQuestByName();
+        Achievement newAchievement = new Achievement(chosenQuest, chosenCodecooler);
+        achievementDAO.create(newAchievement);
     }
 
-    public void deleteTeam() {
+    public Codecooler getCodecoolerByEmail() throws SQLException{
+        ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
+        String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
+        Codecooler chosenCodecooler = null;
 
-        try {
-            ArrayList<Team> allTeams = teamDAO.readAll();
-            String chosenTeamName = mentorView.getInput("Enter name of a team you wish to delete: ");
-
-            for (Team team: allTeams){
-                if (chosenTeamName.equals(team.getName())){
-                    teamDAO.delete(team);
-                }
+        for (Codecooler codecooler : allCodecoolers) {
+            if (chosenCodecoolerEmail.equals(codecooler.getEmail())) {
+                chosenCodecooler = codecooler;
             }
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
+        return chosenCodecooler;
     }
 
-    public void markItem(){
+    public Quest getQuestByName() throws SQLException{
+        ArrayList<Quest> allQuests = questDAO.readAll();
+        String chosenQuestName = mentorView.getInput("Enter name of a quest:");
+        Quest chosenQuest = null;
 
-        try {
-            ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
-            String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
-            Codecooler chosenCodecooler = null;
-
-            for (Codecooler codecooler : allCodecoolers){
-                if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
-                    chosenCodecooler = codecooler;
-                }
+        for (Quest quest : allQuests) {
+            if (chosenQuestName.equals(quest.getName())) {
+                chosenQuest = quest;
             }
-            ArrayList<Item> codecoolerItems = itemDAO.getUserItems(chosenCodecooler.getWallet().getID());
-            mentorView.displayUserItems(codecoolerItems);
-
-            String chosenItemIndex = mentorView.getInput("Enter index of item: ");
-            Item chosenItem = codecoolerItems.get(Integer.valueOf(chosenItemIndex));
-
-            if (chosenItem.getMark()){
-                mentorView.output("Item is already marked.");
-            } else {
-                chosenItem.setMark();
-                itemDAO.update(chosenItem);
-            }
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
+        return chosenQuest;
     }
 
-    public void displayWallet(){
+    public Artifact getArtifactByName() throws SQLException{
+        ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
+        String chosenArtifactName = mentorView.getInput("Enter name of an artifact: ");
+        Artifact chosenArtifact = null;
 
-        try {
-            ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
-            String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
-            Codecooler chosenCodecooler = null;
-
-            for (Codecooler codecooler: allCodecoolers){
-                if (chosenCodecoolerEmail.equals(codecooler.getEmail())){
-                    chosenCodecooler = codecooler;
-                }
+        for (Artifact artifact: allArtifacts){
+            if (chosenArtifactName.equals(artifact.getName())){
+                chosenArtifact = artifact;
             }
-            mentorView.output(chosenCodecooler.getWallet().toString());
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
+        return chosenArtifact;
     }
 
-    public void createAchievement() {
+    public Team getTeamByName() throws SQLException{
+        ArrayList<Team> allTeams = teamDAO.readAll();
+        String chosenTeamName = mentorView.getInput("Enter name of a team: ");
+        Team chosenTeam = null;
 
-        try {
-            ArrayList<Codecooler> allCodecoolers = codecoolerDAO.readAll();
-            String chosenCodecoolerEmail = mentorView.getRegExInput(mentorView.emailRegEx, "Enter email of a codecooler:");
-            Codecooler chosenCodecooler = null;
-
-            for (Codecooler codecooler : allCodecoolers) {
-                if (chosenCodecoolerEmail.equals(codecooler.getEmail())) {
-                    chosenCodecooler = codecooler;
-                }
+        for (Team team: allTeams){
+            if (chosenTeamName.equals(team.getName())){
+                chosenTeam = team;
             }
-            ArrayList<Quest> allQuests = questDAO.readAll();
-            String chosenQuestName = mentorView.getInput("Enter name of a quest:");
-            Quest chosenQuest = null;
-
-            for (Quest quest : allQuests) {
-                if (chosenQuestName.equals(quest.getName())) {
-                    chosenQuest = quest;
-                }
-            }
-            Achievement newAchievement = new Achievement(chosenQuest, chosenCodecooler);
-            achievementDAO.create(newAchievement);
-        } catch (SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
+        return chosenTeam;
     }
 }

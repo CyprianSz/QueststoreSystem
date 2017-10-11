@@ -66,20 +66,17 @@ public class Logger {
         String password = view.getInput("Password: ");
         Admin loggedAdmin = null;
 
-        try {
-            loggedAdmin = this.adminDAO.getLogged(email, password);
+        loggedAdmin = this.adminDAO.getLogged(email, password);
 
-            if (loggedAdmin != null) {
-                boolean proceed = true;
-                while (proceed) {
-                    proceed = this.adminController.start(loggedAdmin);
-                }
-            } else {
-                view.output("Wrong data");
+        if (loggedAdmin != null) {
+            boolean proceed = true;
+            while (proceed) {
+                proceed = this.adminController.start(loggedAdmin);
             }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        } else {
+            view.output("Wrong data");
         }
+
     }
 
     private void logInAsMentor() throws SQLException {
@@ -87,19 +84,16 @@ public class Logger {
         String password = view.getInput("Password: ");
         Mentor loggedMentor = null;
 
-        try {
-            loggedMentor = mentorDAO.getLogged(email, password);
 
-            if (loggedMentor != null) {
-                boolean proceed = true;
-                while (proceed) {
-                    proceed = mentorController.start( loggedMentor );
-                }
-            } else {
-                view.output("Wrong data");
+        loggedMentor = mentorDAO.getLogged(email, password);
+
+        if (loggedMentor != null) {
+            boolean proceed = true;
+            while (proceed) {
+                proceed = mentorController.start( loggedMentor );
             }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        } else {
+            view.output("Wrong data");
         }
     }
 
@@ -108,19 +102,15 @@ public class Logger {
         String password = view.getInput("Password: ");
         Codecooler loggedCodecooler = null;
 
-        try {
-            loggedCodecooler = codecoolerDAO.getLogged(email, password);
+        loggedCodecooler = codecoolerDAO.getLogged(email, password);
 
-            if (loggedCodecooler != null) {
-                boolean proceed = true;
-                while (proceed) {
-                    proceed = codecoolerController.start(loggedCodecooler);
-                }
-            } else {
-                view.output("Wrong data");
+        if (loggedCodecooler != null) {
+            boolean proceed = true;
+            while (proceed) {
+                proceed = codecoolerController.start(loggedCodecooler);
             }
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } else {
+            view.output("Wrong data");
         }
     }
 }
