@@ -1,6 +1,7 @@
 package pl.coderampart;
 
 import pl.coderampart.controller.*;
+import pl.coderampart.enums.LoggerMenuOption;
 import pl.coderampart.view.*;
 import pl.coderampart.DAO.*;
 import pl.coderampart.model.*;
@@ -19,55 +20,48 @@ public class Logger {
     private ConnectionToDB connectionToDB;
     private Connection connection;
 
-    public Logger() {
+    public Logger() throws SQLException {
 
         connectionToDB = ConnectionToDB.getInstance();
-
-        try {
-            connection = connectionToDB.connectToDataBase();
-        } catch (SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-
+        connection = connectionToDB.connectToDataBase();
         adminDAO = new AdminDAO(connection);
         mentorDAO  = new MentorDAO(connection);
         adminController = new AdminController(connection);
         codecoolerController = new CodecoolerController(connection);
         codecoolerDAO = new CodecoolerDAO(connection);
         mentorController  = new MentorController(connection);
+
         logIn();
     }
 
 
-    public void logIn() {
+    public void logIn() throws SQLException {
 
         view.displayLoggerMenu();
         String chosenOption = view.getRegExInput("^[0-3]$", "Choose option (0-3): ");
+        int userChoice = Integer.parseInt(chosenOption);
+        LoggerMenuOption menuOption = LoggerMenuOption.values()[userChoice];
+        view.clearTerminal();
 
-        //TODO: use enum here
-        switch (chosenOption) {
-            case "1":
+        switch (menuOption) {
+            case LOGIN_AS_ADMIN:
                 this.logInAsAdmin();
                 break;
-            case "2":
+            case LOGIN_AS_MENTOR:
                 this.logInAsMentor();
                 break;
-            case "3":
+            case LOGIN_AS_CODECOOLER:
                 this.logInAsCodecooler();
                 break;
-            case "0":
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                }
+            case EXIT:
+                connection.close();
                 System.exit(0);
         }
     }
 
     // TODO: write one method insted of this three
 
-    private void logInAsAdmin() {
+    private void logInAsAdmin() throws SQLException {
         String email = view.getInput("Email: ");
         String password = view.getInput("Password: ");
         Admin loggedAdmin = null;
@@ -88,7 +82,7 @@ public class Logger {
         }
     }
 
-    private void logInAsMentor() {
+    private void logInAsMentor() throws SQLException {
         String email = view.getInput("Email: ");
         String password = view.getInput("Password: ");
         Mentor loggedMentor = null;
@@ -109,7 +103,7 @@ public class Logger {
         }
     }
 
-    private void logInAsCodecooler() {
+    private void logInAsCodecooler() throws SQLException {
         String email = view.getInput("Email: ");
         String password = view.getInput("Password: ");
         Codecooler loggedCodecooler = null;
