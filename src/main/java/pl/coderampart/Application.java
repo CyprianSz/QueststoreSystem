@@ -8,7 +8,7 @@ public class Application {
 
         try {
             Logger logger = new Logger();
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
         }
     }
