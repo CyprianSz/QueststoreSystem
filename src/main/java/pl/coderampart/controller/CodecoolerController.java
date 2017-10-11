@@ -1,35 +1,42 @@
 package pl.coderampart.controller;
 
 import pl.coderampart.DAO.*;
+import pl.coderampart.enums.CodecoolerMenuOption;
 import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
-import pl.coderampart.view.View;
+import pl.coderampart.view.CodecoolerView;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
-
-
 
 public class CodecoolerController implements Bootable<Codecooler> {
 
-    private View view = new View();
+    private CodecoolerView codecoolerView = new CodecoolerView();
+    private Connection connection;
+    private ArtifactDAO artifactDAO;
+    private ItemDAO itemDAO;
+    private WalletController walletController;
 
-    private static final int DISPLAY_WALLET = 1;
-    private static final int BUY_ARTIFACT = 2;
-    private static final int BUY_WITH_GROUP = 3;
-    private static final int DISPLAY_LEVEL = 4;
-    private static final int EXIT = 0;
+    public CodecoolerController(Connection connectionToDB) {
+        connection = connectionToDB;
+        artifactDAO = new ArtifactDAO(connection);
+        itemDAO = new ItemDAO(connection);
+        walletController = new WalletController(connection);
+    }
 
     public boolean start(Codecooler codecooler) {
-        view.displayCodecoolerMenu();
-        int userChoice = view.getUserChoice();
 
-        view.clearTerminal();
+        codecoolerView.displayCodecoolerMenu();
+        int userChoice = codecoolerView.getUserChoice();
+        CodecoolerMenuOption codecoolerMenuOption = CodecoolerMenuOption.values()[userChoice];
+        codecoolerView.clearTerminal();
 
-        switch(userChoice) {
+        switch(codecoolerMenuOption) {
             case DISPLAY_WALLET:
                 displayWallet(codecooler);
                 break;
             case BUY_ARTIFACT:
-                buyArtifact();
+                buyArtifact(codecooler);
                 break;
             case BUY_WITH_GROUP:
                 buyWithGroup();
@@ -40,62 +47,77 @@ public class CodecoolerController implements Bootable<Codecooler> {
             case EXIT:
                 return false;
         }
-        view.enterToContinue();
+        codecoolerView.enterToContinue();
         return true;
     }
 
     public void displayWallet(Codecooler codecooler) {
-        ItemDAO itemDao = new ItemDAO();
 
         String codecoolerWalletID;
         codecoolerWalletID = codecooler.getWallet().getID();
-
         ArrayList<Item> userItems;
-        userItems = itemDao.getUserItems(codecoolerWalletID);
 
-        String walletData;
-        walletData = codecooler.getWallet().toString();
+        try{
+            userItems = itemDAO.getUserItems(codecoolerWalletID);
 
-        view.output(walletData);
-        view.displayUserItems(userItems);
-    }
+            String walletData;
+            walletData = codecooler.getWallet().toString();
 
-    public void buyArtifact() {
-        // TODO:
-        // DEMO:
-        view.output("Current balance: 500cc");
-        view.output("Choose an item:");
-        view.output("\n1. Combat training, 50cc"
-                  + "\n2. Sanctuary, 300cc"
-                  + "\n3. Time Travel, 500cc");
-
-        Integer artifactChoice = view.getUserChoice();
-        if (artifactChoice >= 0) {
-            view.output("Item bought!");
+            codecoolerView.output(walletData);
+            codecoolerView.displayUserItems(userItems);
+        } catch (SQLException e){
+          System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
     public void buyWithGroup(){
         // TODO: Demo:
-        view.output("Not enough codecoolers in your group. Recruit some noobs");
+        codecoolerView.output("Not enough codecoolers in your group. Recruit some noobs");
     }
 
     public void displayLevel(Codecooler codecooler) {
-        view.output(codecooler.getLevel().toString());
+        codecoolerView.output(codecooler.getLevel().toString());
+    }
+
+    public void buyArtifact(Codecooler codecooler) {
+        //TODO: add displayArtifacts method to CodecoolerView
+        //codecoolerView.displayArtifacts( artifactDAO );
+        String name = codecoolerView.getInput( "\nEnter artifact name: " );
+
+        try{
+
+            Artifact artifact = artifactDAO.getByName( name );
+            Integer balance = codecooler.getWallet().getBalance();
+
+            if (artifact == null) {
+                codecoolerView.output( "No such artifact" );
+            } else if (balance > artifact.getValue()) {
+                Item item = new Item( artifact, codecooler.getWallet() );
+                itemDAO.create( item );
+                codecoolerView.output( "Bought: \n" + item.toString() );
+                walletController.changeBalance( codecooler, artifact.getValue() * (-1) );
+            } else {
+                codecoolerView.output("Too expensive");
+            }
+        } catch (SQLException e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
     }
 
     public void updateLevel(Codecooler codecooler) {
-        LevelDAO levelDao = new LevelDAO();
+        LevelDAO levelDao = new LevelDAO(connection);
 
-        ArrayList<Level> levelList= levelDao.readAll();
+        try {
+            ArrayList<Level> levelList = levelDao.readAll();
+            Integer playerExperience = codecooler.getWallet().getEarnedCoins();
 
-        Integer playerExperience;
-        playerExperience = codecooler.getWallet().getEarnedCoins();
-
-        for (Level level: levelList) {
-            if (playerExperience >= level.getRequiredExperience()) {
-                codecooler.setLevel(level);
+            for (Level level: levelList) {
+                if (playerExperience >= level.getRequiredExperience()) {
+                    codecooler.setLevel(level);
+                }
             }
+        } catch (SQLException e){
+          System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 }

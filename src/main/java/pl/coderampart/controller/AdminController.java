@@ -1,127 +1,219 @@
 package pl.coderampart.controller;
 
 import pl.coderampart.DAO.*;
+import pl.coderampart.enums.GroupSectionOption;
+import pl.coderampart.enums.LevelSectionOption;
+import pl.coderampart.enums.MentorSectionOption;
+import pl.coderampart.enums.AdminSubmenuOption;
 import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
-import pl.coderampart.view.View;
+import pl.coderampart.view.AdminView;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AdminController implements Bootable<Admin> {
 
-    private View view = new View();
-    private MentorDAO mentorDAO = new MentorDAO();
-    private GroupDAO groupDAO = new GroupDAO();
-    private LevelDAO levelDAO = new LevelDAO();
+    private AdminView adminView = new AdminView();
+    private LevelDAO levelDAO;
+    private GroupDAO groupDAO;
+    private MentorDAO mentorDAO;
+    private Connection connection;
 
-    private static final int CREATE_MENTOR = 1;
-    private static final int CREATE_GROUP = 2;
-    private static final int CREATE_LEVEL = 3;
-    private static final int EDIT_MENTOR = 4;
-    private static final int EDIT_GROUP = 5;
-    private static final int EDIT_LEVEL = 6;
-    private static final int DISPLAY_MENTORS = 7;
-    private static final int DISPLAY_GROUPS = 8;
-    private static final int DISPLAY_LEVELS = 9;
-    private static final int DELETE_MENTOR = 10;
-    private static final int DELETE_GROUP = 11;
-    private static final int DELETE_LEVEL = 12;
-    private static final int EXIT = 0;
+    public AdminController(Connection connectionToDB) {
+
+        connection = connectionToDB;
+        mentorDAO = new MentorDAO(connection);
+        groupDAO = new GroupDAO(connection);
+        levelDAO = new LevelDAO(connection);
+    }
 
     public boolean start(Admin admin) {
-        view.displayAdminMenu();
-        int userChoice = view.getUserChoice();
 
-        view.clearTerminal();
-        // TODO: USE ENUM, DECLARE SUBMENUS FOR EACH CLASS
-        switch(userChoice) {
+        adminView.displayAdminMenu();
+        int userChoice = adminView.getUserChoice();
 
-            case CREATE_MENTOR: createMentor();
+        AdminSubmenuOption adminSubmenuOption = AdminSubmenuOption.values()[userChoice];
+        adminView.clearTerminal();
+        switch (adminSubmenuOption) {
+
+            case DISPLAY_MENTOR_MANAGEMENT_MENU:
+                startMentorManagementMenu();
                 break;
-            case CREATE_GROUP: createGroup();
+            case DISPLAY_CODECOOLER_MANAGEMENT_MENU:
+                startGroupManagementMenu();
                 break;
-            case CREATE_LEVEL: createLevel();
-                break;
-            case EDIT_MENTOR: editMentor();
-                break;
-            case EDIT_GROUP: editGroup();
-                break;
-            case EDIT_LEVEL: editLevel();
-                break;
-            case DISPLAY_MENTORS: displayMentors();
-                break;
-            case DISPLAY_GROUPS: displayGroups();
-                break;
-            case DISPLAY_LEVELS: displayLevels();
-                break;
-            case DELETE_MENTOR: deleteMentor();
-                break;
-            case DELETE_GROUP: deleteGroup();
-                break;
-            case DELETE_LEVEL: deleteLevel();
+            case DISPLAY_LEVEL_MANAGEMENT_MENU:
+                startLevelManagementMenu();
                 break;
             case EXIT:
                 return false;
         }
-
-        view.enterToContinue();
+        adminView.enterToContinue();
         return true;
     }
 
+    public boolean startMentorManagementMenu() {
+
+        adminView.displayManagingMentorMenu();
+        int userChoice = adminView.getUserChoice();
+
+        MentorSectionOption mentorSectionOption = MentorSectionOption.values()[userChoice];
+        adminView.clearTerminal();
+        switch (mentorSectionOption) {
+            case CREATE_MENTOR:
+                createMentor();
+                break;
+            case DISPLAY_MENTORS:
+                displayMentors();
+                break;
+            case EDIT_MENTOR:
+                editMentor();
+                break;
+            case DELETE_MENTOR:
+                deleteMentor();
+                break;
+            case BACK_TO_MAIN_MENU:
+                return false;
+        }
+        return true;
+
+    }
+
+    public boolean startGroupManagementMenu() {
+
+        adminView.displayCodecoolerManagingMenu();
+        int userChoice = adminView.getUserChoice();
+
+        GroupSectionOption groupSectionOption = GroupSectionOption.values()[userChoice];
+        adminView.clearTerminal();
+
+        switch (groupSectionOption) {
+            case CREATE_GROUP:
+                createGroup();
+                break;
+            case EDIT_GROUP:
+                editGroup();
+                break;
+            case DISPLAY_GROUPS:
+                displayGroups();
+                break;
+            case DELETE_GROUP:
+                deleteGroup();
+                break;
+            case BACK_TO_MAIN_MENU:
+                return false;
+        }
+        return true;
+    }
+
+    public boolean startLevelManagementMenu() {
+
+        adminView.displayLevelManagingMenu();
+        int userChoice = adminView.getUserChoice();
+
+        LevelSectionOption levelSectionOption = LevelSectionOption.values()[userChoice];
+        adminView.clearTerminal();
+
+        switch (levelSectionOption) {
+            case CREATE_LEVEL:
+                createLevel();
+                break;
+            case EDIT_LEVEL:
+                editLevel();
+                break;
+            case DISPLAY_LEVELS:
+                displayLevels();
+                break;
+            case DELETE_LEVEL:
+                deleteLevel();
+                break;
+            case BACK_TO_MAIN_MENU:
+                return false;
+        }
+        return true;
+    }
+
+
     public void createMentor(){
+        String chosenGroupName;
+        try{
 
-        this.displayMentors();
-
-        String[] mentorData = view.getUserData();
-
-        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], view.stringToDate(mentorData[2]),
-                                      mentorData[3], mentorData[4]);
-
-        this.displayGroups();
         ArrayList<Group> allGroups = groupDAO.readAll();
-        String chosenGroupName = view.getInput("Enter name of a group you wish to assign this mentor to: ");
+        ArrayList<String> groupsNames = new ArrayList<>();
+        String[] mentorData = adminView.getUserData();
+
+        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], adminView.stringToDate(mentorData[2]),
+                                      mentorData[3], mentorData[4]);
+        this.displayGroups();
+
+
         for (Group group: allGroups){
             String groupName = group.getName();
-
-            if (groupName.equals(chosenGroupName)){
-                newMentor.setGroup(group);
-            }
+            groupsNames.add(groupName);
         }
 
+        do {
+            chosenGroupName = adminView.getInput("Enter name of a group you wish to assign this mentor to: ");
+        } while (!groupsNames.contains(chosenGroupName));
+
+        for (Group group : allGroups) {
+            if (group.getName().equals(chosenGroupName)) {
+                newMentor.setGroup( group );
+
+            }
+        }
         mentorDAO.create(newMentor);
+        } catch (SQLException e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
     }
 
     public void createGroup(){
-        this.displayGroups();
-        String[] groupData = view.getGroupData();
+        String[] groupData = adminView.getGroupData();
 
         Group newGroup = new Group(groupData[0]);
-
-        groupDAO.create(newGroup);
+        try {
+            groupDAO.create(newGroup);
+        } catch (SQLException e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
     }
 
     public void createLevel(){
+        //TODO: VALIDATION OF NUMBER INPUT
         this.displayLevels();
-        String[] levelData = view.getLevelData();
+        String[] levelData = adminView.getLevelData();
 
         Level newLevel = new Level(Integer.parseInt(levelData[0]), Integer.parseInt(levelData[1]), levelData[2]);
-
-        levelDAO.create(newLevel);
+        try {
+            levelDAO.create(newLevel);
+        } catch (SQLException e) {
+          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
     }
 
     public void editMentor(){
         this.displayMentors();
 
         Mentor changedMentor = null;
+        try{
 
         ArrayList<Mentor> allMentors = mentorDAO.readAll();
-        String chosenMentorEmail = view.getInput("Enter email of a mentor you wish to edit: ");
+        String chosenMentorEmail = adminView.getInput("Enter email of a mentor you wish to edit: ");
 
-        for (Mentor mentor: allMentors){
-            if (chosenMentorEmail.equals(mentor.getEmail())){
+        for (Mentor mentor: allMentors) {
+            if (chosenMentorEmail.equals(mentor.getEmail())) {
                 changedMentor = mentor;
                 break;
             }
+        }
+
+            } catch (SQLException e) {
+                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
         }
 
         if (!changedMentor.equals(null)) {
@@ -134,29 +226,34 @@ public class AdminController implements Bootable<Admin> {
             ArrayList<String> editMentorOptions = new ArrayList<>(Arrays.asList("Edit first name", "Edit last name,",
                                                                                 "Edit email", "Edit password",
                                                                                 "Edit birthdate"));
-            view.displayOptions(editMentorOptions);
-            int userChoice = view.getUserChoice();
-            view.clearTerminal();
+            adminView.displayOptions(editMentorOptions);
+            int userChoice = adminView.getUserChoice();
+            adminView.clearTerminal();
 
             switch(userChoice){
                 case EDIT_FIRSTNAME:
-                    changedMentor.setFirstName(view.getInput("Enter new name: "));
+                    changedMentor.setFirstName(adminView.getInput("Enter new name: "));
                     break;
                 case EDIT_LASTNAME:
-                    changedMentor.setLastName(view.getInput("Enter new name: "));
+                    changedMentor.setLastName(adminView.getInput("Enter new name: "));
                     break;
                 case EDIT_EMAIL:
-                    changedMentor.setEmail(view.getRegExInput(View.emailRegEx, "Enter new email: "));
+                    changedMentor.setEmail(adminView.getRegExInput(adminView.emailRegEx, "Enter new email: "));
                     break;
                 case EDIT_PASSWORD:
-                    changedMentor.setPassword(view.getInput("Enter new password: "));
+                    changedMentor.setPassword(adminView.getInput("Enter new password: "));
                     break;
                 case EDIT_BIRTHDATE:
-                    changedMentor.setDateOfBirth(view.stringToDate(view.getRegExInput(View.dateRegEx,
+                    changedMentor.setDateOfBirth(adminView.stringToDate(adminView.getRegExInput(adminView.dateRegEx,
                                                                                       "Enter new date")));
                     break;
             }
+            try{
+
             mentorDAO.update(changedMentor);
+            }catch (SQLException e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
 
         }
     }
@@ -166,132 +263,169 @@ public class AdminController implements Bootable<Admin> {
 
         Group changedGroup = null;
 
-        ArrayList<Group> allGroups = groupDAO.readAll();
-        String chosenGroupName = view.getInput("Enter name of a group you wish to edit: ");
+        try{
+            ArrayList<Group> allGroups = groupDAO.readAll();
+            String chosenGroupName = adminView.getInput("Enter name of a group you wish to edit: ");
 
-        for (Group group: allGroups){
-            if (chosenGroupName.equals(group.getName())){
-                changedGroup = group;
+            for (Group group: allGroups){
+                if (chosenGroupName.equals(group.getName())){
+                    changedGroup = group;
+                }
             }
+
+            if(!changedGroup.equals(null)){
+                changedGroup.setName(adminView.getInput("Enter new name: "));
+            }
+                groupDAO.update(changedGroup);
+
+        } catch (SQLException e) {
+          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
 
-        if(!changedGroup.equals(null)){
-            changedGroup.setName(view.getInput("Enter new name: "));
-        }
-
-        groupDAO.update(changedGroup);
     }
 
     public void editLevel(){
         this.displayLevels();
 
         Level changedLevel = null;
+        try {
 
-        ArrayList<Level> allLevels = levelDAO.readAll();
-        String chosenLevelRank = view.getInput("Enter rank of a level you wish to edit: ");
+            ArrayList<Level> allLevels = levelDAO.readAll();
+            String chosenLevelRank = adminView.getInput("Enter rank of a level you wish to edit: ");
 
-        for (Level level: allLevels){
-            if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
-                changedLevel = level;
+            for (Level level: allLevels){
+                if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
+                    changedLevel = level;
+                }
             }
+        } catch (SQLException e) {
+          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
 
-        if (!changedLevel.equals(null)) {
+        if (changedLevel != null) {
             final int EDIT_RANK = 1;
             final int EDIT_REQEXP = 2;
             final int EDIT_DESCRIPTION = 3;
 
             ArrayList<String> editLevelOptions = new ArrayList<>(Arrays.asList("Edit rank", "Edit required experience,",
                                                                                 "Edit description"));
-            view.displayOptions(editLevelOptions);
-            int userChoice = view.getUserChoice();
-            view.clearTerminal();
+            adminView.displayOptions(editLevelOptions);
+            int userChoice = adminView.getUserChoice();
+            adminView.clearTerminal();
 
             switch(userChoice){
                 case EDIT_RANK:
-                    changedLevel.setRank(Integer.parseInt(view.getInput("Enter new rank: ")));
+                    changedLevel.setRank(Integer.parseInt(adminView.getInput("Enter new rank: ")));
                     break;
                 case EDIT_REQEXP:
-                    changedLevel.setRequiredExperience(Integer.parseInt(view.getInput("Enter new value: ")));
+                    changedLevel.setRequiredExperience(Integer.parseInt(adminView.getInput("Enter new required experience: ")));
                     break;
                 case EDIT_DESCRIPTION:
-                    changedLevel.setDescription(view.getInput("Enter new email: "));
+                    changedLevel.setDescription(adminView.getInput("Enter new description: "));
                     break;
             }
-            levelDAO.update(changedLevel);
+            try {
+                levelDAO.update(changedLevel);
+            } catch (SQLException e) {
+                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            }
         }
     }
 
     public void displayMentors(){
-        ArrayList<Mentor> allMentors = mentorDAO.readAll();
-        ArrayList<String> mentorData = new ArrayList<>();
+        try{
 
-        for (Mentor mentor: allMentors){
-            mentorData.add(mentor.toString());
+            ArrayList<Mentor> allMentors = mentorDAO.readAll();
+            ArrayList<String> mentorData = new ArrayList<>();
+
+            for (Mentor mentor: allMentors){
+                mentorData.add(mentor.toString());
+            }
+
+            adminView.outputTable(mentorData);
+        } catch (SQLException e) {
+          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
-
-        view.outputTable(mentorData);
     }
 
     public void displayGroups(){
-        ArrayList<Group> allGroups = groupDAO.readAll();
-        ArrayList<String> groupStrings = new ArrayList<String>();
 
-        for (Group group: allGroups){
-            groupStrings.add(group.toString());
+        try {
+            ArrayList<Group> allGroups = groupDAO.readAll();
+            ArrayList<String> groupStrings = new ArrayList<String>();
+
+            for (Group group: allGroups){
+                groupStrings.add(group.toString());
+            }
+
+            adminView.outputTable(groupStrings);
+        } catch (SQLException e) {
+          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
-
-        view.outputTable(groupStrings);
     }
 
     public void displayLevels(){
-        ArrayList<Level> allLevels = levelDAO.readAll();
-        ArrayList<String> levelStrings = new ArrayList<String>();
+        try {
+            ArrayList<Level> allLevels = levelDAO.readAll();
+            ArrayList<String> levelStrings = new ArrayList<String>();
 
-        for (Level level: allLevels){
-            levelStrings.add(level.toString());
+            for (Level level : allLevels) {
+                levelStrings.add(level.toString());
+            }
+
+            adminView.outputTable(levelStrings);
+        } catch (SQLException e) {
+          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
-
-        view.outputTable(levelStrings);
     }
 
     public void deleteMentor() {
+
         this.displayMentors();
-
-        ArrayList<Mentor> allMentors = mentorDAO.readAll();
-        String chosenMentorEmail = view.getInput("Enter email of a mentor you wish to delete: ");
-
-        for (Mentor mentor: allMentors){
-            if (chosenMentorEmail.equals(mentor.getEmail())){
-                mentorDAO.delete(mentor);
-                break;
+        try{
+            ArrayList<Mentor> allMentors = mentorDAO.readAll();
+            String chosenMentorEmail = adminView.getInput("Enter email of a mentor you wish to delete: ");
+            for (Mentor mentor: allMentors){
+                if (chosenMentorEmail.equals(mentor.getEmail())){
+                    mentorDAO.delete(mentor);
+                    break;
+                }
             }
+        } catch (SQLException e) {
+          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
+
     }
 
     public void deleteGroup(){
         this.displayGroups();
+        try{
+            ArrayList<Group> allGroups = groupDAO.readAll();
+            String chosenGroupName = adminView.getInput("Enter name of a group you wish to edit: ");
 
-        ArrayList<Group> allGroups = groupDAO.readAll();
-        String chosenGroupName = view.getInput("Enter name of a group you wish to edit: ");
-
-        for (Group group: allGroups){
-            if (chosenGroupName.equals(group.getName())){
-                groupDAO.delete(group);
+            for (Group group: allGroups){
+                if (chosenGroupName.equals(group.getName())){
+                    groupDAO.delete(group);
+                }
             }
+        } catch (SQLException e) {
+          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
 
     public void deleteLevel(){
         this.displayLevels();
+        try {
+            ArrayList<Level> allLevels = levelDAO.readAll();
+            String chosenLevelRank = adminView.getInput("Enter rank of a level you wish to edit: ");
 
-        ArrayList<Level> allLevels = levelDAO.readAll();
-        String chosenLevelRank = view.getInput("Enter rank of a level you wish to edit: ");
-
-        for (Level level: allLevels){
-            if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
-                levelDAO.delete(level);
+            for (Level level: allLevels){
+                if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
+                    levelDAO.delete(level);
+                }
             }
+        } catch (SQLException e) {
+          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
 }

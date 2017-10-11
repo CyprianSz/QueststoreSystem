@@ -1,0 +1,9 @@
+package pl.coderampart.enums;
+
+public enum MentorSubmenuOption {
+    EXIT,
+    DISPLAY_CODECOOLER_MANAGEMENT_MENU,
+    DISPLAY_QUEST_MANAGEMENT_MENU,
+    DISPLAY_ARTIFACT_MANAGEMENT_MENU,
+    DISPLAY_TEAM_MANAGEMENT_MENU
+}

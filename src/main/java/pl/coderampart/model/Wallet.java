@@ -10,6 +10,8 @@ public class Wallet {
 
     public Wallet() {
         this.ID = UUIDController.createUUID();
+        this.balance = 0;
+        this.earnedCoins = 0;
     }
 
     public Wallet(String ID, Integer balance, Integer earnedCoins) {
@@ -21,6 +23,8 @@ public class Wallet {
     public String getID() { return this.ID; }
     public Integer getBalance() { return this.balance; }
     public Integer getEarnedCoins() { return this.earnedCoins; }
+    public void setBalance(Integer balance) { this.balance = balance; }
+    public void setEarnedCoins(Integer earnedCoins) { this.earnedCoins = earnedCoins; }
 
 
     public String toString() {

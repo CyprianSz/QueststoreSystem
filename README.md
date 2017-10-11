@@ -1,17 +1,18 @@
 # Queststore_system by 'Code Rampart Inc.'
-# demo version v0.92
+# demo version v0.93
 
 ## Overview
 * This is a simple console app simulating Questore platform system
 * Effect of hard honest work of brilliant programmers
-* Written fully in Java
+* Written in Java, SQL
 
 ## Launching
 * To create database: mvn flyway:migrate
 * To compile: mvn compile
-* To run: run.sh
+* To run: java Application
 
 ## Contributors
+* Natalia Hrytsyna - natahrytsyna
 * Cyprian Szwajka - CyprianSz
 * Ernest Jaroszek - sharqylbj
 * Iwo Tyszkowski - iwoty
