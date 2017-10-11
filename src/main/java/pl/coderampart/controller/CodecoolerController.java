@@ -24,7 +24,7 @@ public class CodecoolerController implements Bootable<Codecooler> {
         walletController = new WalletController(connection);
     }
 
-    public boolean start(Codecooler codecooler) {
+    public boolean start(Codecooler codecooler) throws SQLException {
 
         codecoolerView.displayCodecoolerMenu();
         int userChoice = codecoolerView.getUserChoice();
@@ -51,23 +51,20 @@ public class CodecoolerController implements Bootable<Codecooler> {
         return true;
     }
 
-    public void displayWallet(Codecooler codecooler) {
+    public void displayWallet(Codecooler codecooler) throws SQLException {
 
         String codecoolerWalletID;
         codecoolerWalletID = codecooler.getWallet().getID();
         ArrayList<Item> userItems;
 
-        try{
-            userItems = itemDAO.getUserItems(codecoolerWalletID);
+        userItems = itemDAO.getUserItems(codecoolerWalletID);
 
-            String walletData;
-            walletData = codecooler.getWallet().toString();
+        String walletData;
+        walletData = codecooler.getWallet().toString();
 
-            codecoolerView.output(walletData);
-            codecoolerView.displayUserItems(userItems);
-        } catch (SQLException e){
-          System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+        codecoolerView.output(walletData);
+        codecoolerView.displayUserItems(userItems);
+
     }
 
     public void buyWithGroup(){
@@ -79,45 +76,37 @@ public class CodecoolerController implements Bootable<Codecooler> {
         codecoolerView.output(codecooler.getLevel().toString());
     }
 
-    public void buyArtifact(Codecooler codecooler) {
+    public void buyArtifact(Codecooler codecooler) throws SQLException {
         //TODO: add displayArtifacts method to CodecoolerView
         //codecoolerView.displayArtifacts( artifactDAO );
         String name = codecoolerView.getInput( "\nEnter artifact name: " );
 
-        try{
+        Artifact artifact = artifactDAO.getByName( name );
+        Integer balance = codecooler.getWallet().getBalance();
 
-            Artifact artifact = artifactDAO.getByName( name );
-            Integer balance = codecooler.getWallet().getBalance();
-
-            if (artifact == null) {
-                codecoolerView.output( "No such artifact" );
-            } else if (balance > artifact.getValue()) {
-                Item item = new Item( artifact, codecooler.getWallet() );
-                itemDAO.create( item );
-                codecoolerView.output( "Bought: \n" + item.toString() );
-                walletController.changeBalance( codecooler, artifact.getValue() * (-1) );
-            } else {
-                codecoolerView.output("Too expensive");
-            }
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        if (artifact == null) {
+            codecoolerView.output( "No such artifact" );
+        } else if (balance > artifact.getValue()) {
+            Item item = new Item( artifact, codecooler.getWallet() );
+            itemDAO.create( item );
+            codecoolerView.output( "Bought: \n" + item.toString() );
+            walletController.changeBalance( codecooler, artifact.getValue() * (-1) );
+        } else {
+            codecoolerView.output("Too expensive");
         }
+
     }
 
-    public void updateLevel(Codecooler codecooler) {
+    public void updateLevel(Codecooler codecooler) throws SQLException {
         LevelDAO levelDao = new LevelDAO(connection);
 
-        try {
-            ArrayList<Level> levelList = levelDao.readAll();
-            Integer playerExperience = codecooler.getWallet().getEarnedCoins();
+        ArrayList<Level> levelList = levelDao.readAll();
+        Integer playerExperience = codecooler.getWallet().getEarnedCoins();
 
-            for (Level level: levelList) {
-                if (playerExperience >= level.getRequiredExperience()) {
-                    codecooler.setLevel(level);
-                }
+        for (Level level: levelList) {
+            if (playerExperience >= level.getRequiredExperience()) {
+                codecooler.setLevel(level);
             }
-        } catch (SQLException e){
-          System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 }

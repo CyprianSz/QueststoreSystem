@@ -83,10 +83,10 @@ public class LevelDAO extends AbstractDAO {
 
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Level level) throws SQLException {
-        statement.setInt(2, level.getRank());
-        statement.setInt(3, level.getRequiredExperience());
-        statement.setString(4, level.getDescription());
-        statement.setString(1, level.getID());
+        statement.setInt(1, level.getRank());
+        statement.setInt(2, level.getRequiredExperience());
+        statement.setString(3, level.getDescription());
+        statement.setString(4, level.getID());
 
         return statement;
     }

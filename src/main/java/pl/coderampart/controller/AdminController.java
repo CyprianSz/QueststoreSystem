@@ -1,10 +1,7 @@
 package pl.coderampart.controller;
 
 import pl.coderampart.DAO.*;
-import pl.coderampart.enums.GroupSectionOption;
-import pl.coderampart.enums.LevelSectionOption;
-import pl.coderampart.enums.MentorSectionOption;
-import pl.coderampart.enums.AdminSubmenuOption;
+import pl.coderampart.enums.*;
 import pl.coderampart.model.*;
 import pl.coderampart.services.Bootable;
 import pl.coderampart.view.AdminView;
@@ -30,7 +27,7 @@ public class AdminController implements Bootable<Admin> {
         levelDAO = new LevelDAO(connection);
     }
 
-    public boolean start(Admin admin) {
+    public boolean start(Admin admin) throws SQLException {
 
         adminView.displayAdminMenu();
         int userChoice = adminView.getUserChoice();
@@ -55,7 +52,7 @@ public class AdminController implements Bootable<Admin> {
         return true;
     }
 
-    public boolean startMentorManagementMenu() {
+    public boolean startMentorManagementMenu() throws SQLException {
 
         adminView.displayManagingMentorMenu();
         int userChoice = adminView.getUserChoice();
@@ -82,7 +79,7 @@ public class AdminController implements Bootable<Admin> {
 
     }
 
-    public boolean startGroupManagementMenu() {
+    public boolean startGroupManagementMenu() throws SQLException {
 
         adminView.displayCodecoolerManagingMenu();
         int userChoice = adminView.getUserChoice();
@@ -109,7 +106,7 @@ public class AdminController implements Bootable<Admin> {
         return true;
     }
 
-    public boolean startLevelManagementMenu() {
+    public boolean startLevelManagementMenu() throws SQLException {
 
         adminView.displayLevelManagingMenu();
         int userChoice = adminView.getUserChoice();
@@ -137,9 +134,8 @@ public class AdminController implements Bootable<Admin> {
     }
 
 
-    public void createMentor(){
+    public void createMentor() throws SQLException{
         String chosenGroupName;
-        try{
 
         ArrayList<Group> allGroups = groupDAO.readAll();
         ArrayList<String> groupsNames = new ArrayList<>();
@@ -166,71 +162,54 @@ public class AdminController implements Bootable<Admin> {
             }
         }
         mentorDAO.create(newMentor);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
     }
 
-    public void createGroup(){
+    public void createGroup() throws SQLException {
         String[] groupData = adminView.getGroupData();
 
         Group newGroup = new Group(groupData[0]);
-        try {
-            groupDAO.create(newGroup);
-        } catch (SQLException e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+        groupDAO.create(newGroup);
+
     }
 
-    public void createLevel(){
-        //TODO: VALIDATION OF NUMBER INPUT
+    public void createLevel() throws SQLException {
         this.displayLevels();
         String[] levelData = adminView.getLevelData();
 
         Level newLevel = new Level(Integer.parseInt(levelData[0]), Integer.parseInt(levelData[1]), levelData[2]);
-        try {
-            levelDAO.create(newLevel);
-        } catch (SQLException e) {
-          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
+        levelDAO.create(newLevel);
+
     }
 
-    public void editMentor(){
+    public void editMentor() throws SQLException {
         this.displayMentors();
 
         Mentor changedMentor = null;
-        try{
-
         ArrayList<Mentor> allMentors = mentorDAO.readAll();
         String chosenMentorEmail = adminView.getInput("Enter email of a mentor you wish to edit: ");
-
         for (Mentor mentor: allMentors) {
             if (chosenMentorEmail.equals(mentor.getEmail())) {
                 changedMentor = mentor;
                 break;
             }
         }
+        changeConcreteElementOfMentor(changedMentor);
+    }
 
-            } catch (SQLException e) {
-                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 
-        }
-
+    private boolean changeConcreteElementOfMentor(Mentor changedMentor) throws SQLException {
         if (!changedMentor.equals(null)) {
-            final int EDIT_FIRSTNAME = 1;
-            final int EDIT_LASTNAME = 2;
-            final int EDIT_EMAIL = 3;
-            final int EDIT_PASSWORD = 4;
-            final int EDIT_BIRTHDATE = 5;
 
             ArrayList<String> editMentorOptions = new ArrayList<>(Arrays.asList("Edit first name", "Edit last name,",
-                                                                                "Edit email", "Edit password",
-                                                                                "Edit birthdate"));
+                    "Edit email", "Edit password",
+                    "Edit birthdate"));
+
             adminView.displayOptions(editMentorOptions);
             int userChoice = adminView.getUserChoice();
+            AdminEditingMentorChoice mentorChoice = AdminEditingMentorChoice.values()[userChoice];
             adminView.clearTerminal();
 
-            switch(userChoice){
+            switch (mentorChoice) {
                 case EDIT_FIRSTNAME:
                     changedMentor.setFirstName(adminView.getInput("Enter new name: "));
                     break;
@@ -245,75 +224,64 @@ public class AdminController implements Bootable<Admin> {
                     break;
                 case EDIT_BIRTHDATE:
                     changedMentor.setDateOfBirth(adminView.stringToDate(adminView.getRegExInput(adminView.dateRegEx,
-                                                                                      "Enter new date")));
-                    break;
+                            "Enter new date")));
+                case BACK_TO_MAIN_MENU:
+                    return false;
             }
-            try{
-
             mentorDAO.update(changedMentor);
-            }catch (SQLException e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
-
-        }
+        return true;
     }
 
-    public void editGroup(){
+    public void editGroup() throws SQLException {
         this.displayGroups();
 
         Group changedGroup = null;
 
-        try{
-            ArrayList<Group> allGroups = groupDAO.readAll();
-            String chosenGroupName = adminView.getInput("Enter name of a group you wish to edit: ");
+        ArrayList<Group> allGroups = groupDAO.readAll();
+        String chosenGroupName = adminView.getInput("Enter name of a group you wish to edit: ");
 
-            for (Group group: allGroups){
-                if (chosenGroupName.equals(group.getName())){
-                    changedGroup = group;
-                }
+        for (Group group: allGroups){
+            if (chosenGroupName.equals(group.getName())){
+                changedGroup = group;
             }
-
-            if(!changedGroup.equals(null)){
-                changedGroup.setName(adminView.getInput("Enter new name: "));
-            }
-                groupDAO.update(changedGroup);
-
-        } catch (SQLException e) {
-          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
 
+        if(!changedGroup.equals(null)){
+            changedGroup.setName(adminView.getInput("Enter new name: "));
+        }
+            groupDAO.update(changedGroup);
     }
 
-    public void editLevel(){
+
+    public void editLevel() throws SQLException {
         this.displayLevels();
 
         Level changedLevel = null;
-        try {
 
-            ArrayList<Level> allLevels = levelDAO.readAll();
-            String chosenLevelRank = adminView.getInput("Enter rank of a level you wish to edit: ");
+        ArrayList<Level> allLevels = levelDAO.readAll();
+        String chosenLevelRank = adminView.getInput("Enter rank of a level you wish to edit: ");
 
-            for (Level level: allLevels){
-                if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
-                    changedLevel = level;
-                }
+        for (Level level: allLevels){
+            if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
+                changedLevel = level;
             }
-        } catch (SQLException e) {
-          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
+        changeConcreteElementOfLevel(changedLevel);
+    }
 
+
+    private boolean changeConcreteElementOfLevel(Level changedLevel) throws SQLException {
         if (changedLevel != null) {
-            final int EDIT_RANK = 1;
-            final int EDIT_REQEXP = 2;
-            final int EDIT_DESCRIPTION = 3;
 
             ArrayList<String> editLevelOptions = new ArrayList<>(Arrays.asList("Edit rank", "Edit required experience,",
                                                                                 "Edit description"));
             adminView.displayOptions(editLevelOptions);
             int userChoice = adminView.getUserChoice();
+            AdminEditingLevelOption adminEditingOption = AdminEditingLevelOption.values()[userChoice];
             adminView.clearTerminal();
 
-            switch(userChoice){
+            switch(adminEditingOption){
                 case EDIT_RANK:
                     changedLevel.setRank(Integer.parseInt(adminView.getInput("Enter new rank: ")));
                     break;
@@ -323,109 +291,87 @@ public class AdminController implements Bootable<Admin> {
                 case EDIT_DESCRIPTION:
                     changedLevel.setDescription(adminView.getInput("Enter new description: "));
                     break;
+                case BACK_TO_MAIN_MENU:
+                    return false;
             }
-            try {
-                levelDAO.update(changedLevel);
-            } catch (SQLException e) {
-                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            }
+            levelDAO.update(changedLevel);
         }
+        return true;
     }
 
-    public void displayMentors(){
-        try{
+    public void displayMentors() throws SQLException {
 
-            ArrayList<Mentor> allMentors = mentorDAO.readAll();
-            ArrayList<String> mentorData = new ArrayList<>();
+        ArrayList<Mentor> allMentors = mentorDAO.readAll();
+        ArrayList<String> mentorData = new ArrayList<>();
 
-            for (Mentor mentor: allMentors){
-                mentorData.add(mentor.toString());
-            }
-
-            adminView.outputTable(mentorData);
-        } catch (SQLException e) {
-          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        for (Mentor mentor: allMentors){
+            mentorData.add(mentor.toString());
         }
+
+        adminView.outputTable(mentorData);
     }
 
-    public void displayGroups(){
+    public void displayGroups() throws SQLException {
 
-        try {
-            ArrayList<Group> allGroups = groupDAO.readAll();
-            ArrayList<String> groupStrings = new ArrayList<String>();
+        ArrayList<Group> allGroups = groupDAO.readAll();
+        ArrayList<String> groupStrings = new ArrayList<String>();
 
-            for (Group group: allGroups){
-                groupStrings.add(group.toString());
-            }
-
-            adminView.outputTable(groupStrings);
-        } catch (SQLException e) {
-          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        for (Group group: allGroups){
+            groupStrings.add(group.toString());
         }
+
+        adminView.outputTable(groupStrings);
+
     }
 
-    public void displayLevels(){
-        try {
-            ArrayList<Level> allLevels = levelDAO.readAll();
-            ArrayList<String> levelStrings = new ArrayList<String>();
+    public void displayLevels() throws SQLException {
 
-            for (Level level : allLevels) {
-                levelStrings.add(level.toString());
-            }
+        ArrayList<Level> allLevels = levelDAO.readAll();
+        ArrayList<String> levelStrings = new ArrayList<String>();
 
-            adminView.outputTable(levelStrings);
-        } catch (SQLException e) {
-          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        for (Level level : allLevels) {
+            levelStrings.add(level.toString());
         }
+
+        adminView.outputTable(levelStrings);
     }
 
-    public void deleteMentor() {
+    public void deleteMentor() throws SQLException {
 
         this.displayMentors();
-        try{
-            ArrayList<Mentor> allMentors = mentorDAO.readAll();
-            String chosenMentorEmail = adminView.getInput("Enter email of a mentor you wish to delete: ");
-            for (Mentor mentor: allMentors){
-                if (chosenMentorEmail.equals(mentor.getEmail())){
-                    mentorDAO.delete(mentor);
-                    break;
-                }
+        ArrayList<Mentor> allMentors = mentorDAO.readAll();
+        String chosenMentorEmail = adminView.getInput("Enter email of a mentor you wish to delete: ");
+        for (Mentor mentor: allMentors){
+            if (chosenMentorEmail.equals(mentor.getEmail())){
+                mentorDAO.delete(mentor);
+                break;
             }
-        } catch (SQLException e) {
-          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
-
     }
 
-    public void deleteGroup(){
+    public void deleteGroup() throws SQLException {
+
         this.displayGroups();
-        try{
-            ArrayList<Group> allGroups = groupDAO.readAll();
-            String chosenGroupName = adminView.getInput("Enter name of a group you wish to edit: ");
+        ArrayList<Group> allGroups = groupDAO.readAll();
+        String chosenGroupName = adminView.getInput("Enter name of a group you wish to edit: ");
 
-            for (Group group: allGroups){
-                if (chosenGroupName.equals(group.getName())){
-                    groupDAO.delete(group);
-                }
+        for (Group group: allGroups){
+            if (chosenGroupName.equals(group.getName())){
+                groupDAO.delete(group);
             }
-        } catch (SQLException e) {
-          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
 
-    public void deleteLevel(){
+    public void deleteLevel() throws SQLException {
         this.displayLevels();
-        try {
-            ArrayList<Level> allLevels = levelDAO.readAll();
-            String chosenLevelRank = adminView.getInput("Enter rank of a level you wish to edit: ");
 
-            for (Level level: allLevels){
-                if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
-                    levelDAO.delete(level);
-                }
+        ArrayList<Level> allLevels = levelDAO.readAll();
+        String chosenLevelRank = adminView.getInput("Enter rank of a level you wish to edit: ");
+
+        for (Level level: allLevels){
+            if (chosenLevelRank.equals(Integer.toString(level.getRank()))){
+                levelDAO.delete(level);
             }
-        } catch (SQLException e) {
-          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
 }
