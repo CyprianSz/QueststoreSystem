@@ -59,6 +59,7 @@ public class MentorController implements Bootable<Mentor> {
             case EXIT:
                 return false;
         }
+        mentorView.enterToContinue();
         return true;
     }
 

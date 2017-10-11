@@ -27,17 +27,6 @@ public class View {
         }
     }
 
-//    public void displayArtifacts(ArtifactDAO artifactDAO) {
-//        ArrayList<Artifact> allArtifacts = artifactDAO.readAll();
-//        ArrayList<String> artifactStrings = new ArrayList<String>();
-//
-//        for (Artifact artifact: allArtifacts){
-//            artifactStrings.add(artifact.toString());
-//        }
-//
-//        this.outputTable(artifactStrings);
-//    }
-
     public int getUserChoice() {
         Scanner input = new Scanner(System.in);
         int number;
