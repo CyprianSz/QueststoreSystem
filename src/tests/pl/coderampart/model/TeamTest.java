@@ -13,17 +13,18 @@ class TeamTest {
 
     @BeforeEach
     void setup(){
-        this.group = new Group("test");
+        this.group = mock(Group.class);
         this.team = new Team("test", group);
     }
 
     @Test
-    void test1TeamCOnstructor(){
+    void test1TeamConstructor(){
+        Team team = new Team("test", group);
         assertNotNull(team);
     }
 
     @Test
-    void test2TeamCOnstructor(){
+    void test2TeamConstructor(){
         assertNotNull(team);
     }
 
@@ -37,14 +38,14 @@ class TeamTest {
     }
 
     @Test
-    void setTeamGroup(){
+    void testSetTeamGroup(){
         Group group = mock(Group.class);
         team.setGroup(group);
         assertEquals(group, team.getGroup());
     }
 
     @Test
-    void setTeamName(){
+    void testSetTeamName(){
         team.setName("new");
         assertEquals("new", team.getName());
     }
