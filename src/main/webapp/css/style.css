@@ -1,0 +1,26 @@
+body {
+    height: 100%!important;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    height: 25%;
+}
+
+.logging-container {
+    display: flex;
+    justify-content: center;
+    height:70%;
+}
+
+footer {
+    border: 3px solid black;
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+    display: flex;
+    justify-content: center;
+    height: 5%;
+    align-items: center;
+}
