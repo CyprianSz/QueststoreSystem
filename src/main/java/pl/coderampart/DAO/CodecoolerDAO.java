@@ -81,7 +81,6 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, codecooler);
         setStatement.executeUpdate();
-
     }
 
     public void update(Codecooler codecooler) throws SQLException {
