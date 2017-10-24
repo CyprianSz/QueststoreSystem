@@ -1,0 +1,76 @@
+body {
+    font-family: Sawasdee;
+}
+
+#header-container {
+    display: flex;
+}
+
+#footer-container {
+    border: 2px solid black;
+}
+
+footer {
+    height: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px 20px black;
+}
+
+header {
+    display: flex;
+}
+
+#logging-container {
+    display: flex;
+    min-height: 27em;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#radio-form {
+    border: 2px solid black;
+    display: flex;
+}
+
+#logging-form {
+    text-align: right;
+    display: flex;
+}
+
+#login-button {
+    align-items: center;
+}
+
+input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+}
+
+label {
+    color: #9a929e;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px 20px;
+}
+
+input[type=radio]:checked + label {
+    color: #ccc8ce;
+    background: #675f6b;
+}
+
+label + input[type=radio] + label {
+    border-left: solid 3px #675f6b;
+}
+
+.radio-group {
+    border: solid 3px #675f6b;
+    display: inline-block;
+    margin: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
