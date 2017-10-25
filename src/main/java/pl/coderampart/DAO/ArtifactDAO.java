@@ -58,7 +58,7 @@ public class ArtifactDAO extends AbstractDAO {
 
     public void create(Artifact artifact) throws SQLException{
 
-        String query = "INSERT INTO artifacts VALUES (?, ?, ?, ?, ?);";
+        String query = "INSERT INTO artifacts (name, description, type, value, id) VALUES (?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, artifact);
         setStatement.executeUpdate();
