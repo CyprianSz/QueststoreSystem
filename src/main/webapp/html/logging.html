@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>LOG IN</title>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -40,14 +41,8 @@
         </form>
     </div>
 
-    <div id="footer-container">
-        <footer>
-            <p>
-                Designed and created by <strong><a href="https://github.com/CodecoolKRK20171/queststore-system-code-rampart">
-                CodeRampart</a></strong> for <strong><a href="http://www.codecool.pl">Codecool</a></strong>.
-            </p>
-        </footer>
-    </div>
+    <div id="footer-container" w3-include-html="template/footer.html"></div>
 
+    <script>w3.includeHTML();</script>
 </body>
 </html>
