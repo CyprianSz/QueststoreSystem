@@ -3,6 +3,7 @@ nav ul {
     padding-left: 0;
     margin-top: 0;
     margin-bottom: 0;
+    color: #000000;
 }
 
 .nav {
@@ -59,6 +60,11 @@ nav ul {
 .nav__submenu-item:hover {
     background: #675f6b;
     box-shadow: 7px 7px 20px #675f6b;
+}
+
+.nav__submenu-item a {
+    text-decoration: none;
+    color: black ;
 }
 
 #logged-user {
