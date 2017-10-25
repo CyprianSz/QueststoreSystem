@@ -33,15 +33,22 @@ header {
     display: flex;
 }
 
-#logging-container {
+#main-container {
     display: flex;
     min-height: 30em;
+    align-items: center;
     justify-content: center;
+}
+
+#user-form-container {
+    display: flex;
+    min-height: 10em;
+    justify-content: right;
     align-items: center;
     flex-direction: column;
 }
 
-.logging-form {
+.user-form {
     justify-content: center;
     align-items: center;
     display: flex;
@@ -67,13 +74,10 @@ label {
     color: #9a929e;
     display: inline-block;
     cursor: pointer;
+    min-width: 6em;
     font-weight: bold;
     padding: 1em 2em;
-}
-
-input[type=radio]:checked + label, label:hover {
-    color: #ccc8ce;
-    background: #675f6b;
+    text-align: right;
 }
 
 /*INPUT FOR EMAIL AND PASSWORD*/
@@ -86,6 +90,7 @@ input[type=password], input[type=text] {
     border-radius: 5px;
     font-family: Sawasdee, serif;
     font-size: 20px;
+    font-weight: bold;
     padding: 10px;
     box-sizing: border-box;
     outline: none;
@@ -118,7 +123,7 @@ input[type=submit]:hover {
     background-color: #7c7c7c;
 }
 
-#login-button {
+#user-form-button {
     display: flex;
     align-items: center;
     justify-content: center;
