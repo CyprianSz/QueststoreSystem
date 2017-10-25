@@ -2,9 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit Level</title>
+    <link rel="stylesheet" href="../css/styleEditMentor.css">
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+<div id="header-container">
+    <header>
+        <div id="logo">
+            <img src="../images/logo.png" alt="logo">
+        </div>
+        <div id="app-info">
+            <h1 id="app-name">QuestStore</h1>
+            <p>by CodeRampart</p>
+        </div>
+        <div id="logged-user">
+            <h2 id="user-name">Creepy Guy</h2>
+            <p>Admin</p>
+        </div>
+    </header>
+</div>
+
+<nav class="nav">
+    <ul class="nav__menu">
+        <li class="nav__menu-item"><a>mentors</a>
+            <ul class="nav__submenu">
+                <li class="nav__submenu-item"> <a href="createMentor.html">create</a></li>
+                <li class="nav__submenu-item"> <a href="editMentor.html">edit</a></li>
+                <li class="nav__submenu-item"> <a href="displayMentors.html">display</a></li>
+                <li class="nav__submenu-item"> <a href="deleteMentor.html">delete</a></li>
+            </ul>
+        </li>
+        <li class="nav__menu-item"><a>groups</a>
+
+            <ul class="nav__submenu">
+                <li class="nav__submenu-item"> <a href="createGroup.html">create</a></li>
+                <li class="nav__submenu-item"> <a href="editGroup.html">edit</a></li>
+                <li class="nav__submenu-item"> <a href="displayGroups.html">display</a></li>
+                <li class="nav__submenu-item"> <a href="deleteGroup.html">delete</a></li>
+            </ul>
+
+        </li>
+        <li class="nav__menu-item"><a>levels</a>
+            <ul class="nav__submenu">
+                <li class="nav__submenu-item"> <a href="createLevel.html">create</a></li>
+                <li class="nav__submenu-item"> <a href="editLevel.html">edit</a></li>
+                <li class="nav__submenu-item"> <a href="displayLevels.html">display</a></li>
+                <li class="nav__submenu-item"> <a href="deleteLevel.html">delete</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<div id="main-container">
+    <div id="user-form-container">
+        <form>
+            <div class="user-form">
+                <label for="required-experience">required experience</label>
+                <input type="text" name="required-experience" id="required-experience" placeholder="100">
+            </div>
+
+            <div class="user-form">
+                <label for="description">description</label>
+                <input type="text" name="description" id="description" placeholder="You're just a noob.">
+            </div>
+
+            <div id="user-form-button">
+                <input type="submit" value="SAVE CHANGES">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div id="footer-container">
+    <footer>
+        <p>
+            Designed and created by <strong><a href="https://github.com/CodecoolKRK20171/queststore-system-code-rampart">
+            CodeRampart</a></strong> for <strong><a href="http://www.codecool.pl">Codecool</a></strong>.
+        </p>
+    </footer>
+</div>
 
 </body>
 </html>
