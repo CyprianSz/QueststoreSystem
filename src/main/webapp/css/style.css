@@ -2,12 +2,12 @@ body {
     font-family: Sawasdee, serif;
 }
 
-a {
+#footer-container a {
     color: black;
     text-decoration: none;
 }
 
-a:hover {
+#footer-container a:hover {
     color: black;
     text-decoration: underline;
 }
@@ -32,6 +32,7 @@ footer {
 header {
     display: flex;
 }
+
 #app-name {
     font-size: 4em;
     margin-bottom: -0.3em;
@@ -75,11 +76,6 @@ label {
     cursor: pointer;
     font-weight: bold;
     padding: 1em 2em;
-}
-
-input[type=radio]:checked + label, label:hover {
-    color: #ccc8ce;
-    background: #675f6b;
 }
 
 /*INPUT FOR EMAIL AND PASSWORD*/
