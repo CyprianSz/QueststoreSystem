@@ -1,0 +1,89 @@
+body {
+    font-family: Sawasdee, serif;
+}
+
+#header-container {
+    display: flex;
+}
+
+#footer-container {
+    border: 2px solid #675f6b;
+}
+
+footer {
+    height: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 7px 7px 20px #675f6b;
+}
+
+header {
+    display: flex;
+}
+
+#logging-container {
+    display: flex;
+    min-height: 30em;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.logging-form {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+#radio-form {
+    border: solid 1px #675f6b;
+    display: inline-block;
+    margin: 20px;
+    overflow: hidden;
+    background-color: #e8e6ec;
+}
+
+.delete-button {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+/*BUTTONS TO CHOOSE MENTOR*/
+
+input[type="radio"] {
+    visibility: hidden;
+    float: left;
+    clear: left;
+    border: none;
+    width: 100%;
+    height: 10px;
+}
+
+label {
+    float: left;
+    cursor: pointer;
+    vertical-align: middle;
+    display:inline-block;
+    padding: 1em 2em;
+    border: none;
+    width: 100%;
+}
+
+input[type=radio]:checked + label, label:hover {
+    color: #ccc8ce;
+    background: #675f6b;
+}
+
+/*BUTTON TO DELETE MENTOR*/
+
+/*input[type="delete"] {*/
+    /*visibility: hidden;*/
+    /*border: none;*/
+    /*width: 100%;*/
+    /*height: 10px;*/
+/*}*/
+
+
+
