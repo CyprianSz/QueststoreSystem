@@ -47,6 +47,26 @@ public class MentorView extends View{
         this.output("\n0. Back to main menu");
     }
 
+    public void displayEditCodecoolerMenu(){
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Edit first name", "Edit last name", "Edit email",
+                "Edit password", "Edit birthdate"));
+
+        displayOptions(options);
+    }
+
+    public void displayEditQuestMenu(){
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Edit name", "Edit description", "Edit reward"));
+
+        displayOptions(options);
+    }
+
+    public void displayEditArtifactMenu(){
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Edit name", "Edit description",
+                "Edit type", "Edit value"));
+
+        displayOptions(options);
+    }
+
     public String[] getQuestData() {
         String name = getInput("Name: ");
         String description = getInput("Description: ");
@@ -63,7 +83,7 @@ public class MentorView extends View{
         String type = getInput("Type (single/group): ");
         String value = getInput("Value (coolcoins): ");
 
-        String[] artifactData = new String[] {name, value};
+        String[] artifactData = new String[] {name, description, type, value};
 
         return artifactData;
     }
