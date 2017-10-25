@@ -10,7 +10,6 @@ a {
 a:hover {
     color: black;
     text-decoration: underline;
-}
 
 #header-container {
     display: flex;
@@ -80,6 +79,7 @@ label {
 input[type=radio]:checked + label, label:hover {
     color: #ccc8ce;
     background: #675f6b;
+    background-size: 100%;
 }
 
 /*INPUT FOR EMAIL AND PASSWORD*/
