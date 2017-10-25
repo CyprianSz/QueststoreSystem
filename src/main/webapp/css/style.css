@@ -78,7 +78,19 @@ label {
     padding: 1em 2em;
 }
 
-/*INPUT FOR EMAIL AND PASSWORD*/
+input[type=radio]:checked + label {
+    color: #ccc8ce;
+    background: #675f6b;
+    background-size: 100%;
+}
+
+#radio-form label:hover {
+    color: #ccc8ce;
+    background: #675f6b;
+    background-size: 100%;
+}
+
+      /*INPUT FOR EMAIL AND PASSWORD*/
 
 input[type=password], input[type=text] {
     width: 15em;
