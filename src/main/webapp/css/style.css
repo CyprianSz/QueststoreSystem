@@ -2,18 +2,6 @@ body {
     font-family: Sawasdee, serif;
 }
 
-a {
-
-}
-
-a:hover {
-
-}
-
-a:active {
-
-}
-
 
 #header-container {
     display: flex;
@@ -21,6 +9,7 @@ a:active {
 
 #footer-container {
     border: 2px solid #675f6b;
+    border-radius: 5px;
 }
 
 footer {
@@ -82,6 +71,7 @@ label {
 input[type=radio]:checked + label, label:hover {
     color: #ccc8ce;
     background: #675f6b;
+    background-size: 100%;
 }
 
 /*INPUT FOR EMAIL AND PASSWORD*/
