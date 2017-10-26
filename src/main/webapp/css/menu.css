@@ -111,6 +111,11 @@ nav ul {
     margin-left: -1em;
 }
 
+#main-container-deleteQuest{
+    height: 700px;
+    margin-left: -1em;
+}
+
 #main-container-quest{
     height: 38em;
     margin-left: -1em;
