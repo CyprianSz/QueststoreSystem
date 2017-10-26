@@ -90,10 +90,6 @@ nav ul {
     height: 400px;
 }
 
-#delete-question, #edit-form {
-
-}
-
 #attributes .attribute_list input.attribute_submit{
     display: inline-block;
     margin: -2px;
@@ -125,14 +121,19 @@ nav ul {
 #vertical_menu{
     float: left;
 }
-#delete-operation {
+
+#sub-container {
     padding: 8em;
     align-items: center;
     display:flex;
     justify-content: center;
 }
+
 #edit-operation {
     padding: 12em;
+
+#sub-container-form {
+    padding: 3em;
     align-items: center;
     display:flex;
     justify-content: center;
