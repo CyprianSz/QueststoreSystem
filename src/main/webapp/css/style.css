@@ -90,7 +90,7 @@ input[type=radio]:checked + label {
     background-size: 100%;
 }
 
-      /*INPUT FOR EMAIL AND PASSWORD*/
+/*INPUT FOR EMAIL AND PASSWORD*/
 
 input[type=password], input[type=text] {
     width: 15em;
@@ -140,4 +140,14 @@ input[type=submit]:hover {
 
 #artifact-form-container label {
     text-align: center;
+}
+
+#edit-operation form {
+    text-align: center;
+    align-items: center;
+    justify-content: right;
+}
+
+.edit-text-fields {
+    text-align: right;
 }
