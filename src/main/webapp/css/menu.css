@@ -60,7 +60,7 @@ nav ul {
 }
 
 .nav__submenu-item:hover {
-    background: #675f6b;
+    background-color: #675f6b;
     box-shadow: 7px 7px 20px #675f6b;
 }
 
@@ -91,11 +91,7 @@ nav ul {
 }
 
 #delete-question {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    height: 400px;
+
 }
 #attributes .attribute_list input.attribute_submit{
     display: inline-block;
@@ -103,12 +99,27 @@ nav ul {
     padding: 10px 10px;
     border: 1px solid #ddd;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 12px;
 }
 .attribute_list li {
     display: inline-block;
     margin-right: 10px;
 }
+#main-container{
+    height: 400px;
+    margin-left: -1em;
+}
+#vertical_menu{
+    float: left;
+}
+#delete-operation {
+    padding: 8em;
+    align-items: center;
+    display:flex;
+    justify-content: center;
+}
+
+
 
 
 
