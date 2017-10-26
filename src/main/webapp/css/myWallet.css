@@ -39,12 +39,11 @@ header {
     letter-spacing: 0.2em;
 }
 
-#wallet-container {
+#main-container {
     display: flex;
-    min-height: 21em;
-    justify-content: center;
+    min-height: 27em;
     align-items: center;
-    flex-direction: column;
+    justify-content: center;
 }
 
 #coolcoinsBalance-container {
