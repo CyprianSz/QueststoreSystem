@@ -3,12 +3,9 @@ nav ul {
     padding-left: 0;
     margin-top: 0;
     margin-bottom: 0;
-<<<<<<< HEAD
     color: #000000;
-=======
-    color: black;
->>>>>>> 66a2a5c6487654dee47f1291833f75700fbbf735
 }
+
 
 .nav {
     width: 100%;
@@ -99,26 +96,14 @@ nav ul {
     align-items: center;
     height: 400px;
 }
-
-#attributes .attribute_list input.attribute_radio {
-    display: none;
-    margin: 10px;
-
-}
-
-#attributes .attribute_list input.attribute_radio + label {
+#attributes .attribute_list input.attribute_submit{
     display: inline-block;
     margin: -2px;
-    padding: 15px 15px;
+    padding: 10px 10px;
     border: 1px solid #ddd;
     cursor: pointer;
-    font-size: 30px;
+    font-size: 20px;
 }
-
-#attributes .attribute_list input.attribute_radio:checked + label{
-    background: grey;
-}
-
 .attribute_list li {
     display: inline-block;
     margin-right: 10px;

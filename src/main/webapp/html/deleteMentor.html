@@ -11,20 +11,20 @@
 <body>
     <div id="header-container" w3-include-html="template/header.html"></div>
 
+    <div w3-include-html="template/adminMenu.html"></div>
+
     <div id="delete-question">
         <h2>Are you sure you want to delete this mentor?</h2>
         <div id="attributes">
             <ul class="attribute_list">
                 <li>
-                    <div class="radio">
-                        <input type="radio" class="attribute_radio" id="yes" value="Yes" name="gender"/>
-                        <label for="yes">Yes</label>
+                    <div class="submit">
+                        <input type="submit" class="attribute_submit" id="yes" value="Yes" name="gender"/>
                     </div>
                 </li>
                 <li>
-                    <div class="radio">
-                        <input type="radio" class="attribute_radio" id="no" value="No" name="gender"/>
-                        <label for="no">No</label>
+                    <div class="submit">
+                        <input type="submit" class="attribute_submit" id="no" value="No" name="gender"/>
                     </div>
                 </li>
             </ul>
