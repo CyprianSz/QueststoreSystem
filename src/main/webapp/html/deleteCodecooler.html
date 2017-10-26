@@ -3,53 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete Codecooler</title>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/menu.css">
 </head>
-<body>
-<div id="header-container">
-    <header>
-        <div id="logo">
-            <img src="../images/logo.png" alt="logo">
-        </div>
-        <div id="app-info">
-            <h1 id="app-name">QuestStore</h1>
-            <p>by CodeRampart</p>
-        </div>
-    </header>
-</div>
 
-<div id="delete-question">
-    <h2>Are you sure you want to delete this codecooler?</h2>
-    <div id="attributes">
-        <ul class="attribute_list">
-            <li>
-                <div class="radio">
-                    <input type="radio" class="attribute_radio" id="yes" value="Yes" name="gender"/>
-                    <label for="yes">Yes</label>
-                </div>
-            </li>
-            <li>
-                <div class="radio">
-                    <input type="radio" class="attribute_radio" id="no" value="No" name="gender"/>
-                    <label for="no">No</label>
-                </div>
-            </li>
-        </ul>
+<body>
+    <div id="header-container" w3-include-html="template/header.html"></div>
+
+    <div id="delete-question">
+        <h2>Are you sure you want to delete this codecooler?</h2>
+        <div id="attributes">
+            <ul class="attribute_list">
+                <li>
+                    <div class="radio">
+                        <input type="radio" class="attribute_radio" id="yes" value="Yes" name="gender"/>
+                        <label for="yes">Yes</label>
+                    </div>
+                </li>
+                <li>
+                    <div class="radio">
+                        <input type="radio" class="attribute_radio" id="no" value="No" name="gender"/>
+                        <label for="no">No</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 
-<div id="footer-container">
-    <footer>
-        <p>
-            Designed and created by <strong><a href="https://github.com/CodecoolKRK20171/queststore-system-code-rampart">
-            CodeRampart</a></strong> for <strong><a href="http://www.codecool.pl">Codecool</a></strong>.
-        </p>
-    </footer>
-</div>
+    <div id="footer-container" w3-include-html="template/footer.html"></div>
 
-</head>
-<body>
+    <script>w3.includeHTML();</script>
 
 </body>
 </html>

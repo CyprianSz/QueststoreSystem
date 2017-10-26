@@ -1,11 +1,13 @@
-
-
 nav ul {
     list-style: none;
     padding-left: 0;
     margin-top: 0;
     margin-bottom: 0;
+<<<<<<< HEAD
+    color: #000000;
+=======
     color: black;
+>>>>>>> 66a2a5c6487654dee47f1291833f75700fbbf735
 }
 
 .nav {
@@ -14,7 +16,7 @@ nav ul {
     background: white;
     border: solid 3px #675f6b;
     border-radius: 10px;
-    color: #9a929e;
+    color: #000000;
     font-weight: bold;
 }
 .nav a {
@@ -23,23 +25,28 @@ nav ul {
     line-height: inherit;
     cursor: pointer;
 }
+
 .nav__menu {
     line-height: 45px;
     font-weight: 700;
     text-transform: uppercase;
 }
+
 .nav__menu-item {
     display: inline-block;
     position: relative;
 }
+
 .nav__menu-item:hover {
     background: #675f6b;
 
 }
+
 .nav__menu-item:hover .nav__submenu {
     display: block;
 
 }
+
 .nav__submenu-item{
     box-shadow: 0px 1px 1px #675f6b;
 }
@@ -53,11 +60,16 @@ nav ul {
     height: 2em;
     background-color: white;
 }
+
 .nav__submenu-item:hover {
     background: #675f6b;
     box-shadow: 7px 7px 20px #675f6b;
 }
 
+.nav__submenu-item a {
+    text-decoration: none;
+    color: black ;
+}
 
 #logged-user {
     display: flex;
@@ -71,6 +83,7 @@ nav ul {
     height: 8em;
     width: 20em;;
 }
+
 #user-name{
     margin-bottom: -0.5em;
 }
