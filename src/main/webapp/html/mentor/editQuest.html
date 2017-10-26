@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit quest</title>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/menu.css">
+    <link rel="stylesheet" href="../../css/verticalMenuStyle.css">
+</head>
+
+<body>
+<div id="header-container" w3-include-html="../template/mentorHeader.html"></div>
+
+<div w3-include-html="../template/mentorMenu.html"></div>
+
+<div id="main-container-quest">
+
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    <input type="radio" id="exploringADungeon" name="quest-name"><label for="exploringADungeon">Exploring a dungeon</label>
+                    <input type="radio" id="solvingTheMagicPuzzle" name="quest-name"><label for="solvingTheMagicPuzzle">Solving the magic puzzle</label>
+                    <input type="radio" id="slayingADragon" name="quest-name"><label for="slayingADragon">Slaying a dragon</label>
+                    <input type="radio" id="spotTrap" name="quest-name"><label for="spotTrap">Spot trap</label>
+                    <input type="radio" id="tamingAPet" name="quest-name"><label for="tamingAPet">Taming a pet</label>
+                    <input type="radio" id="recruitSomeNoobs" name="quest-name"><label for="recruitSomeNoobs">Recruiting some n00bs</label>
+                    <input type="radio" id="masterOfTheMornings" name="quest-name"><label for="masterOfTheMornings">Master the mornings</label>
+                    <input type="radio" id="fastAsAnUnicorn" name="quest-name"><label for="fastAsAnUnicorn">Fast as an unicorn</label>
+                    <input type="radio" id="achiever" name="quest-name"><label for="achiever">Achiever</label>
+                    <input type="radio" id="fortune" name="quest-name"><label for="fortune">Fortune</label>
+                    <input type="radio" id="creatingAnEnchantedScroll" name="quest-name"><label for="creatingAnEnchantedScroll">Creating an enchanted scroll</label>
+                    <input type="radio" id="enterTheArena" name="quest-name"><label for="enterTheArena">Enter the arena</label>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="edit-operation">
+        <div id="artifact-form-container">
+            <form>
+                <div class="edit-text-fields">
+                    <div class="user-form">
+                        <label for="name">name</label>
+                        <input type="text" name="name" id="name" placeholder="Exploring a dungeon">
+                    </div>
+
+                    <div class="user-form">
+                        <label for="name">description</label>
+                        <input type="text" name="description" id="description" placeholder="Finishing a Teamwork week">
+                    </div>
+
+                    <div class="user-form">
+                        <label for="name">reward</label>
+                        <input type="text" name="reward" id="reward" placeholder="100">
+                    </div>
+                </div>
+
+                <div id="user-form-button">
+                    <input type="submit" value="SAVE CHANGES">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="footer-container" w3-include-html="../template/footer.html"></div>
+
+<script>w3.includeHTML();</script>
+
+</body>
+</html>
