@@ -139,7 +139,10 @@ nav ul {
 }
 
 #edit-operation {
-    padding: 12em;
+    padding: 6em;
+    align-items: center;
+    display:flex;
+    justify-content: center;
 }
 
 #sub-container-form {
