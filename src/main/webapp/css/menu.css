@@ -3,7 +3,7 @@ nav ul {
     padding-left: 0;
     margin-top: 0;
     margin-bottom: 0;
-    color: #000000;
+    color: #000000 ;
 }
 
 
@@ -11,9 +11,9 @@ nav ul {
     width: 100%;
     margin: 0 auto;
     background: white;
-    border: solid 3px #675f6b;
+    border: solid 3px #675f6b ;
     border-radius: 10px;
-    color: #000000;
+    color: #000000 ;
     font-weight: bold;
 }
 .nav a {
@@ -35,7 +35,7 @@ nav ul {
 }
 
 .nav__menu-item:hover {
-    background: #675f6b;
+    background: #675f6b ;
 
 }
 
@@ -45,7 +45,7 @@ nav ul {
 }
 
 .nav__submenu-item{
-    box-shadow: 0px 1px 1px #675f6b;
+    box-shadow: 0px 1px 1px #675f6b ;
     background-color: white;
 }
 
@@ -60,8 +60,8 @@ nav ul {
 }
 
 .nav__submenu-item:hover {
-    background-color: #675f6b;
-    box-shadow: 7px 7px 20px #675f6b;
+    background-color: #675f6b ;
+    box-shadow: 7px 7px 20px #675f6b ;
 }
 
 .nav__submenu-item a {
@@ -77,7 +77,7 @@ nav ul {
     top:0;
     right:0;
     flex-direction: column;
-    border-left: solid 3px #675f6b;
+    border-left: solid 3px #675f6b ;
     height: 8em;
     width: 20em;;
 }
@@ -90,9 +90,10 @@ nav ul {
     height: 400px;
 }
 
-#delete-question {
+#delete-question, #edit-form {
 
 }
+
 #attributes .attribute_list input.attribute_submit{
     display: inline-block;
     margin: -2px;
@@ -118,8 +119,9 @@ nav ul {
     display:flex;
     justify-content: center;
 }
-
-
-
-
-
+#edit-operation {
+    padding: 3em;
+    align-items: center;
+    display:flex;
+    justify-content: center;
+}

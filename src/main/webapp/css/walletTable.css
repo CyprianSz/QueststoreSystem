@@ -1,41 +1,27 @@
-.walletTable {
-    width: 60%;
-    table-layout: fixed;
+/*Responsive table*/
+table {
+    width: 100%;
     border-collapse: collapse;
+    background: #34495e;
+    color: #f3f3f3;
 }
-.walletTable th {
-    text-decoration: underline;
-}
-.walletTable th, .walletTable td {
-    padding: 5px;
+
+td, th {
+    padding: 8px;
     text-align: left;
 }
-.walletTable td:nth-child(1), .walletTable th:nth-child(1) {
-    min-width: 200px;
+
+/* Zebra striping */
+tr:nth-of-type(odd) {
+    background: #16a085;
 }
-.walletTable td:nth-child(2), .walletTable th:nth-child(2) {
-    min-width: 200px;
+
+th {
+    background: #2c3e50;
+    font-weight: bold;
 }
-.walletTable td:nth-child(3), .walletTable th:nth-child(3) {
-    width: 350px;
-}
-.walletTable td:nth-child(4), .walletTable th:nth-child(4) {
-    width: 350px;
-}
-.walletTable thead {
-    background-color: #333;
-    color: #FDFDFD;
-}
-.walletTable thead tr {
-    display: block;
-    position: relative;
-}
-.walletTable tbody {
-    display: block;
-    overflow: auto;
-    width: 100%;
-    height: 300px;
-}
-.walletTable tbody tr:nth-child(even) {
-    background-color: #DDD;
+
+h1 a {
+    text-decoration: none;
+    color: #fff;
 }

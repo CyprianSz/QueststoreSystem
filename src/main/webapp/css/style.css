@@ -17,7 +17,7 @@ body {
 }
 
 #footer-container {
-    border: 2px solid #675f6b;
+    border: 2px solid #675f6b ;
     border-radius: 5px;
 }
 
@@ -26,7 +26,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 7px 7px 20px #675f6b;
+    box-shadow: 7px 7px 20px #675f6b ;
 }
 
 header {
@@ -55,7 +55,7 @@ header {
 }
 
 #radio-form {
-    border: solid 3px #675f6b;
+    border: solid 3px #675f6b ;
     display: inline-block;
     margin: 20px;
     border-radius: 10px;
@@ -71,7 +71,7 @@ input[type=radio] {
 }
 
 label {
-    color: #9a929e;
+    color: #9a929e ;
     display: inline-block;
     cursor: pointer;
     font-weight: bold;
@@ -79,24 +79,24 @@ label {
 }
 
 input[type=radio]:checked + label {
-    color: #ccc8ce;
-    background: #675f6b;
+    color: #ccc8ce ;
+    background: #675f6b ;
     background-size: 100%;
 }
 
 #radio-form label:hover {
-    color: #ccc8ce;
-    background: #675f6b;
+    color: #ccc8ce ;
+    background: #675f6b ;
     background-size: 100%;
 }
 
-      /*INPUT FOR EMAIL AND PASSWORD*/
+/*INPUT FOR EMAIL AND PASSWORD*/
 
 input[type=password], input[type=text] {
     width: 15em;
-    background-color: #efefef;
+    background-color: #efefef ;
     color: #666;
-    border: 2px solid #675f6b;
+    border: 2px solid #675f6b ;
     border-radius: 5px;
     font-family: Sawasdee, serif;
     font-size: 20px;
@@ -114,7 +114,7 @@ input[type=password]:focus, input[type=text]:focus {
 input[type=submit] {
     font-family: Sawasdee, serif;
     width: 15em;
-    background-color: #675f6b;
+    background-color: #675f6b ;
     font-size: 20px;
     font-weight: bold;
     color: white;
@@ -129,7 +129,7 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-    background-color: #7c7c7c;
+    background-color: #7c7c7c ;
 }
 
 #login-button {
@@ -140,4 +140,14 @@ input[type=submit]:hover {
 
 #artifact-form-container label {
     text-align: center;
+}
+
+#edit-operation form {
+    text-align: center;
+    align-items: center;
+    justify-content: right;
+}
+
+.edit-text-fields {
+    text-align: right;
 }
