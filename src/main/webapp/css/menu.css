@@ -116,6 +116,11 @@ nav ul {
     margin-left: -1em;
 }
 
+#main-container-artifact{
+    height: 30em;
+    margin-left: -1em;
+}
+
 
 #vertical_menu{
     float: left;
@@ -126,8 +131,9 @@ nav ul {
     display:flex;
     justify-content: center;
 }
+
 #edit-operation {
-    padding: 12em;
+    padding: 6em;
     align-items: center;
     display:flex;
     justify-content: center;
