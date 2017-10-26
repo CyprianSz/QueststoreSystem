@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit quest</title>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/menu.css">
+    <link rel="stylesheet" href="../../css/verticalMenuStyle.css">
+</head>
+
+<body>
+<div id="header-container" w3-include-html="../template/mentorHeader.html"></div>
+
+<div w3-include-html="../template/mentorMenu.html"></div>
+
+<div id="main-container">
+
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    <input type="radio" id="iwoTyszkowski" name="codecooler-name"><label for="iwoTyszkowski">Iwo Tyszkowski</label>
+                    <input type="radio" id="adamNowak" name="codecooler-name"><label for="adamNowak">Adam Nowak</label>
+                    <input type="radio" id="nataliaKrystyna" name="codecooler-name"><label for="nataliaKrystyna">Natalia Krystyna</label>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="edit-operation">
+        <div id="codecooler-form-container">
+            <form>
+                <div class="edit-text-fields">
+                    <div class="user-form">
+                        <label for="first-name">first-name</label>
+                        <input type="text" name="first-name" id="first-name" placeholder="Natalia">
+                    </div>
+
+                    <div class="user-form">
+                        <label for="last-name">description</label>
+                        <input type="text" name="last-name" id="last-name" placeholder="Krystyna">
+                    </div>
+
+                    <div class="user-form">
+                        <label for="email">email</label>
+                        <input type="text" name="email" id="email" placeholder="natka99@gmail.com">
+                    </div>
+
+                    <div class="user-form">
+                        <label for="birthdate">birthdate</label>
+                        <input type="text" name="birthdate" id="birthdate" placeholder="1999-06-02">
+                    </div>
+                </div>
+
+                <div id="user-form-button">
+                    <input type="submit" value="SAVE CHANGES">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="footer-container" w3-include-html="../template/footer.html"></div>
+
+<script>w3.includeHTML();</script>
+
+</body>
+</html>
