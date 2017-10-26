@@ -1,0 +1,17 @@
+.walletTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: solid 3px #675f6b;
+    border-radius: 10px;
+    border-collapse: separate;
+}
+
+td, th {
+    text-align: left;
+    padding: 15px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+

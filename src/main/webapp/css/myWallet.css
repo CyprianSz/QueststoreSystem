@@ -1,0 +1,69 @@
+body {
+    font-family: Sawasdee, serif;
+}
+
+#footer-container a {
+    color: black;
+    text-decoration: none;
+}
+
+#footer-container a:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+#header-container {
+    display: flex;
+}
+
+#footer-container {
+    border: 2px solid #675f6b;
+    border-radius: 5px;
+}
+
+footer {
+    height: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 7px 7px 20px #675f6b;
+}
+
+header {
+    display: flex;
+}
+#app-name {
+    font-size: 4em;
+    margin-bottom: -0.3em;
+    margin-top: 0.3em;
+    letter-spacing: 0.2em;
+}
+
+#main-container {
+    display: flex;
+    min-height: 27em;
+    /*align-items: center;*/
+    justify-content: center;
+}
+
+#coolcoinsBalance-container {
+    display: flex;
+    justify-content: center;
+    padding: 2em;
+}
+
+#coolcoins-label {
+    width: 12em;
+    margin: 0 auto;
+    background: white;
+    border: solid 3px #675f6b;
+    border-radius: 10px;
+    color: #000000;
+    font-weight: bold;
+    justify-content: center;
+    display: flex;
+}
+
+#coolcoins-label:hover {
+    background-color: #7c7c7c;
+}
