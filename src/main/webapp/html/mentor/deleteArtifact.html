@@ -17,6 +17,31 @@
         <div id="vertical_menu">
             <div w3-include-html="../template/sideVerticalArtifactMenu.html"></div>
         </div>
+
+        <div id="delete-operation">
+            <div id="delete-question">
+                <h2>Are you sure you want to delete this artifact?</h2>
+                <div id="attributes">
+                    <ul class="attribute_list">
+                        <li>
+                            <div class="submit">
+                                <input type="submit" class="attribute_submit" id="yes" value="Yes" name="gender"/>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="submit">
+                                <input type="submit" class="attribute_submit" id="no" value="No" name="gender"/>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div id="footer-container" w3-include-html="../template/footer.html"></div>
+
+    <script>w3.includeHTML();</script>
+
 </body>
 </html>
