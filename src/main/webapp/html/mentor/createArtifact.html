@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create Group</title>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <link rel="stylesheet" href="../../css/styleEditMentor.css">
+    <link rel="stylesheet" href="../../css/menu.css">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+<div id="header-container" w3-include-html="../template/header.html"></div>
+
+<div w3-include-html="../template/adminMenu.html"></div>
+
+<div id="main-container">
+    <div id="user-form-container">
+        <form>
+            <div class="user-form">
+                <input type="text" name="first-name" id="first-name" placeholder="name">
+            </div>
+
+            <div id="user-form-button">
+                <input type="submit" value="CREATE GROUP">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="footer-container" w3-include-html="../template/footer.html"></div>
+
+<script>w3.includeHTML();</script>
+</body>
+
+</html>
