@@ -110,16 +110,39 @@ nav ul {
     height: 400px;
     margin-left: -1em;
 }
+
+#main-container-deleteQuest{
+    height: 700px;
+    margin-left: -1em;
+}
+
+#main-container-quest{
+    height: 38em;
+    margin-left: -1em;
+}
+
+#main-container-artifact{
+    height: 30em;
+    margin-left: -1em;
+}
+
+
 #vertical_menu{
     float: left;
 }
-#delete-operation {
+
+#sub-container {
     padding: 8em;
     align-items: center;
     display:flex;
     justify-content: center;
 }
+
 #edit-operation {
+    padding: 12em;
+}
+
+#sub-container-form {
     padding: 3em;
     align-items: center;
     display:flex;

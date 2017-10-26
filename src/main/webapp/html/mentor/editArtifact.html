@@ -2,9 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit artifact</title>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/menu.css">
+    <link rel="stylesheet" href="../../css/verticalMenuStyle.css">
 </head>
+
 <body>
+<div id="header-container" w3-include-html="../template/mentorHeader.html"></div>
+
+<div w3-include-html="../template/mentorMenu.html"></div>
+
+<div id="main-container-artifact">
+
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    <input type="radio" id="circleOfSorcery" name="artifact-name"><label for="circleOfSorcery">Circle of Sorcery</label>
+                    <input type="radio" id="combatTraining" name="artifact-name"><label for="combatTraining">Combat training</label>
+                    <input type="radio" id="sanctuary" name="artifact-name"><label for="sanctuary">Sanctuary</label>
+                    <input type="radio" id="summonCodeElemental" name="artifact-name"><label for="summonCodeElemental">Summon Code Elemental</label>
+                    <input type="radio" id="teleport" name="artifact-name"><label for="teleport">Teleport</label>
+                    <input type="radio" id="timeTravel" name="artifact-name"><label for="timeTravel">Time Travel</label>
+                    <input type="radio" id="tomeOfKnowleadge" name="artifact-name"><label for="tomeOfKnowleadge">Tome of knowledge</label>
+                    <input type="radio" id="transformMentors" name="artifact-name"><label for="transformMentors">Transform mentors</label>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="edit-operation">
+        <div id="artifact-form-container">
+            <form>
+                <div class="edit-text-fields">
+                    <div class="user-form">
+                        <label for="name">name</label>
+                        <input type="text" name="name" id="name" placeholder="Combat training">
+                    </div>
+
+                    <div class="user-form">
+                        <label for="name">description</label>
+                        <input type="text" name="description" id="description" placeholder="Private mentoring">
+                    </div>
+
+                    <div class="user-form">
+                        <label for="name">value</label>
+                        <input type="text" name="value" id="value" placeholder="50">
+                    </div>
+                </div>
+
+                <div id="radio-form">
+                    <input type="radio" id="single" name="artifact-type"><label for="single">single</label>
+                    <input type="radio" id="group" name="artifact-type"><label for="group">group</label>
+                </div>
+
+                <div id="user-form-button">
+                    <input type="submit" value="SAVE CHANGES">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="footer-container" w3-include-html="../template/footer.html"></div>
+
+<script>w3.includeHTML();</script>
 
 </body>
 </html>
