@@ -42,13 +42,14 @@ header {
 #main-container {
     display: flex;
     min-height: 27em;
-    align-items: center;
+    /*align-items: center;*/
     justify-content: center;
 }
 
 #coolcoinsBalance-container {
     display: flex;
     justify-content: center;
+    padding: 2em;
 }
 
 #coolcoins-label {

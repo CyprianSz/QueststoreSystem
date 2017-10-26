@@ -1,27 +1,17 @@
-/*Responsive table*/
-table {
-    width: 100%;
+.walletTable {
     border-collapse: collapse;
-    background: #34495e;
-    color: #f3f3f3;
+    width: 100%;
+    border: solid 3px #675f6b;
+    border-radius: 10px;
+    border-collapse: separate;
 }
 
 td, th {
-    padding: 8px;
     text-align: left;
+    padding: 15px;
 }
 
-/* Zebra striping */
-tr:nth-of-type(odd) {
-    background: #16a085;
+tr:nth-child(even) {
+    background-color: #dddddd;
 }
 
-th {
-    background: #2c3e50;
-    font-weight: bold;
-}
-
-h1 a {
-    text-decoration: none;
-    color: #fff;
-}
