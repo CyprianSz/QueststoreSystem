@@ -1,42 +1,3 @@
-body {
-    font-family: Sawasdee, serif;
-}
-
-#header-container {
-    display: flex;
-}
-
-#footer-container {
-    border: 2px solid #675f6b;
-}
-
-footer {
-    height: 2em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 7px 7px 20px #675f6b;
-}
-
-header {
-    display: flex;
-}
-
-#radio-form {
-    border: solid 3px #675f6b;
-    display: inline-block;
-    margin: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.delete-button {
-    justify-content: center;
-    align-items: center;
-    display: flex;
-}
-
-/*BUTTONS TO CHOOSE MENTOR*/
 
 #vertical-radio-list input[type="radio"] {
     visibility: hidden;
@@ -56,15 +17,11 @@ header {
     display:inline-block;
     padding: 1em 2em;
     border: none;
-    width: 100%;
+    width: 130%;
     color: black;
     font-weight: bold;
 }
 
-input[type=radio]:checked + label, label:hover {
-    color: #ccc8ce;
-    background: #675f6b;
-}
 
 
 
