@@ -45,6 +45,30 @@ header {
     justify-content: center;
 }
 
+#single-artifact-container {
+    display: flex;
+    min-height: 3em;
+    justify-content: center;
+}
+
+#group-artifact-table-container {
+    display: flex;
+    min-height: 19em;
+    justify-content: center;
+}
+
+#display-wallet-container {
+    display: flex;
+    min-height: 19em;
+    justify-content: center;
+}
+
+#level-info-container {
+    display: flex;
+    min-height: 25.5em;
+    justify-content: center;
+}
+
 #coolcoinsBalance-container {
     display: flex;
     justify-content: center;
@@ -65,4 +89,18 @@ header {
 
 #coolcoins-label:hover {
     background-color: #7c7c7c;
+}
+
+#buyButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+}
+
+#startFunraisingsButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
 }
