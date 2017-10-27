@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Level</title>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <link rel="stylesheet" href="../../css/styleEditMentor.css">
+    <link rel="stylesheet" href="../../css/menu.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/verticalMenuStyle.css">
+</head>
+
+<body>
+
+    <div id="header-container" w3-include-html="../template/header.html"></div>
+
+    <div w3-include-html="../template/adminMenu.html"></div>
+
+    <div id="main-container">
+
+        <div id="vertical_menu">
+            <div w3-include-html="../template/sideVerticalLevelMenu.html"></div>
+        </div>
+
+        <div id="sub-container-form">
+            <div id="user-form-container">
+                <form>
+                    <div class="user-form">
+                        <label for="required-exp">rank</label>
+                        <input type="text" name="rank" id="rank" placeholder="1">
+                    </div>
+
+                    <div class="user-form">
+                        <label for="required-exp">required exp</label>
+                        <input type="text" name="required-exp" id="required-exp" placeholder="100">
+                    </div>
+
+                    <div class="user-form">
+                        <label for="description">description</label>
+                        <input type="text" name="description" id="description" placeholder="You're just a noob.">
+                    </div>
+
+                    <div id="user-form-button">
+                        <input type="submit" value="SAVE CHANGES">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-container" w3-include-html="../template/footer.html"></div>
+
+    <script>w3.includeHTML();</script>
+</body>
+</html>

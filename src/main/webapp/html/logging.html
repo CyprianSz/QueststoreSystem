@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>LOG IN</title>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -11,15 +12,15 @@
             <div id="logo">
                 <img src="../images/logo.png" alt="logo">
             </div>
-            <div id="app-name">
-                <h1>QuestStore</h1>
+            <div id="app-info">
+                <h1 id="app-name">QuestStore</h1>
                 <p>by CodeRampart</p>
             </div>
         </header>
     </div>
 
     <div id="logging-container">
-        <form>
+        <form action="admin/editMentor.html">
             <div id="radio-form">
                 <input type="radio" id="admin" name="user-type"><label for="admin">Admin</label>
                 <input type="radio" id="mentor" name="user-type"><label for="mentor">Mentor</label>
@@ -40,14 +41,8 @@
         </form>
     </div>
 
-    <div id="footer-container">
-        <footer>
-            <p>
-                Designed and created by <strong><a href="https://github.com/CodecoolKRK20171/queststore-system-code-rampart">
-                CodeRampart</a></strong> for <strong><a href="http://www.codecool.pl">Codecool</a></strong>.
-            </p>
-        </footer>
-    </div>
+    <div id="footer-container" w3-include-html="template/footer.html"></div>
 
+    <script>w3.includeHTML();</script>
 </body>
 </html>
