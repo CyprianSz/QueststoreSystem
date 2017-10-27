@@ -3,11 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Wallet</title>
+    <title>Single shopping</title>
     <script src="https://www.w3schools.com/lib/w3.js"></script>
     <link rel="stylesheet" href="../../css/myWallet.css">
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/menu.css">
+    <link rel="stylesheet" href="../../css/tableStyle.css">
 </head>
 
 <body>
@@ -16,8 +17,18 @@
 
     <div w3-include-html="../template/myWalletMenu.html"></div>
 
-    <div id="main-container">
-        Buy Single Artifact
+    <div id="coolcoinsBalance-container">
+        <div id="coolcoins-label">
+            <p>Coolcoin balance: <strong>3550</strong></p>
+        </div>
+    </div>
+
+    <div id="single-artifact-container">
+        <div w3-include-html="singleArtifactTable.html"></div>
+    </div>
+
+    <div id="buyButton">
+        <input type="submit" value="BUY CHOSEN ARTIFACTS">
     </div>
 
     <div id="footer-container">

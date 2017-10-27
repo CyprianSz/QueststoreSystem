@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Wallet</title>
+    <title>My wallet</title>
     <script src="https://www.w3schools.com/lib/w3.js"></script>
     <link rel="stylesheet" href="../../css/myWallet.css">
     <link rel="stylesheet" href="../../css/walletTable.css">
@@ -23,18 +23,12 @@
         </div>
     </div>
 
-    <div id="main-container">
-        <div w3-include-html="../template/walletTable.html"></div>
+    <div id="display-wallet-container">
+        <div w3-include-html="walletTable.html"></div>
     </div>
 
-    <div id="footer-container">
-        <footer>
-            <p>
-                Designed and created by <strong><a href="https://github.com/CodecoolKRK20171/queststore-system-code-rampart">
-                CodeRampart</a></strong> for <strong><a href="http://www.codecool.pl">Codecool</a></strong>.
-            </p>
-        </footer>
-    </div>
+    <div id="footer-container" w3-include-html="../template/footer.html"></div>
+
     <script>w3.includeHTML();</script>
 </body>
 </html>
