@@ -153,7 +153,8 @@ li a {
     display:flex;
     justify-content: center;
 }
-#mentorsList {
+#mentorsList, #groupsTable, #levelsTable{
     padding-top: 3em;
 }
+
 
