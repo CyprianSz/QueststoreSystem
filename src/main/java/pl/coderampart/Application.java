@@ -1,10 +1,11 @@
 package pl.coderampart;
 
 import com.sun.net.httpserver.HttpServer;
+import pl.coderampart.controller.admin.CreateMentorController;
+import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
 import pl.coderampart.controller.Static;
 import pl.coderampart.controller.admin.EditMentorController;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.sql.Connection;
@@ -18,16 +19,19 @@ public class Application {
 
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
+        server.createContext("/create-mentor", new CreateMentorController());
         server.createContext("/update-admin", new EditMentorController(connection));
         server.createContext("/static", new Static());
 
         server.setExecutor(null);
         server.start();
-
-/*        try {
-            Logger logger = new Logger();
-        } catch (SQLException e){
-            e.printStackTrace();
-        }*/
     }
+//    public static void main(String[] args) {
+//
+//        try {
+//            Logger logger = new Logger();
+//        } catch (SQLException e){
+//            e.printStackTrace();
+//        }
+//    }
 }
