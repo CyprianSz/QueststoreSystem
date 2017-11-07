@@ -28,10 +28,14 @@ public class CreateMentorController implements HttpHandler{
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = "";
         String method = httpExchange.getRequestMethod();
+
         if(method.equals("GET")) {
+            response += render("header");
+            response += render("admin/adminMenu");
             JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/createMentor.twig");
             JtwigModel model = JtwigModel.newModel();
-            response = template.render(model);
+            response += template.render(model);
+            response += render("footer");
         }
         if(method.equals("POST")){
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
@@ -106,5 +110,13 @@ public class CreateMentorController implements HttpHandler{
             }
         }
         mentorDAO.create(newMentor);
+    }
+
+    private String render(String fileName) {
+        String templatePath = "templates/" + fileName + ".twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        return template.render(model);
     }
 }

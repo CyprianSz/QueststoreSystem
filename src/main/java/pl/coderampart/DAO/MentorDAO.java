@@ -1,6 +1,5 @@
 package pl.coderampart.DAO;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,11 +17,9 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
     private Connection connection;
 
     public MentorDAO(Connection connectionToDB) {
-
         connection = connectionToDB;
         groupDAO = new GroupDAO(connection);
     }
-
 
     public Mentor getLogged(String email, String password) throws SQLException{
         Mentor mentor = null;
@@ -40,7 +37,6 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
 
     public ArrayList<Mentor> readAll() throws SQLException{
 
-
         ArrayList<Mentor> mentorList = new ArrayList<>();
         String query = "SELECT * FROM mentors;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -50,10 +46,8 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
             Mentor mentor = this.createMentorFromResultSet(resultSet);
             mentorList.add(mentor);
         }
-
         return mentorList;
     }
-
 
     public void create(Mentor mentor) throws SQLException {
 
@@ -62,9 +56,7 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, mentor);
         setStatement.executeUpdate();
-
     }
-
 
     public void update(Mentor mentor) throws SQLException{
 
@@ -83,7 +75,6 @@ public class MentorDAO extends AbstractDAO implements User<Mentor> {
         statement.setString(1, mentor.getID());
         statement.executeUpdate();
     }
-
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Mentor mentor) throws SQLException {
         statement.setString(1, mentor.getFirstName());

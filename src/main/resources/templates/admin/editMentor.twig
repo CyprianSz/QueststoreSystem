@@ -1,0 +1,46 @@
+<div id="main-container">
+
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for mentor in allMentors %}
+                        <input type="radio" id="mentor" name="mentor-name">
+                        <label for="mentor">{{ mentor.firstname }} {{ mentor.lastname }}</label>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+
+        <div id="user-form-container">
+            <form method="POST">
+                <div class="user-form">
+                    <label for="first-name">first name</label>
+                    <input type="text" name="first-name" id="first-name" placeholder="Agnieszka">
+                </div>
+
+                <div class="user-form">
+                    <label for="last-name">last name</label>
+                    <input type="text" name="last-name" id="last-name" placeholder="Koszany">
+                </div>
+
+                <div class="user-form">
+                    <label for="email">email</label>
+                    <input type="text" name="email" id="email" placeholder="agakoszany@cc.com">
+                </div>
+
+                <div class="user-form">
+                    <label for="date-of-birth">date of birth</label>
+                    <input type="text" name="date-of-birth" id="date-of-birth" placeholder="1994-05-05">
+                </div>
+
+                <div id="user-form-button">
+                    <input type="submit" value="SAVE CHANGES">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

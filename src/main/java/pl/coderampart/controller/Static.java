@@ -1,16 +1,6 @@
-package pl.coderampart.controller.helpers;
+package pl.coderampart.controller;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URI;
-import java.net.URL;
-
-
+import pl.coderampart.helpers.MimeTypeResolver;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -43,7 +33,6 @@ public class Static implements HttpHandler {
             // Object exists and is a file: accept with response code 200.
             sendFile(httpExchange, fileURL);
         }
-
     }
 
     private void send404(HttpExchange httpExchange) throws IOException {
@@ -75,7 +64,4 @@ public class Static implements HttpHandler {
         }
         os.close();
     }
-
-
 }
-
