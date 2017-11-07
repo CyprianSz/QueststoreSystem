@@ -22,7 +22,6 @@ public class ConnectionToDB {
         return instance;
     }
 
-
     public Connection connectToDataBase() throws SQLException {
 
         try {

@@ -1,0 +1,153 @@
+body {
+    font-family: Sawasdee, serif;
+}
+
+#footer-container a {
+    color: black;
+    text-decoration: none;
+}
+
+#footer-container a:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+#header-container {
+    display: flex;
+}
+
+#footer-container {
+    border: 2px solid #675f6b ;
+    border-radius: 5px;
+}
+
+footer {
+    height: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 7px 7px 20px #675f6b ;
+}
+
+header {
+    display: flex;
+}
+
+#app-name {
+    font-size: 4em;
+    margin-bottom: -0.3em;
+    margin-top: 0.3em;
+    letter-spacing: 0.2em;
+}
+
+#logging-container {
+    display: flex;
+    min-height: 30em;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.logging-form {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+#radio-form {
+    border: solid 3px #675f6b ;
+    display: inline-block;
+    margin: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/*BUTTONS TOO CHOSE MENTOR, ADMIN, CODECOOLER*/
+
+input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+}
+
+label {
+    color: #9a929e ;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 1em 2em;
+}
+
+input[type=radio]:checked + label {
+    color: #ccc8ce ;
+    background: #675f6b ;
+    background-size: 100%;
+}
+
+#radio-form label:hover {
+    color: #ccc8ce ;
+    background: #675f6b ;
+    background-size: 100%;
+}
+
+/*INPUT FOR EMAIL AND PASSWORD*/
+
+input[type=password], input[type=text] {
+    width: 15em;
+    background-color: #efefef ;
+    color: #666;
+    border: 2px solid #675f6b ;
+    border-radius: 5px;
+    font-family: Sawasdee, serif;
+    font-size: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input[type=password]:focus, input[type=text]:focus {
+    box-shadow: 0px 0px 3px 1px black;
+}
+
+/*LOG IN BUTTON*/
+
+input[type=submit] {
+    font-family: Sawasdee, serif;
+    width: 15em;
+    background-color: #675f6b ;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    padding: 0.4em 0.2em;
+    margin-top: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    box-shadow: 6px 6px 30px black;
+    outline: none;
+}
+
+input[type=submit]:hover {
+    background-color: #7c7c7c ;
+}
+
+#login-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#artifact-form-container label {
+    text-align: center;
+}
+
+#edit-operation form {
+    text-align: center;
+    align-items: center;
+    justify-content: right;
+}
+
+.edit-text-fields {
+    text-align: right;
+}
