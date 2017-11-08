@@ -10,6 +10,7 @@ import pl.coderampart.model.Group;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class DisplayGroupController implements HttpHandler{
@@ -44,4 +45,17 @@ public class DisplayGroupController implements HttpHandler{
 
         return template.render(model);
     }
+
+    private List<Group> readGroupsFromDB(){
+        List<Group> allGroups = null;
+
+        try{
+            allGroups = groupDAO.readAll();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return allGroups;
+    }
+
 }
