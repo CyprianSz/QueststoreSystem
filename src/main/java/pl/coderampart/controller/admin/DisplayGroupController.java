@@ -58,4 +58,14 @@ public class DisplayGroupController implements HttpHandler{
         return allGroups;
     }
 
+    private String renderDisplayGroups(List<Group> allGroups) {
+        String templatePath = "templates/admin/displayGroups.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allGroups", allGroups);
+
+        return template.render(model);
+    }
+
 }
