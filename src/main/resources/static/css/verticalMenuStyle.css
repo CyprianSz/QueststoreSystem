@@ -1,0 +1,41 @@
+
+#vertical-radio-list input[type="radio"] {
+    visibility: hidden;
+    float: left;
+    clear: left;
+    border: none;
+    width: 100%;
+    height: 0;
+    position: static !important;
+    display: inline !important;
+}
+
+#vertical-radio-list label {
+    float: left;
+    cursor: pointer;
+    vertical-align: middle;
+    display:inline-block;
+    padding: 0.8em 2em;
+    border: none;
+    width: 130%;
+    color: black;
+    font-weight: bold;
+}
+
+#vertical-radio-list-quest label{
+    float: left;
+    cursor: pointer;
+    vertical-align: middle;
+    display:inline-block;
+    padding: 0.5em 2em;
+    border: none;
+    width: 130%;
+    color: black;
+    font-weight: bold;
+}
+
+
+
+
+
+

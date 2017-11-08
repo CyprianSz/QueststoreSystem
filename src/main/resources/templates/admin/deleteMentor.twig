@@ -1,0 +1,36 @@
+<div id="main-container">
+
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for mentor in allMentors %}
+                        <button name="mentor-id" value={{ mentor.ID }} type="submit">{{ mentor.firstName }}</button>
+                        {#<input type="submit" id="mentor" name="mentor-name" value={{ mentor.ID }}>#}
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="sub-container-form">
+        <div id="delete-question">
+            <h2>Are you sure you want to delete this mentor?</h2>
+            <div id="attributes">
+                <ul class="attribute_list">
+                    <li>
+                        <div class="submit">
+                            <input type="submit" class="attribute_submit" id="yes" value="Yes"/>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="submit">
+                            <input type="submit" class="attribute_submit" id="no" value="No"/>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
