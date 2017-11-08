@@ -32,7 +32,7 @@ public class CreateMentorController implements HttpHandler{
         if(method.equals("GET")) {
             response += render("header");
             response += render("admin/adminMenu");
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/createMentor.twig");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/createMentor.twig");
             JtwigModel model = JtwigModel.newModel();
             response += template.render(model);
             response += render("footer");
@@ -53,9 +53,10 @@ public class CreateMentorController implements HttpHandler{
             try{
 
             createMentor(data);
-            }catch (SQLException se){}
+            }catch (SQLException se){
+                se.printStackTrace();
+            }
 
-            response = "zajebiscie";
         }
 
         httpExchange.sendResponseHeaders(200, response.length());

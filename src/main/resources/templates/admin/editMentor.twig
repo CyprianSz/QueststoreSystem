@@ -1,3 +1,4 @@
+
 <div id="main-container">
 
     <div id="vertical_menu">
@@ -6,7 +7,7 @@
                 <div id="radio-form">
                     {%  for mentor in allMentors %}
                         <input type="radio" id="mentor" name="mentor-name">
-                        <label for="mentor">{{ mentor.firstname }} {{ mentor.lastname }}</label>
+                        <label for="mentor">{{ mentor.firstName }} {{ mentor.lastName }}</label>
                     {% endfor %}
                 </div>
             </form>

@@ -1,0 +1,27 @@
+<div id="main-container">
+
+    <div id="mentorsList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>first_name</th>
+                <th>last_name</th>
+                <th>date_of_birth</th>
+                <th>email</th>
+                <th>group_name</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for mentor in allMentors %}
+            <tr>
+                <td>{{ mentor.firstName }}</td>
+                <td>{{ mentor.lastName }}</td>
+                <td>{{ mentor.dateOfBirth }}</td>
+                <td>{{ mentor.email }}</td>
+                <td>{{ mentor.group.name }}</td>
+            </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
