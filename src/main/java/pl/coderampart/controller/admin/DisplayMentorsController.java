@@ -23,7 +23,6 @@ public class DisplayMentorsController implements HttpHandler{
         this.mentorDAO = new MentorDAO(this.connection);
     }
 
-
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         List<Mentor> allMentors = readMentorsFromDB();

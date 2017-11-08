@@ -1,8 +1,8 @@
 package pl.coderampart;
 
 import com.sun.net.httpserver.HttpServer;
-import pl.coderampart.controller.admin.*;
-
+import pl.coderampart.controller.Login;
+import pl.coderampart.controller.admin.CreateMentorController;
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
 import pl.coderampart.controller.Static;
@@ -29,6 +29,7 @@ public class Application {
         server.createContext("/create-level", new CreateLevelController());
         server.createContext("/display-levels", new DisplayLevelsController(connection));
         server.createContext("/static", new Static());
+        server.createContext("/login", new Login());
 
 
         server.setExecutor(null);
