@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.MentorDAO;
-import pl.coderampart.enums.AdminEditingMentorChoice;
 import pl.coderampart.model.Mentor;
 
 import java.io.*;
@@ -29,25 +28,28 @@ public class DeleteMentorController implements HttpHandler {
             String method = httpExchange.getRequestMethod();
             String response = "";
 
-            String[] uri = httpExchange.getRequestURI().toString().split("=");
-            String id = uri[uri.length-1];
-
             List<Mentor> allMentors = readMentorsFromDB();
-                deleteMentor(allMentors, id);
-//            if(method.equals("POST")){
 
-//                InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-//                BufferedReader br = new BufferedReader(isr);
-//                String formData = br.readLine();
-//
-//                Map inputs = parseFormData(formData);
-//            }
+            String[] uri = httpExchange.getRequestURI().toString().split("=%2F");
+            String id = uri[uri.length-1];
 
             response += render("header");
             response += render("admin/adminMenu");
-            response += renderEditMentor(allMentors);
+            response += renderMentorsList(allMentors);
             response += render("footer");
 
+
+            if(method.equals("POST")){
+
+                InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+                BufferedReader br = new BufferedReader(isr);
+                String formData = br.readLine();
+                Map inputs = parseFormData(formData);
+                if(inputs.get("confirmation").equals("yes")) {
+                    deleteMentor(allMentors, id);
+
+                }
+            }
 
             httpExchange.sendResponseHeaders( 200, response.getBytes().length );
             OutputStream os = httpExchange.getResponseBody();
@@ -75,7 +77,7 @@ public class DeleteMentorController implements HttpHandler {
             return template.render(model);
         }
 
-        private String renderEditMentor(List<Mentor> allMentors) {
+        private String renderMentorsList(List<Mentor> allMentors) {
             String templatePath = "templates/admin/deleteMentor.twig";
             JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
             JtwigModel model = JtwigModel.newModel();

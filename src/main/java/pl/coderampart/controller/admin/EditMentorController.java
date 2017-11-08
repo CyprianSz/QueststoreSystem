@@ -11,9 +11,9 @@ import java.io.*;
 import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class EditMentorController implements HttpHandler {
 
@@ -30,8 +30,11 @@ public class EditMentorController implements HttpHandler {
         String method = httpExchange.getRequestMethod();
         String response = "";
 
+        String[] uri = httpExchange.getRequestURI().toString().split("=");
+        String id = uri[uri.length-1];
+
+        List<Mentor> allMentors = readMentorsFromDB();
         if(method.equals("GET")) {
-            List<Mentor> allMentors = readMentorsFromDB();
 
             response += render("header");
             response += render("admin/adminMenu");
@@ -45,9 +48,8 @@ public class EditMentorController implements HttpHandler {
             String formData = br.readLine();
 
             Map inputs = parseFormData(formData);
-//            Mentor editedMentor = createEditedMentorFromInput(inputs);
 
-            response = "<HTML><BODY>DUPA</BODY></HTML>";
+            editMentor(inputs, allMentors, id);
         }
 
         httpExchange.sendResponseHeaders( 200, response.getBytes().length );
@@ -58,21 +60,31 @@ public class EditMentorController implements HttpHandler {
         os.close();
     }
 
-//    private Mentor createEditedMentorFromInput(Map<String, String> inputs) {
-//        String firstName = inputs.get("first-name");
-//        String lastName= inputs.get("last-name");
-//        String dateOfBirth = inputs.get("date-of-birth");
-//        String email= inputs.get("email");
-//
-//        Mentor editedMentor = new Mentor();
-//
-//        try {
-//            mentorDAO.update(editedMentor);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return editedMentor;
-//    }
+    private void editMentor(Map inputs, List<Mentor>allMentors, String id) {
+
+        String firstName = String.valueOf(inputs.get("first-name"));
+        String lastName= String.valueOf(inputs.get("last-name"));
+        String dateOfBirth = String.valueOf(inputs.get("date-of-birth"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+        LocalDate date = LocalDate.parse(dateOfBirth, formatter);
+        String email= String.valueOf(inputs.get("email"));
+
+        Mentor changedMentor = null;
+        for (Mentor mentor: allMentors) {
+            if (id.equals(mentor.getID())) {
+                changedMentor = mentor;
+                changedMentor.setFirstName(firstName);
+                changedMentor.setLastName(lastName);
+                changedMentor.setDateOfBirth(date);
+                changedMentor.setEmail(email);
+                try{
+
+                    mentorDAO.update(changedMentor);
+                }catch (SQLException se){}
+                break;
+            }
+        }
+    }
 
     private List<Mentor> readMentorsFromDB() {
         List<Mentor> allMentors = null;

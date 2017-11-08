@@ -6,9 +6,7 @@ import pl.coderampart.controller.admin.CreateMentorController;
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
 import pl.coderampart.controller.Static;
-import pl.coderampart.controller.admin.DeleteMentorController;
-import pl.coderampart.controller.admin.DisplayMentorsController;
-import pl.coderampart.controller.admin.EditMentorController;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.sql.Connection;
@@ -23,9 +21,13 @@ public class Application {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
         server.createContext("/create-mentor", new CreateMentorController(connection));
-        server.createContext("/update-admin", new EditMentorController(connection));
+        server.createContext("/edit-mentor", new EditMentorController(connection));
         server.createContext("/display-mentors", new DisplayMentorsController(connection));
         server.createContext("/delete-mentor", new DeleteMentorController(connection));
+        server.createContext("/create-group", new CreateGroupController());
+        server.createContext("/display-groups", new DisplayGroupsController(connection));
+        server.createContext("/create-level", new CreateLevelController());
+        server.createContext("/display-levels", new DisplayLevelsController(connection));
         server.createContext("/static", new Static());
         server.createContext("/login", new Login());
 
