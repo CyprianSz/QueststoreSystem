@@ -13,12 +13,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class DisplayGroupController implements HttpHandler{
+public class DisplayGroupsController implements HttpHandler{
 
     private Connection connection;
     private GroupDAO groupDAO;
 
-    public DisplayGroupController(Connection connection) {
+    public DisplayGroupsController(Connection connection) {
         this.connection = connection;
         this.groupDAO = new GroupDAO(this.connection);
     }
