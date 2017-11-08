@@ -6,8 +6,7 @@
             <form>
                 <div id="radio-form">
                     {%  for mentor in allMentors %}
-                        <input type="radio" id="mentor" name="mentor-name">
-                        <label for="mentor">{{ mentor.firstName }} {{ mentor.lastName }}</label>
+                        <button name="mentor-id" value="{{ mentor.ID }}">{{ mentor.firstName }} {{ mentor.lastName }}</button>
                     {% endfor %}
                 </div>
             </form>

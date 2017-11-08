@@ -22,7 +22,7 @@ public class Application {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
         server.createContext("/create-mentor", new CreateMentorController(connection));
-        server.createContext("/update-admin", new EditMentorController(connection));
+        server.createContext("/edit-mentor", new EditMentorController(connection));
         server.createContext("/display-mentors", new DisplayMentorsController(connection));
         server.createContext("/delete-mentor", new DeleteMentorController(connection));
         server.createContext("/static", new Static());
