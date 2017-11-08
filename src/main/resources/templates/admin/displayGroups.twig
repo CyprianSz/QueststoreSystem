@@ -1,6 +1,6 @@
 <div id="main-container">
 
-    <div id="groupList">
+    <div id="groupsList">
         <table class="table">
             <thead>
             <tr>
@@ -8,11 +8,11 @@
             </tr>
             </thead>
             <tbody>
-            {% for group in allGroups %}
-                <tr>
-                    <td>{{ group.Name }}</td>
-                </tr>
-            {% endfor %}
+                {% for group in allGroups %}
+            <tr>
+                <td>{{ group.Name }}</td>
+            </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
