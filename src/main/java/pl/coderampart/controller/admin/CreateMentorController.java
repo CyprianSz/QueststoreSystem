@@ -24,6 +24,14 @@ import java.util.Map;
 
 public class CreateMentorController implements HttpHandler{
 
+    private Connection connection;
+    private MentorDAO mentorDAO;
+
+    public CreateMentorController(Connection connection) {
+        this.connection = connection;
+        this.mentorDAO = new MentorDAO(this.connection);
+    }
+
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = "";
@@ -78,8 +86,6 @@ public class CreateMentorController implements HttpHandler{
 
     public void createMentor(String[] mentorData) throws SQLException {
 
-        ConnectionToDB connectionToDB = ConnectionToDB.getInstance();
-        Connection connection = connectionToDB.connectToDataBase();
         MentorDAO mentorDAO = new MentorDAO(connection);
         GroupDAO groupDAO = new GroupDAO(connection);
 
