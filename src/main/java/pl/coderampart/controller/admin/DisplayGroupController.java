@@ -2,6 +2,8 @@ package pl.coderampart.controller.admin;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.model.Group;
 
@@ -35,4 +37,11 @@ public class DisplayGroupController implements HttpHandler{
         os.close();
     }
 
+    private String render(String fileName) {
+        String templatePath = "templates/" + fileName + ".twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        return template.render(model);
+    }
 }
