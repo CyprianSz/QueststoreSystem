@@ -57,4 +57,14 @@ public class DisplayLevelsController implements HttpHandler{
 
         return allLevels;
     }
+
+    private String renderDisplayLevels(List<Level> allLevels) {
+        String templatePath = "templates/admin/displayLevels.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allLevels", allLevels);
+
+        return template.render(model);
+    }
 }
