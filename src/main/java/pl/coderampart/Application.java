@@ -1,6 +1,7 @@
 package pl.coderampart;
 
 import com.sun.net.httpserver.HttpServer;
+import pl.coderampart.controller.Login;
 import pl.coderampart.controller.admin.CreateMentorController;
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
@@ -26,6 +27,7 @@ public class Application {
         server.createContext("/display-mentors", new DisplayMentorsController(connection));
         server.createContext("/delete-mentor", new DeleteMentorController(connection));
         server.createContext("/static", new Static());
+        server.createContext("/login", new Login());
 
 
         server.setExecutor(null);
