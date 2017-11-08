@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create group</title>
+    <title>Create level</title>
     <script src="https://www.w3schools.com/lib/w3.js"></script>
     <link rel="stylesheet" href="static/css/styleEditMentor.css">
     <link rel="stylesheet" href="static/css/menu.css">
@@ -20,11 +20,19 @@
     <div id="user-form-container">
         <form method="POST">
             <div class="user-form">
-                <input type="text" name="group-name" id="group-name" placeholder="group name">
+                <input type="text" name="rank" id="rank" placeholder="rank">
+            </div>
+
+            <div class="user-form">
+                <input type="required-experience" name="required-experience" id="required-experience" placeholder="group name">
+            </div>
+
+            <div class="user-form">
+                <input type="text" name="description" id="description" placeholder="description">
             </div>
 
             <div id="user-form-button">
-                <input type="submit" value="CREATE GROUP">
+                <input type="submit" value="CREATE LEVEL">
             </div>
         </form>
     </div>
