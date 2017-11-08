@@ -5,6 +5,8 @@ import pl.coderampart.controller.admin.CreateMentorController;
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
 import pl.coderampart.controller.Static;
+import pl.coderampart.controller.admin.DeleteMentorController;
+import pl.coderampart.controller.admin.DisplayMentorsController;
 import pl.coderampart.controller.admin.EditMentorController;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -21,7 +23,10 @@ public class Application {
 
         server.createContext("/create-mentor", new CreateMentorController());
         server.createContext("/update-admin", new EditMentorController(connection));
+        server.createContext("/display-mentors", new DisplayMentorsController(connection));
+        server.createContext("/delete-mentor", new DeleteMentorController(connection));
         server.createContext("/static", new Static());
+
 
         server.setExecutor(null);
         server.start();
