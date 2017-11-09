@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.GroupDAO;
+import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 
 import java.io.*;
@@ -19,10 +20,12 @@ public class EditGroupController implements HttpHandler{
 
     private Connection connection;
     private GroupDAO groupDAO;
+    private HelperController helperController;
 
     public EditGroupController(Connection connection){
         this.connection = connection;
         this.groupDAO = new GroupDAO(this.connection);
+        this.helperController = new HelperController();
     }
 
     @Override
@@ -36,13 +39,17 @@ public class EditGroupController implements HttpHandler{
         List<Group> allGroups = readGroupsFromDB();
 
         if(method.equals("GET")) {
-            response += render("header");
+            response += helperController.renderHeader(httpExchange);
             response += render("admin/adminMenu");
-            response += renderEditGroup(allGroups);
+            String responseTemp = renderGroupsList(allGroups);
+            if(id.length()==36){
+                responseTemp = renderEditGroup(getGroupById(id, allGroups), allGroups);
+            }
+            response += responseTemp;
             response += render("footer");
         }
 
-        if(method.equals("POST")){
+        if(method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
@@ -50,6 +57,15 @@ public class EditGroupController implements HttpHandler{
             Map inputs = parseFormData(formData);
 
             editGroup(inputs, allGroups, id);
+
+            response += render("header");
+            response += render("admin/adminMenu");
+            String responseTemp = renderGroupsList(allGroups);
+            if (id.length() == 36) {
+                responseTemp = renderEditGroup(getGroupById(id, allGroups), allGroups);
+            }
+            response += responseTemp;
+            response += render("footer");
         }
 
         httpExchange.sendResponseHeaders(200, response.getBytes().length);
@@ -61,25 +77,32 @@ public class EditGroupController implements HttpHandler{
     private void editGroup(Map inputs, List<Group> allGroups, String id){
         String name = String.valueOf(inputs.get("group-name"));
 
-        Group changedGroup = null;
-        for (Group group: allGroups) {
-            if (id.equals(group.getID())) {
-                changedGroup = group;
-                changedGroup.setName(name);
+        Group changedGroup = getGroupById(id, allGroups);
 
-                try{
-                    groupDAO.update(changedGroup);
-                } catch (SQLException se){
-                    se.printStackTrace();
-                }
-                break;
+        if (!changedGroup.equals(null)) {
+            changedGroup.setName(name);
+            try{
+                groupDAO.update(changedGroup);
+            } catch (SQLException se){
+                se.printStackTrace();
             }
         }
     }
 
+    private Group getGroupById(String id, List<Group> allGroups){
+        Group changedGroup = null;
+
+        for (Group group: allGroups){
+            if(id.equals(group.getID())){
+                changedGroup = group;
+            }
+        }
+
+        return changedGroup;
+    }
+
     private List<Group> readGroupsFromDB(){
         List<Group> allGroups = null;
-
         try {
             allGroups = groupDAO.readAll();
         } catch (SQLException se) {
@@ -97,12 +120,22 @@ public class EditGroupController implements HttpHandler{
         return template.render(model);
     }
 
-    private String renderEditGroup(List<Group> allGroups){
+    private String renderGroupsList(List<Group> allGroups){
+        String templatePath = "templates/admin/editGroup.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel model = JtwigModel.newModel();
+        model.with("allGroups", allGroups);
+
+        return template.render(model);
+    }
+
+    private String renderEditGroup(Group group, List<Group> allGroups){
         String templatePath = "templates/admin/editGroup.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 
         model.with("allGroups", allGroups);
+        model.with("groupName", group.getName());
 
         return template.render(model);
     }
