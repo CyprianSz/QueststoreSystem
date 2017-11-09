@@ -40,7 +40,6 @@ public class EditMentorController implements HttpHandler {
 
         if (method.equals("GET")) {
             response += helperController.renderHeader(httpExchange);
-            response += helperController.render("header");
             response += helperController.render("admin/adminMenu");
             String responseTemp = renderMentorsList(allMentors);
             if (id.length()==36) {
