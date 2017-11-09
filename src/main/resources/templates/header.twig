@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="static/css/walletTable.css">
     <link rel="stylesheet" href="static/css/styleEditMentor.css">
     <link rel="stylesheet" href="static/css/verticalMenuStyle.css">
-    <link rel="stylesheet" href="static/css/reset.css">
-
 </head>
 <body>
 
@@ -24,8 +22,9 @@
             <p>by CodeRampart</p>
         </div>
         <div id="logged-user">
-            <h2 id="user-name">Creepy Guy</h2>
-            <p>Admin</p>
+            <h2 id="user-name">{{ firstName }} {{ lastName }}</h2>
+            <p>{{ userType }}</p>
+            <p><a href="/login">logout</a></p>
         </div>
     </header>
 </div>
