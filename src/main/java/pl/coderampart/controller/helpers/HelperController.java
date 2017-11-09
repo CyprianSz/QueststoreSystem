@@ -11,6 +11,8 @@ import java.util.Map;
 
 public class HelperController {
 
+    public HelperController() {}
+
     public Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
@@ -49,6 +51,14 @@ public class HelperController {
         model.with("lastName", cookiesMap.get("lastName") );
         model.with("userType", cookiesMap.get("typeOfUser") );
 
-        return  template.render(model);
+        return template.render(model);
+    }
+
+    public String render(String fileName) {
+        String templatePath = "templates/" + fileName + ".twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        return template.render(model);
     }
 }

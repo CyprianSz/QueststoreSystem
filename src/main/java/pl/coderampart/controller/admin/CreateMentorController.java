@@ -37,11 +37,11 @@ public class CreateMentorController implements HttpHandler{
         String method = httpExchange.getRequestMethod();
 
         response += helperController.renderHeader(httpExchange);
-        response += render("admin/adminMenu");
+        response += helperController.render("admin/adminMenu");
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/createMentor.twig");
         JtwigModel model = JtwigModel.newModel();
         response += template.render(model);
-        response += render("footer");
+        response += helperController.render("footer");
 
         if(method.equals("POST")){
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
@@ -58,7 +58,7 @@ public class CreateMentorController implements HttpHandler{
                                         String.valueOf(inputs.get("group"))};
             try {
                 createMentor(data);
-            } catch (SQLException se){
+            } catch (SQLException se) {
                 se.printStackTrace();
             }
         }
@@ -86,7 +86,7 @@ public class CreateMentorController implements HttpHandler{
         Mentor newMentor = new Mentor(mentorData[0], mentorData[1], date,
                 mentorData[3], mentorData[4]);
 
-        for (Group group: allGroups){
+        for (Group group: allGroups) {
             String groupName = group.getName();
             groupsNames.add(groupName);
         }
@@ -98,17 +98,8 @@ public class CreateMentorController implements HttpHandler{
         for (Group group : allGroups) {
             if (group.getName().equals(chosenGroupName)) {
                 newMentor.setGroup( group );
-
             }
         }
         mentorDAO.create(newMentor);
-    }
-
-    private String render(String fileName) {
-        String templatePath = "templates/" + fileName + ".twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
-        JtwigModel model = JtwigModel.newModel();
-
-        return template.render(model);
     }
 }
