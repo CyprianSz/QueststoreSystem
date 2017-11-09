@@ -37,7 +37,6 @@ public class Application {
         server.createContext("/static", new Static());
         server.createContext("/login", new Login(connection));
 
-
         server.setExecutor(null);
         server.start();
     }
