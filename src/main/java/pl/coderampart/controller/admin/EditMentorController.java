@@ -35,7 +35,7 @@ public class EditMentorController implements HttpHandler {
 
         List<Mentor> allMentors = readMentorsFromDB();
 
-        if(method.equals("GET")) {
+        if(method.equals("GET")) {        
             response += renderHeader(httpExchange);
             response += render("header");
             response += render("admin/adminMenu");

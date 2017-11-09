@@ -97,22 +97,20 @@ li a {
     height: 400px;
 }
 
-#delete-question, #edit-form {
-
-}
-
-#attributes .attribute_list input.attribute_submit{
+#attributes .attribute_list button[name="confirmation"]{
     display: inline-block;
     margin: -2px;
     padding: 10px 10px;
     border: 1px solid #ddd;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 2em;
 }
 .attribute_list li {
     display: inline-block;
     margin-right: 10px;
+    size: 10em;
 }
+
 #main-container{
     height: 400px;
     margin-left: -1em;
@@ -132,12 +130,12 @@ li a {
 #vertical_menu{
     float: left;
 }
-#delete-operation {
-    padding: 8em;
-    align-items: center;
-    display:flex;
-    justify-content: center;
-}
+/*#delete-operation {*/
+    /*padding: 8em;*/
+    /*align-items: center;*/
+    /*display:flex;*/
+    /*justify-content: center;*/
+/*}*/
 
 #edit-operation {
     padding: 6em;
