@@ -23,10 +23,13 @@ public class CreateMentorController implements HttpHandler{
 
     private Connection connection;
     private MentorDAO mentorDAO;
+    private HelperController helperController;
 
     public CreateMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
+        this.helperController = new HelperController();
+
     }
 
     @Override
@@ -34,7 +37,7 @@ public class CreateMentorController implements HttpHandler{
         String response = "";
         String method = httpExchange.getRequestMethod();
 
-            response += render("header");
+            response += helperController.renderHeader(httpExchange);
             response += render("admin/adminMenu");
             JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/createMentor.twig");
             JtwigModel model = JtwigModel.newModel();
@@ -46,7 +49,7 @@ public class CreateMentorController implements HttpHandler{
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
 
-            Map inputs = HelperController.parseFormData(formData);
+            Map inputs = helperController.parseFormData(formData);
 
             String[] data = new String[]{String.valueOf(inputs.get("first-name")),
                                         String.valueOf(inputs.get("last-name")),
