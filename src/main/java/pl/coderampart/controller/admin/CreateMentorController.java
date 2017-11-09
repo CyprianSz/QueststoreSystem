@@ -4,22 +4,18 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
-import pl.coderampart.DAO.ConnectionToDB;
 import pl.coderampart.DAO.GroupDAO;
-import pl.coderampart.DAO.LevelDAO;
 import pl.coderampart.DAO.MentorDAO;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 import pl.coderampart.model.Mentor;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
