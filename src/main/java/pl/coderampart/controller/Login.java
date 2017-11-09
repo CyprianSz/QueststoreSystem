@@ -63,6 +63,7 @@ public class Login implements HttpHandler{
             } else if (userType.equals( "codecooler" )) {
                 createCodecoolerCookies(httpExchange, email, password);
             }
+
         }
 
         httpExchange.sendResponseHeaders( 200, response.getBytes().length );
