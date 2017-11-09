@@ -2,6 +2,7 @@ package pl.coderampart;
 
 import com.sun.net.httpserver.HttpServer;
 import pl.coderampart.controller.Login;
+import pl.coderampart.controller.Logout;
 import pl.coderampart.controller.admin.*;
 
 import java.net.InetSocketAddress;
@@ -19,6 +20,7 @@ public class Application {
 
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
+        server.createContext("/logout", new Logout());
         server.createContext("/login", new Login(connection));
         server.createContext("/create-mentor", new CreateMentorController(connection));
         server.createContext("/edit-mentor", new EditMentorController(connection));
@@ -39,5 +41,4 @@ public class Application {
         server.setExecutor(null);
         server.start();
     }
-
 }

@@ -29,7 +29,6 @@ public class CreateMentorController implements HttpHandler{
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
         this.helperController = new HelperController();
-
     }
 
     @Override
@@ -37,12 +36,12 @@ public class CreateMentorController implements HttpHandler{
         String response = "";
         String method = httpExchange.getRequestMethod();
 
-            response += helperController.renderHeader(httpExchange);
-            response += render("admin/adminMenu");
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/createMentor.twig");
-            JtwigModel model = JtwigModel.newModel();
-            response += template.render(model);
-            response += render("footer");
+        response += helperController.renderHeader(httpExchange);
+        response += render("admin/adminMenu");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/createMentor.twig");
+        JtwigModel model = JtwigModel.newModel();
+        response += template.render(model);
+        response += render("footer");
 
         if(method.equals("POST")){
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
@@ -57,7 +56,6 @@ public class CreateMentorController implements HttpHandler{
                                         String.valueOf(inputs.get("email")),
                                         String.valueOf(inputs.get("password")),
                                         String.valueOf(inputs.get("group"))};
-
             try {
                 createMentor(data);
             } catch (SQLException se){
