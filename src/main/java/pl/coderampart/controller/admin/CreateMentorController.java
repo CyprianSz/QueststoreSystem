@@ -29,7 +29,6 @@ public class CreateMentorController implements HttpHandler{
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
         this.helperController = new HelperController();
-
     }
 
     @Override
