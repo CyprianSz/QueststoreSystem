@@ -4,7 +4,7 @@
     clear: left;
     border: none;
     width: 100%;
-    height: 0;
+    height: 3em;
     position: static !important;
     display: inline !important;
 }

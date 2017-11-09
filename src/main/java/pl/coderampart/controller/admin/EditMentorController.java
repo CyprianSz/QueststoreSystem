@@ -35,7 +35,8 @@ public class EditMentorController implements HttpHandler {
 
         List<Mentor> allMentors = readMentorsFromDB();
 
-        if(method.equals("GET")) {
+        if(method.equals("GET")) {        
+            response += renderHeader(httpExchange);
             response += render("header");
             response += render("admin/adminMenu");
             String responseTemp = renderMentorsList(allMentors);
@@ -70,7 +71,6 @@ public class EditMentorController implements HttpHandler {
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
 
-
         os.close();
     }
 
@@ -99,7 +99,6 @@ public class EditMentorController implements HttpHandler {
             }
         }
     }
-
 
     private Mentor getMentorById(String id, List<Mentor> allMentors) {
         Mentor changedMentor = null;
@@ -154,6 +153,36 @@ public class EditMentorController implements HttpHandler {
         model.with("dateOfBirth", mentor.getDateOfBirth());
 
         return template.render(model);
+    }
+
+    private String renderHeader(HttpExchange httpExchange) {
+        Map<String, String> cookiesMap = createCookiesMap( httpExchange );
+
+        String templatePath = "templates/header.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("firstName", cookiesMap.get("firstName") );
+        model.with("lastName", cookiesMap.get("lastName") );
+        model.with("userType", cookiesMap.get("typeOfUser") );
+
+        return  template.render(model);
+    }
+
+    private Map<String, String> createCookiesMap(HttpExchange httpExchange) {
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        String[] cookiesValues = cookieStr.split("; ");
+
+        Map<String, String> cookiesMap = new HashMap<>();
+
+        for (String cookie : cookiesValues) {
+            String[] nameValuePairCookie = cookie.split("=\"");
+            String name = nameValuePairCookie[0];
+            String value = nameValuePairCookie[1].replace("\"", "");
+
+            cookiesMap.put(name, value);
+        }
+        return cookiesMap;
     }
 
     private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
