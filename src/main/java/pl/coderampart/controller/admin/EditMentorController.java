@@ -34,11 +34,16 @@ public class EditMentorController implements HttpHandler {
         String id = uri[uri.length-1];
 
         List<Mentor> allMentors = readMentorsFromDB();
-        if(method.equals("GET")) {
 
+        if(method.equals("GET")) {
+            System.out.println("dupa");
             response += render("header");
             response += render("admin/adminMenu");
-            response += renderEditMentor(allMentors);
+            String responseTemp = renderMentorsList(allMentors);
+            if(id.length()==36) {
+                responseTemp = renderEditMentor(getMentorById(id, allMentors), allMentors);
+            }
+            response += responseTemp;
             response += render("footer");
         }
 
@@ -50,6 +55,16 @@ public class EditMentorController implements HttpHandler {
             Map inputs = parseFormData(formData);
 
             editMentor(inputs, allMentors, id);
+
+            response += render("header");
+            response += render("admin/adminMenu");
+            String responseTemp = renderMentorsList(allMentors);
+            if(id.length()==36) {
+
+                responseTemp = renderEditMentor(getMentorById(id, allMentors), allMentors);
+            }
+            response +=responseTemp;
+            response += render("footer");
         }
 
         httpExchange.sendResponseHeaders( 200, response.getBytes().length );
@@ -62,6 +77,9 @@ public class EditMentorController implements HttpHandler {
 
     private void editMentor(Map inputs, List<Mentor>allMentors, String id) {
 
+
+        Mentor changedMentor = getMentorById(id, allMentors);
+
         String firstName = String.valueOf(inputs.get("first-name"));
         String lastName= String.valueOf(inputs.get("last-name"));
         String dateOfBirth = String.valueOf(inputs.get("date-of-birth"));
@@ -69,25 +87,34 @@ public class EditMentorController implements HttpHandler {
         LocalDate date = LocalDate.parse(dateOfBirth, formatter);
         String email= String.valueOf(inputs.get("email"));
 
-        Mentor changedMentor = null;
-        for (Mentor mentor: allMentors) {
-            if (id.equals(mentor.getID())) {
-                changedMentor = mentor;
-                changedMentor.setFirstName(firstName);
-                changedMentor.setLastName(lastName);
-                changedMentor.setDateOfBirth(date);
-                changedMentor.setEmail(email);
-                try{
 
-                    mentorDAO.update(changedMentor);
-                }catch (SQLException se){}
-                break;
+        if(!changedMentor.equals(null)){
+            changedMentor.setFirstName(firstName);
+            changedMentor.setLastName(lastName);
+            changedMentor.setDateOfBirth(date);
+            changedMentor.setEmail(email);
+            try{
+                mentorDAO.update(changedMentor);
+            }catch (SQLException se) {
+                se.printStackTrace();
             }
         }
     }
 
+
+    private Mentor getMentorById(String id, List<Mentor> allMentors) {
+        Mentor changedMentor = null;
+
+        for (Mentor mentor: allMentors) {
+            if (id.equals(mentor.getID())) {
+                changedMentor = mentor;
+            }
+        }
+        return changedMentor;
+    }
+
     private List<Mentor> readMentorsFromDB() {
-        List<Mentor> allMentors = null;
+        List <Mentor> allMentors = null;
 
         try {
             allMentors = mentorDAO.readAll();
@@ -102,15 +129,30 @@ public class EditMentorController implements HttpHandler {
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 
+
         return template.render(model);
     }
 
-    private String renderEditMentor(List<Mentor> allMentors) {
+    private String renderMentorsList(List<Mentor> allMentors) {
+        String templatePath = "templates/admin/editMentor.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+        model.with("allMentors", allMentors);
+
+        return template.render(model);
+    }
+
+    private String renderEditMentor(Mentor mentor, List<Mentor> allMentors) {
+
         String templatePath = "templates/admin/editMentor.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 
         model.with("allMentors", allMentors);
+        model.with("firstName", mentor.getFirstName());
+        model.with("lastName", mentor.getLastName());
+        model.with("email", mentor.getEmail());
+        model.with("dateOfBirth", mentor.getDateOfBirth());
 
         return template.render(model);
     }
