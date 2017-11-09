@@ -51,7 +51,7 @@ public class HelperController {
         model.with("lastName", cookiesMap.get("lastName") );
         model.with("userType", cookiesMap.get("typeOfUser") );
 
-        return  template.render(model);
+        return template.render(model);
     }
 
     public String render(String fileName) {

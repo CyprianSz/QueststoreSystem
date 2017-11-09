@@ -37,6 +37,7 @@ public class CreateMentorController implements HttpHandler{
         String method = httpExchange.getRequestMethod();
 
         response += helperController.renderHeader(httpExchange);
+        response += helperController.render("header");
         response += helperController.render("admin/adminMenu");
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/createMentor.twig");
         JtwigModel model = JtwigModel.newModel();
