@@ -1,6 +1,8 @@
 package pl.coderampart.controller.helpers;
 
 import com.sun.net.httpserver.HttpExchange;
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -12,7 +14,7 @@ public class HelperController {
     public Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
-        for(String pair : pairs){
+        for (String pair : pairs) {
             String[] keyValue = pair.split("=");
             String value = new URLDecoder().decode(keyValue[1], "UTF-8");
             map.put(keyValue[0], value);
@@ -34,4 +36,19 @@ public class HelperController {
             cookiesMap.put(name, value);
         }
         return cookiesMap;
+    }
+
+    public String renderHeader(HttpExchange httpExchange) {
+        Map<String, String> cookiesMap = createCookiesMap( httpExchange );
+
+        String templatePath = "templates/header.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("firstName", cookiesMap.get("firstName") );
+        model.with("lastName", cookiesMap.get("lastName") );
+        model.with("userType", cookiesMap.get("typeOfUser") );
+
+        return  template.render(model);
+    }
 }
