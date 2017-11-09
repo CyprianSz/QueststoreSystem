@@ -148,6 +148,9 @@ li a {
     justify-content: center;
     flex-direction: column;
 }
+#choose-mentor-to-delete {
+    padding: 3em;
+}
 
 #edit-operation {
     padding: 6em;

@@ -52,8 +52,9 @@ public class DeleteMentorController implements HttpHandler {
             Map inputs = parseFormData(formData);
             if(inputs.get("confirmation").equals("yes")) {
                 deleteMentor(allMentors, id);
-
             }
+            httpExchange.getResponseHeaders().set("Location", "/delete-mentor");
+            httpExchange.sendResponseHeaders(302, -1);
             response += render("header");
             response += render("admin/adminMenu");
             String responseTemp = renderMentorsList(allMentors);
@@ -100,7 +101,7 @@ public class DeleteMentorController implements HttpHandler {
 
     private String renderDeleteQuestion(Mentor mentor, List<Mentor> allMentors) {
 
-        String templatePath = "templates/admin/deleteMentor.twig";
+        String templatePath = "templates/admin/deleteChosenMentor.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();
 
@@ -112,7 +113,7 @@ public class DeleteMentorController implements HttpHandler {
 
 
     private String renderMentorsList(List<Mentor> allMentors) {
-        String templatePath = "templates/admin/deleteMentor.twig";
+        String templatePath = "templates/admin/deleteMentorStartPage.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 
