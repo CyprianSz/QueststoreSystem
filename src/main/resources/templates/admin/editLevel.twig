@@ -1,0 +1,40 @@
+<div id="main-container">
+
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for level in allLevels %}
+                        <button name="level-id" value="{{ level.ID }}">{{ level.rank }} {{ level.requiredExperience }}</button>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+
+        <div id="user-form-container">
+            <form method="POST">
+                <div class="user-form">
+                    <label for="rank">rank</label>
+                    <input type="text" name="rank" id="rank" placeholder="0">
+                </div>
+
+                <div class="user-form">
+                    <label for="required-experience">required experience</label>
+                    <input type="text" name="required-experience" id="required-experience" placeholder="0">
+                </div>
+
+                <div class="user-form">
+                    <label for="description">description</label>
+                    <input type="text" name="description" id="description" placeholder="You're just a noob.">
+                </div>
+
+                <div id="user-form-button">
+                    <input type="submit" value="SAVE CHANGES">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

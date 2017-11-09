@@ -37,11 +37,13 @@ li a {
     text-transform: uppercase;
 }
 
+
 .nav__menu-item {
     display: inline-block;
     position: relative;
+    transition: .5s ease;
+    top: 50%;
 }
-
 .nav__menu-item:hover {
     background: #675f6b ;
 
@@ -54,6 +56,8 @@ li a {
 .nav__submenu-item{
     box-shadow: 0px 1px 1px #675f6b ;
     background-color: white;
+    transition: .5s ease;
+    top: 50%;
 }
 
 .nav__submenu {
@@ -111,9 +115,16 @@ li a {
     size: 10em;
 }
 
+#main-container-edit, #main-container-delete {
+    height: 400px;
+    margin-left: -1em;
+    display: flex;
+    justify-content: left;
+}
 #main-container{
     height: 400px;
     margin-left: -1em;
+    display: flex;
 }
 
 #main-container-quest{
@@ -130,12 +141,16 @@ li a {
 #vertical_menu{
     float: left;
 }
-/*#delete-operation {*/
-    /*padding: 8em;*/
-    /*align-items: center;*/
-    /*display:flex;*/
-    /*justify-content: center;*/
-/*}*/
+#delete-question {
+    padding: 5em;
+    align-items: center;
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+}
+#choose-mentor-to-delete {
+    padding: 3em;
+}
 
 #edit-operation {
     padding: 6em;

@@ -16,32 +16,32 @@ import java.util.*;
 
 public class DeleteMentorController implements HttpHandler {
 
-    private Connection connection;
+   private Connection connection;
     private MentorDAO mentorDAO;
     private HelperController helperController;
 
-    public DeleteMentorController(Connection connection) {
+   public DeleteMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
         this.helperController = new HelperController();
     }
 
-    @Override
+   @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
         String response = "";
 
-        List<Mentor> allMentors = readMentorsFromDB();
+       List<Mentor> allMentors = readMentorsFromDB();
 
-        String[] uri = httpExchange.getRequestURI().toString().split("=%2F");
+       String[] uri = httpExchange.getRequestURI().toString().split("=%2F");
         String id = uri[uri.length-1];
 
-        response += helperController.renderHeader(httpExchange);
+       response += helperController.renderHeader(httpExchange);
         response += helperController.render("admin/adminMenu");
         response += renderMentorsList(allMentors);
         response += helperController.render("footer");
 
-        if(method.equals("POST")) {
+       if(method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
@@ -51,16 +51,16 @@ public class DeleteMentorController implements HttpHandler {
             }
         }
 
-        httpExchange.sendResponseHeaders( 200, response.getBytes().length );
+       httpExchange.sendResponseHeaders( 200, response.getBytes().length );
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
     }
 
-    private List<Mentor> readMentorsFromDB() {
+   private List<Mentor> readMentorsFromDB() {
         List<Mentor> allMentors = null;
 
-        try {
+       try {
             allMentors = mentorDAO.readAll();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,17 +68,17 @@ public class DeleteMentorController implements HttpHandler {
         return allMentors;
     }
 
-    private String renderMentorsList(List<Mentor> allMentors) {
+   private String renderMentorsList(List<Mentor> allMentors) {
         String templatePath = "templates/admin/deleteMentor.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 
-        model.with("allMentors", allMentors);
+       model.with("allMentors", allMentors);
 
-        return template.render(model);
+       return template.render(model);
     }
 
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
+   private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
         for(String pair : pairs){
@@ -89,7 +89,7 @@ public class DeleteMentorController implements HttpHandler {
         return map;
     }
 
-    private void deleteMentor(List<Mentor> allMentors,String id) {
+   private void deleteMentor(List<Mentor> allMentors,String id) {
         Mentor changedMentor = null;
         for (Mentor mentor: allMentors) {
             if (id.equals(mentor.getID())) {

@@ -1,0 +1,30 @@
+<div id="main-container">
+
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for group in allGroups %}
+                        <button name="group-id" value="{{ group.ID }}">{{ group.Name }}</button>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+
+        <div id="user-form-container">
+            <form method="POST">
+                <div class="user-form">
+                    <label for="group-name">group name</label>
+                    <input type="text" name="group-name" id="group-name" placeholder="Codecool 2017.1">
+                </div>
+
+                <div id="user-form-button">
+                    <input type="submit" value="SAVE CHANGES">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
