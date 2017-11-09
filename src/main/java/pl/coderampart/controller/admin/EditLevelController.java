@@ -10,7 +10,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class EditLevelController implements HttpHandler{
@@ -54,5 +58,29 @@ public class EditLevelController implements HttpHandler{
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+    }
+
+    private void editLevel(Map inputs, List<Level>allLevels, String id) {
+        Integer rank = Integer.valueOf(inputs.get("rank").toString());
+        Integer requiredExperience = Integer.valueOf(inputs.get("required-experience").toString());
+        String description = String.valueOf(inputs.get("description"));
+
+        Level changedLevel = null;
+        for (Level level: allLevels) {
+            if (id.equals(level.getID())) {
+                changedLevel = level;
+                changedLevel.setRank(rank);
+                changedLevel.setRequiredExperience(requiredExperience);
+                changedLevel.setDescription(description);
+
+                try {
+                    levelDAO.update(changedLevel);
+                } catch (SQLException se){
+                    se.printStackTrace();
+                }
+
+                break;
+            }
+        }
     }
 }
