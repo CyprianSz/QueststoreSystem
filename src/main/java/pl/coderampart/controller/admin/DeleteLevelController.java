@@ -7,12 +7,11 @@ import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.LevelDAO;
 import pl.coderampart.model.Level;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,5 +85,33 @@ public class DeleteLevelController implements HttpHandler{
         model.with("allLevels", allLevels);
 
         return template.render(model);
+    }
+
+    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
+        Map<String, String> map = new HashMap<>();
+        String[] pairs = formData.split("&");
+        for(String pair : pairs){
+            String[] keyValue = pair.split("=");
+            String value = URLDecoder.decode(keyValue[1], "UTF-8");
+            map.put(keyValue[0], value);
+        }
+        return map;
+    }
+
+    private void deleteLevel(List<Level> allLevels,String id) {
+        Level deletedLevel = null;
+        for (Level level: allLevels) {
+            if (id.equals(level.getID())) {
+                deletedLevel = level;
+
+                try {
+                    levelDAO.delete(deletedLevel);
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                }
+
+                break;
+            }
+        }
     }
 }
