@@ -104,12 +104,4 @@ public class CreateMentorController implements HttpHandler{
         }
         mentorDAO.create(newMentor);
     }
-
-    private String render(String fileName) {
-        String templatePath = "templates/" + fileName + ".twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
-        JtwigModel model = JtwigModel.newModel();
-
-        return template.render(model);
-    }
 }
