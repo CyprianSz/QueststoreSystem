@@ -8,6 +8,7 @@ import pl.coderampart.DAO.ConnectionToDB;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.LevelDAO;
 import pl.coderampart.DAO.MentorDAO;
+import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 import pl.coderampart.model.Mentor;
 
@@ -50,7 +51,7 @@ public class CreateMentorController implements HttpHandler{
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
 
-            Map inputs = parseFormData(formData);
+            Map inputs = HelperController.parseFormData(formData);
 
             String[] data = new String[]{String.valueOf(inputs.get("first-name")),
                                         String.valueOf(inputs.get("last-name")),
@@ -58,6 +59,7 @@ public class CreateMentorController implements HttpHandler{
                                         String.valueOf(inputs.get("email")),
                                         String.valueOf(inputs.get("password")),
                                         String.valueOf(inputs.get("group"))};
+
             try{
 
             createMentor(data);
@@ -71,17 +73,6 @@ public class CreateMentorController implements HttpHandler{
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
-    }
-
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-        Map<String, String> map = new HashMap<>();
-        String[] pairs = formData.split("&");
-        for(String pair : pairs){
-            String[] keyValue = pair.split("=");
-            String value = new URLDecoder().decode(keyValue[1], "UTF-8");
-            map.put(keyValue[0], value);
-        }
-        return map;
     }
 
     public void createMentor(String[] mentorData) throws SQLException {
