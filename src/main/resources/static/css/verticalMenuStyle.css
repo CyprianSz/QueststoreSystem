@@ -9,13 +9,12 @@
     display: inline !important;
 }
 
-
 #vertical-radio-list button {
     position:absolute;
     transition: .5s ease;
     top: 50%;
     left: 50%;
-    font-size: 1.3em;
+    font-size: 1em;
     float: left;
     cursor: pointer;
     display:inline-block;
