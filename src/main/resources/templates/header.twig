@@ -23,8 +23,9 @@
             <p>by CodeRampart</p>
         </div>
         <div id="logged-user">
-            <h2 id="user-name">Creepy Guy</h2>
-            <p>Admin</p>
+            <h2 id="user-name">{{ firstName }} {{ lastName }}</h2>
+            <p>{{ userType }}</p>
+            <p><a href="/login">logout</a></p>
         </div>
     </header>
 </div>
