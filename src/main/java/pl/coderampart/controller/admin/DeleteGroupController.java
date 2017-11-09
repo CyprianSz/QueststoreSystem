@@ -97,4 +97,19 @@ public class DeleteGroupController implements HttpHandler{
         }
         return map;
     }
+
+    private void deleteGroup(List<Group> allGroups, String id) {
+        Group deletedGroup = null;
+        for (Group group: allGroups) {
+            if (id.equals(group.getID())) {
+                deletedGroup = group;
+                try {
+                    groupDAO.delete(deletedGroup);
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                }
+                break;
+            }
+        }
+    }
 }
