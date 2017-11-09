@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -53,5 +54,17 @@ public class DeleteLevelController implements HttpHandler{
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+    }
+
+    private List<Level> readLevelsFromDB(){
+        List<Level> allLevels = null;
+
+        try {
+            allLevels = levelDAO.readAll();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+
+        return allLevels;
     }
 }
