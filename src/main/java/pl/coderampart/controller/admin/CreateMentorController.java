@@ -55,13 +55,11 @@ public class CreateMentorController implements HttpHandler{
                                         String.valueOf(inputs.get("password")),
                                         String.valueOf(inputs.get("group"))};
 
-            try{
-
-            createMentor(data);
-            }catch (SQLException se){
+            try {
+                createMentor(data);
+            } catch (SQLException se){
                 se.printStackTrace();
             }
-
         }
 
         httpExchange.sendResponseHeaders(200, response.length());
