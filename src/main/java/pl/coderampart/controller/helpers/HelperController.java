@@ -11,6 +11,8 @@ import java.util.Map;
 
 public class HelperController {
 
+    public HelperController() {}
+
     public Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
