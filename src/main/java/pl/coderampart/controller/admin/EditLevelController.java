@@ -43,13 +43,13 @@ public class EditLevelController implements HttpHandler{
 
         if(method.equals("GET")) {
             response += helperController.renderHeader(httpExchange);
-            response += render("admin/adminMenu");
+            response += helperController.render("admin/adminMenu");
             String responseTemp = renderLevelsList(allLevels);
             if(id.length()==36) {
                 responseTemp = renderEditLevel(getLevelById(id, allLevels), allLevels);
             }
             response += responseTemp;
-            response += render("footer");
+            response += helperController.render("footer");
         }
 
         if(method.equals("POST")){
@@ -57,19 +57,19 @@ public class EditLevelController implements HttpHandler{
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
 
-            Map inputs = parseFormData(formData);
+            Map inputs = helperController.parseFormData(formData);
 
             editLevel(inputs, allLevels, id);
 
-            response += render("header");
-            response += render("admin/adminMenu");
+            response += helperController.render("header");
+            response += helperController.render("admin/adminMenu");
             String responseTemp = renderLevelsList(allLevels);
             if(id.length()==36) {
 
                 responseTemp = renderEditLevel(getLevelById(id, allLevels), allLevels);
             }
             response +=responseTemp;
-            response += render("footer");
+            response += helperController.render("footer");
         }
 
         httpExchange.sendResponseHeaders( 200, response.getBytes().length );
@@ -122,14 +122,6 @@ public class EditLevelController implements HttpHandler{
         return allLevels;
     }
 
-    private String render(String fileName) {
-        String templatePath = "templates/" + fileName + ".twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
-        JtwigModel model = JtwigModel.newModel();
-
-        return template.render(model);
-    }
-
     private String renderLevelsList(List<Level> allLevels) {
         String templatePath = "templates/admin/editLevel.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
@@ -150,16 +142,5 @@ public class EditLevelController implements HttpHandler{
         model.with("description", level.getDescription());
 
         return template.render(model);
-    }
-
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-        Map<String, String> map = new HashMap<>();
-        String[] pairs = formData.split("&");
-        for(String pair : pairs){
-            String[] keyValue = pair.split("=");
-            String value = URLDecoder.decode(keyValue[1], "UTF-8");
-            map.put(keyValue[0], value);
-        }
-        return map;
     }
 }

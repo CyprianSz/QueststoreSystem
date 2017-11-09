@@ -40,13 +40,13 @@ public class EditGroupController implements HttpHandler{
 
         if(method.equals("GET")) {
             response += helperController.renderHeader(httpExchange);
-            response += render("admin/adminMenu");
+            response += helperController.render("admin/adminMenu");
             String responseTemp = renderGroupsList(allGroups);
             if(id.length()==36){
                 responseTemp = renderEditGroup(getGroupById(id, allGroups), allGroups);
             }
             response += responseTemp;
-            response += render("footer");
+            response += helperController.render("footer");
         }
 
         if(method.equals("POST")) {
@@ -54,18 +54,18 @@ public class EditGroupController implements HttpHandler{
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
 
-            Map inputs = parseFormData(formData);
+            Map inputs = helperController.parseFormData(formData);
 
             editGroup(inputs, allGroups, id);
 
-            response += render("header");
-            response += render("admin/adminMenu");
+            response += helperController.render("header");
+            response += helperController.render("admin/adminMenu");
             String responseTemp = renderGroupsList(allGroups);
             if (id.length() == 36) {
                 responseTemp = renderEditGroup(getGroupById(id, allGroups), allGroups);
             }
             response += responseTemp;
-            response += render("footer");
+            response += helperController.render("footer");
         }
 
         httpExchange.sendResponseHeaders(200, response.getBytes().length);
@@ -92,35 +92,25 @@ public class EditGroupController implements HttpHandler{
     private Group getGroupById(String id, List<Group> allGroups){
         Group changedGroup = null;
 
-        for (Group group: allGroups){
-            if(id.equals(group.getID())){
+        for (Group group: allGroups) {
+            if(id.equals(group.getID())) {
                 changedGroup = group;
             }
         }
-
         return changedGroup;
     }
 
-    private List<Group> readGroupsFromDB(){
+    private List<Group> readGroupsFromDB() {
         List<Group> allGroups = null;
         try {
             allGroups = groupDAO.readAll();
         } catch (SQLException se) {
             se.printStackTrace();
         }
-
         return allGroups;
     }
 
-    private String render(String fileName){
-        String templatePath = "templates/" + fileName + ".twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
-        JtwigModel model = JtwigModel.newModel();
-
-        return template.render(model);
-    }
-
-    private String renderGroupsList(List<Group> allGroups){
+    private String renderGroupsList(List<Group> allGroups) {
         String templatePath = "templates/admin/editGroup.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();
@@ -129,7 +119,7 @@ public class EditGroupController implements HttpHandler{
         return template.render(model);
     }
 
-    private String renderEditGroup(Group group, List<Group> allGroups){
+    private String renderEditGroup(Group group, List<Group> allGroups) {
         String templatePath = "templates/admin/editGroup.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
@@ -138,16 +128,5 @@ public class EditGroupController implements HttpHandler{
         model.with("groupName", group.getName());
 
         return template.render(model);
-    }
-
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-        Map<String, String> map = new HashMap<>();
-        String[] pairs = formData.split("&");
-        for(String pair : pairs){
-            String[] keyValue = pair.split("=");
-            String value = URLDecoder.decode(keyValue[1], "UTF-8");
-            map.put(keyValue[0], value);
-        }
-        return map;
     }
 }
