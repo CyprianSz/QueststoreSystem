@@ -2,6 +2,8 @@ package pl.coderampart.controller.admin;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.LevelDAO;
 import pl.coderampart.model.Level;
 
@@ -66,5 +68,23 @@ public class DeleteLevelController implements HttpHandler{
         }
 
         return allLevels;
+    }
+
+    private String render(String fileName) {
+        String templatePath = "templates/" + fileName + ".twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        return template.render(model);
+    }
+
+    private String renderLevelsList(List<Level> allLevels) {
+        String templatePath = "templates/admin/deleteLevel.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allLevels", allLevels);
+
+        return template.render(model);
     }
 }
