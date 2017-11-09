@@ -1,0 +1,23 @@
+<div id="main-container">
+
+    <div id="levelsList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>rank</th>
+                <th>required_experience</th>
+                <th>description</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for level in allLevels %}
+            <tr>
+                <td>{{ level.rank }}</td>
+                <td>{{ level.requiredExperience }}</td>
+                <td>{{ level.description }}</td>
+            </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

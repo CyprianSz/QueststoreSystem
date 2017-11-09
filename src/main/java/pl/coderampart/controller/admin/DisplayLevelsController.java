@@ -4,8 +4,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
-import pl.coderampart.DAO.MentorDAO;
-import pl.coderampart.model.Mentor;
+import pl.coderampart.DAO.LevelDAO;
+import pl.coderampart.model.Level;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,32 +13,32 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class DisplayMentorsController implements HttpHandler{
+public class DisplayLevelsController implements HttpHandler{
 
     private Connection connection;
-    private MentorDAO mentorDAO;
+    private LevelDAO levelDAO;
 
-    public DisplayMentorsController(Connection connection) {
+    public DisplayLevelsController(Connection connection) {
         this.connection = connection;
-        this.mentorDAO = new MentorDAO(this.connection);
+        this.levelDAO = new LevelDAO(this.connection);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        List<Mentor> allMentors = readMentorsFromDB();
+        List<Level> allLevels = readLevelsFromDB();
         String method = httpExchange.getRequestMethod();
         String response = "";
         response += render("header");
         response += render("admin/adminMenu");
-        response += renderDisplayMentors(allMentors);
+        response += renderDisplayLevels(allLevels);
         response += render("footer");
-        httpExchange.sendResponseHeaders( 200, response.getBytes().length );
+        httpExchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
     }
 
-    private String render(String fileName) {
+    private String render(String fileName){
         String templatePath = "templates/" + fileName + ".twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
@@ -46,23 +46,24 @@ public class DisplayMentorsController implements HttpHandler{
         return template.render(model);
     }
 
-    private List<Mentor> readMentorsFromDB() {
-        List<Mentor> allMentors = null;
+    private List<Level> readLevelsFromDB(){
+        List<Level> allLevels = null;
 
-        try {
-            allMentors = mentorDAO.readAll();
-        } catch (SQLException e) {
+        try{
+            allLevels = levelDAO.readAll();
+        } catch (SQLException e){
             e.printStackTrace();
         }
-        return allMentors;
+
+        return allLevels;
     }
 
-    private String renderDisplayMentors(List<Mentor> allMentors) {
-        String templatePath = "templates/admin/displayMentors.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+    private String renderDisplayLevels(List<Level> allLevels) {
+        String templatePath = "templates/admin/displayLevels.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();
 
-        model.with("allMentors", allMentors);
+        model.with("allLevels", allLevels);
 
         return template.render(model);
     }

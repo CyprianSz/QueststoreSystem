@@ -152,7 +152,7 @@ li a {
     display:flex;
     justify-content: center;
 }
-#mentorsList, #groupsTable, #levelsTable{
+#mentorsList, #groupsList, #levelsList{
     padding-top: 3em;
 }
 
