@@ -20,7 +20,7 @@ public class DeleteGroupController implements HttpHandler{
     private Connection connection;
     private GroupDAO groupDAO;
 
-    private DeleteGroupController(Connection connection) {
+    public DeleteGroupController(Connection connection) {
         this.connection = connection;
         this.groupDAO = new GroupDAO(this.connection);
     }
