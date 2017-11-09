@@ -51,4 +51,12 @@ public class HelperController {
 
         return  template.render(model);
     }
+
+    public String render(String fileName) {
+        String templatePath = "templates/" + fileName + ".twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        return template.render(model);
+    }
 }
