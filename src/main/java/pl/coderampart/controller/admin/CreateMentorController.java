@@ -37,14 +37,14 @@ public class CreateMentorController implements HttpHandler{
         String response = "";
         String method = httpExchange.getRequestMethod();
 
-        if(method.equals("GET")) {
             response += render("header");
             response += render("admin/adminMenu");
             JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/createMentor.twig");
             JtwigModel model = JtwigModel.newModel();
             response += template.render(model);
             response += render("footer");
-        }
+//        if(method.equals("GET")) {
+//        }
         if(method.equals("POST")){
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);

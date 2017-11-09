@@ -6,7 +6,9 @@
             <form>
                 <div id="radio-form">
                     {%  for mentor in allMentors %}
+                        <a href="/edit-mentor?mentor-id={{ mentor.ID }}">
                         <button name="mentor-id" value="{{ mentor.ID }}">{{ mentor.firstName }} {{ mentor.lastName }}</button>
+                        </a>
                     {% endfor %}
                 </div>
             </form>
@@ -19,22 +21,22 @@
             <form method="POST">
                 <div class="user-form">
                     <label for="first-name">first name</label>
-                    <input type="text" name="first-name" id="first-name" placeholder="Agnieszka">
+                    <input type="text" name="first-name" id="first-name" value={{ firstName }}>
                 </div>
 
                 <div class="user-form">
                     <label for="last-name">last name</label>
-                    <input type="text" name="last-name" id="last-name" placeholder="Koszany">
+                    <input type="text" name="last-name" id="last-name" value={{ lastName }}>
                 </div>
 
                 <div class="user-form">
                     <label for="email">email</label>
-                    <input type="text" name="email" id="email" placeholder="agakoszany@cc.com">
+                    <input type="text" name="email" id="email" value={{ email }}>
                 </div>
 
                 <div class="user-form">
                     <label for="date-of-birth">date of birth</label>
-                    <input type="text" name="date-of-birth" id="date-of-birth" placeholder="1994-05-05">
+                    <input type="text" name="date-of-birth" id="date-of-birth" value={{ dateOfBirth }}>
                 </div>
 
                 <div id="user-form-button">
