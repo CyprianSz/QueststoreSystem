@@ -1,5 +1,5 @@
 
-<div id="main-container">
+<div id="main-container-edit">
 
     <div id="vertical_menu">
         <div id="vertical-radio-list">
@@ -7,7 +7,7 @@
                 <div id="radio-form">
                     {%  for level in allLevels %}
                         <a href="/edit-level?level-id={{ level.ID }}">
-                        <button name="level-id" value="{{ level.ID }}">{{ level.rank }} {{ level.requiredExperience }}</button>
+                        <button name="level-id" value="{{ level.ID }}">Level {{ level.rank }} {{ level.requiredExperience }}xp</button>
                         </a>
                     {% endfor %}
                 </div>
@@ -17,21 +17,21 @@
 
     <div id="sub-container-form">
 
-        <div id="user-form-container">
+        <div id="user-form-container-edit">
             <form method="POST">
                 <div class="user-form">
                     <label for="rank">rank</label>
-                    <input type="text" name="rank" id="rank" placeholder="0">
+                    <input type="text" name="rank" id="rank" value={{ rank }}>
                 </div>
 
                 <div class="user-form">
                     <label for="required-experience">required experience</label>
-                    <input type="text" name="required-experience" id="required-experience" placeholder="0">
+                    <input type="text" name="required-experience" id="required-experience" value={{ requiredExperience }}>
                 </div>
 
                 <div class="user-form">
                     <label for="description">description</label>
-                    <input type="text" name="description" id="description" placeholder="You're just a noob.">
+                    <input type="text" name="description" id="description" value="{{ description }}">
                 </div>
 
                 <div id="user-form-button">
