@@ -83,4 +83,16 @@ public class EditLevelController implements HttpHandler{
             }
         }
     }
+
+    private List<Level> readLevelsFromDB(){
+        List<Level> allLevels = null;
+
+        try {
+            allLevels = levelDAO.readAll();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+
+        return allLevels;
+    }
 }
