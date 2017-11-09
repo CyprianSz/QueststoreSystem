@@ -28,7 +28,7 @@ public class Application {
         server.createContext("/create-group", new CreateGroupController());
         server.createContext("/display-groups", new DisplayGroupsController(connection));
         server.createContext("/edit-group", new EditGroupController(connection));
-        server.createContext("/delete-group", new DeleteGroupController(connection))
+        server.createContext("/delete-group", new DeleteGroupController(connection));
         server.createContext("/create-level", new CreateLevelController());
         server.createContext("/display-levels", new DisplayLevelsController(connection));
         server.createContext("/edit-level", new EditLevelController(connection));
