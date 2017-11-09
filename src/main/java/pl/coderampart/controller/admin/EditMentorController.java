@@ -36,7 +36,6 @@ public class EditMentorController implements HttpHandler {
         List<Mentor> allMentors = readMentorsFromDB();
 
         if(method.equals("GET")) {
-            System.out.println("dupa");
             response += render("header");
             response += render("admin/adminMenu");
             String responseTemp = renderMentorsList(allMentors);
