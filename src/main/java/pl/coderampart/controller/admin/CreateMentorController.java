@@ -56,7 +56,6 @@ public class CreateMentorController implements HttpHandler{
                                         String.valueOf(inputs.get("email")),
                                         String.valueOf(inputs.get("password")),
                                         String.valueOf(inputs.get("group"))};
-
             try {
                 createMentor(data);
             } catch (SQLException se){
@@ -99,7 +98,6 @@ public class CreateMentorController implements HttpHandler{
         for (Group group : allGroups) {
             if (group.getName().equals(chosenGroupName)) {
                 newMentor.setGroup( group );
-
             }
         }
         mentorDAO.create(newMentor);
