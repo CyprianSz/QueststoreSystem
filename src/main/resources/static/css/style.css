@@ -53,6 +53,14 @@ header {
     align-items: center;
     display: flex;
 }
+#logout {
+    text-decoration: none;
+    color: #000000;
+}
+#logout:hover {
+    color: #000000;
+    text-decoration: underline;
+}
 
 #radio-form {
     border: solid 3px #675f6b ;
