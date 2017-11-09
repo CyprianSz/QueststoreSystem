@@ -2,6 +2,8 @@ package pl.coderampart.controller.admin;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.model.Group;
 
@@ -74,5 +76,35 @@ public class EditGroupController implements HttpHandler{
                 break;
             }
         }
+    }
+
+    private List<Group> readGroupsFromDB(){
+        List<Group> allGroups = null;
+
+        try {
+            allGroups = groupDAO.readAll();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+
+        return allGroups;
+    }
+
+    private String render(String fileName){
+        String templatePath = "templates/" + fileName + ".twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        return template.render(model);
+    }
+
+    private String renderEditGroup(List<Group> allGroups){
+        String templatePath = "templates/admin/editGroup.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allGroups", allGroups);
+
+        return template.render(model);
     }
 }
