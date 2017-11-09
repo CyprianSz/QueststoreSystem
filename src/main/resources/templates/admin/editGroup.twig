@@ -5,7 +5,9 @@
             <form>
                 <div id="radio-form">
                     {%  for group in allGroups %}
+                        <a href="/edit-group?group-id={{ group.ID }}">
                         <button name="group-id" value="{{ group.ID }}">{{ group.Name }}</button>
+                        </a>
                     {% endfor %}
                 </div>
             </form>

@@ -1,3 +1,4 @@
+
 <div id="main-container">
 
     <div id="vertical_menu">
@@ -5,7 +6,9 @@
             <form>
                 <div id="radio-form">
                     {%  for level in allLevels %}
+                        <a href="/edit-level?level-id={{ level.ID }}">
                         <button name="level-id" value="{{ level.ID }}">{{ level.rank }} {{ level.requiredExperience }}</button>
+                        </a>
                     {% endfor %}
                 </div>
             </form>
