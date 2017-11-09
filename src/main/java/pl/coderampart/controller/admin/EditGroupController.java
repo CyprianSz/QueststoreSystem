@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -54,5 +55,24 @@ public class EditGroupController implements HttpHandler{
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+    }
+
+    private void editGroup(Map inputs, List<Group> allGroups, String id){
+        String name = String.valueOf(inputs.get("group-name"));
+
+        Group changedGroup = null;
+        for (Group group: allGroups) {
+            if (id.equals(group.getID())) {
+                changedGroup = group;
+                changedGroup.setName(name);
+
+                try{
+                    groupDAO.update(changedGroup);
+                } catch (SQLException se){
+                    se.printStackTrace();
+                }
+                break;
+            }
+        }
     }
 }
