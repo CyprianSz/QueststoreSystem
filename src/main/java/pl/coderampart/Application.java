@@ -21,6 +21,7 @@ public class Application {
 
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
+        server.createContext("/login", new Login(connection));
         server.createContext("/create-mentor", new CreateMentorController(connection));
         server.createContext("/edit-mentor", new EditMentorController(connection));
         server.createContext("/display-mentors", new DisplayMentorsController(connection));
@@ -30,7 +31,6 @@ public class Application {
         server.createContext("/create-level", new CreateLevelController());
         server.createContext("/display-levels", new DisplayLevelsController(connection));
         server.createContext("/static", new Static());
-        server.createContext("/login", new Login());
 
 
         server.setExecutor(null);
