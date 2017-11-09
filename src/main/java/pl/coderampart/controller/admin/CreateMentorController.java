@@ -29,7 +29,6 @@ public class CreateMentorController implements HttpHandler{
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
         this.helperController = new HelperController();
-
     }
 
     @Override
@@ -57,7 +56,6 @@ public class CreateMentorController implements HttpHandler{
                                         String.valueOf(inputs.get("email")),
                                         String.valueOf(inputs.get("password")),
                                         String.valueOf(inputs.get("group"))};
-
             try {
                 createMentor(data);
             } catch (SQLException se){
