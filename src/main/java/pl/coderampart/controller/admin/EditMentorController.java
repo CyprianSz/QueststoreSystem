@@ -100,21 +100,12 @@ public class EditMentorController implements HttpHandler {
         }
     }
 
-
     private Mentor getMentorById(String id, List<Mentor> allMentors) {
         Mentor changedMentor = null;
 
         for (Mentor mentor: allMentors) {
             if (id.equals(mentor.getID())) {
                 changedMentor = mentor;
-                changedMentor.setFirstName(firstName);
-                changedMentor.setLastName(lastName);
-                changedMentor.setDateOfBirth(date);
-                changedMentor.setEmail(email);
-                try{
-                    mentorDAO.update(changedMentor);
-                } catch (SQLException se){}
-                break;
             }
         }
         return changedMentor;

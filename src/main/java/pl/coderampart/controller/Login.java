@@ -18,7 +18,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-11:38
 public class Login implements HttpHandler{
 
    private Connection connection;
@@ -70,7 +69,7 @@ public class Login implements HttpHandler{
        os.write(response.getBytes());
        os.close();
    }
-11:39
+
 private String render(String fileName) {
        String templatePath = "templates/" + fileName + ".twig";
        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
@@ -101,7 +100,7 @@ private String render(String fileName) {
        }
        return map;
    }
-11:39
+
 private void createAdminCookies(HttpExchange httpExchange, String email, String password) {
        try {
            Admin loggedUser = adminDAO.getLogged( email, password );
