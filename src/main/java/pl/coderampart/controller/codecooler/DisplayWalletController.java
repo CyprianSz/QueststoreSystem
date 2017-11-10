@@ -25,7 +25,10 @@ public class DisplayWalletController implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = "";
         response += helperController.renderHeader(httpExchange);
-        response += helperController.render("codecooler/displayWallet");
+        response += helperController.render("codecooler/codecoolerMenu");
+        response += helperController.render("codecooler/codecoolerWallet");
+//        response += renderWalletItems(walletItems);
+        response += helperController.render("footer");
         httpExchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
