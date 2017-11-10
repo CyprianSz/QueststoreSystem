@@ -37,11 +37,13 @@ li a {
     text-transform: uppercase;
 }
 
+
 .nav__menu-item {
     display: inline-block;
     position: relative;
+    transition: .5s ease;
+    top: 50%;
 }
-
 .nav__menu-item:hover {
     background: #675f6b ;
 
@@ -54,6 +56,8 @@ li a {
 .nav__submenu-item{
     box-shadow: 0px 1px 1px #675f6b ;
     background-color: white;
+    transition: .5s ease;
+    top: 50%;
 }
 
 .nav__submenu {
@@ -97,25 +101,30 @@ li a {
     height: 400px;
 }
 
-#delete-question, #edit-form {
-
-}
-
-#attributes .attribute_list input.attribute_submit{
+#attributes .attribute_list button[name="confirmation"]{
     display: inline-block;
     margin: -2px;
     padding: 10px 10px;
     border: 1px solid #ddd;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 2em;
 }
 .attribute_list li {
     display: inline-block;
     margin-right: 10px;
+    size: 10em;
+}
+
+#main-container-edit, #main-container-delete {
+    height: 400px;
+    margin-left: -1em;
+    display: flex;
+    justify-content: left;
 }
 #main-container{
     height: 400px;
     margin-left: -1em;
+    display: flex;
 }
 
 #main-container-quest{
@@ -132,11 +141,15 @@ li a {
 #vertical_menu{
     float: left;
 }
-#delete-operation {
-    padding: 8em;
+#delete-question {
+    padding: 5em;
     align-items: center;
     display:flex;
     justify-content: center;
+    flex-direction: column;
+}
+#choose-mentor-to-delete {
+    padding: 3em;
 }
 
 #edit-operation {
@@ -152,7 +165,7 @@ li a {
     display:flex;
     justify-content: center;
 }
-#groupsList, #mentorsList, #levelsList{
+#mentorsList, #groupsList, #levelsList{
     padding-top: 3em;
 }
 
