@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpServer;
 import pl.coderampart.controller.Login;
 import pl.coderampart.controller.Logout;
 import pl.coderampart.controller.admin.*;
+import pl.coderampart.controller.codecooler.*;
 
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
@@ -35,7 +36,8 @@ public class Application {
         server.createContext("/edit-level", new EditLevelController(connection));
         server.createContext("/delete-level", new DeleteLevelController(connection));
         server.createContext("/static", new Static());
-        server.createContext("/login", new Login(connection));
+
+        server.createContext("/display-wallet", new DisplayWalletController(connection));
 
         server.setExecutor(null);
         server.start();
