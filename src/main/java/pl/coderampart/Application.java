@@ -34,7 +34,7 @@ public class Application {
         server.createContext("/create-level", new CreateLevelController());
         server.createContext("/display-levels", new DisplayLevelsController(connection));
         server.createContext("/edit-level", new EditLevelController(connection));
-        server.createContext("/delete-level", new EditLevelController(connection));
+        server.createContext("/delete-level", new DeleteLevelController(connection));
         server.createContext("/static", new Static());
 
         server.createContext("/display-wallet", new DisplayWalletController(connection));

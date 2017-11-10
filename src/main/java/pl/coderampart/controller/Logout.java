@@ -17,7 +17,7 @@ public class Logout implements HttpHandler {
         httpExchange.getResponseHeaders().add( "Set-Cookie", firstName.toString() );
         HttpCookie lastName = new HttpCookie("lastName", null);
         httpExchange.getResponseHeaders().add( "Set-Cookie", lastName.toString() );
-        HttpCookie sessionId = new HttpCookie("sessionId", null);
+        HttpCookie sessionId = new HttpCookie("sessionId",  UUIDController.createUUID());
         httpExchange.getResponseHeaders().add( "Set-Cookie", sessionId.toString() );
         HttpCookie userId = new HttpCookie("userId", null);
         httpExchange.getResponseHeaders().add( "Set-Cookie", userId.toString() );

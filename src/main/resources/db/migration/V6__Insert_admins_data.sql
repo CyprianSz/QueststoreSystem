@@ -6,5 +6,12 @@ VALUES
    'Adminski',
    '1912-01-01',
    'admin@cc.com',
-   'admin123')
+   'admin123'),
+
+ ('5ed8c123-1dk4-4678-a275-c1fdd35a2deb',
+  'Jerzy',
+  'Mardaus',
+  '1965-05-10',
+  'jerzy.mardaus@cc.com',
+  'admin123')
 ;

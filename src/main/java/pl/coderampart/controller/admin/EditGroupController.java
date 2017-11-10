@@ -74,7 +74,7 @@ public class EditGroupController implements HttpHandler{
         os.close();
     }
 
-    private void editGroup(Map inputs, List<Group> allGroups, String id){
+    private void editGroup(Map inputs, List<Group>allGroups, String id){
         String name = String.valueOf(inputs.get("group-name"));
 
         Group changedGroup = getGroupById(id, allGroups);
@@ -102,11 +102,13 @@ public class EditGroupController implements HttpHandler{
 
     private List<Group> readGroupsFromDB() {
         List<Group> allGroups = null;
+
         try {
             allGroups = groupDAO.readAll();
         } catch (SQLException se) {
             se.printStackTrace();
         }
+
         return allGroups;
     }
 
