@@ -65,8 +65,10 @@ public class Login implements HttpHandler{
                 redirectIf(isLogged, "/create-mentor", "/login", httpExchange);
             } else if (userType.equals( "mentor" )) {
                 isLogged = loginAsMentor(httpExchange, email, password);
+
             } else if (userType.equals( "codecooler" )) {
                 isLogged = loginAsCodecooler(httpExchange, email, password);
+                redirectIf(isLogged, "/display-wallet", "/login", httpExchange);
             }
         }
 
