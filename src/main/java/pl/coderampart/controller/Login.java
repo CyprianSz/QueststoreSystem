@@ -17,11 +17,7 @@ import java.util.Map;
 
 public class Login implements HttpHandler{
 
-
     private Connection connection;
-    private AdminDAO adminDAO;
-    private MentorDAO mentorDAO;
-    private CodecoolerDAO codecoolerDAO;
     private UserDAO userDAO;
     private SessionDAO sessionDAO;
     private HelperController helper;
@@ -29,9 +25,6 @@ public class Login implements HttpHandler{
 
     public Login(Connection connection) {
         this.connection = connection;
-        this.adminDAO = new AdminDAO(this.connection);
-        this.mentorDAO = new MentorDAO(this.connection);
-        this.codecoolerDAO = new CodecoolerDAO(this.connection);
         this.userDAO = new UserDAO(this.connection);
         this.sessionDAO = new SessionDAO(this.connection);
         this.helper = new HelperController();
@@ -57,11 +50,39 @@ public class Login implements HttpHandler{
 
         if (cookiesMap.containsKey( "sessionID" )) {
             String sessionID = cookiesMap.get( "sessionID" );
-            response += renderProperResponse( sessionID );
+            response += renderProperResponse( sessionID, httpExchange );
         } else {
             response += helper.render( "login" );
         }
         helper.sendResponse(response, httpExchange);
+    }
+
+    private String renderProperResponse(String sessionID, HttpExchange httpExchange) throws IOException {
+        try {
+            Session currentSession = sessionDAO.getByID( sessionID );
+
+            if (currentSession == null) {
+                return helper.render( "login" );
+            } else {
+                String userType = currentSession.getUserType();
+
+                switch (userType) {
+                    case "admin":
+                        redirectTo( "/create-mentor", httpExchange );
+                        break;
+                    case "mentor":
+//                    redirectTo("/login", httpExchange);
+                        break;
+                    case "codecooler":
+                        redirectTo( "/display-wallet", httpExchange );
+                        break;
+                }
+                return null;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void handlePostMethod(HttpExchange httpExchange) throws IOException {
@@ -74,7 +95,7 @@ public class Login implements HttpHandler{
             createCookieWithSessionID( newSession, httpExchange );
             addSessionToDatabase(newSession);
         }
-        redirectToLogin(httpExchange);
+        redirectTo("/login", httpExchange);
     }
 
     private Loggable getLoggedUserFromInputs(Map<String, String> inputs) {
@@ -119,8 +140,8 @@ public class Login implements HttpHandler{
         }
     }
 
-    private void redirectToLogin(HttpExchange httpExchange) throws IOException {
-        httpExchange.getResponseHeaders().set( "Location", "/login");
+    private void redirectTo(String path, HttpExchange httpExchange) throws IOException {
+        httpExchange.getResponseHeaders().set( "Location", path);
         httpExchange.sendResponseHeaders( 302, -1 );
     }
 }
