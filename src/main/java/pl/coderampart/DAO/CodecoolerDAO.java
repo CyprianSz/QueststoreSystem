@@ -110,7 +110,7 @@ public class CodecoolerDAO extends AbstractDAO {
         return statement;
     }
 
-    private Codecooler createCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
+    public Codecooler createCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName= resultSet.getString("last_name");

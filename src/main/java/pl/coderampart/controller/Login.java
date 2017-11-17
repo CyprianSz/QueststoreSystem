@@ -2,33 +2,29 @@ package pl.coderampart.controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
-import pl.coderampart.DAO.AdminDAO;
-import pl.coderampart.DAO.CodecoolerDAO;
-import pl.coderampart.DAO.MentorDAO;
+import pl.coderampart.DAO.*;
 import pl.coderampart.controller.helpers.HelperController;
-import pl.coderampart.model.Admin;
-import pl.coderampart.model.Codecooler;
-import pl.coderampart.model.Mentor;
+import pl.coderampart.model.Session;
+import pl.coderampart.services.Loggable;
 
 import java.io.*;
 import java.net.HttpCookie;
-import java.net.URLDecoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Login implements HttpHandler{
+
 
     private Connection connection;
     private AdminDAO adminDAO;
     private MentorDAO mentorDAO;
     private CodecoolerDAO codecoolerDAO;
-    private HelperController helperController;
+    private UserDAO userDAO;
+    private SessionDAO sessionDAO;
+    private HelperController helper;
     private PasswordHasher hasher;
 
     public Login(Connection connection) {
@@ -36,166 +32,95 @@ public class Login implements HttpHandler{
         this.adminDAO = new AdminDAO(this.connection);
         this.mentorDAO = new MentorDAO(this.connection);
         this.codecoolerDAO = new CodecoolerDAO(this.connection);
-        this.helperController = new HelperController();
+        this.userDAO = new UserDAO(this.connection);
+        this.sessionDAO = new SessionDAO(this.connection);
+        this.helper = new HelperController();
         this.hasher = new PasswordHasher();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String response = "";
-
-        createCookieSessionId( httpExchange );
 
         if(method.equals("GET")) {
-            response += helperController.render("login");
+            handleGetMethod(httpExchange);
         }
 
         if(method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader( httpExchange.getRequestBody(), "utf-8" );
-            BufferedReader br = new BufferedReader( isr );
-            String formData = br.readLine();
-
-            Map inputs = helperController.parseFormData( formData );
-
-            String userType = String.valueOf( inputs.get("user-type") );
-            String email = String.valueOf( inputs.get("email") );
-            String password = String.valueOf( inputs.get("password") );
-
-            boolean isLogged;
-
-            if (userType.equals( "admin" )) {
-                isLogged = loginAsAdmin(httpExchange, email, password);
-                redirectIf(isLogged, "/create-mentor", "/login", httpExchange);
-            } else if (userType.equals( "mentor" )) {
-                isLogged = loginAsMentor(httpExchange, email, password);
-
-            } else if (userType.equals( "codecooler" )) {
-                isLogged = loginAsCodecooler(httpExchange, email, password);
-                redirectIf(isLogged, "/display-wallet", "/login", httpExchange);
-            }
+            handlePostMethod( httpExchange );
         }
-
-        httpExchange.sendResponseHeaders( 200, response.getBytes().length );
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
     }
 
-    private void redirectIf(boolean condition,
-                            String successDestination,
-                            String failureDestination,
-                            HttpExchange httpExchange) throws IOException {
-        if (condition) {
-            httpExchange.getResponseHeaders().set( "Location", successDestination);
+    private void handleGetMethod(HttpExchange httpExchange) throws IOException {
+        String response = "";
+        Map<String, String> cookiesMap = helper.createCookiesMap(httpExchange);
+
+        if (cookiesMap.containsKey( "sessionID" )) {
+            String sessionID = cookiesMap.get( "sessionID" );
+            response += renderProperResponse( sessionID );
         } else {
-            httpExchange.getResponseHeaders().set( "Location", failureDestination );
+            response += helper.render( "login" );
         }
-        httpExchange.sendResponseHeaders( 301, -1 );
+        helper.sendResponse(response, httpExchange);
     }
 
+    private void handlePostMethod(HttpExchange httpExchange) throws IOException {
+        Map<String, String> inputs = helper.getInputsMap(httpExchange);
 
-    private boolean loginAsAdmin(HttpExchange httpExchange, String email, String password) {
+        Loggable loggedUser = getLoggedUserFromInputs(inputs);
+
+        if (loggedUser != null) {
+            Session newSession = createNewSession( loggedUser );
+            createCookieWithSessionID( newSession, httpExchange );
+            addSessionToDatabase(newSession);
+        }
+        redirectToLogin(httpExchange);
+    }
+
+    private Loggable getLoggedUserFromInputs(Map<String, String> inputs) {
+        String userType = String.valueOf( inputs.get("user-type") );
+        String email = String.valueOf( inputs.get("email") );
+        String password = String.valueOf( inputs.get("password") );
+
         try {
-            String storedPassword = adminDAO.getHashedPassword( email );
+            String storedPassword = userDAO.getUserHashedPassword( userType, email );
             boolean isPasswordValid = hasher.validatePassword( password, storedPassword );
 
-            Admin loggedUser;
             if (isPasswordValid) {
-                loggedUser = adminDAO.getLogged( email );
-            } else {
-                loggedUser = null;
+                return userDAO.getLoggedUser( userType, email );
             }
-
-            if (loggedUser != null) {
-                HttpCookie userId = new HttpCookie( "userId", loggedUser.getID() );
-                httpExchange.getResponseHeaders().add( "Set-Cookie", userId.toString() );
-                HttpCookie typeOfUser = new HttpCookie( "typeOfUser", "Admin" );
-                httpExchange.getResponseHeaders().add( "Set-Cookie", typeOfUser.toString() );
-                HttpCookie firstName = new HttpCookie( "firstName", loggedUser.getFirstName() );
-                httpExchange.getResponseHeaders().add( "Set-Cookie", firstName.toString() );
-                HttpCookie lastName = new HttpCookie( "lastName", loggedUser.getLastName());
-                httpExchange.getResponseHeaders().add( "Set-Cookie", lastName.toString() );
-
-                return true;
-            }
-            return false;
+            return null;
         } catch (SQLException | NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
-    private boolean loginAsMentor (HttpExchange httpExchange, String email, String password) {
+    private Session createNewSession(Loggable loggedUser) {
+        String userID = loggedUser.getID();
+        String userFirstName = loggedUser.getFirstName();
+        String userLastName = loggedUser.getLastName();
+        String userEmail = loggedUser.getEmail();
+        String userType = loggedUser.getType();
+
+        return new Session(userID, userFirstName, userLastName, userEmail, userType);
+    }
+
+    private void createCookieWithSessionID(Session session, HttpExchange httpExchange) {
+        HttpCookie cookie = new HttpCookie("sessionId", session.getID());
+        httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
+    }
+
+    private void addSessionToDatabase(Session session) {
         try {
-            String storedPassword = mentorDAO.getHashedPassword( email );
-            boolean isPasswordValid = hasher.validatePassword( password, storedPassword );
-
-            Mentor loggedUser;
-            if (isPasswordValid) {
-                loggedUser = mentorDAO.getLogged( email );
-            } else {
-                loggedUser = null;
-            }
-
-            if (loggedUser != null) {
-                HttpCookie userId = new HttpCookie( "userId", loggedUser.getID() );
-                httpExchange.getResponseHeaders().add( "Set-Cookie", userId.toString() );
-                HttpCookie typeOfUser = new HttpCookie( "typeOfUser", "Mentor" );
-                httpExchange.getResponseHeaders().add( "Set-Cookie", typeOfUser.toString() );
-                HttpCookie firstName = new HttpCookie( "firstName", loggedUser.getFirstName() );
-                httpExchange.getResponseHeaders().add( "Set-Cookie", firstName.toString() );
-                HttpCookie lastName = new HttpCookie( "lastName", loggedUser.getLastName());
-                httpExchange.getResponseHeaders().add( "Set-Cookie", lastName.toString() );
-
-                return true;
-            }
-            return false;
-        } catch (SQLException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+            sessionDAO.create( session );
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            return false;
         }
     }
 
-    private boolean loginAsCodecooler (HttpExchange httpExchange, String email, String password) {
-        try {
-            String storedPassword = mentorDAO.getHashedPassword( email );
-            boolean isPasswordValid = hasher.validatePassword( password, storedPassword );
-
-            Codecooler loggedUser;
-            if (isPasswordValid) {
-                loggedUser = codecoolerDAO.getLogged( email );
-            } else {
-                loggedUser = null;
-            }
-            if (loggedUser != null) {
-                HttpCookie userId = new HttpCookie( "userId", loggedUser.getID() );
-                httpExchange.getResponseHeaders().add( "Set-Cookie", userId.toString() );
-                HttpCookie typeOfUser = new HttpCookie( "typeOfUser", "Codecooler" );
-                httpExchange.getResponseHeaders().add( "Set-Cookie", typeOfUser.toString() );
-                HttpCookie firstName = new HttpCookie( "firstName", loggedUser.getFirstName() );
-                httpExchange.getResponseHeaders().add( "Set-Cookie", firstName.toString() );
-                HttpCookie lastName = new HttpCookie( "lastName", loggedUser.getLastName());
-                httpExchange.getResponseHeaders().add( "Set-Cookie", lastName.toString() );
-
-                return true;
-            }
-            return false;
-        } catch (SQLException | InvalidKeySpecException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private void createCookieSessionId(HttpExchange httpExchange) {
-        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
-        HttpCookie cookie;
-
-        if (cookieStr == null) {
-            cookie = new HttpCookie("sessionId", UUIDController.createUUID());
-            httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
-        } else {
-            HttpCookie.parse(cookieStr).get(0);
-        }
+    private void redirectToLogin(HttpExchange httpExchange) throws IOException {
+        httpExchange.getResponseHeaders().set( "Location", "/login");
+        httpExchange.sendResponseHeaders( 302, -1 );
     }
 }

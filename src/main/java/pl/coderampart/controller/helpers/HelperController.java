@@ -4,7 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,5 +58,20 @@ public class HelperController {
         JtwigModel model = JtwigModel.newModel();
 
         return template.render(model);
+    }
+
+    public void sendResponse(String response, HttpExchange httpExchange) throws IOException {
+        httpExchange.sendResponseHeaders(200, response.getBytes().length);
+        OutputStream os = httpExchange.getResponseBody();
+        os.write( response.getBytes() );
+        os.close();
+    }
+
+    public Map<String,String> getInputsMap(HttpExchange httpExchange) throws IOException {
+        InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+        BufferedReader br = new BufferedReader(isr);
+        String formData = br.readLine();
+
+        return parseFormData(formData);
     }
 }

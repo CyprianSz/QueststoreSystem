@@ -78,7 +78,7 @@ public class MentorDAO extends AbstractDAO {
         return statement;
     }
 
-    private Mentor createMentorFromResultSet(ResultSet resultSet) throws SQLException {
+    public Mentor createMentorFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName = resultSet.getString("last_name");

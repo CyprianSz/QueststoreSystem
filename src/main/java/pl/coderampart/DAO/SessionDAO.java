@@ -59,7 +59,7 @@ public class SessionDAO {
             String userLastName = resultSet.getString( "user_last_name" );
             String userEmail = resultSet.getString( "user_email" );
             String userType = resultSet.getString( "user_type" );
-            
+
             return new Session(ID, userID, userFirstName, userLastName, userEmail, userType);
         } catch (SQLException e) {
             e.printStackTrace();
