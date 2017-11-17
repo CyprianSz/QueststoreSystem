@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
-public class CreateMentorController implements HttpHandler{
+public class CreateMentorController implements HttpHandler {
 
     private Connection connection;
     private MentorDAO mentorDAO;
@@ -38,7 +38,7 @@ public class CreateMentorController implements HttpHandler{
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-//        zadługi ten handler jest, rozwalić na metody (przykład w tym zadaniu z canvasa z loginem)
+        //        zadługi ten handler jest, rozwalić na metody (przykład w tym zadaniu z canvasa z loginem)
         String response = "";
         String method = httpExchange.getRequestMethod();
 
@@ -59,13 +59,14 @@ public class CreateMentorController implements HttpHandler{
             String firstName = String.valueOf(inputs.get("first-name"));
             String lastName = String.valueOf(inputs.get("last-name"));
             String dateOfBirth = String.valueOf(inputs.get("date-of-birth"));
+            String email = String.valueOf(inputs.get("email"));
             String password = String.valueOf(inputs.get("password"));
             String group = String.valueOf(inputs.get("group"));
 
             try {
                 String hashedPassword = hasher.generateStrongPasswordHash( password );
 
-                String[] data = new String[]{firstName, lastName, dateOfBirth, hashedPassword, group};
+                String[] data = new String[]{firstName, lastName, dateOfBirth, email, hashedPassword, group};
 
                 createMentor(data);
             } catch (NoSuchAlgorithmException | InvalidKeySpecException | SQLException e) {

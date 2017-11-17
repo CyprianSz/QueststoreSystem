@@ -42,7 +42,6 @@ public class AdminDAO extends AbstractDAO {
 
 
     public void create(Admin admin) throws SQLException {
-
         String query = "INSERT INTO admins (first_name, last_name, email, password, date_of_birth, id) "
                          + "VALUES (?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -51,7 +50,6 @@ public class AdminDAO extends AbstractDAO {
     }
 
     public void update(Admin admin) throws SQLException{
-
         String query = "UPDATE admins SET first_name = ?, " +
                 "last_name = ?, email = ?, password = ?, " +
                 "date_of_birth = ? WHERE id = ?;";
@@ -62,8 +60,6 @@ public class AdminDAO extends AbstractDAO {
     }
 
     public void delete(Admin admin) throws SQLException{
-
-//        Connection connection = this.connectToDataBase();
         String query = "DELETE FROM admins WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, admin.getID());
