@@ -67,13 +67,14 @@ public class Login implements HttpHandler{
                 String userType = currentSession.getUserType();
 
                 switch (userType) {
-                    case "admin":
+                    case "Admin":
+                        System.out.println("DUPSKO");
                         redirectTo( "/create-mentor", httpExchange );
                         break;
-                    case "mentor":
+                    case "Mentor":
 //                    redirectTo("/login", httpExchange);
                         break;
-                    case "codecooler":
+                    case "Codecooler":
                         redirectTo( "/display-wallet", httpExchange );
                         break;
                 }
@@ -87,7 +88,6 @@ public class Login implements HttpHandler{
 
     private void handlePostMethod(HttpExchange httpExchange) throws IOException {
         Map<String, String> inputs = helper.getInputsMap(httpExchange);
-
         Loggable loggedUser = getLoggedUserFromInputs(inputs);
 
         if (loggedUser != null) {
@@ -128,7 +128,7 @@ public class Login implements HttpHandler{
     }
 
     private void createCookieWithSessionID(Session session, HttpExchange httpExchange) {
-        HttpCookie cookie = new HttpCookie("sessionId", session.getID());
+        HttpCookie cookie = new HttpCookie("sessionID", session.getID());
         httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
     }
 

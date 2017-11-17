@@ -6,8 +6,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import pl.coderampart.DAO.LevelDAO;
 import pl.coderampart.DAO.WalletDAO;
+import pl.coderampart.services.Loggable;
 
-public class Codecooler extends AbstractUser {
+public class Codecooler extends AbstractUser implements Loggable {
 
     private Wallet wallet;
     private Group group;

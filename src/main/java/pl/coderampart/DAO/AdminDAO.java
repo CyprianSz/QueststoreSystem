@@ -86,7 +86,7 @@ public class AdminDAO extends AbstractDAO {
         String dateOfBirth = resultSet.getString("date_of_birth");
         LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
 
-        return new Admin(ID, firstName, lastName, dateOfBirthObject,email, password);
+        return new Admin(ID, firstName, lastName, dateOfBirthObject, email, password);
     }
 
     public String getHashedPassword(String email) throws SQLException {

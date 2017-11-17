@@ -1,5 +1,6 @@
 package pl.coderampart.DAO;
 
+import pl.coderampart.model.Admin;
 import pl.coderampart.services.Loggable;
 
 import java.sql.Connection;
@@ -22,30 +23,29 @@ public class UserDAO {
     }
 
     public String getUserHashedPassword(String userType, String email) throws SQLException {
-        String query = "SELECT password FROM ?s WHERE email = ?;";
+        String query = "SELECT password FROM " + userType + "s WHERE email = ?;";
 
         PreparedStatement statement = connection.prepareStatement( query );
-        statement.setString(1, userType);
-        statement.setString(2, email);
+        statement.setString(1, email);
         ResultSet resultSet = statement.executeQuery();
 
         return resultSet.getString( "password" );
     }
 
     public Loggable getLoggedUser(String userType, String email) throws SQLException {
-        String query = "SELECT * FROM ?s WHERE email = ?;";
+        String query = "SELECT * FROM " + userType + "s WHERE email = ?;";
 
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, userType);
-        statement.setString(2, email);
+        statement.setString(1, email);
         ResultSet resultSet = statement.executeQuery();
 
-        if (userType.equals( "admin" )) {
-            return (Loggable) adminDAO.createAdminFromResultSet(resultSet);
-        } else if (userType.equals( "mentor" )) {
-            return (Loggable) mentorDAO.createMentorFromResultSet(resultSet);
-        } else if (userType.equals( "codecooler" )) {
-            return (Loggable) codecoolerDAO.createCodecoolerFromResultSet(resultSet);
+        switch (userType) {
+            case "admin":
+                return adminDAO.createAdminFromResultSet( resultSet );
+            case "mentor":
+                return mentorDAO.createMentorFromResultSet( resultSet );
+            case "codecooler":
+                return codecoolerDAO.createCodecoolerFromResultSet( resultSet );
         }
         return null;
     }

@@ -1,8 +1,10 @@
 package pl.coderampart.model;
 
+import pl.coderampart.services.Loggable;
+
 import java.time.LocalDate;
 
-public class Mentor extends AbstractUser {
+public class Mentor extends AbstractUser implements Loggable {
 
     private Group group;
 
