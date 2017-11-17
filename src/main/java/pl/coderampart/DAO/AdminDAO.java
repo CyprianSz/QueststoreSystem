@@ -88,14 +88,4 @@ public class AdminDAO extends AbstractDAO {
 
         return new Admin(ID, firstName, lastName, dateOfBirthObject, email, password);
     }
-
-    public String getHashedPassword(String email) throws SQLException {
-        String query = "SELECT password FROM admins WHERE email = ?;";
-
-        PreparedStatement statement = connection.prepareStatement( query );
-        statement.setString(1, email);
-        ResultSet resultSet = statement.executeQuery();
-
-        return resultSet.getString( "password" );
-    }
 }

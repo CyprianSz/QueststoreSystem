@@ -130,14 +130,4 @@ public class CodecoolerDAO extends AbstractDAO {
         return new Codecooler(ID, firstName, lastName, dateOfBirthObject, email, password,
                              walletObject, groupObject, levelObject, teamObject);
     }
-
-    public String getHashedPassword(String email) throws SQLException {
-        String query = "SELECT password FROM codecoolers WHERE email = ?;";
-
-        PreparedStatement statement = connection.prepareStatement( query );
-        statement.setString(1, email);
-        ResultSet resultSet = statement.executeQuery();
-
-        return resultSet.getString("password");
-    }
 }
