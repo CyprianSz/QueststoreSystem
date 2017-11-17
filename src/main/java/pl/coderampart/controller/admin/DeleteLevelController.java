@@ -9,10 +9,8 @@ import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Level;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,7 +80,7 @@ public class DeleteLevelController implements HttpHandler {
         return template.render(model);
     }
 
-    private void deleteLevel(List<Level> allLevels,String id) {
+    private void deleteLevel(List<Level> allLevels, String id) {
         Level deletedLevel = null;
         for (Level level: allLevels) {
             if (id.equals(level.getID())) {

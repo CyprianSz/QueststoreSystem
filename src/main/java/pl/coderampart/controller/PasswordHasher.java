@@ -7,9 +7,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 
-class PasswordHasher {
+public class PasswordHasher {
 
-    String generateStrongPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public String generateStrongPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         int iterations = 1000;
         char[] chars = password.toCharArray();
         byte[] salt = getSalt();

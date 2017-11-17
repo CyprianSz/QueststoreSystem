@@ -7,41 +7,28 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import pl.coderampart.model.*;
-import pl.coderampart.services.User;
 
-public class AdminDAO extends AbstractDAO implements User<Admin> {
-
+public class AdminDAO extends AbstractDAO {
 
     private Connection connection;
 
     public AdminDAO(Connection connectionToDB) {
-
         connection = connectionToDB;
     }
 
-
-
-    public Admin getLogged(String email, String password) throws SQLException {
-        Admin admin = null;
-
-//        connection = this.connectToDataBase();
-        String query = "SELECT * FROM admins WHERE email = ? AND password = ?;";
+    public Admin getLogged(String email) throws SQLException {
+        String query = "SELECT * FROM admins WHERE email = ?;";
 
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, email);
-        statement.setString(2, password);
         ResultSet resultSet = statement.executeQuery();
 
-        admin = this.createAdminFromResultSet(resultSet);
-//        connection.close();
-
-        return admin;
+        return this.createAdminFromResultSet(resultSet);
     }
 
     public ArrayList<Admin> readAll() throws SQLException{
         ArrayList<Admin> adminList = new ArrayList<>();
 
-//        Connection connection = this.connectToDataBase();
         String query = "SELECT * FROM admins;";
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
@@ -50,8 +37,6 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
             Admin admin = this.createAdminFromResultSet(resultSet);
             adminList.add(admin);
         }
-//        connection.close();
-
         return adminList;
     }
 
@@ -106,5 +91,15 @@ public class AdminDAO extends AbstractDAO implements User<Admin> {
         LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
 
         return new Admin(ID, firstName, lastName, dateOfBirthObject,email, password);
+    }
+
+    public String getHashedPassword(String email) throws SQLException {
+        String query = "SELECT password FROM admins WHERE email = ?;";
+
+        PreparedStatement statement = connection.prepareStatement( query );
+        statement.setString(1, email);
+        ResultSet resultSet = statement.executeQuery();
+
+        return resultSet.getString( "password" );
     }
 }
