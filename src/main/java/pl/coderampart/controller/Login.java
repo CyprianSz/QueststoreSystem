@@ -98,10 +98,10 @@ public class Login implements HttpHandler{
     private boolean loginAsAdmin(HttpExchange httpExchange, String email, String password) {
         try {
             String storedPassword = adminDAO.getHashedPassword( email );
-            boolean isPasswordVaid = hasher.validatePassword( password, storedPassword );
+            boolean isPasswordValid = hasher.validatePassword( password, storedPassword );
 
             Admin loggedUser;
-            if (isPasswordVaid) {
+            if (isPasswordValid) {
                 loggedUser = adminDAO.getLogged( email );
             } else {
                 loggedUser = null;
@@ -128,7 +128,15 @@ public class Login implements HttpHandler{
 
     private boolean loginAsMentor (HttpExchange httpExchange, String email, String password) {
         try {
-            Mentor loggedUser = mentorDAO.getLogged( email, password );
+            String storedPassword = mentorDAO.getHashedPassword( email );
+            boolean isPasswordValid = hasher.validatePassword( password, storedPassword );
+
+            Mentor loggedUser;
+            if (isPasswordValid) {
+                loggedUser = mentorDAO.getLogged( email );
+            } else {
+                loggedUser = null;
+            }
 
             if (loggedUser != null) {
                 HttpCookie userId = new HttpCookie( "userId", loggedUser.getID() );
@@ -143,7 +151,7 @@ public class Login implements HttpHandler{
                 return true;
             }
             return false;
-        } catch (SQLException e) {
+        } catch (SQLException | NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
             return false;
         }
@@ -151,7 +159,15 @@ public class Login implements HttpHandler{
 
     private boolean loginAsCodecooler (HttpExchange httpExchange, String email, String password) {
         try {
-            Codecooler loggedUser = codecoolerDAO.getLogged( email, password );
+            String storedPassword = mentorDAO.getHashedPassword( email );
+            boolean isPasswordValid = hasher.validatePassword( password, storedPassword );
+
+            Codecooler loggedUser;
+            if (isPasswordValid) {
+                loggedUser = codecoolerDAO.getLogged( email );
+            } else {
+                loggedUser = null;
+            }
             if (loggedUser != null) {
                 HttpCookie userId = new HttpCookie( "userId", loggedUser.getID() );
                 httpExchange.getResponseHeaders().add( "Set-Cookie", userId.toString() );
@@ -165,7 +181,7 @@ public class Login implements HttpHandler{
                 return true;
             }
             return false;
-        } catch (SQLException e) {
+        } catch (SQLException | InvalidKeySpecException | NoSuchAlgorithmException e) {
             e.printStackTrace();
             return false;
         }
