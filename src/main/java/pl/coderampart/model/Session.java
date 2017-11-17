@@ -52,5 +52,7 @@ public class Session {
     public String getUserEmail() {
         return userEmail;
     }
+
+    public String getUserType() { return userType; }
 }
 
