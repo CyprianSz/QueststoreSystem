@@ -20,8 +20,8 @@ public class Application {
 
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
-        server.createContext("/logout", new Logout());
-        server.createContext("/login", new Login(connection));
+//        server.createContext("/logout", new Logout());
+//        server.createContext("/login", new Login(connection));
         server.createContext("/create-mentor", new CreateMentorController(connection));
         server.createContext("/edit-mentor", new EditMentorController(connection));
         server.createContext("/display-mentors", new DisplayMentorsController(connection));
