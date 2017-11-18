@@ -1,8 +1,8 @@
 package pl.coderampart.controller;
 
-import pl.coderampart.helpers.MimeTypeResolver;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import pl.coderampart.controller.helpers.MimeTypeResolver;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -15,6 +15,8 @@ import pl.coderampart.model.Mentor;
 import java.io.*;
 import java.net.HttpCookie;
 import java.net.URLDecoder;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ public class Login implements HttpHandler{
     private MentorDAO mentorDAO;
     private CodecoolerDAO codecoolerDAO;
     private HelperController helperController;
+    private PasswordHasher hasher;
 
     public Login(Connection connection) {
         this.connection = connection;
@@ -34,6 +37,7 @@ public class Login implements HttpHandler{
         this.mentorDAO = new MentorDAO(this.connection);
         this.codecoolerDAO = new CodecoolerDAO(this.connection);
         this.helperController = new HelperController();
+        this.hasher = new PasswordHasher();
     }
 
     @Override
@@ -93,7 +97,15 @@ public class Login implements HttpHandler{
 
     private boolean loginAsAdmin(HttpExchange httpExchange, String email, String password) {
         try {
-            Admin loggedUser = adminDAO.getLogged( email, password );
+            String storedPassword = adminDAO.getHashedPassword( email );
+            boolean isPasswordVaid = hasher.validatePassword( password, storedPassword );
+
+            Admin loggedUser;
+            if (isPasswordVaid) {
+                loggedUser = adminDAO.getLogged( email );
+            } else {
+                loggedUser = null;
+            }
 
             if (loggedUser != null) {
                 HttpCookie userId = new HttpCookie( "userId", loggedUser.getID() );
@@ -108,7 +120,7 @@ public class Login implements HttpHandler{
                 return true;
             }
             return false;
-        } catch (SQLException e) {
+        } catch (SQLException | NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
             return false;
         }
