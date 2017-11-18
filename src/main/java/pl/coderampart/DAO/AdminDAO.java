@@ -77,7 +77,7 @@ public class AdminDAO extends AbstractDAO {
         return statement;
     }
 
-    private Admin createAdminFromResultSet(ResultSet resultSet) throws SQLException {
+    public Admin createAdminFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName = resultSet.getString("last_name");
@@ -86,16 +86,6 @@ public class AdminDAO extends AbstractDAO {
         String dateOfBirth = resultSet.getString("date_of_birth");
         LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
 
-        return new Admin(ID, firstName, lastName, dateOfBirthObject,email, password);
-    }
-
-    public String getHashedPassword(String email) throws SQLException {
-        String query = "SELECT password FROM admins WHERE email = ?;";
-
-        PreparedStatement statement = connection.prepareStatement( query );
-        statement.setString(1, email);
-        ResultSet resultSet = statement.executeQuery();
-
-        return resultSet.getString( "password" );
+        return new Admin(ID, firstName, lastName, dateOfBirthObject, email, password);
     }
 }

@@ -110,7 +110,7 @@ public class CodecoolerDAO extends AbstractDAO {
         return statement;
     }
 
-    private Codecooler createCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
+    public Codecooler createCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName= resultSet.getString("last_name");
@@ -129,15 +129,5 @@ public class CodecoolerDAO extends AbstractDAO {
 
         return new Codecooler(ID, firstName, lastName, dateOfBirthObject, email, password,
                              walletObject, groupObject, levelObject, teamObject);
-    }
-
-    public String getHashedPassword(String email) throws SQLException {
-        String query = "SELECT password FROM codecoolers WHERE email = ?;";
-
-        PreparedStatement statement = connection.prepareStatement( query );
-        statement.setString(1, email);
-        ResultSet resultSet = statement.executeQuery();
-
-        return resultSet.getString("password");
     }
 }

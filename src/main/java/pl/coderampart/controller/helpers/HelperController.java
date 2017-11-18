@@ -4,7 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,24 +16,27 @@ public class HelperController {
         String[] pairs = formData.split("&");
         for (String pair : pairs) {
             String[] keyValue = pair.split("=");
-            String value = new URLDecoder().decode(keyValue[1], "UTF-8");
+            String value = URLDecoder.decode(keyValue[1], "UTF-8");
             map.put(keyValue[0], value);
         }
         return map;
     }
 
     public Map<String, String> createCookiesMap(HttpExchange httpExchange) {
-        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
-        String[] cookiesValues = cookieStr.split("; ");
 
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         Map<String, String> cookiesMap = new HashMap<>();
 
-        for (String cookie : cookiesValues) {
-            String[] nameValuePairCookie = cookie.split("=\"");
-            String name = nameValuePairCookie[0];
-            String value = nameValuePairCookie[1].replace("\"", "");
+        if (cookieStr != null) {
+            String[] cookiesValues = cookieStr.split( "; " );
 
-            cookiesMap.put(name, value);
+            for (String cookie : cookiesValues) {
+                String[] nameValuePairCookie = cookie.split( "=\"" );
+                String name = nameValuePairCookie[0];
+                String value = nameValuePairCookie[1].replace( "\"", "" );
+
+                cookiesMap.put( name, value );
+            }
         }
         return cookiesMap;
     }
@@ -58,5 +61,20 @@ public class HelperController {
         JtwigModel model = JtwigModel.newModel();
 
         return template.render(model);
+    }
+
+    public void sendResponse(String response, HttpExchange httpExchange) throws IOException {
+        httpExchange.sendResponseHeaders(200, response.getBytes().length);
+        OutputStream os = httpExchange.getResponseBody();
+        os.write( response.getBytes() );
+        os.close();
+    }
+
+    public Map<String,String> getInputsMap(HttpExchange httpExchange) throws IOException {
+        InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+        BufferedReader br = new BufferedReader(isr);
+        String formData = br.readLine();
+
+        return parseFormData(formData);
     }
 }

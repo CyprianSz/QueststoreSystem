@@ -78,7 +78,7 @@ public class MentorDAO extends AbstractDAO {
         return statement;
     }
 
-    private Mentor createMentorFromResultSet(ResultSet resultSet) throws SQLException {
+    public Mentor createMentorFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName = resultSet.getString("last_name");
@@ -90,15 +90,5 @@ public class MentorDAO extends AbstractDAO {
         Group groupObject = groupDAO.getByID(groupID);
 
         return new Mentor(ID, firstName, lastName, dateOfBirthObject, email, password, groupObject);
-    }
-
-    public String getHashedPassword(String email) throws SQLException {
-        String query = "SELECT password FROM mentors WHERE email = ?;";
-
-        PreparedStatement statement = connection.prepareStatement( query );
-        statement.setString(1, email);
-        ResultSet resultSet = statement.executeQuery();
-
-        return resultSet.getString("password");
     }
 }
