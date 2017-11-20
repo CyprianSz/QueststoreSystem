@@ -8,7 +8,7 @@ VALUES
    'f1032055-14dd-48a6-9280-a8b3d54b5bb4',
    '1'),
 
-  ('f10ab015-14dd-48a6-9280-a8b3d54b5bb4',
+  ('f10ab015-14dd-48a6-9280-aabcd54b5bb4',
    '0eb8f5aa-c1f0-4a43-a340-428447c3ba42',
    'Zrzuta na teleport',
    '2017-11-15',
