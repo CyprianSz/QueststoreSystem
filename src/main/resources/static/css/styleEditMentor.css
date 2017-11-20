@@ -7,6 +7,10 @@
     align-items: center;
     flex-direction: column;
 }
+#user-form-container-edit .user-form label {
+    float: right;
+    max-width: 4em;
+}
 
 .user-form {
     justify-content: center;

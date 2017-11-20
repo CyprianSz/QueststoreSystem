@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.LevelDAO;
+import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Level;
 
 import java.io.*;
@@ -22,10 +23,12 @@ public class EditLevelController implements HttpHandler{
 
     private Connection connection;
     private LevelDAO levelDAO;
+    private HelperController helperController;
 
     public EditLevelController(Connection connection) {
         this.connection = connection;
         this.levelDAO = new LevelDAO(this.connection);
+        this.helperController = new HelperController();
     }
 
     @Override
@@ -38,26 +41,41 @@ public class EditLevelController implements HttpHandler{
 
         List<Level> allLevels = readLevelsFromDB();
 
-        if(method.equals("GET")){
-            response += render("header");
-            response += render("admin/adminMenu");
-            response += renderEditLevel(allLevels);
-            response += render("footer");
+        if(method.equals("GET")) {
+            response += helperController.renderHeader(httpExchange);
+            response += helperController.render("admin/adminMenu");
+            String responseTemp = renderLevelsList(allLevels);
+            if(id.length()==36) {
+                responseTemp = renderEditLevel(getLevelById(id, allLevels), allLevels);
+            }
+            response += responseTemp;
+            response += helperController.render("footer");
         }
 
         if(method.equals("POST")){
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            InputStreamReader isr = new InputStreamReader( httpExchange.getRequestBody(), "utf-8" );
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
 
-            Map inputs = parseFormData(formData);
+            Map inputs = helperController.parseFormData(formData);
 
             editLevel(inputs, allLevels, id);
+
+            response += helperController.render("header");
+            response += helperController.render("admin/adminMenu");
+            String responseTemp = renderLevelsList(allLevels);
+            if(id.length()==36) {
+
+                responseTemp = renderEditLevel(getLevelById(id, allLevels), allLevels);
+            }
+            response +=responseTemp;
+            response += helperController.render("footer");
         }
 
         httpExchange.sendResponseHeaders( 200, response.getBytes().length );
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
+
         os.close();
     }
 
@@ -66,23 +84,30 @@ public class EditLevelController implements HttpHandler{
         Integer requiredExperience = Integer.valueOf(inputs.get("required-experience").toString());
         String description = String.valueOf(inputs.get("description"));
 
-        Level changedLevel = null;
-        for (Level level: allLevels) {
-            if (id.equals(level.getID())) {
-                changedLevel = level;
-                changedLevel.setRank(rank);
-                changedLevel.setRequiredExperience(requiredExperience);
-                changedLevel.setDescription(description);
+        Level changedLevel = getLevelById(id, allLevels);
 
-                try {
-                    levelDAO.update(changedLevel);
-                } catch (SQLException se){
-                    se.printStackTrace();
-                }
+        if (!changedLevel.equals(null)) {
+            changedLevel.setRank(rank);
+            changedLevel.setRequiredExperience(requiredExperience);
+            changedLevel.setDescription(description);
 
-                break;
+            try {
+                levelDAO.update(changedLevel);
+            } catch (SQLException se){
+                se.printStackTrace();
             }
         }
+    }
+
+    private Level getLevelById(String id, List<Level> allLevels){
+        Level changedLevel = null;
+
+        for (Level level: allLevels){
+            if(id.equals(level.getID())){
+                changedLevel = level;
+            }
+        }
+        return changedLevel;
     }
 
     private List<Level> readLevelsFromDB(){
@@ -97,32 +122,25 @@ public class EditLevelController implements HttpHandler{
         return allLevels;
     }
 
-    private String render(String fileName) {
-        String templatePath = "templates/" + fileName + ".twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
-        JtwigModel model = JtwigModel.newModel();
-
-        return template.render(model);
-    }
-
-    private String renderEditLevel(List<Level> allLevels) {
+    private String renderLevelsList(List<Level> allLevels) {
         String templatePath = "templates/admin/editLevel.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();
-
         model.with("allLevels", allLevels);
 
         return template.render(model);
     }
 
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-        Map<String, String> map = new HashMap<>();
-        String[] pairs = formData.split("&");
-        for(String pair : pairs){
-            String[] keyValue = pair.split("=");
-            String value = URLDecoder.decode(keyValue[1], "UTF-8");
-            map.put(keyValue[0], value);
-        }
-        return map;
+    private String renderEditLevel(Level level, List<Level> allLevels) {
+        String templatePath = "templates/admin/editLevel.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allLevels", allLevels);
+        model.with("rank", level.getRank());
+        model.with("requiredExperience", level.getRequiredExperience());
+        model.with("description", level.getDescription());
+
+        return template.render(model);
     }
 }

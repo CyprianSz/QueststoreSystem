@@ -5,24 +5,26 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.LevelDAO;
+import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Level;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteLevelController implements HttpHandler{
+public class DeleteLevelController implements HttpHandler {
 
     private Connection connection;
     private LevelDAO levelDAO;
+    private HelperController helperController;
 
-    public DeleteLevelController(Connection connection){
+
+    public DeleteLevelController(Connection connection) {
         this.connection = connection;
         this.levelDAO = new LevelDAO(this.connection);
+        this.helperController = new HelperController();
     }
 
     @Override
@@ -35,16 +37,16 @@ public class DeleteLevelController implements HttpHandler{
         String[] uri = httpExchange.getRequestURI().toString().split("=%2F");
         String id = uri[uri.length-1];
 
-        response += render("header");
-        response += render("admin/adminMenu");
+        response += helperController.render("header");
+        response += helperController.render("admin/adminMenu");
         response += renderLevelsList(allLevels);
-        response += render("footer");
+        response += helperController.render("footer");
 
-        if(method.equals("POST")) {
+        if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-            Map inputs = parseFormData(formData);
+            Map inputs = helperController.parseFormData(formData);
 
             if(inputs.get("confirmation").equals("yes")) {
                 deleteLevel(allLevels, id);
@@ -57,7 +59,7 @@ public class DeleteLevelController implements HttpHandler{
         os.close();
     }
 
-    private List<Level> readLevelsFromDB(){
+    private List<Level> readLevelsFromDB() {
         List<Level> allLevels = null;
 
         try {
@@ -65,16 +67,7 @@ public class DeleteLevelController implements HttpHandler{
         } catch (SQLException se) {
             se.printStackTrace();
         }
-
         return allLevels;
-    }
-
-    private String render(String fileName) {
-        String templatePath = "templates/" + fileName + ".twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
-        JtwigModel model = JtwigModel.newModel();
-
-        return template.render(model);
     }
 
     private String renderLevelsList(List<Level> allLevels) {
@@ -87,18 +80,7 @@ public class DeleteLevelController implements HttpHandler{
         return template.render(model);
     }
 
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-        Map<String, String> map = new HashMap<>();
-        String[] pairs = formData.split("&");
-        for(String pair : pairs){
-            String[] keyValue = pair.split("=");
-            String value = URLDecoder.decode(keyValue[1], "UTF-8");
-            map.put(keyValue[0], value);
-        }
-        return map;
-    }
-
-    private void deleteLevel(List<Level> allLevels,String id) {
+    private void deleteLevel(List<Level> allLevels, String id) {
         Level deletedLevel = null;
         for (Level level: allLevels) {
             if (id.equals(level.getID())) {
@@ -109,7 +91,6 @@ public class DeleteLevelController implements HttpHandler{
                 } catch (SQLException se) {
                     se.printStackTrace();
                 }
-
                 break;
             }
         }

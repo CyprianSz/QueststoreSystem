@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.MentorDAO;
+import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Mentor;
 
 import java.io.IOException;
@@ -17,33 +18,26 @@ public class DisplayMentorsController implements HttpHandler{
 
     private Connection connection;
     private MentorDAO mentorDAO;
+    private HelperController helperController;
 
     public DisplayMentorsController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
+        this.helperController = new HelperController();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         List<Mentor> allMentors = readMentorsFromDB();
-        String method = httpExchange.getRequestMethod();
         String response = "";
-        response += render("header");
-        response += render("admin/adminMenu");
+        response += helperController.renderHeader(httpExchange);
+        response += helperController.render("admin/adminMenu");
         response += renderDisplayMentors(allMentors);
-        response += render("footer");
+        response += helperController.render("footer");
         httpExchange.sendResponseHeaders( 200, response.getBytes().length );
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
-    }
-
-    private String render(String fileName) {
-        String templatePath = "templates/" + fileName + ".twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
-        JtwigModel model = JtwigModel.newModel();
-
-        return template.render(model);
     }
 
     private List<Mentor> readMentorsFromDB() {
