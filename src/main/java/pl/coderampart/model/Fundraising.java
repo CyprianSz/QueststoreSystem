@@ -26,4 +26,28 @@ public class Fundraising {
         this.codecooler = codecooler;
         this.isOpen = isOpen;
     }
+
+    public String getID() {
+        return ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public Codecooler getCodecooler() {
+        return codecooler;
+    }
+
+    public boolean getStatus() {
+        return isOpen;
+    }
+
+    public void closeFundraising(boolean open) {
+        isOpen = false;
+    }
 }
