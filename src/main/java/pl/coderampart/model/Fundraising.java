@@ -2,6 +2,7 @@ package pl.coderampart.model;
 
 import pl.coderampart.controller.UUIDController;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Fundraising {
 
@@ -49,5 +50,10 @@ public class Fundraising {
 
     public void closeFundraising(boolean open) {
         isOpen = false;
+    }
+
+    public String dateToString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return this.creationDate.format(formatter);
     }
 }
