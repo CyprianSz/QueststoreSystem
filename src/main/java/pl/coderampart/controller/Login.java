@@ -68,7 +68,6 @@ public class Login implements HttpHandler{
 
                 switch (userType) {
                     case "Admin":
-                        System.out.println("DUPSKO");
                         redirectTo( "/create-mentor", httpExchange );
                         break;
                     case "Mentor":
