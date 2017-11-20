@@ -18,4 +18,12 @@ public class Fundraising {
         this.codecooler = codecooler;
         this.isOpen = true;
     }
+
+    public Fundraising(String ID, String name, LocalDate date, Codecooler codecooler, boolean isOpen) {
+        this.ID = ID;
+        this.name = name;
+        this.creationDate = date;
+        this.codecooler = codecooler;
+        this.isOpen = isOpen;
+    }
 }
