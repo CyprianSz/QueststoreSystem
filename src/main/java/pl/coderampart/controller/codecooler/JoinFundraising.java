@@ -25,7 +25,6 @@ public class JoinFundraising implements HttpHandler {
         this.helper = new HelperController();
     }
 
-
     @Override
     public void handle(com.sun.net.httpserver.HttpExchange httpExchange) throws IOException {
 //        sprawdzić czy to w dobrym miejscu tutaj dzieli i bierze to z URL bo spora szansa, że nie
