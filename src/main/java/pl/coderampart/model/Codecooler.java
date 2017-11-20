@@ -6,8 +6,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import pl.coderampart.DAO.LevelDAO;
 import pl.coderampart.DAO.WalletDAO;
+import pl.coderampart.services.Loggable;
 
-public class Codecooler extends AbstractUser {
+public class Codecooler extends AbstractUser implements Loggable {
 
     private Wallet wallet;
     private Group group;
@@ -46,13 +47,21 @@ public class Codecooler extends AbstractUser {
     }
 
     public Wallet getWallet() { return this.wallet; }
+
+    public Level getLevel() { return this.level; }
+
+    public Group getGroup() { return this.group; }
+
+    public Team getTeam() { return this.team; }
+
+    public String getType() { return this.getClass().getSimpleName(); }
+
     public void setLevel(Level level) {
         this.level = level;
     }
-    public Level getLevel() { return this.level; }
-    public Group getGroup() { return this.group; }
-    public Team getTeam() {return this.team; }
+
     public void setGroup(Group group) { this.group = group; }
+
     public void setTeam(Team team) { this.team = team; }
 
     public void setFirstName(String firstName) {

@@ -1,0 +1,159 @@
+nav ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #000000 ;
+}
+
+li a {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #000000 ;
+    text-decoration: none;
+}
+
+.nav {
+    width: 100%;
+    margin: 0 auto;
+    background: white;
+    border: solid 3px #675f6b ;
+    border-radius: 10px;
+    color: #000000 ;
+    font-weight: bold;
+}
+.nav a {
+    display: block;
+    padding: 0 16px;
+    line-height: inherit;
+    cursor: pointer;
+}
+
+.nav__menu {
+    line-height: 45px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.nav__menu-item {
+    display: inline-block;
+    position: relative;
+}
+
+.nav__menu-item:hover {
+    background: #675f6b ;
+
+}
+
+.nav__menu-item:hover .nav__submenu {
+    display: block;
+}
+
+.nav__submenu-item{
+    box-shadow: 0px 1px 1px #675f6b ;
+    background-color: white;
+}
+
+.nav__submenu {
+    font-weight: 300;
+    text-transform: none;
+    display: none;
+    position: absolute;
+    width: 220px;
+    height: 2em;
+    background-color: white;
+}
+
+.nav__submenu-item:hover {
+    background-color: #675f6b ;
+    box-shadow: 7px 7px 20px #675f6b ;
+}
+
+.nav__submenu-item a {
+    text-decoration: none;
+    color: black ;
+}
+
+#logged-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position:absolute;
+    top:0;
+    right:0;
+    flex-direction: column;
+    border-left: solid 3px #675f6b ;
+    height: 8em;
+    width: 20em;;
+}
+
+#user-name{
+    margin-bottom: -0.5em;
+}
+
+#empty {
+    height: 400px;
+}
+
+#delete-question, #edit-form {
+
+}
+
+#attributes .attribute_list input.attribute_submit{
+    display: inline-block;
+    margin: -2px;
+    padding: 10px 10px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 12px;
+}
+.attribute_list li {
+    display: inline-block;
+    margin-right: 10px;
+}
+#main-container{
+    height: 400px;
+    margin-left: -1em;
+}
+
+#main-container-quest{
+    height: 38em;
+    margin-left: -1em;
+}
+
+#main-container-artifact{
+    height: 30em;
+    margin-left: -1em;
+}
+
+
+#vertical_menu{
+    float: left;
+}
+#delete-operation {
+    padding: 8em;
+    align-items: center;
+    display:flex;
+    justify-content: center;
+}
+
+#edit-operation {
+    padding: 6em;
+    align-items: center;
+    display:flex;
+    justify-content: center;
+}
+
+#sub-container-form {
+    padding: 3em;
+    align-items: center;
+    display:flex;
+    justify-content: center;
+}
+#groupsList, #mentorsList, #levelsList{
+    padding-top: 3em;
+}
+
+

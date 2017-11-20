@@ -7,10 +7,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import pl.coderampart.model.*;
-import pl.coderampart.services.User;
-import pl.coderampart.view.CodecoolerView;
 
-public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
+public class CodecoolerDAO extends AbstractDAO {
 
     private WalletDAO walletDAO;
     private GroupDAO groupDAO;
@@ -27,20 +25,14 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
         teamDAO  = new TeamDAO(connection);
     }
 
-    public Codecooler getLogged(String email, String password) throws SQLException {
-
-        Codecooler codecooler = null;
-
-        String query = "SELECT * FROM codecoolers WHERE email = ? AND password = ?;";
+    public Codecooler getLogged(String email) throws SQLException {
+        String query = "SELECT * FROM codecoolers WHERE email = ?;";
 
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, email);
-        statement.setString(2, password);
         ResultSet resultSet = statement.executeQuery();
 
-        codecooler = this.createCodecoolerFromResultSet(resultSet);
-
-        return codecooler;
+        return this.createCodecoolerFromResultSet(resultSet);
     }
 
     public ArrayList<Codecooler> readAll() throws SQLException {
@@ -118,7 +110,7 @@ public class CodecoolerDAO extends AbstractDAO implements User<Codecooler> {
         return statement;
     }
 
-    private Codecooler createCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
+    public Codecooler createCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName= resultSet.getString("last_name");

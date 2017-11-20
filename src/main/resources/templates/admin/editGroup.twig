@@ -1,0 +1,32 @@
+<div id="main-container-edit">
+
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for group in allGroups %}
+                        <a href="/edit-group?group-id={{ group.ID }}">
+                        <button name="group-id" value="{{ group.ID }}">{{ group.name }}</button>
+                        </a>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+
+        <div id="user-form-container">
+            <form method="POST">
+                <div class="user-form">
+                    <label for="group-name">group name</label>
+                    <input type="text" name="group-name" id="group-name" value="{{ groupName }}">
+                </div>
+
+                <div id="user-form-button">
+                    <input type="submit" value="SAVE CHANGES">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

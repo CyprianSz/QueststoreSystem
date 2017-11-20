@@ -1,0 +1,37 @@
+<div id="main-container-delete">
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for mentor in allMentors %}
+                    <a href="/delete-mentor?mentor-id={{ mentor.ID }}">
+                        <button name="mentor-id" value="{{ mentor.ID }}">{{ mentor.firstName }} {{ mentor.lastName }}</button>
+                    </a>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+        <div id="delete-question">
+            <h2>Are you sure you want to delete {{ firstName }} {{ lastName }}?</h2>
+            <div id="attributes">
+                <form method="POST">
+                    <ul class="attribute_list">
+                        <li>
+                            <div class="submit">
+                                <button name="confirmation" value="yes">Yes</button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="submit">
+                                <button name="confirmation" value="no">No</button>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

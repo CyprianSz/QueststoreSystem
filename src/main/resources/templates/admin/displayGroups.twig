@@ -1,0 +1,19 @@
+<div id="main-container">
+
+    <div id="groupsList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>group_name</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for group in allGroups %}
+            <tr>
+                <td>{{ group.Name }}</td>
+            </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
