@@ -3,7 +3,6 @@ package pl.coderampart.controller.helpers;
 import com.sun.net.httpserver.HttpExchange;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
-import pl.coderampart.model.Session;
 
 import java.io.*;
 import java.net.URLDecoder;

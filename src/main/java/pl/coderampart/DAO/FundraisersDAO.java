@@ -42,4 +42,13 @@ public class FundraisersDAO extends AbstractDAO {
         }
         return fundraisingsIDsList;
     }
+
+    public void create(String fundraiserID, String fundraisingID) throws SQLException {
+
+        String query = "INSERT INTO fundraisers (fundraiser_id, fundraising_id) VALUES (?, ?);";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, fundraiserID);
+        statement.setString(2, fundraisingID);
+        statement.executeUpdate();
+    }
 }

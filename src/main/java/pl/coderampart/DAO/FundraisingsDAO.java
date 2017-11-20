@@ -44,9 +44,10 @@ public class FundraisingsDAO extends AbstractDAO {
 
     public void create(Fundraising fundraising) throws SQLException {
 
-        String query = "INSERT INTO fundraisings (id, name, creation_date, creator_id, is_open) VALUES (?, ?, ?, ?, ?);";
+        String query = "INSERT INTO fundraisings (id, artifact_id, name, creation_date, creator_id, is_open) " +
+                       "VALUES (?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, codecooler);
+        PreparedStatement setStatement = setPreparedStatement(statement, fundraising);
         setStatement.executeUpdate();
     }
 
@@ -60,10 +61,11 @@ public class FundraisingsDAO extends AbstractDAO {
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Fundraising fundraising) throws SQLException {
         statement.setString(1, fundraising.getID());
-        statement.setString(2, fundraising.getName());
-        statement.setString(3, fundraising.getCreationDate().toString());
-        statement.setString(2, fundraising.getCreatorID());
-        statement.setBoolean(5, fundraising.getIsOpen());
+        statement.setString(2, fundraising.getArtifactID);
+        statement.setString(3, fundraising.getName());
+        statement.setString(4, fundraising.getCreationDate().toString());
+        statement.setString(5, fundraising.getCreatorID());
+        statement.setBoolean(6, fundraising.getIsOpen());
 
         return statement;
     }
@@ -71,11 +73,12 @@ public class FundraisingsDAO extends AbstractDAO {
     public Fundraising createFundraisingFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String name = resultSet.getString("name");
+        String artifactID = resultSet.getString( "artifact_id" );
         String creationDate = resultSet.getString("creation_date");
         LocalDate creationDateObject = LocalDate.parse(creationDate);
         String creatorID = resultSet.getString("creator_id");
         Boolean isOpen = resultSet.getBoolean( "is_open" );
 
-        return new Foundraising(ID, name, creationDateObject, creatorID, isOpen);
+        return new Foundraising(ID, artifactID, name, creationDateObject, creatorID, isOpen);
     }
 }
