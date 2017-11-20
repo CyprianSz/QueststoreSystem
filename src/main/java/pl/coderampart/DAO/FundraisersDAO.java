@@ -1,6 +1,11 @@
 package pl.coderampart.DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FundraisersDAO extends AbstractDAO {
 
@@ -10,5 +15,31 @@ public class FundraisersDAO extends AbstractDAO {
         connection = connectionToDB;
     }
 
+    public List<String> getFundraisersIDs(String FundraisingID) throws SQLException {
+        List<String> fundraisersIDsList = new ArrayList<>();
 
+        String query = "SELECT foundraiser_id FROM foundraisers WHERE fundraising_id = ?";
+        PreparedStatement statement = connection.prepareStatement( query );
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            String fundraiserID = resultSet.getString("fundraiser_id");
+            fundraisersIDsList.add(fundraiserID);
+        }
+        return fundraisersIDsList;
+    }
+
+    public List<String> getFundraisingsIDs(String FundraiserID) throws SQLException {
+        List<String> fundraisingsIDsList = new ArrayList<>();
+
+        String query = "SELECT fundraising_id FROM foundraisers WHERE fundraiser_id = ?";
+        PreparedStatement statement = connection.prepareStatement( query );
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            String fundraisingID = resultSet.getString("fundraising_id");
+            fundraisingsIDsList.add(fundraisingID);
+        }
+        return fundraisingsIDsList;
+    }
 }

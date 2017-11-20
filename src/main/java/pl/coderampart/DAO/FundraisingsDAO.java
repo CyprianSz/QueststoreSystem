@@ -19,7 +19,7 @@ public class FundraisingsDAO extends AbstractDAO {
 
     public List<Fundraising> readAll() throws SQLException {
 
-        ArrayList<Fundraising> fundraisingsList = new ArrayList<>();
+        List<Fundraising> fundraisingsList = new ArrayList<>();
 
         String query = "SELECT * FROM fundraisings;";
         PreparedStatement statement = connection.prepareStatement(query);
