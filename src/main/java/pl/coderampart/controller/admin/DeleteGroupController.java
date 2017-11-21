@@ -35,7 +35,7 @@ public class DeleteGroupController implements HttpHandler{
 
         if (method.equals("GET")) {
             String response = "";
-            response += helper.renderHeader(httpExchange, connection);
+            response += helper.renderHeader( httpExchange, connection );
             response += helper.render( "admin/adminMenu" );
             response += renderProperBodyResponse( groupID, allGroups );
             response += helper.render( "footer" );

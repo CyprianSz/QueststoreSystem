@@ -9,7 +9,6 @@ import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Mentor;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,37 +17,34 @@ public class DisplayMentorsController implements HttpHandler{
 
     private Connection connection;
     private MentorDAO mentorDAO;
-    private HelperController helperController;
+    private HelperController helper;
 
     public DisplayMentorsController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
-        this.helperController = new HelperController();
+        this.helper = new HelperController();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         List<Mentor> allMentors = readMentorsFromDB();
         String response = "";
-        response += helperController.renderHeader(httpExchange);
-        response += helperController.render("admin/adminMenu");
+
+        response += helper.renderHeader(httpExchange);
+        response += helper.render("admin/adminMenu");
         response += renderDisplayMentors(allMentors);
-        response += helperController.render("footer");
-        httpExchange.sendResponseHeaders( 200, response.getBytes().length );
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        response += helper.render("footer");
+
+        helper.sendResponse( response, httpExchange );
     }
 
     private List<Mentor> readMentorsFromDB() {
-        List<Mentor> allMentors = null;
-
         try {
-            allMentors = mentorDAO.readAll();
+            return mentorDAO.readAll();
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return allMentors;
     }
 
     private String renderDisplayMentors(List<Mentor> allMentors) {

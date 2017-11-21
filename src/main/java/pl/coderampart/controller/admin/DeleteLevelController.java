@@ -36,7 +36,7 @@ public class DeleteLevelController implements HttpHandler {
 
         if (method.equals( "GET" )) {
             String response = "";
-            response += helper.render("header");
+            response += helper.renderHeader( httpExchange, connection );
             response += helper.render("admin/adminMenu");
             response += renderProperBodyResponse(levelID, allLevels);
             response += helper.render("footer");
