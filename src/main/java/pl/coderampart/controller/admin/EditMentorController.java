@@ -56,7 +56,7 @@ public class EditMentorController implements HttpHandler {
             Mentor mentorToEdit = helper.getMentorById( mentorID );
             return renderEditMentor(mentorToEdit, allMentors);
         } else {
-            return helper.renderMentorsList(allMentors);
+            return renderMentorsList(allMentors);
         }
     }
 

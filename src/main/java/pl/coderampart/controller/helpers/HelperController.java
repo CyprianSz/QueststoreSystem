@@ -135,16 +135,6 @@ public class HelperController {
         httpExchange.sendResponseHeaders( 302, -1 );
     }
 
-    public String renderMentorsList(List<Mentor> allMentors) {
-        String templatePath = "templates/admin/deleteMentorStartPage.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
-        JtwigModel model = JtwigModel.newModel();
-
-        model.with("allMentors", allMentors);
-
-        return template.render(model);
-    }
-
     public List<Mentor> readMentorsFromDB() {
         try {
             return mentorDAO.readAll();
@@ -163,16 +153,6 @@ public class HelperController {
         }
     }
 
-    public String renderLevelsList(List<Level> allLevels) {
-        String templatePath = "templates/admin/deleteLevelStartPage.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
-        JtwigModel model = JtwigModel.newModel();
-
-        model.with("allLevels", allLevels);
-
-        return template.render(model);
-    }
-
     public List<Level> readLevelsFromDB() {
         try {
             return levelDAO.readAll();
@@ -189,16 +169,6 @@ public class HelperController {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public String renderGroupsList(List<Group> allGroups) {
-        String templatePath = "templates/admin/deleteGroupStartPage.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
-        JtwigModel model = JtwigModel.newModel();
-
-        model.with("allGroups", allGroups);
-
-        return template.render(model);
     }
 
     public List<Group> readGroupsFromDB(){

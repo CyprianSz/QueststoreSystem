@@ -59,7 +59,7 @@ public class DeleteGroupController implements HttpHandler{
             Group levelToDelete = helper.getGroupById(groupID);
             return renderConfirmation(levelToDelete, allGroups);
         } else {
-            return helper.renderGroupsList(allGroups);
+            return renderGroupsList(allGroups);
         }
     }
 
@@ -72,6 +72,16 @@ public class DeleteGroupController implements HttpHandler{
         model.with("name", group.getName());
 
         return template.render( model );
+    }
+
+    public String renderGroupsList(List<Group> allGroups) {
+        String templatePath = "templates/admin/deleteGroupStartPage.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allGroups", allGroups);
+
+        return template.render(model);
     }
 
     private void deleteGroup(Group group) {

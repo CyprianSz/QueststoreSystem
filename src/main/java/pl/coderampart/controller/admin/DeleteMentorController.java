@@ -58,7 +58,7 @@ public class DeleteMentorController implements HttpHandler {
             Mentor mentorToDelete = helper.getMentorById(mentorID);
             return renderConfirmation(mentorToDelete, allMentors);
         } else {
-            return helper.renderMentorsList(allMentors);
+            return renderMentorsList(allMentors);
         }
     }
 
@@ -70,6 +70,16 @@ public class DeleteMentorController implements HttpHandler {
         model.with("allMentors", allMentors);
         model.with("firstName", mentor.getFirstName());
         model.with("lastName", mentor.getLastName());
+
+        return template.render(model);
+    }
+
+    public String renderMentorsList(List<Mentor> allMentors) {
+        String templatePath = "templates/admin/deleteMentorStartPage.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allMentors", allMentors);
 
         return template.render(model);
     }

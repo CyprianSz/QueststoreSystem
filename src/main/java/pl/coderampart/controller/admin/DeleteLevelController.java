@@ -60,7 +60,7 @@ public class DeleteLevelController implements HttpHandler {
             Level levelToDelete = helper.getLevelById(levelID);
             return renderConfirmation(levelToDelete, allLevels);
         } else {
-            return helper.renderLevelsList(allLevels);
+            return renderLevelsList(allLevels);
         }
     }
 
@@ -71,6 +71,16 @@ public class DeleteLevelController implements HttpHandler {
 
         model.with("allLevels", allLevels);
         model.with("rank", level.getRank());
+
+        return template.render(model);
+    }
+
+    public String renderLevelsList(List<Level> allLevels) {
+        String templatePath = "templates/admin/deleteLevelStartPage.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allLevels", allLevels);
 
         return template.render(model);
     }
