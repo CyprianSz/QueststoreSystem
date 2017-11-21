@@ -37,7 +37,7 @@ public class EditTeamController implements HttpHandler {
         List<Team> allTeams = readTeamsFromDB();
 
         if(method.equals("GET")) {
-            response += helperController.renderHeader(httpExchange);
+            response += helperController.renderHeader(httpExchange, connection);
             response += helperController.render("mentor/mentorMenu");
             String responseTemp = renderTeamsList(allTeams);
 
@@ -47,6 +47,11 @@ public class EditTeamController implements HttpHandler {
             }
             response += responseTemp;
             response += helperController.render("footer");
+
+            httpExchange.sendResponseHeaders(200, response.getBytes().length);
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
         }
 
         if(method.equals("POST")) {
@@ -58,21 +63,9 @@ public class EditTeamController implements HttpHandler {
 
             editTeam(inputs, id);
 
-            response += helperController.render("header");
-            response += helperController.render("mentor/mentorMenu");
-            String responseTemp = renderTeamsList(allTeams);
-            if (id.length() == 36) {
-                Team teamToEdit = getTeamByID(id);
-                responseTemp = renderEditTeam(teamToEdit, allTeams);
-            }
-            response += responseTemp;
-            response += helperController.render("footer");
+            helperController.redirectTo( "/team/edit", httpExchange );
         }
 
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
     }
 
     private List<Team> readTeamsFromDB() {
@@ -130,6 +123,4 @@ public class EditTeamController implements HttpHandler {
 
         return template.render(model);
     }
-
-
 }

@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.ConnectionToDB;
+import pl.coderampart.DAO.SessionDAO;
 import pl.coderampart.model.Session;
 
 import java.io.*;
@@ -58,6 +59,33 @@ public class HelperController {
         return template.render(model);
     }
 
+    public String renderHeader(HttpExchange httpExchange, Connection connection) {
+        Session currentSession = getCurrentSession( httpExchange, connection );
+
+        String templatePath = "templates/header.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("firstName", currentSession.getUserFirstName() );
+        model.with("lastName", currentSession.getUserLastName() );
+        model.with("userType", currentSession.getUserType() );
+
+        return template.render(model);
+    }
+
+    public Session getCurrentSession(HttpExchange httpExchange, Connection connection) {
+        Map<String, String> cookiesMap = createCookiesMap( httpExchange );
+        String sessionID = cookiesMap.get("sessionID");
+
+        try {
+            SessionDAO sessionDAO = new SessionDAO(connection);
+            return sessionDAO.getByID( sessionID );
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public String render(String fileName) {
         String templatePath = "templates/" + fileName + ".twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
@@ -79,5 +107,15 @@ public class HelperController {
         String formData = br.readLine();
 
         return parseFormData(formData);
+    }
+
+    public String getIdFromURI(HttpExchange httpExchange) {
+        String[] uri = httpExchange.getRequestURI().toString().split("=");
+        return uri[uri.length-1];
+    }
+
+    public void redirectTo(String path, HttpExchange httpExchange) throws IOException {
+        httpExchange.getResponseHeaders().set( "Location", path );
+        httpExchange.sendResponseHeaders( 302, -1 );
     }
 }

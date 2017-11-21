@@ -41,10 +41,17 @@ public class DeleteTeamController implements HttpHandler {
         String[] uri = httpExchange.getRequestURI().toString().split("=");
         String id = uri[uri.length-1];
 
-        response += helperController.renderHeader(httpExchange);
-        response += helperController.render("mentor/mentorMenu");
-        response += renderTeamsList(allTeams);
-        response += helperController.render("footer");
+        if (method.equals("GET")) {
+            response += helperController.renderHeader(httpExchange);
+            response += helperController.render("mentor/mentorMenu");
+            response += renderTeamsList(allTeams);
+            response += helperController.render("footer");
+
+            httpExchange.sendResponseHeaders(200, response.getBytes().length);
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
 
         if(method.equals("POST")){
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
@@ -55,12 +62,10 @@ public class DeleteTeamController implements HttpHandler {
             if(inputs.get("confirmation").equals("yes")){
                 deleteTeam(id);
             }
-        }
 
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+            httpExchange.getResponseHeaders().set("Location", "/team/delete");
+            httpExchange.sendResponseHeaders(302, -1);
+        }
     }
 
     private List<Team> readTeamsFromDB() {

@@ -40,9 +40,11 @@ public class EditGroupController implements HttpHandler{
             response += helperController.renderHeader(httpExchange);
             response += helperController.render("admin/adminMenu");
             String responseTemp = renderGroupsList(allGroups);
+
             if(id.length()==36){
                 responseTemp = renderEditGroup(getGroupById(id, allGroups), allGroups);
             }
+
             response += responseTemp;
             response += helperController.render("footer");
         }
@@ -58,6 +60,7 @@ public class EditGroupController implements HttpHandler{
 
             response += helperController.render("header");
             response += helperController.render("admin/adminMenu");
+
             String responseTemp = renderGroupsList(allGroups);
             if (id.length() == 36) {
                 responseTemp = renderEditGroup(getGroupById(id, allGroups), allGroups);
