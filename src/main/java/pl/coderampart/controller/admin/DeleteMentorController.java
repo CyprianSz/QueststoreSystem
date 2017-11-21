@@ -19,13 +19,11 @@ public class DeleteMentorController implements HttpHandler {
     private Connection connection;
     private MentorDAO mentorDAO;
     private HelperController helper;
-    private String response;
 
     public DeleteMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
         this.helper = new HelperController();
-        this.response = "";
     }
 
     @Override
@@ -36,18 +34,10 @@ public class DeleteMentorController implements HttpHandler {
         Mentor mentor = getMentorById( mentorID );
 
         if(method.equals("GET")) {
+            String response = "";
             response += helper.renderHeader(httpExchange, connection);
             response += helper.render("admin/adminMenu");
-
-            String temporaryResponse;
-            Integer idLength = 36;
-            if(mentorID.length() == idLength) {
-                Mentor mentorToDelete = getMentorById(mentorID);
-                temporaryResponse = renderConfirmation(mentorToDelete, allMentors);
-            } else {
-                temporaryResponse = renderMentorsList(allMentors);
-            }
-            response += temporaryResponse;
+            response += setProperBodyResponse(mentorID, allMentors);
             response += helper.render("footer");
 
             helper.sendResponse( response, httpExchange );
@@ -63,6 +53,16 @@ public class DeleteMentorController implements HttpHandler {
         }
     }
 
+    private String setProperBodyResponse(String mentorID, List<Mentor> allMentors) {
+        Integer idLength = 36;
+        if(mentorID.length() == idLength) {
+            Mentor mentorToDelete = getMentorById(mentorID);
+            return renderConfirmation(mentorToDelete, allMentors);
+        } else {
+            return renderMentorsList(allMentors);
+        }
+    }
+
     private String renderConfirmation(Mentor mentor, List<Mentor> allMentors) {
         String templatePath = "templates/admin/deleteChosenMentor.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
@@ -75,7 +75,6 @@ public class DeleteMentorController implements HttpHandler {
         return template.render(model);
     }
 
-
     private String renderMentorsList(List<Mentor> allMentors) {
         String templatePath = "templates/admin/deleteMentorStartPage.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
@@ -85,7 +84,6 @@ public class DeleteMentorController implements HttpHandler {
 
         return template.render(model);
     }
-
 
     private List<Mentor> readMentorsFromDB() {
         try {

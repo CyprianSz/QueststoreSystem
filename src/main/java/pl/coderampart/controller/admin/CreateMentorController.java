@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
@@ -26,96 +27,58 @@ public class CreateMentorController implements HttpHandler {
 
     private Connection connection;
     private MentorDAO mentorDAO;
-    private HelperController helperController;
+    private GroupDAO groupDAO;
+    private HelperController helper;
     private PasswordHasher hasher;
 
     public CreateMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(connection);
-        this.helperController = new HelperController();
+        this.groupDAO = new GroupDAO(connection);
+        this.helper = new HelperController();
         this.hasher = new PasswordHasher();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        //        zadługi ten handler jest, rozwalić na metody (przykład w tym zadaniu z canvasa z loginem)
-        String response = "";
         String method = httpExchange.getRequestMethod();
+        String response = "";
 
-        response += helperController.renderHeader(httpExchange);
-        response += helperController.render("admin/adminMenu");
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/createMentor.twig");
-        JtwigModel model = JtwigModel.newModel();
-        response += template.render(model);
-        response += helperController.render("footer");
+        if (method.equals("GET")) {
+            response += helper.renderHeader( httpExchange, connection );
+            response += helper.render( "admin/adminMenu" );
+            response += helper.render("admin/createMentor");
+            response += helper.render( "footer" );
 
-        if(method.equals("POST")){
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-
-            Map inputs = helperController.parseFormData(formData);
-
-            String firstName = String.valueOf(inputs.get("first-name"));
-            String lastName = String.valueOf(inputs.get("last-name"));
-            String dateOfBirth = String.valueOf(inputs.get("date-of-birth"));
-            String email = String.valueOf(inputs.get("email"));
-            String password = String.valueOf(inputs.get("password"));
-            String group = String.valueOf(inputs.get("group"));
-
-            try {
-                String hashedPassword = hasher.generateStrongPasswordHash( password );
-
-                String[] data = new String[]{firstName, lastName, dateOfBirth, email, hashedPassword, group};
-
-                createMentor(data);
-            } catch (NoSuchAlgorithmException | InvalidKeySpecException | SQLException e) {
-                e.printStackTrace();
-            }
+            helper.sendResponse( response, httpExchange );
         }
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        if (method.equals("POST")) {
+            Map<String, String> inputs = helper.getInputsMap(httpExchange);
+
+            createMentor(inputs);
+            helper.redirectTo( "/mentor/create", httpExchange );
+        }
     }
 
-    public void createMentor(String[] mentorData) throws SQLException {
-//        to jest mentor dao i polach też jest. Sprawdzić czy tak to ma być ?
-        MentorDAO mentorDAO = new MentorDAO(connection);
-        GroupDAO groupDAO = new GroupDAO(connection);
+    private void createMentor(Map<String, String> inputs) {
+        String firstName = inputs.get("first-name");
+        String lastName = inputs.get("last-name");
+        String dateOfBirth = inputs.get("date-of-birth");
+        String email = inputs.get("email");
+        String password = inputs.get("password");
+        String groupName = inputs.get("group");
+        LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
 
-        String chosenGroupName;
+        try {
+            String hashedPassword = hasher.generateStrongPasswordHash( password );
+            Group group = groupDAO.getByName( groupName );
+            Mentor newMentor = new Mentor( firstName, lastName, dateOfBirthObject, email, hashedPassword);
+            newMentor.setGroup( group );
 
-        ArrayList<Group> allGroups = groupDAO.readAll();
-        ArrayList<String> groupsNames = new ArrayList<>();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-
-//        pozmieniać te magic numbers na jakieś konkretnie nazwane zmienne !!!
-
-        LocalDate date = LocalDate.parse(mentorData[2], formatter);
-
-        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], date,
-                mentorData[3], mentorData[4]);
-
-//        To poniżej to jest dramat - użyć getByName z DAO (albo abstract DAO, zależy
-//        czy już zmieniłem)
-
-        for (Group group: allGroups) {
-            String groupName = group.getName();
-            groupsNames.add(groupName);
+            mentorDAO.create( newMentor );
+        } catch (NoSuchAlgorithmException | SQLException | InvalidKeySpecException e) {
+            e.printStackTrace();
         }
-
-        do {
-            chosenGroupName = mentorData[5];
-        } while (!groupsNames.contains(chosenGroupName));
-
-        for (Group group : allGroups) {
-            if (group.getName().equals(chosenGroupName)) {
-                newMentor.setGroup( group );
-            }
-        }
-        mentorDAO.create(newMentor);
     }
 }

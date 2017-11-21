@@ -28,23 +28,23 @@ public class Application {
 
         server.createContext("/logout", new Logout(connection));
         server.createContext("/login", new Login(connection));
-        server.createContext("/create-mentor", new CreateMentorController(connection));
-        server.createContext("/edit-mentor", new EditMentorController(connection));
-        server.createContext("/display-mentors", new DisplayMentorsController(connection));
-        server.createContext("/delete-mentor", new DeleteMentorController(connection));
-        server.createContext("/create-group", new CreateGroupController(connection));
-        server.createContext("/display-groups", new DisplayGroupsController(connection));
-        server.createContext("/edit-group", new EditGroupController(connection));
-        server.createContext("/delete-group", new DeleteGroupController(connection));
-        server.createContext("/create-level", new CreateLevelController(connection));
-        server.createContext("/display-levels", new DisplayLevelsController(connection));
-        server.createContext("/edit-level", new EditLevelController(connection));
-        server.createContext("/delete-level", new DeleteLevelController(connection));
+        server.createContext("/mentor/create", new CreateMentorController(connection));
+        server.createContext("/mentor/edit", new EditMentorController(connection));
+        server.createContext("/mentor/display", new DisplayMentorsController(connection));
+        server.createContext("/mentor/delete", new DeleteMentorController(connection));
+        server.createContext("/group/create", new CreateGroupController(connection));
+        server.createContext("/group/display", new DisplayGroupsController(connection));
+        server.createContext("/group/edit", new EditGroupController(connection));
+        server.createContext("/group/delete", new DeleteGroupController(connection));
+        server.createContext("/level/create", new CreateLevelController(connection));
+        server.createContext("/level/display", new DisplayLevelsController(connection));
+        server.createContext("/level/edit", new EditLevelController(connection));
+        server.createContext("/level/delete", new DeleteLevelController(connection));
         server.createContext("/team/create", new CreateTeamController(connection));
         server.createContext("/team/edit", new EditTeamController(connection));
         server.createContext("/team/display", new DisplayTeamsController(connection));
         server.createContext("/team/delete", new DeleteTeamController(connection));
-        server.createContext("/display-wallet", new DisplayWalletController(connection));
+        server.createContext("/wallet/display", new DisplayWalletController(connection));
         server.createContext("/static", new Static());
 
         server.setExecutor(null);
