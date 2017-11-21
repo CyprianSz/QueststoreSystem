@@ -23,7 +23,7 @@ public class DeleteTeamController implements HttpHandler {
     public DeleteTeamController(Connection connection) {
         this.connection = connection;
         this.teamDAO = new TeamDAO(this.connection);
-        this.helperController = new HelperController();
+        this.helperController = new HelperController(connection);
     }
 
 

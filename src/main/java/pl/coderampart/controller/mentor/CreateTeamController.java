@@ -27,7 +27,7 @@ public class CreateTeamController implements HttpHandler {
         this.connection = connection;
         this.groupDAO = new GroupDAO(connection);
         this.teamDAO = new TeamDAO(connection);
-        this.helperController = new HelperController();
+        this.helperController = new HelperController(connection);
     }
 
     @Override

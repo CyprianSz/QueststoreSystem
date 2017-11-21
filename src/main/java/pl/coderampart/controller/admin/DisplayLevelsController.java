@@ -22,7 +22,7 @@ public class DisplayLevelsController implements HttpHandler{
     public DisplayLevelsController(Connection connection) {
         this.connection = connection;
         this.levelDAO = new LevelDAO(this.connection);
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override

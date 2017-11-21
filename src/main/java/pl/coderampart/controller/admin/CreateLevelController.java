@@ -20,7 +20,7 @@ public class CreateLevelController implements HttpHandler{
     public CreateLevelController(Connection connection) {
         this.connection = connection;
         this.levelDAO = new LevelDAO( connection );
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override

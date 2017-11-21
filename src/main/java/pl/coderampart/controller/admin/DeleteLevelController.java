@@ -24,15 +24,15 @@ public class DeleteLevelController implements HttpHandler {
     public DeleteLevelController(Connection connection) {
         this.connection = connection;
         this.levelDAO = new LevelDAO(this.connection);
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        List<Level> allLevels = readLevelsFromDB();
+        List<Level> allLevels = helper.readLevelsFromDB();
         String levelID = helper.getIdFromURI(httpExchange);
-        Level level = getLevelById(levelID);
+        Level level = helper.getLevelById(levelID);
 
         if (method.equals( "GET" )) {
             String response = "";
@@ -57,10 +57,10 @@ public class DeleteLevelController implements HttpHandler {
     private String renderProperBodyResponse(String levelID, List<Level> allLevels) {
         Integer idLength = 36;
         if(levelID.length() == idLength) {
-            Level levelToDelete = getLevelById(levelID);
+            Level levelToDelete = helper.getLevelById(levelID);
             return renderConfirmation(levelToDelete, allLevels);
         } else {
-            return renderLevelsList(allLevels);
+            return helper.renderLevelsList(allLevels);
         }
     }
 
@@ -73,34 +73,6 @@ public class DeleteLevelController implements HttpHandler {
         model.with("rank", level.getRank());
 
         return template.render(model);
-    }
-
-    private String renderLevelsList(List<Level> allLevels) {
-        String templatePath = "templates/admin/deleteLevelStartPage.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
-        JtwigModel model = JtwigModel.newModel();
-
-        model.with("allLevels", allLevels);
-
-        return template.render(model);
-    }
-
-    private List<Level> readLevelsFromDB() {
-        try {
-            return levelDAO.readAll();
-        } catch (SQLException se) {
-            se.printStackTrace();
-            return null;
-        }
-    }
-
-    private Level getLevelById(String id) {
-        try {
-            return levelDAO.getByID( id );
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private void deleteLevel(Level level) {

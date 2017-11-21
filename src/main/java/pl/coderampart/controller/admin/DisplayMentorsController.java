@@ -22,7 +22,7 @@ public class DisplayMentorsController implements HttpHandler{
     public DisplayMentorsController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override

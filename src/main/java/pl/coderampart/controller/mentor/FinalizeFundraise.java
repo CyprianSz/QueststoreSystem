@@ -32,7 +32,7 @@ public class FinalizeFundraise implements HttpHandler {
         this.fundraisingsDAO = new FundraisingsDAO( connection );
         this.codecoolerDAO = new CodecoolerDAO( connection );
         this.artifactDAO = new ArtifactDAO( connection );
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override

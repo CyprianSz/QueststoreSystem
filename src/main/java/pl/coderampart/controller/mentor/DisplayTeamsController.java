@@ -24,7 +24,7 @@ public class DisplayTeamsController implements HttpHandler {
     public DisplayTeamsController(Connection connection) {
         this.connection = connection;
         this.teamDAO = new TeamDAO(this.connection);
-        this.helperController = new HelperController();
+        this.helperController = new HelperController(connection);
     }
 
     @Override

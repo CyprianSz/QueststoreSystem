@@ -22,7 +22,7 @@ public class DisplayGroupsController implements HttpHandler {
     public DisplayGroupsController(Connection connection) {
         this.connection = connection;
         this.groupDAO = new GroupDAO(this.connection);
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override

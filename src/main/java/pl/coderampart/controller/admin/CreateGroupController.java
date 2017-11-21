@@ -20,7 +20,7 @@ public class CreateGroupController implements HttpHandler {
     public CreateGroupController(Connection connection) {
         this.connection = connection;
         this.groupDAO = new GroupDAO( connection );
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override

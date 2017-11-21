@@ -4,6 +4,8 @@ import com.sun.net.httpserver.HttpExchange;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.*;
+import pl.coderampart.model.Group;
+import pl.coderampart.model.Level;
 import pl.coderampart.model.Mentor;
 import pl.coderampart.model.Session;
 
@@ -155,6 +157,62 @@ public class HelperController {
     public Mentor getMentorById(String id) {
         try {
             return mentorDAO.getByID( id );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String renderLevelsList(List<Level> allLevels) {
+        String templatePath = "templates/admin/deleteLevelStartPage.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allLevels", allLevels);
+
+        return template.render(model);
+    }
+
+    public List<Level> readLevelsFromDB() {
+        try {
+            return levelDAO.readAll();
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+    }
+
+    public Level getLevelById(String id) {
+        try {
+            return levelDAO.getByID( id );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String renderGroupsList(List<Group> allGroups) {
+        String templatePath = "templates/admin/deleteGroupStartPage.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allGroups", allGroups);
+
+        return template.render(model);
+    }
+
+    public List<Group> readGroupsFromDB(){
+        try {
+            return groupDAO.readAll();
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+    }
+
+    public Group getGroupById(String id) {
+        try {
+            return groupDAO.getByID( id );
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

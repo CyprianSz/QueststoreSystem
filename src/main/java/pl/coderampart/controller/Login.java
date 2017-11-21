@@ -27,7 +27,7 @@ public class Login implements HttpHandler{
         this.connection = connection;
         this.userDAO = new UserDAO(this.connection);
         this.sessionDAO = new SessionDAO(this.connection);
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
         this.hasher = new PasswordHasher();
     }
 

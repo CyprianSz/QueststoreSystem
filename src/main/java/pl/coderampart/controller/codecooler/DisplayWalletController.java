@@ -18,7 +18,7 @@ public class DisplayWalletController implements HttpHandler {
     public DisplayWalletController(Connection connection) {
         this.connection = connection;
         this.walletDAO = new WalletDAO(this.connection);
-        this.helperController = new HelperController();
+        this.helperController = new HelperController(connection);
     }
 
     @Override
