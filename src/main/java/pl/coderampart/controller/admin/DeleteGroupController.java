@@ -18,61 +18,65 @@ public class DeleteGroupController implements HttpHandler{
 
     private Connection connection;
     private GroupDAO groupDAO;
-    private HelperController helperController;
+    private HelperController helper;
 
     public DeleteGroupController(Connection connection) {
         this.connection = connection;
         this.groupDAO = new GroupDAO(this.connection);
-        this.helperController = new HelperController();
+        this.helper = new HelperController();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String response = "";
-
         List<Group> allGroups = readGroupsFromDB();
+        String groupID = helper.getIdFromURI(httpExchange);
+        Group group = getGroupById(groupID);
 
-        String[] uri = httpExchange.getRequestURI().toString().split("=%2F");
-        String id = uri[uri.length-1];
+        if (method.equals("GET")) {
+            String response = "";
+            response += helper.renderHeader(httpExchange, connection);
+            response += helper.render( "admin/adminMenu" );
+            response += renderProperBodyResponse( groupID, allGroups );
+            response += helper.render( "footer" );
 
-        response += helperController.renderHeader(httpExchange);
-        response += helperController.render("admin/adminMenu");
-        response += renderGroupsList(allGroups);
-        response += helperController.render("footer");
+            helper.sendResponse( response, httpExchange );
+        }
 
         if(method.equals("POST")){
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            Map inputs = helperController.parseFormData(formData);
+            Map inputs = helper.getInputsMap(httpExchange);
 
             if(inputs.get("confirmation").equals("yes")){
-                deleteGroup(allGroups, id);
+                deleteGroup(group);
             }
+            helper.redirectTo( "/group/delete", httpExchange );
         }
-
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
     }
 
-    private List<Group> readGroupsFromDB(){
-        List<Group> allGroups = null;
-
-        try {
-            allGroups = groupDAO.readAll();
-        } catch (SQLException se) {
-            se.printStackTrace();
+    private String renderProperBodyResponse(String groupID, List<Group> allGroups) {
+        Integer idLength = 36;
+        if(groupID.length() == idLength) {
+            Group levelToDelete = getGroupById(groupID);
+            return renderConfirmation(levelToDelete, allGroups);
+        } else {
+            return renderGroupsList(allGroups);
         }
+    }
 
-        return allGroups;
+    private String renderConfirmation(Group group, List<Group> allGroups) {
+        String templatePath = "templates/admin/deleteChosenGroup.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allGroups", allGroups);
+        model.with("name", group.getName());
+
+        return template.render( model );
     }
 
     private String renderGroupsList(List<Group> allGroups) {
-        String templatePath = "templates/admin/deleteGroup.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
+        String templatePath = "templates/admin/deleteGroupStartPage.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 
         model.with("allGroups", allGroups);
@@ -80,20 +84,29 @@ public class DeleteGroupController implements HttpHandler{
         return template.render(model);
     }
 
-//    :O :O :O   W DAO JEST METODA GET BY ID !!!   :( :( :(
+    private List<Group> readGroupsFromDB(){
+        try {
+            return groupDAO.readAll();
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+    }
 
-    private void deleteGroup(List<Group> allGroups, String id) {
-        Group deletedGroup = null;
-        for (Group group: allGroups) {
-            if (id.equals(group.getID())) {
-                deletedGroup = group;
-                try {
-                    groupDAO.delete(deletedGroup);
-                } catch (SQLException se) {
-                    se.printStackTrace();
-                }
-                break;
-            }
+    private Group getGroupById(String id) {
+        try {
+            return groupDAO.getByID( id );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void deleteGroup(Group group) {
+        try {
+            groupDAO.delete( group );
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -3,10 +3,10 @@
         <div id="vertical-radio-list">
             <form>
                 <div id="radio-form">
-                    {%  for level in allLevels %}
-                        <a href="/level/delete?level-id={{ level.ID }}">
-                            <button name="level-id" value="{{ level.ID }}">
-                                Level: {{ level.rank }} {{ level.requiredExperience }}xp
+                    {%  for group in allGroups %}
+                        <a href="/group/delete?group-id={{ group.ID }}">
+                            <button name="level-id" value="{{ group.ID }}">
+                                {{ group.name }}
                             </button>
                         </a>
                     {% endfor %}
@@ -17,7 +17,7 @@
 
     <div id="sub-container-form">
         <div id="delete-question">
-            <h2>Please choose level to delete</h2>
+            <h2>Please choose group to delete</h2>
         </div>
     </div>
 </div>

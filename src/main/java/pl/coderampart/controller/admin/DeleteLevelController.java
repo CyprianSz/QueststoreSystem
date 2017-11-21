@@ -70,7 +70,7 @@ public class DeleteLevelController implements HttpHandler {
         JtwigModel model = JtwigModel.newModel();
 
         model.with("allLevels", allLevels);
-        model.with("name", level.toString());
+        model.with("rank", level.getRank());
 
         return template.render(model);
     }

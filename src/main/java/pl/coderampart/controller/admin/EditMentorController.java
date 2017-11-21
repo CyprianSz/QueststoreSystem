@@ -39,7 +39,7 @@ public class EditMentorController implements HttpHandler {
         List<Mentor> allMentors = readMentorsFromDB();
 
         if (method.equals("GET")) {
-            response += helperController.renderHeader(httpExchange);
+            response += helperController.renderHeader(httpExchange, connection);
             response += helperController.render("admin/adminMenu");
             String responseTemp = renderMentorsList(allMentors);
             if (id.length()==36) {

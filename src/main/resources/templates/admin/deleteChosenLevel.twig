@@ -4,11 +4,9 @@
             <form>
                 <div id="radio-form">
                     {%  for level in allLevels %}
-                        <a href="/delete-mentor?level-id={{ level.ID }}">
-                            <button name="level-id" value="{{ level.ID }}">
-                                {{ level.rank }} Exp: {{ level.requiredExperience }}
-                            </button>
-                        </a>
+                        <button name="level-id" value="{{ level.ID }}">
+                            Level: {{ level.rank }} {{ level.requiredExperience }}xp
+                        </button>
                     {% endfor %}
                 </div>
             </form>
@@ -17,7 +15,23 @@
 
     <div id="sub-container-form">
         <div id="delete-question">
-            <h2>Please choose level to delete</h2>
+            <h2>Are you sure you want to delete level number <strong>{{ rank }}</strong> ?</h2>
+            <div id="attributes">
+                <form method="POST">
+                    <ul class="attribute_list">
+                        <li>
+                            <div class="submit">
+                                <button name="confirmation" value="yes">Yes</button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="submit">
+                                <button name="confirmation" value="no">No</button>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
         </div>
     </div>
 </div>
