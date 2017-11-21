@@ -2,8 +2,6 @@ package pl.coderampart.controller.admin;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.MentorDAO;
 import pl.coderampart.controller.PasswordHasher;
@@ -17,10 +15,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Locale;
 import java.util.Map;
 
 public class CreateMentorController implements HttpHandler {

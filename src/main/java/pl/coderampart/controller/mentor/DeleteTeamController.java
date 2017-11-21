@@ -4,17 +4,13 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
-import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.TeamDAO;
 import pl.coderampart.controller.helpers.HelperController;
-import pl.coderampart.model.Group;
 import pl.coderampart.model.Team;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

@@ -49,7 +49,7 @@ public class DeleteMentorController implements HttpHandler {
             if(inputs.get("confirmation").equals("yes")) {
                 deleteMentor(mentor);
             }
-            helper.redirectTo( "/delete-mentor", httpExchange );
+            helper.redirectTo( "/mentor/delete", httpExchange );
         }
     }
 
