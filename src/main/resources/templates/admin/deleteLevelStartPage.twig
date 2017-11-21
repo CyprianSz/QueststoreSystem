@@ -4,7 +4,9 @@
             <form>
                 <div id="radio-form">
                     {%  for level in allLevels %}
-                        <button name="level-id" value="{{ level.ID }}">{{ level.rank }}</button>
+                        <button name="level-id" value="{{ level.ID }}">
+                            {{ level.rank }} Exp: {{ level.requiredExperience }}
+                        </button>
                     {% endfor %}
                 </div>
             </form>

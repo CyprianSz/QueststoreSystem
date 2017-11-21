@@ -29,7 +29,7 @@ public class CreateGroupController implements HttpHandler {
         String method = httpExchange.getRequestMethod();
 
         if (method.equals("GET")) {
-            response += helper.renderHeader(httpExchange);
+            response += helper.renderHeader(httpExchange, connection);
             response += helper.render("admin/adminMenu");
             response += helper.render("admin/createGroup");
             response += helper.render("footer");

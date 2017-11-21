@@ -3,9 +3,11 @@
         <div id="vertical-radio-list">
             <form>
                 <div id="radio-form">
-                    {%  for mentor in allMentors %}
-                        <a href="/delete-mentor?mentor-id={{ mentor.ID }}">
-                            <button name="mentor-id" value="{{ mentor.ID }}">{{ mentor.firstName }} {{ mentor.lastName }}</button>
+                    {%  for level in allLevels %}
+                        <a href="/delete-mentor?level-id={{ level.ID }}">
+                            <button name="level-id" value="{{ level.ID }}">
+                                {{ level.rank }} Exp: {{ level.requiredExperience }}
+                            </button>
                         </a>
                     {% endfor %}
                 </div>
@@ -15,7 +17,7 @@
 
     <div id="sub-container-form">
         <div id="delete-question">
-            <h2 id="choose-mentor-to-delete">Please choose mentor to delete</h2>
+            <h2>Please choose level to delete</h2>
         </div>
     </div>
 </div>

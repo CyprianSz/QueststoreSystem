@@ -29,7 +29,7 @@ public class CreateLevelController implements HttpHandler{
         String response = "";
 
         if (method.equals("GET")) {
-            response += helper.renderHeader(httpExchange);
+            response += helper.renderHeader(httpExchange, connection);
             response += helper.render("admin/adminMenu");
             response += helper.render("admin/createLevel");
             response += helper.render("footer");

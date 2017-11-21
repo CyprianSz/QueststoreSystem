@@ -9,7 +9,6 @@ import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Mentor;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
@@ -33,17 +32,17 @@ public class DeleteMentorController implements HttpHandler {
         String mentorID = helper.getIdFromURI(httpExchange);
         Mentor mentor = getMentorById( mentorID );
 
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             String response = "";
             response += helper.renderHeader(httpExchange, connection);
             response += helper.render("admin/adminMenu");
-            response += setProperBodyResponse(mentorID, allMentors);
+            response += renderProperBodyResponse(mentorID, allMentors);
             response += helper.render("footer");
 
             helper.sendResponse( response, httpExchange );
         }
 
-        if(method.equals("POST")){
+        if (method.equals("POST")) {
             Map inputs = helper.getInputsMap(httpExchange);
 
             if(inputs.get("confirmation").equals("yes")) {
@@ -53,7 +52,7 @@ public class DeleteMentorController implements HttpHandler {
         }
     }
 
-    private String setProperBodyResponse(String mentorID, List<Mentor> allMentors) {
+    private String renderProperBodyResponse(String mentorID, List<Mentor> allMentors) {
         Integer idLength = 36;
         if(mentorID.length() == idLength) {
             Mentor mentorToDelete = getMentorById(mentorID);
