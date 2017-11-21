@@ -22,7 +22,7 @@ public class EditMentorController implements HttpHandler {
 
     public EditMentorController(Connection connection) {
         this.connection = connection;
-        this.mentorDAO = new MentorDAO(this.connection);
+        this.mentorDAO = new MentorDAO(connection);
         this.helper = new HelperController(connection);
     }
 
@@ -56,7 +56,7 @@ public class EditMentorController implements HttpHandler {
             Mentor mentorToEdit = helper.getMentorById( mentorID );
             return renderEditMentor(mentorToEdit, allMentors);
         } else {
-            return renderMentorsList(allMentors);
+            return renderMentorEmptyForm(allMentors);
         }
     }
 
@@ -70,6 +70,15 @@ public class EditMentorController implements HttpHandler {
         model.with("lastName", mentor.getLastName());
         model.with("email", mentor.getEmail());
         model.with("dateOfBirth", mentor.getDateOfBirth());
+
+        return template.render(model);
+    }
+
+    private String renderMentorEmptyForm(List<Mentor> allMentors) {
+        String templatePath = "templates/admin/editMentor.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+        model.with("allMentors", allMentors);
 
         return template.render(model);
     }

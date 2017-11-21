@@ -22,7 +22,7 @@ public class EditLevelController implements HttpHandler{
 
     public EditLevelController(Connection connection) {
         this.connection = connection;
-        this.levelDAO = new LevelDAO(this.connection);
+        this.levelDAO = new LevelDAO(connection);
         this.helper = new HelperController(connection);
     }
 
@@ -35,7 +35,7 @@ public class EditLevelController implements HttpHandler{
 
         if(method.equals("GET")) {
             String response = "";
-            response += helper.renderHeader(httpExchange);
+            response += helper.renderHeader(httpExchange, connection);
             response += helper.render("admin/adminMenu");
             response += renderProperBodyResponse(levelID, allLevels);
             response += helper.render("footer");
@@ -56,7 +56,7 @@ public class EditLevelController implements HttpHandler{
             Level levelToEdit = helper.getLevelById( levelID );
             return renderEditLevel(levelToEdit, allLevels);
         } else {
-            return helper.renderLevelsList(allLevels);
+            return renderLevelEmptyForm(allLevels);
         }
     }
 
@@ -69,6 +69,15 @@ public class EditLevelController implements HttpHandler{
         model.with("rank", level.getRank());
         model.with("requiredExperience", level.getRequiredExperience());
         model.with("description", level.getDescription());
+
+        return template.render(model);
+    }
+
+    private String renderLevelEmptyForm(List<Level> allLevels) {
+        String templatePath = "templates/admin/editLevel.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+        model.with("allLevels", allLevels);
 
         return template.render(model);
     }

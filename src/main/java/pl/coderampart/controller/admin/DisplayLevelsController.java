@@ -21,7 +21,7 @@ public class DisplayLevelsController implements HttpHandler{
 
     public DisplayLevelsController(Connection connection) {
         this.connection = connection;
-        this.levelDAO = new LevelDAO(this.connection);
+        this.levelDAO = new LevelDAO(connection);
         this.helper = new HelperController(connection);
     }
 
@@ -30,7 +30,7 @@ public class DisplayLevelsController implements HttpHandler{
         List<Level> allLevels = readLevelsFromDB();
         String response = "";
 
-        response += helper.renderHeader(httpExchange);
+        response += helper.renderHeader(httpExchange, connection);
         response += helper.render("admin/adminMenu");
         response += renderDisplayLevels(allLevels);
         response += helper.render("footer");

@@ -22,7 +22,7 @@ public class EditGroupController implements HttpHandler{
 
     public EditGroupController(Connection connection){
         this.connection = connection;
-        this.groupDAO = new GroupDAO(this.connection);
+        this.groupDAO = new GroupDAO(connection);
         this.helper = new HelperController(connection);
     }
 
@@ -57,10 +57,9 @@ public class EditGroupController implements HttpHandler{
             Group levelToEdit = helper.getGroupById( groupID );
             return renderEditGroup(levelToEdit, allGroups);
         } else {
-            return helper.renderGroupsList(allGroups);
+            return renderGroupEmptyForm(allGroups);
         }
     }
-
 
     private String renderEditGroup(Group group, List<Group> allGroups) {
         String templatePath = "templates/admin/editGroup.twig";
@@ -69,6 +68,16 @@ public class EditGroupController implements HttpHandler{
 
         model.with("allGroups", allGroups);
         model.with("groupName", group.getName());
+
+        return template.render(model);
+    }
+
+    private String renderGroupEmptyForm(List<Group> allGroups) {
+        String templatePath = "templates/admin/editGroup.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allGroups", allGroups);
 
         return template.render(model);
     }

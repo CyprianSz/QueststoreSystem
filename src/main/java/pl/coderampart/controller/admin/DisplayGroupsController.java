@@ -21,7 +21,7 @@ public class DisplayGroupsController implements HttpHandler {
 
     public DisplayGroupsController(Connection connection) {
         this.connection = connection;
-        this.groupDAO = new GroupDAO(this.connection);
+        this.groupDAO = new GroupDAO(connection);
         this.helper = new HelperController(connection);
     }
 
@@ -30,7 +30,7 @@ public class DisplayGroupsController implements HttpHandler {
         List<Group> allGroups = readGroupsFromDB();
         String response = "";
 
-        response += helper.renderHeader(httpExchange);
+        response += helper.renderHeader(httpExchange, connection);
         response += helper.render("admin/adminMenu");
         response += renderDisplayGroups(allGroups);
         response += helper.render("footer");

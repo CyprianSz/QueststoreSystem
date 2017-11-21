@@ -21,7 +21,7 @@ public class DisplayMentorsController implements HttpHandler{
 
     public DisplayMentorsController(Connection connection) {
         this.connection = connection;
-        this.mentorDAO = new MentorDAO(this.connection);
+        this.mentorDAO = new MentorDAO(connection);
         this.helper = new HelperController(connection);
     }
 
@@ -30,7 +30,7 @@ public class DisplayMentorsController implements HttpHandler{
         List<Mentor> allMentors = readMentorsFromDB();
         String response = "";
 
-        response += helper.renderHeader(httpExchange);
+        response += helper.renderHeader(httpExchange, connection);
         response += helper.render("admin/adminMenu");
         response += renderDisplayMentors(allMentors);
         response += helper.render("footer");
