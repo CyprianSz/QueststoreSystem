@@ -22,15 +22,15 @@ public class DeleteMentorController implements HttpHandler {
     public DeleteMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        List<Mentor> allMentors = readMentorsFromDB();
+        List<Mentor> allMentors = helper.readMentorsFromDB();
         String mentorID = helper.getIdFromURI(httpExchange);
-        Mentor mentor = getMentorById( mentorID );
+        Mentor mentor = helper.getMentorById( mentorID );
 
         if (method.equals("GET")) {
             String response = "";
@@ -55,10 +55,10 @@ public class DeleteMentorController implements HttpHandler {
     private String renderProperBodyResponse(String mentorID, List<Mentor> allMentors) {
         Integer idLength = 36;
         if(mentorID.length() == idLength) {
-            Mentor mentorToDelete = getMentorById(mentorID);
+            Mentor mentorToDelete = helper.getMentorById(mentorID);
             return renderConfirmation(mentorToDelete, allMentors);
         } else {
-            return renderMentorsList(allMentors);
+            return helper.renderMentorsList(allMentors);
         }
     }
 
@@ -72,34 +72,6 @@ public class DeleteMentorController implements HttpHandler {
         model.with("lastName", mentor.getLastName());
 
         return template.render(model);
-    }
-
-    private String renderMentorsList(List<Mentor> allMentors) {
-        String templatePath = "templates/admin/deleteMentorStartPage.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
-        JtwigModel model = JtwigModel.newModel();
-
-        model.with("allMentors", allMentors);
-
-        return template.render(model);
-    }
-
-    private List<Mentor> readMentorsFromDB() {
-        try {
-            return mentorDAO.readAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private Mentor getMentorById(String id) {
-        try {
-            return mentorDAO.getByID( id );
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private void deleteMentor(Mentor mentor) {

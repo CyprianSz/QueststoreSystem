@@ -3,18 +3,32 @@ package pl.coderampart.controller.helpers;
 import com.sun.net.httpserver.HttpExchange;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
-import pl.coderampart.DAO.ConnectionToDB;
-import pl.coderampart.DAO.SessionDAO;
+import pl.coderampart.DAO.*;
+import pl.coderampart.model.Mentor;
 import pl.coderampart.model.Session;
 
 import java.io.*;
 import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HelperController {
+
+    private Connection connection;
+    private MentorDAO mentorDAO;
+    private LevelDAO levelDAO;
+    private GroupDAO groupDAO;
+
+    public HelperController(Connection connection) {
+        this.connection = connection;
+        this.mentorDAO = new MentorDAO(connection);
+        this.levelDAO = new LevelDAO(connection);
+        this.groupDAO = new GroupDAO(connection);
+    }
 
     public Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
@@ -117,5 +131,33 @@ public class HelperController {
     public void redirectTo(String path, HttpExchange httpExchange) throws IOException {
         httpExchange.getResponseHeaders().set( "Location", path );
         httpExchange.sendResponseHeaders( 302, -1 );
+    }
+
+    public String renderMentorsList(List<Mentor> allMentors) {
+        String templatePath = "templates/admin/deleteMentorStartPage.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allMentors", allMentors);
+
+        return template.render(model);
+    }
+
+    public List<Mentor> readMentorsFromDB() {
+        try {
+            return mentorDAO.readAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Mentor getMentorById(String id) {
+        try {
+            return mentorDAO.getByID( id );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

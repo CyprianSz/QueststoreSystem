@@ -29,7 +29,7 @@ public class CreateMentorController implements HttpHandler {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(connection);
         this.groupDAO = new GroupDAO(connection);
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
         this.hasher = new PasswordHasher();
     }
 
