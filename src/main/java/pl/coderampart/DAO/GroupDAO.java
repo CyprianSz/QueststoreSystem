@@ -79,7 +79,6 @@ public class GroupDAO extends AbstractDAO {
 
     }
 
-
     public void delete(Group group) throws SQLException{
 
         String query =  "DELETE FROM groups WHERE id = ?;";

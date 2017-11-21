@@ -31,7 +31,7 @@ public class CreateMentorController implements HttpHandler {
 
     public CreateMentorController(Connection connection) {
         this.connection = connection;
-        this.mentorDAO = new MentorDAO(this.connection);
+        this.mentorDAO = new MentorDAO(connection);
         this.helperController = new HelperController();
         this.hasher = new PasswordHasher();
     }

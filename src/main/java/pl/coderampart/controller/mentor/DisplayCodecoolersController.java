@@ -1,4 +1,4 @@
-package pl.coderampart.controller.codecooler;
+package pl.coderampart.controller.mentor;
 
 public class DisplayCodecoolersController {
 }

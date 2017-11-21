@@ -16,7 +16,13 @@ import java.util.Map;
 
 public class CreateGroupController implements HttpHandler {
 
-    private HelperController helperController = new HelperController();
+    private Connection connection;
+    private HelperController helperController;
+
+    public CreateGroupController(Connection connection) {
+        this.connection = connection;
+        this.helperController = new HelperController();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

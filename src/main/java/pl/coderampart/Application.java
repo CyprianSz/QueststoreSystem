@@ -9,6 +9,11 @@ import pl.coderampart.controller.codecooler.*;
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
 import pl.coderampart.controller.Static;
+import pl.coderampart.controller.mentor.CreateTeamController;
+import pl.coderampart.controller.mentor.DeleteTeamController;
+import pl.coderampart.controller.mentor.DisplayTeamsController;
+import pl.coderampart.controller.mentor.EditTeamController;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,13 +32,11 @@ public class Application {
         server.createContext("/edit-mentor", new EditMentorController(connection));
         server.createContext("/display-mentors", new DisplayMentorsController(connection));
         server.createContext("/delete-mentor", new DeleteMentorController(connection));
-//        przerobić to tak żeby normalnie brało connection jak cała reszta
-        server.createContext("/create-group", new CreateGroupController());
+        server.createContext("/create-group", new CreateGroupController(connection));
         server.createContext("/display-groups", new DisplayGroupsController(connection));
         server.createContext("/edit-group", new EditGroupController(connection));
         server.createContext("/delete-group", new DeleteGroupController(connection));
-//        przerobić to tak żeby normalnie brało connection jak cała reszta
-        server.createContext("/create-level", new CreateLevelController());
+        server.createContext("/create-level", new CreateLevelController(connection));
         server.createContext("/display-levels", new DisplayLevelsController(connection));
         server.createContext("/edit-level", new EditLevelController(connection));
         server.createContext("/delete-level", new DeleteLevelController(connection));
