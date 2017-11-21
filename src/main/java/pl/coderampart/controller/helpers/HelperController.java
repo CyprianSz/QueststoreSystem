@@ -3,9 +3,14 @@ package pl.coderampart.controller.helpers;
 import com.sun.net.httpserver.HttpExchange;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
+import pl.coderampart.DAO.ConnectionToDB;
+import pl.coderampart.DAO.SessionDAO;
+import pl.coderampart.model.Session;
 
 import java.io.*;
 import java.net.URLDecoder;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,17 +46,39 @@ public class HelperController {
     }
 
     public String renderHeader(HttpExchange httpExchange) {
-        Map<String, String> cookiesMap = createCookiesMap( httpExchange );
+        Session currentSession = getCurrentSession( httpExchange );
 
         String templatePath = "templates/header.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 
-        model.with("firstName", cookiesMap.get("firstName") );
-        model.with("lastName", cookiesMap.get("lastName") );
-        model.with("userType", cookiesMap.get("typeOfUser") );
+        String firstName = currentSession.getUserFirstName();
+        String lastName = currentSession.getUserLastName();
+        String typeOfUser = currentSession.getUserType();
+
+        model.with("firstName", firstName );
+        model.with("lastName", lastName );
+        model.with("userType", typeOfUser );
 
         return template.render(model);
+    }
+
+    public Session getCurrentSession(HttpExchange httpExchange) {
+        Map<String, String> cookiesMap = createCookiesMap( httpExchange );
+        String sessionID = cookiesMap.get("sessionID");
+
+        try {
+            ConnectionToDB connectionToDB = ConnectionToDB.getInstance();
+            Connection connection = connectionToDB.connectToDataBase();
+            SessionDAO sessionDAO = new SessionDAO(connection);
+            Session currentSession = sessionDAO.getByID( sessionID );
+            connection.close();
+
+            return currentSession;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public String render(String fileName) {
