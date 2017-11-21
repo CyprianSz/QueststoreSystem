@@ -62,8 +62,8 @@ public class EditTeamController implements HttpHandler {
             response += helperController.render("mentor/mentorMenu");
             String responseTemp = renderTeamsList(allTeams);
             if (id.length() == 36) {
-
-                responseTemp = renderEditTeam(getTeamByID(id), allTeams);
+                Team teamToEdit = getTeamByID(id);
+                responseTemp = renderEditTeam(teamToEdit, allTeams);
             }
             response += responseTemp;
             response += helperController.render("footer");
@@ -114,6 +114,7 @@ public class EditTeamController implements HttpHandler {
         String templatePath = "templates/mentor/editTeam.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();
+
         model.with("allTeams", allTeams);
 
         return template.render(model);

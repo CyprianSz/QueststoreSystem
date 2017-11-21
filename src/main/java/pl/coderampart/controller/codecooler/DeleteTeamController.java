@@ -38,7 +38,7 @@ public class DeleteTeamController implements HttpHandler {
 
         List<Team> allTeams = readTeamsFromDB();
 
-        String[] uri = httpExchange.getRequestURI().toString().split("=%2F");
+        String[] uri = httpExchange.getRequestURI().toString().split("=");
         String id = uri[uri.length-1];
 
         response += helperController.renderHeader(httpExchange);

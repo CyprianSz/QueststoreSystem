@@ -48,7 +48,7 @@ public class GroupDAO extends AbstractDAO {
         return group;
     }
 
-    public Group getByName(String name) throws SQLException{
+    public Group getByName(String name) throws SQLException {
         Group group = null;
 
         String query = "SELECT * FROM groups WHERE name = ?;";
@@ -90,7 +90,6 @@ public class GroupDAO extends AbstractDAO {
     }
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Group group) throws SQLException {
-
         statement.setString(1, group.getName());
         statement.setString(2, group.getID());
 
