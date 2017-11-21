@@ -59,4 +59,8 @@ public class Fundraising {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return this.creationDate.format(formatter);
     }
+
+    public String getArtifactID() {
+        return artifact.getID();
+    }
 }

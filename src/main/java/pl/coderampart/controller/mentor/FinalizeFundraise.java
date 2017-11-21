@@ -9,6 +9,7 @@ import pl.coderampart.DAO.FundraisingsDAO;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Artifact;
 import pl.coderampart.model.Codecooler;
+import pl.coderampart.model.Fundraising;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -47,13 +48,12 @@ public class FinalizeFundraise implements HttpHandler {
             String artifactID = fundraising.getArtifactID();
             Artifact artifact = artifactDAO.getByID( artifactID );
             Integer artifactPrice = artifact.getValue();
-            Integer priceRequired = fundraisers.size() /
+            Integer priceRequired = fundraisers.size();
 
             for (String fundraiserID : fundraisersIDs) {
-                Codecooler fundraiser = codecoolerDAO.getByID( fundraiserID )
+                Codecooler fundraiser = codecoolerDAO.getByID( fundraiserID );
                 fundraisers.add(fundraiser);
             }
-
 
         } catch (SQLException e) {
             e.printStackTrace();
