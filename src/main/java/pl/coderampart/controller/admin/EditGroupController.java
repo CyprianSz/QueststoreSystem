@@ -9,10 +9,8 @@ import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

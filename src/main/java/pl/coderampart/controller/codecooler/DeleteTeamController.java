@@ -1,44 +1,49 @@
-package pl.coderampart.controller.admin;
+package pl.coderampart.controller.codecooler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.GroupDAO;
+import pl.coderampart.DAO.TeamDAO;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
+import pl.coderampart.model.Team;
 
 import java.io.*;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteGroupController implements HttpHandler{
+public class DeleteTeamController implements HttpHandler {
 
     private Connection connection;
-    private GroupDAO groupDAO;
+    private TeamDAO teamDAO;
     private HelperController helperController;
 
-    public DeleteGroupController(Connection connection) {
+    public DeleteTeamController(Connection connection) {
         this.connection = connection;
-        this.groupDAO = new GroupDAO(this.connection);
+        this.teamDAO = new TeamDAO(this.connection);
         this.helperController = new HelperController();
     }
+
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
         String response = "";
 
-        List<Group> allGroups = readGroupsFromDB();
+        List<Team> allTeams = readTeamsFromDB();
 
-        String[] uri = httpExchange.getRequestURI().toString().split("=%2F");
+        String[] uri = httpExchange.getRequestURI().toString().split("=");
         String id = uri[uri.length-1];
 
         response += helperController.renderHeader(httpExchange);
-        response += helperController.render("admin/adminMenu");
-        response += renderGroupsList(allGroups);
+        response += helperController.render("mentor/mentorMenu");
+        response += renderTeamsList(allTeams);
         response += helperController.render("footer");
 
         if(method.equals("POST")){
@@ -48,7 +53,7 @@ public class DeleteGroupController implements HttpHandler{
             Map inputs = helperController.parseFormData(formData);
 
             if(inputs.get("confirmation").equals("yes")){
-                deleteGroup(allGroups, id);
+                deleteTeam(id);
             }
         }
 
@@ -58,42 +63,33 @@ public class DeleteGroupController implements HttpHandler{
         os.close();
     }
 
-    private List<Group> readGroupsFromDB(){
-        List<Group> allGroups = null;
+    private List<Team> readTeamsFromDB() {
+        List<Team> allTeams = null;
 
         try {
-            allGroups = groupDAO.readAll();
-        } catch (SQLException se) {
-            se.printStackTrace();
+            allTeams = teamDAO.readAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        return allGroups;
+        return allTeams;
     }
 
-    private String renderGroupsList(List<Group> allGroups) {
-        String templatePath = "templates/admin/deleteGroup.twig";
+    private String renderTeamsList(List<Team> allTeams) {
+        String templatePath = "templates/mentor/deleteTeam.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();
 
-        model.with("allGroups", allGroups);
+        model.with("allTeams", allTeams);
 
         return template.render(model);
     }
 
-//    :O :O :O   W DAO JEST METODA GET BY ID !!!   :( :( :(
-
-    private void deleteGroup(List<Group> allGroups, String id) {
-        Group deletedGroup = null;
-        for (Group group: allGroups) {
-            if (id.equals(group.getID())) {
-                deletedGroup = group;
-                try {
-                    groupDAO.delete(deletedGroup);
-                } catch (SQLException se) {
-                    se.printStackTrace();
-                }
-                break;
-            }
+    private void deleteTeam(String id) {
+        try {
+            Team teamToDelete = teamDAO.getByID(id);
+            teamDAO.delete( teamToDelete );
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

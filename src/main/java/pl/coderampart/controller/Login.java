@@ -71,7 +71,7 @@ public class Login implements HttpHandler{
                         redirectTo( "/create-mentor", httpExchange );
                         break;
                     case "Mentor":
-//                    redirectTo("/login", httpExchange);
+                        redirectTo("/team/create", httpExchange);
                         break;
                     case "Codecooler":
                         redirectTo( "/display-wallet", httpExchange );
@@ -140,7 +140,7 @@ public class Login implements HttpHandler{
     }
 
     private void redirectTo(String path, HttpExchange httpExchange) throws IOException {
-        httpExchange.getResponseHeaders().set( "Location", path);
+        httpExchange.getResponseHeaders().set( "Location", path );
         httpExchange.sendResponseHeaders( 302, -1 );
     }
 }

@@ -10,30 +10,32 @@ public class Fundraising {
     private Artifact artifact;
     private String name;
     private LocalDate creationDate;
-    private Codecooler codecooler;
+    private Codecooler creator;
     private boolean isOpen;
 
-    public Fundraising(Artifact artifact, String name, Codecooler codecooler) {
+    public Fundraising(Artifact artifact, String name, Codecooler creator) {
         this.ID = UUIDController.createUUID();
         this.artifact = artifact;
         this.name = name;
         this.creationDate = LocalDate.now();
-        this.codecooler = codecooler;
+        this.creator = creator;
         this.isOpen = true;
     }
 
-    public Fundraising(String ID, Artifact artifact, String name, LocalDate date, Codecooler codecooler, boolean isOpen) {
+    public Fundraising(String ID, Artifact artifact, String name, LocalDate date, Codecooler creator, boolean isOpen) {
         this.ID = ID;
         this.artifact = artifact;
         this.name = name;
         this.creationDate = date;
-        this.codecooler = codecooler;
+        this.creator = creator;
         this.isOpen = isOpen;
     }
 
     public String getID() {
         return ID;
     }
+
+    public Artifact getArtifact() { return artifact; }
 
     public String getName() {
         return name;
@@ -43,11 +45,11 @@ public class Fundraising {
         return creationDate;
     }
 
-    public Codecooler getCodecooler() {
-        return codecooler;
+    public Codecooler getCreator() {
+        return creator;
     }
 
-    public boolean getStatus() {
+    public boolean getIsOpen() {
         return isOpen;
     }
 

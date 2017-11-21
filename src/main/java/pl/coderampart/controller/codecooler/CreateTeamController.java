@@ -1,4 +1,4 @@
-package pl.coderampart.controller.admin;
+package pl.coderampart.controller.codecooler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -6,17 +6,29 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.ConnectionToDB;
 import pl.coderampart.DAO.GroupDAO;
+import pl.coderampart.DAO.TeamDAO;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
+import pl.coderampart.model.Team;
 
 import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class CreateGroupController implements HttpHandler {
+public class CreateTeamController implements HttpHandler {
 
-    private HelperController helperController = new HelperController();
+    private Connection connection;
+    private GroupDAO groupDAO;
+    private TeamDAO teamDAO;
+    private HelperController helperController;
+
+    public CreateTeamController(Connection connection) {
+        this.connection = connection;
+        this.groupDAO = new GroupDAO(connection);
+        this.teamDAO = new TeamDAO(connection);
+        this.helperController = new HelperController();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -25,8 +37,8 @@ public class CreateGroupController implements HttpHandler {
 
         if (method.equals("GET")) {
             response += helperController.renderHeader(httpExchange);
-            response += helperController.render("admin/adminMenu");
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/createGroup.twig");
+            response += helperController.render("mentor/mentorMenu");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/createTeam.twig");
             JtwigModel model = JtwigModel.newModel();
             response += template.render(model);
             response += helperController.render("footer");
@@ -38,11 +50,12 @@ public class CreateGroupController implements HttpHandler {
             String formData = br.readLine();
 
             Map inputs = helperController.parseFormData(formData);
-
-            String[] data = new String[]{String.valueOf(inputs.get("group-name"))};
+            String teamName = String.valueOf(inputs.get("team-name"));
+            String groupName = String.valueOf(inputs.get("group-name"));
 
             try {
-                createGroup(data);
+                String[] data = new String[]{teamName, groupName};
+                createTeam(data);
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -53,13 +66,13 @@ public class CreateGroupController implements HttpHandler {
         os.close();
     }
 
-    public void createGroup(String[] groupData) throws SQLException {
-        ConnectionToDB connectionToDB = ConnectionToDB.getInstance();
-        Connection connection = connectionToDB.connectToDataBase();
-        GroupDAO groupDAO = new GroupDAO(connection);
+    public void createTeam(String[] teamData) throws SQLException {
+        String teamName = teamData[0];
+        String groupName = teamData[1];
 
-        Group newGroup = new Group(groupData[0]);
+        Group choosenGroup = groupDAO.getByName( groupName );
+        Team newTeam = new Team(teamName, choosenGroup);
 
-        groupDAO.create(newGroup);
+        teamDAO.create(newTeam);
     }
 }

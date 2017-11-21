@@ -1,0 +1,19 @@
+<div id="main-container">
+
+    <div id="teamsList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>team_name</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for team in allTeams %}
+                <tr>
+                    <td>{{ team.Name }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

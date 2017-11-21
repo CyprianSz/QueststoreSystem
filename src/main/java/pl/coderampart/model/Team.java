@@ -1,7 +1,5 @@
 package pl.coderampart.model;
 
-import pl.coderampart.controller.UUIDController;
-
 public class Team extends Group {
 
     private Group group;

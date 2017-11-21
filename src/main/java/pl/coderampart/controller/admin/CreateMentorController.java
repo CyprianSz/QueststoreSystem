@@ -99,6 +99,9 @@ public class CreateMentorController implements HttpHandler {
         Mentor newMentor = new Mentor(mentorData[0], mentorData[1], date,
                 mentorData[3], mentorData[4]);
 
+//        To poniżej to jest dramat - użyć getByName z DAO (albo abstract DAO, zależy
+//        czy już zmieniłem)
+
         for (Group group: allGroups) {
             String groupName = group.getName();
             groupsNames.add(groupName);

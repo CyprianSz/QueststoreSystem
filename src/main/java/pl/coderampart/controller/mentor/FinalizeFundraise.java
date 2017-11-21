@@ -24,6 +24,7 @@ public class FinalizeFundraise implements HttpHandler {
     private CodecoolerDAO codecoolerDAO;
     private ArtifactDAO artifactDAO;
     private HelperController helper;
+    private boolean isFundraisingValid;
 
     public FinalizeFundraise(Connection connection) {
         this.connection = connection;
@@ -45,16 +46,30 @@ public class FinalizeFundraise implements HttpHandler {
             List<String> fundraisersIDs = fundraisersDAO.getFundraisersIDs( fundraisingID );
             List<Codecooler> fundraisers = new ArrayList<>();
 
-            String artifactID = fundraising.getArtifactID();
-            Artifact artifact = artifactDAO.getByID( artifactID );
+            Artifact artifact = fundraising.getArtifact();
             Integer artifactPrice = artifact.getValue();
-            Integer priceRequired = fundraisers.size();
+            Integer priceRequired = artifactPrice / fundraisers.size();
 
+            isFundraisingValid = true;
             for (String fundraiserID : fundraisersIDs) {
                 Codecooler fundraiser = codecoolerDAO.getByID( fundraiserID );
-                fundraisers.add(fundraiser);
+                Integer fundraiserBalance = fundraiser.getWallet().getBalance();
+
+                if (fundraiserBalance >= priceRequired) {
+                    fundraisers.add( fundraiser );
+                } else {
+                    isFundraisingValid = false;
+                    break;
+                }
             }
 
+            if (isFundraisingValid) {
+                for (Codecooler fundraiser : fundraisers) {
+                    Integer actualFundraiserBalance = fundraiser.getWallet().getBalance();
+                    Integer updatedFundraiserBalance = actualFundraiserBalance - priceRequired;
+                    fundraiser.getWallet().setBalance( updatedFundraiserBalance );
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
