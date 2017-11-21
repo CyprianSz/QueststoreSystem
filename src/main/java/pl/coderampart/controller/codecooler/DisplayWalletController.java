@@ -26,7 +26,7 @@ public class DisplayWalletController implements HttpHandler {
         String response = "";
         response += helperController.renderHeader(httpExchange);
         response += helperController.render("codecooler/codecoolerMenu");
-        response += helperController.render("codecooler/codecoolerWallet");
+        response += helperController.render("codecooler/codecoolerWalletTable");
 //        response += renderWalletItems(walletItems);
         response += helperController.render("footer");
         httpExchange.sendResponseHeaders(200, response.getBytes().length);
