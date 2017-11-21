@@ -18,7 +18,13 @@ import java.util.Map;
 
 public class CreateLevelController implements HttpHandler{
 
-    private HelperController helperController = new HelperController();
+    private Connection connection;
+    private HelperController helperController;
+
+    public CreateLevelController(Connection connection) {
+        this.connection = connection;
+        this.helperController = new HelperController();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
