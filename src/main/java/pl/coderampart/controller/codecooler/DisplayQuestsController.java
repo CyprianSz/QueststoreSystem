@@ -1,4 +1,4 @@
 package pl.coderampart.controller.codecooler;
 
-public class editTeamController {
+public class DisplayQuestsController {
 }

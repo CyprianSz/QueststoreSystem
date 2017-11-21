@@ -1,0 +1,35 @@
+<div id="main-container">
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for team in allTeams %}
+                        <button name="team-id" value="{{ team.ID }}">{{ team.name }}</button>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+        <div id="delete-question">
+            <h2>Are you sure you want to delete this team?</h2>
+            <div id="attributes">
+                <form method="POST">
+                    <ul class="attribute_list">
+                        <li>
+                            <div class="submit">
+                                <button name="confirmation" value="yes">Yes</button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="submit">
+                                <button name="confirmation" value="no">No</button>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
