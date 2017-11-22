@@ -18,60 +18,65 @@ public class DeleteLevelController implements HttpHandler {
 
     private Connection connection;
     private LevelDAO levelDAO;
-    private HelperController helperController;
+    private HelperController helper;
 
 
     public DeleteLevelController(Connection connection) {
         this.connection = connection;
         this.levelDAO = new LevelDAO(this.connection);
-        this.helperController = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String response = "";
+        List<Level> allLevels = helper.readLevelsFromDB();
+        String levelID = helper.getIdFromURI(httpExchange);
+        Level level = helper.getLevelById(levelID);
 
-        List<Level> allLevels = readLevelsFromDB();
+        if (method.equals( "GET" )) {
+            String response = "";
+            response += helper.renderHeader( httpExchange, connection );
+            response += helper.render("admin/adminMenu");
+            response += renderProperBodyResponse(levelID, allLevels);
+            response += helper.render("footer");
 
-        String[] uri = httpExchange.getRequestURI().toString().split("=%2F");
-        String id = uri[uri.length-1];
-
-        response += helperController.render("header");
-        response += helperController.render("admin/adminMenu");
-        response += renderLevelsList(allLevels);
-        response += helperController.render("footer");
+            helper.sendResponse( response, httpExchange);
+        }
 
         if (method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            Map inputs = helperController.parseFormData(formData);
+            Map inputs = helper.getInputsMap(httpExchange);
 
             if(inputs.get("confirmation").equals("yes")) {
-                deleteLevel(allLevels, id);
+                deleteLevel(level);
             }
+            helper.redirectTo( "/level/delete", httpExchange );
         }
-
-        httpExchange.sendResponseHeaders( 200, response.getBytes().length );
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
     }
 
-    private List<Level> readLevelsFromDB() {
-        List<Level> allLevels = null;
-
-        try {
-            allLevels = levelDAO.readAll();
-        } catch (SQLException se) {
-            se.printStackTrace();
+    private String renderProperBodyResponse(String levelID, List<Level> allLevels) {
+        Integer idLength = 36;
+        if(levelID.length() == idLength) {
+            Level levelToDelete = helper.getLevelById(levelID);
+            return renderConfirmation(levelToDelete, allLevels);
+        } else {
+            return renderLevelsList(allLevels);
         }
-        return allLevels;
     }
 
-    private String renderLevelsList(List<Level> allLevels) {
-        String templatePath = "templates/admin/deleteLevel.twig";
+    private String renderConfirmation(Level level, List<Level> allLevels) {
+        String templatePath = "templates/admin/deleteChosenLevel.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allLevels", allLevels);
+        model.with("rank", level.getRank());
+
+        return template.render(model);
+    }
+
+    public String renderLevelsList(List<Level> allLevels) {
+        String templatePath = "templates/admin/deleteLevelStartPage.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 
@@ -80,19 +85,11 @@ public class DeleteLevelController implements HttpHandler {
         return template.render(model);
     }
 
-    private void deleteLevel(List<Level> allLevels, String id) {
-        Level deletedLevel = null;
-        for (Level level: allLevels) {
-            if (id.equals(level.getID())) {
-                deletedLevel = level;
-
-                try {
-                    levelDAO.delete(deletedLevel);
-                } catch (SQLException se) {
-                    se.printStackTrace();
-                }
-                break;
-            }
+    private void deleteLevel(Level level) {
+        try {
+            levelDAO.delete( level );
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

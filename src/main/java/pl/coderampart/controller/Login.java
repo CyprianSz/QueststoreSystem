@@ -27,7 +27,7 @@ public class Login implements HttpHandler{
         this.connection = connection;
         this.userDAO = new UserDAO(this.connection);
         this.sessionDAO = new SessionDAO(this.connection);
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
         this.hasher = new PasswordHasher();
     }
 
@@ -68,13 +68,13 @@ public class Login implements HttpHandler{
 
                 switch (userType) {
                     case "Admin":
-                        redirectTo( "/create-mentor", httpExchange );
+                        redirectTo( "/mentor/create", httpExchange );
                         break;
                     case "Mentor":
                         redirectTo("/team/create", httpExchange);
                         break;
                     case "Codecooler":
-                        redirectTo( "/display-wallet", httpExchange );
+                        redirectTo( "/wallet/display", httpExchange );
                         break;
                 }
                 return null;

@@ -22,7 +22,7 @@ public class JoinFundraising implements HttpHandler {
         this.connection = connection;
         this.sessionDAO = new SessionDAO(connection);
         this.fundraisersDAO = new FundraisersDAO( connection );
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override

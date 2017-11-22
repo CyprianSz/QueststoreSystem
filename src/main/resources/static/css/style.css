@@ -65,7 +65,9 @@ header {
 #radio-form {
     border: solid 3px #675f6b ;
     display: inline-block;
-    margin: 20px;
+    margin-top: 1em;
+    margin-right: 2em;
+    margin-left: 2em;
     border-radius: 10px;
     overflow: hidden;
 }
