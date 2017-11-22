@@ -72,7 +72,7 @@ public class EditTeamController implements HttpHandler {
     }
 
     private String renderTeamEmptyForm(List<Team> allTeams) {
-        String templatePath = "templates/admin/editTeam.twig";
+        String templatePath = "templates/mentor/editTeam.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 

@@ -26,7 +26,6 @@ public class DeleteTeamController implements HttpHandler {
         this.helper = new HelperController(connection);
     }
 
-
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
@@ -66,7 +65,7 @@ public class DeleteTeamController implements HttpHandler {
 
 
     private String renderConfirmation(Team team, List<Team> allTeams) {
-        String templatePath = "templates/admin/deleteChosenTeam.twig";
+        String templatePath = "templates/mentor/deleteChosenTeam.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 

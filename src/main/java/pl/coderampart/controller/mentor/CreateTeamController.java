@@ -33,7 +33,7 @@ public class CreateTeamController implements HttpHandler {
         String method = httpExchange.getRequestMethod();
 
         if (method.equals("GET")) {
-            response += helper.renderHeader(httpExchange);
+            response += helper.renderHeader(httpExchange, connection);
             response += helper.render("mentor/mentorMenu");
             response += helper.render("mentor/createTeam");
             response += helper.render("footer");
@@ -44,7 +44,7 @@ public class CreateTeamController implements HttpHandler {
         if (method.equals("POST")) {
             Map inputs = helper.getInputsMap(httpExchange);
             createTeam(inputs);
-            helper.redirectTo( "team/create", httpExchange );
+            helper.redirectTo( "/team/create", httpExchange );
         }
     }
 

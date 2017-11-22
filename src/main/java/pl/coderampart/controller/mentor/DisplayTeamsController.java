@@ -26,7 +26,7 @@ public class DisplayTeamsController implements HttpHandler {
         List<Team> allTeams = helper.readTeamsFromDB();
         String response = "";
 
-        response += helper.renderHeader( httpExchange );
+        response += helper.renderHeader( httpExchange, connection );
         response += helper.render("mentor/mentorMenu");
         response += renderDisplayTeams(allTeams);
         response += helper.render("footer");
