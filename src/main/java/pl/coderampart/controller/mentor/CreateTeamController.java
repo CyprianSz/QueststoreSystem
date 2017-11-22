@@ -42,7 +42,7 @@ public class CreateTeamController implements HttpHandler {
         }
 
         if (method.equals("POST")) {
-            Map inputs = helper.getInputsMap(httpExchange);
+            Map<String, String> inputs = helper.getInputsMap(httpExchange);
             createTeam(inputs);
             helper.redirectTo( "/team/create", httpExchange );
         }

@@ -9,10 +9,7 @@ import pl.coderampart.controller.codecooler.*;
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
 import pl.coderampart.controller.Static;
-import pl.coderampart.controller.mentor.CreateTeamController;
-import pl.coderampart.controller.mentor.DeleteTeamController;
-import pl.coderampart.controller.mentor.DisplayTeamsController;
-import pl.coderampart.controller.mentor.EditTeamController;
+import pl.coderampart.controller.mentor.*;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -44,6 +41,10 @@ public class Application {
         server.createContext("/team/edit", new EditTeamController(connection));
         server.createContext("/team/display", new DisplayTeamsController(connection));
         server.createContext("/team/delete", new DeleteTeamController(connection));
+        server.createContext("/artifact/create", new CreateArtifactController(connection));
+        server.createContext("/artifact/edit", new EditArtifactController(connection));
+        server.createContext("/artifact/display", new DisplayArtifactsController(connection));
+        server.createContext("/artifact/delete", new DeleteArtifactController(connection));
         server.createContext("/wallet/display", new DisplayWalletController(connection));
         server.createContext("/static", new Static());
 
