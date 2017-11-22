@@ -1,0 +1,35 @@
+<div id="main-container">
+
+    <div id="items-list">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>name</th>
+                <th>type</th>
+                <th>value</th>
+                <th>spent</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for group in allGroups %}
+                <tr>
+                    <td>{{ group.Name }}</td>
+                    <td>{{ group.Name }}</td>
+                    <td>{{ group.Name }}</td>
+                    <td>{{ group.Name }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+    {#<tr>#}
+        {#<td>Combat training</td>#}
+        {#<td>single</td>#}
+        {#<td>50</td>#}
+        {#<td><input type="checkbox" disabled></td>#}
+    {#</tr>#}

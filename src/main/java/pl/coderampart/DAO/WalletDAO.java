@@ -1,10 +1,12 @@
 package pl.coderampart.DAO;
 
+import pl.coderampart.model.Item;
 import pl.coderampart.model.Wallet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class WalletDAO extends AbstractDAO {
 
@@ -13,6 +15,8 @@ public class WalletDAO extends AbstractDAO {
     public WalletDAO(Connection connectionToDB) {
         connection = connectionToDB;
     }
+
+    public ArrayList<Item> readItemsByUserID(String ID)
 
     public Wallet getByID(String ID) throws SQLException {
 
