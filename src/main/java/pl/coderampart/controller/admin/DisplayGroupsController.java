@@ -27,7 +27,7 @@ public class DisplayGroupsController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        List<Group> allGroups = readGroupsFromDB();
+        List<Group> allGroups = helper.readGroupsFromDB();
         String response = "";
 
         response += helper.renderHeader(httpExchange, connection);
@@ -36,15 +36,6 @@ public class DisplayGroupsController implements HttpHandler {
         response += helper.render("footer");
 
         helper.sendResponse( response, httpExchange );
-    }
-
-    private List<Group> readGroupsFromDB(){
-        try {
-            return groupDAO.readAll();
-        } catch (SQLException e){
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private String renderDisplayGroups(List<Group> allGroups) {

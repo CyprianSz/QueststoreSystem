@@ -48,8 +48,8 @@ public class CreateLevelController implements HttpHandler{
     private void createLevel(Map<String, String> inputs) {
         Integer rank = Integer.valueOf(inputs.get("rank"));
         Integer requiredExperience = Integer.valueOf(inputs.get("required-experience"));
-        String desctiption = inputs.get("description");
-        Level newLevel = new Level(rank, requiredExperience, desctiption);
+        String description = inputs.get("description");
+        Level newLevel = new Level(rank, requiredExperience, description);
 
         try {
             levelDAO.create(newLevel);

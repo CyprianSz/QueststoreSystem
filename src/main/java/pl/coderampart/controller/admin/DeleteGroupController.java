@@ -56,8 +56,8 @@ public class DeleteGroupController implements HttpHandler{
     private String renderProperBodyResponse(String groupID, List<Group> allGroups) {
         Integer idLength = 36;
         if(groupID.length() == idLength) {
-            Group levelToDelete = helper.getGroupById(groupID);
-            return renderConfirmation(levelToDelete, allGroups);
+            Group groupToDelete = helper.getGroupById(groupID);
+            return renderConfirmation(groupToDelete, allGroups);
         } else {
             return renderGroupsList(allGroups);
         }

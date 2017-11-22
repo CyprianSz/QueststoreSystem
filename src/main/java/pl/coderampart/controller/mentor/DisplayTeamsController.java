@@ -4,53 +4,34 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
-import pl.coderampart.DAO.GroupDAO;
-import pl.coderampart.DAO.TeamDAO;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Team;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public class DisplayTeamsController implements HttpHandler {
 
     private Connection connection;
-    private TeamDAO teamDAO;
-    private HelperController helperController;
+    private HelperController helper;
 
     public DisplayTeamsController(Connection connection) {
         this.connection = connection;
-        this.teamDAO = new TeamDAO(this.connection);
-        this.helperController = new HelperController(connection);
+        this.helper = new HelperController(connection);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        List<Team> allTeams = readTeamsFromDB();
+        List<Team> allTeams = helper.readTeamsFromDB();
         String response = "";
-        response += helperController.renderHeader( httpExchange );
-        response += helperController.render("mentor/mentorMenu");
+
+        response += helper.renderHeader( httpExchange );
+        response += helper.render("mentor/mentorMenu");
         response += renderDisplayTeams(allTeams);
-        response += helperController.render("footer");
+        response += helper.render("footer");
 
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
-    private List<Team> readTeamsFromDB() {
-        List<Team> allTeams = null;
-
-        try {
-            allTeams = teamDAO.readAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return  allTeams;
+        helper.sendResponse( response, httpExchange );
     }
 
     private String renderDisplayTeams(List<Team> allTeams) {

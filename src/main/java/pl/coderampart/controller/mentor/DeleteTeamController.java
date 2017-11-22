@@ -18,65 +18,66 @@ public class DeleteTeamController implements HttpHandler {
 
     private Connection connection;
     private TeamDAO teamDAO;
-    private HelperController helperController;
+    private HelperController helper;
 
     public DeleteTeamController(Connection connection) {
         this.connection = connection;
         this.teamDAO = new TeamDAO(this.connection);
-        this.helperController = new HelperController(connection);
+        this.helper = new HelperController(connection);
     }
 
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String response = "";
-
-        List<Team> allTeams = readTeamsFromDB();
-
-        String[] uri = httpExchange.getRequestURI().toString().split("=");
-        String id = uri[uri.length-1];
+        List<Team> allTeams = helper.readTeamsFromDB();
+        String teamID = helper.getIdFromURI( httpExchange );
+        Team team = helper.getTeamById(teamID);
 
         if (method.equals("GET")) {
-            response += helperController.renderHeader(httpExchange);
-            response += helperController.render("mentor/mentorMenu");
-            response += renderTeamsList(allTeams);
-            response += helperController.render("footer");
+            String response = "";
+            response += helper.renderHeader(httpExchange, connection);
+            response += helper.render("mentor/mentorMenu");
+            response += renderProperBodyResponse(teamID, allTeams);
+            response += helper.render("footer");
 
-            httpExchange.sendResponseHeaders(200, response.getBytes().length);
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            helper.sendResponse(response, httpExchange);
         }
 
         if(method.equals("POST")){
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            Map inputs = helperController.parseFormData(formData);
+            Map inputs = helper.getInputsMap(httpExchange);
 
             if(inputs.get("confirmation").equals("yes")){
-                deleteTeam(id);
+                deleteTeam(team);
             }
-
-            httpExchange.getResponseHeaders().set("Location", "/team/delete");
-            httpExchange.sendResponseHeaders(302, -1);
+            helper.redirectTo( "/team/delete", httpExchange );
         }
     }
 
-    private List<Team> readTeamsFromDB() {
-        List<Team> allTeams = null;
-
-        try {
-            allTeams = teamDAO.readAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    private String renderProperBodyResponse(String teamID, List<Team> allTeams) {
+        Integer idLength = 36;
+        if(teamID.length() == idLength) {
+            Team teamToDelete = helper.getTeamById(teamID);
+            return renderConfirmation(teamToDelete, allTeams);
+        } else {
+            return renderTeamsList(allTeams);
         }
-        return allTeams;
+    }
+
+
+    private String renderConfirmation(Team team, List<Team> allTeams) {
+        String templatePath = "templates/admin/deleteChosenTeam.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allTeams", allTeams);
+        model.with("name", team.getName());
+
+        return template.render( model );
     }
 
     private String renderTeamsList(List<Team> allTeams) {
-        String templatePath = "templates/mentor/deleteTeam.twig";
+        String templatePath = "templates/mentor/deleteTeamStartPage.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();
 
@@ -85,10 +86,9 @@ public class DeleteTeamController implements HttpHandler {
         return template.render(model);
     }
 
-    private void deleteTeam(String id) {
+    private void deleteTeam(Team team) {
         try {
-            Team teamToDelete = teamDAO.getByID(id);
-            teamDAO.delete( teamToDelete );
+            teamDAO.delete( team );
         } catch (SQLException e) {
             e.printStackTrace();
         }

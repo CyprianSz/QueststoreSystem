@@ -4,10 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.*;
-import pl.coderampart.model.Group;
-import pl.coderampart.model.Level;
-import pl.coderampart.model.Mentor;
-import pl.coderampart.model.Session;
+import pl.coderampart.model.*;
 
 import java.io.*;
 import java.net.URLDecoder;
@@ -24,12 +21,14 @@ public class HelperController {
     private MentorDAO mentorDAO;
     private LevelDAO levelDAO;
     private GroupDAO groupDAO;
+    private TeamDAO teamDAO;
 
     public HelperController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(connection);
         this.levelDAO = new LevelDAO(connection);
         this.groupDAO = new GroupDAO(connection);
+        this.teamDAO = new TeamDAO(connection);
     }
 
     public Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
@@ -183,6 +182,24 @@ public class HelperController {
     public Group getGroupById(String id) {
         try {
             return groupDAO.getByID( id );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Team> readTeamsFromDB() {
+        try {
+            return teamDAO.readAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Team getTeamById(String id) {
+        try {
+            return teamDAO.getByID( id );
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
