@@ -48,7 +48,7 @@ public class CreateTeamController implements HttpHandler {
         }
     }
 
-    public void createTeam(Map<String, String> inputs) {
+    private void createTeam(Map<String, String> inputs) {
         String teamName = inputs.get("team-name");
         String groupName = inputs.get("group-name");
 
