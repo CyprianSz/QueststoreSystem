@@ -2,15 +2,12 @@ package pl.coderampart.controller.admin;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.MentorDAO;
 import pl.coderampart.controller.PasswordHasher;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 import pl.coderampart.model.Mentor;
-
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -28,50 +25,34 @@ public class CreateMentorController implements HttpHandler {
     private MentorDAO mentorDAO;
     private HelperController helperController;
     private PasswordHasher hasher;
+    private GroupDAO groupDAO;
 
     public CreateMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
+        this.groupDAO = new GroupDAO(this.connection);
         this.helperController = new HelperController();
         this.hasher = new PasswordHasher();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        //        zadługi ten handler jest, rozwalić na metody (przykład w tym zadaniu z canvasa z loginem)
         String response = "";
         String method = httpExchange.getRequestMethod();
 
         response += helperController.renderHeader(httpExchange);
         response += helperController.render("admin/adminMenu");
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/createMentor.twig");
-        JtwigModel model = JtwigModel.newModel();
-        response += template.render(model);
+        response += helperController.render("admin/createMentor");
         response += helperController.render("footer");
 
-        if(method.equals("POST")){
+        if(method.equals("POST")) {
+            System.out.println("chuj");
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
 
             Map inputs = helperController.parseFormData(formData);
-
-            String firstName = String.valueOf(inputs.get("first-name"));
-            String lastName = String.valueOf(inputs.get("last-name"));
-            String dateOfBirth = String.valueOf(inputs.get("date-of-birth"));
-            String email = String.valueOf(inputs.get("email"));
-            String password = String.valueOf(inputs.get("password"));
-            String group = String.valueOf(inputs.get("group"));
-
-            try {
-                String hashedPassword = hasher.generateStrongPasswordHash( password );
-
-                String[] data = new String[]{firstName, lastName, dateOfBirth, email, hashedPassword, group};
-
-                createMentor(data);
-            } catch (NoSuchAlgorithmException | InvalidKeySpecException | SQLException e) {
-                e.printStackTrace();
-            }
+            formDataForMentorCreation(inputs, httpExchange);
         }
 
         httpExchange.sendResponseHeaders(200, response.length());
@@ -80,39 +61,69 @@ public class CreateMentorController implements HttpHandler {
         os.close();
     }
 
+    public void formDataForMentorCreation(Map inputs, HttpExchange httpExchange) throws IOException {
+
+        try {
+            checkRegex(String.valueOf(inputs.get("date-of-birth")),String.valueOf(inputs.get("email")), httpExchange);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            String hashedPassword = hasher.generateStrongPasswordHash(String.valueOf(inputs.get("password")));
+
+            String[] data = new String[]{String.valueOf(inputs.get("first-name")),
+                                         String.valueOf(inputs.get("last-name")),
+                                         String.valueOf(inputs.get("date-of-birth")),
+                                         hashedPassword,
+                                         String.valueOf(inputs.get("group"))};
+            createMentor(data);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void createMentor(String[] mentorData) throws SQLException {
-//        to jest mentor dao i polach też jest. Sprawdzić czy tak to ma być ?
-        MentorDAO mentorDAO = new MentorDAO(connection);
-        GroupDAO groupDAO = new GroupDAO(connection);
-
-        String chosenGroupName;
-
-        ArrayList<Group> allGroups = groupDAO.readAll();
+        ArrayList<Group> allGroups = this.groupDAO.readAll();
         ArrayList<String> groupsNames = new ArrayList<>();
 
+        String chosenGroupName;
+        String firstName = mentorData[0];
+        String lastName = mentorData[1];
+        String dateOfBirth = mentorData[2];
+        String password = mentorData[3];
+        String email = mentorData[4];
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+        LocalDate date = LocalDate.parse(dateOfBirth, formatter);
 
-//        pozmieniać te magic numbers na jakieś konkretnie nazwane zmienne !!!
 
-        LocalDate date = LocalDate.parse(mentorData[2], formatter);
-
-        Mentor newMentor = new Mentor(mentorData[0], mentorData[1], date,
-                mentorData[3], mentorData[4]);
-
+        Mentor newMentor = new Mentor(firstName, lastName, date, password, email);
         for (Group group: allGroups) {
             String groupName = group.getName();
             groupsNames.add(groupName);
         }
-
         do {
             chosenGroupName = mentorData[5];
         } while (!groupsNames.contains(chosenGroupName));
-
         for (Group group : allGroups) {
             if (group.getName().equals(chosenGroupName)) {
                 newMentor.setGroup( group );
             }
         }
-        mentorDAO.create(newMentor);
+        this.mentorDAO.create(newMentor);
+    }
+
+    public void checkRegex(String date, String email, HttpExchange httpExchange) throws IOException {
+
+        String dateRegEx = "^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
+        String emailRegEx = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+"
+                + "(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
+        if(!date.matches(dateRegEx)){
+            throw new IllegalArgumentException("chujnia");
+//            httpExchange.getResponseHeaders().set( "Location", "/create-mentor");
+//            httpExchange.sendResponseHeaders( 302, -1 );
+        }
     }
 }
