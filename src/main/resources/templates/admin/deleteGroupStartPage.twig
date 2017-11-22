@@ -1,0 +1,23 @@
+<div id="main-container-delete">
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for group in allGroups %}
+                        <a href="/group/delete?group-id={{ group.ID }}">
+                            <button name="level-id" value="{{ group.ID }}">
+                                {{ group.name }}
+                            </button>
+                        </a>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+        <div id="delete-question">
+            <h2>Please choose group to delete</h2>
+        </div>
+    </div>
+</div>

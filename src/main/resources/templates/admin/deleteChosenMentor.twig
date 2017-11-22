@@ -4,7 +4,7 @@
             <form>
                 <div id="radio-form">
                     {%  for mentor in allMentors %}
-                    <a href="/delete-mentor?mentor-id={{ mentor.ID }}">
+                    <a href="/mentor/delete?mentor-id={{ mentor.ID }}">
                         <button name="mentor-id" value="{{ mentor.ID }}">{{ mentor.firstName }} {{ mentor.lastName }}</button>
                     </a>
                     {% endfor %}
