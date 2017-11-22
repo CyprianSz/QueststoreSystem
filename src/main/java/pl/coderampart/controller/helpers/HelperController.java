@@ -24,6 +24,7 @@ public class HelperController {
     private TeamDAO teamDAO;
     private ArtifactDAO artifactDAO;
     private QuestDAO questDAO;
+    private CodecoolerDAO codecoolerDAO;
 
     public HelperController(Connection connection) {
         this.connection = connection;
@@ -33,6 +34,7 @@ public class HelperController {
         this.teamDAO = new TeamDAO(connection);
         this.artifactDAO = new ArtifactDAO(connection);
         this.questDAO = new QuestDAO(connection);
+        this.codecoolerDAO = new CodecoolerDAO(connection);
     }
 
     public Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
@@ -210,7 +212,35 @@ public class HelperController {
         }
     }
 
-    public List<Artifact> readArifactsFromDB() {
+
+    public Artifact getArtifactById(String id) {
+        try {
+            return artifactDAO.getByID( id );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Codecooler getCodecoolerById(String id) {
+        try {
+            return codecoolerDAO.getByID( id );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Quest getQuestById(String id) {
+        try {
+            return questDAO.getByID( id );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Artifact> readArtifactsFromDB() {
         try {
             return artifactDAO.readAll();
         } catch (SQLException e) {
@@ -218,4 +248,24 @@ public class HelperController {
             return null;
         }
     }
+
+    public List<Codecooler> readCodecoolersFromDB() {
+        try {
+            return codecoolerDAO.readAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Quest> readQuestsFromDB() {
+        try {
+            return questDAO.readAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }

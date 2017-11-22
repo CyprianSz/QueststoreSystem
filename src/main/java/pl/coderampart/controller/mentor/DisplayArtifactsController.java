@@ -23,7 +23,7 @@ public class DisplayArtifactsController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        List<Artifact> allArtifacts = helper.readArifactsFromDB();
+        List<Artifact> allArtifacts = helper.readArtifactsFromDB();
         String response = "";
 
         response += helper.renderHeader( httpExchange, connection );

@@ -1,0 +1,48 @@
+<div id="main-container-edit">
+
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for codecooler in allCodecoolers %}
+                        <a href="/codecooler/edit?codecooler-id={{ codecooler.ID }}">
+                            <button name="codecooler-id" value="{{ codecooler.ID }}">
+                                {{ codecooler.firstName }} {{ codecooler.lastName }}
+                            </button>
+                        </a>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+        <div id="user-form-container">
+            <form method="POST">
+                <div class="user-form">
+                    <label for="first-name">first-name</label>
+                    <input type="text" name="first-name" id="first-name" value="{{ firstName }}">
+                </div>
+
+                <div class="user-form">
+                    <label for="last-name">description</label>
+                    <input type="text" name="last-name" id="last-name" value="{{ lastName }}">
+                </div>
+
+                <div class="user-form">
+                    <label for="email">email</label>
+                    <input type="text" name="email" id="email" value="{{ email }}">
+                </div>
+
+                <div class="user-form">
+                    <label for="birthdate">birthdate</label>
+                    <input type="text" name="birthdate" id="birthdate" value="{{ dateOfBirth }}">
+                </div>
+
+                <div id="user-form-button">
+                    <input type="submit" value="SAVE CHANGES">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
