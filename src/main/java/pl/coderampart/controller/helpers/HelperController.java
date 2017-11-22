@@ -22,6 +22,8 @@ public class HelperController {
     private LevelDAO levelDAO;
     private GroupDAO groupDAO;
     private TeamDAO teamDAO;
+    private ArtifactDAO artifactDAO;
+    private QuestDAO questDAO;
 
     public HelperController(Connection connection) {
         this.connection = connection;
@@ -29,6 +31,8 @@ public class HelperController {
         this.levelDAO = new LevelDAO(connection);
         this.groupDAO = new GroupDAO(connection);
         this.teamDAO = new TeamDAO(connection);
+        this.artifactDAO = new ArtifactDAO(connection);
+        this.questDAO = new QuestDAO(connection);
     }
 
     public Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
@@ -200,6 +204,15 @@ public class HelperController {
     public Team getTeamById(String id) {
         try {
             return teamDAO.getByID( id );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Artifact> readArifactsFromDB() {
+        try {
+            return artifactDAO.readAll();
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

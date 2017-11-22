@@ -17,8 +17,14 @@ body {
 }
 
 #footer-container {
-    border: 2px solid #675f6b ;
+    border: 2px solid #675f6b;
+    background-color: white;
     border-radius: 5px;
+    position: fixed;
+    bottom: 0.2em;
+    left: 0.2em;
+    right: 0.2em;
+    height: 30px;
 }
 
 footer {
