@@ -39,7 +39,7 @@ public class CreateArtifactController implements HttpHandler {
         if (method.equals( "POST" )) {
             Map<String, String> inputs = helper.getInputsMap( httpExchange );
             createArtifact( inputs );
-            helper.redirectTo( "/team/create", httpExchange );
+            helper.redirectTo( "/artifact/create", httpExchange );
         }
     }
 
