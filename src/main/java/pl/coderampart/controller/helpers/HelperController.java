@@ -109,6 +109,15 @@ public class HelperController {
         return template.render(model);
     }
 
+    public String renderWithDropdownGroups(String fileName, List<Group> groupList ){
+        String templatePath = "templates/" + fileName + ".twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+        model.with("allGroups", groupList);
+
+        return template.render(model);
+    }
+
     public void sendResponse(String response, HttpExchange httpExchange) throws IOException {
         httpExchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = httpExchange.getResponseBody();

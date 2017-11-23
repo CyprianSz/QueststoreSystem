@@ -94,7 +94,7 @@ public class Login implements HttpHandler{
             createCookieWithSessionID( newSession, httpExchange );
             addSessionToDatabase(newSession);
         }
-        redirectTo("/login", httpExchange);
+        helper.redirectTo("/login", httpExchange);
     }
 
     private Loggable getLoggedUserFromInputs(Map<String, String> inputs) {
