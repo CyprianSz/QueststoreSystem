@@ -60,7 +60,7 @@ public class Application {
         server.createContext("/quest/create", new CreateQuestController(connection));
         server.createContext("/quest/display", new DisplayQuestsController(connection));
         server.createContext("/quest/edit", new EditQuestController(connection));
-//        server.createContext("/quest/delete", new DeleteQuestController(connection));
+        server.createContext("/quest/delete", new DeleteQuestController(connection));
 
         server.createContext("/wallet/level-info", new DisplayUserLevel(connection));
         server.createContext("/static", new Static());

@@ -143,13 +143,14 @@ li a {
 #vertical_menu{
     float: left;
 }
+
 #delete-question {
     padding: 5em;
     align-items: center;
     display:flex;
-    justify-content: center;
     flex-direction: column;
 }
+
 #choose-mentor-to-delete {
     padding: 3em;
 }
