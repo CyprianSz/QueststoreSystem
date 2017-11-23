@@ -136,7 +136,6 @@ public class HelperController {
         String templatePath = "templates/" + fileName + ".twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
-
         model.with("allGroups", allGroups);
         model.with("allTeams", allTeams);
 
@@ -252,15 +251,6 @@ public class HelperController {
     public Codecooler getCodecoolerByID(String ID) {
         try {
             return codecoolerDAO.getByID(ID);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public Codecooler getCodecoolerById(String id) {
-        try {
-            return codecoolerDAO.getByID( id );
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
