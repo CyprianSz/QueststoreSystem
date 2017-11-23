@@ -117,11 +117,28 @@ public class HelperController {
         return template.render(model);
     }
 
-    public String renderWithDropdownGroups(String fileName, List<Group> groupList ){
+    public String renderWithDropdownGroups(String fileName){
+        List<Group> allGroups = readGroupsFromDB();
+
         String templatePath = "templates/" + fileName + ".twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
-        model.with("allGroups", groupList);
+
+        model.with("allGroups", allGroups);
+
+        return template.render(model);
+    }
+
+    public String renderWithDropdowns(String fileName) {
+        List<Group> allGroups = readGroupsFromDB();
+        List<Team> allTeams = readTeamsFromDB();
+
+        String templatePath = "templates/" + fileName + ".twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allGroups", allGroups);
+        model.with("allTeams", allTeams);
 
         return template.render(model);
     }
