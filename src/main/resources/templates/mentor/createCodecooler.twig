@@ -31,6 +31,15 @@
                 </datalist>
             </div>
 
+            <div class="dropdown">
+                <input type="text" name="team" list="teams" placeholder="team (optional)">
+                <datalist id="teams">
+                    {% for team in allTeams %}
+                        <option value="{{ team.name }}"></option>
+                    {% endfor %}
+                </datalist>
+            </div>
+
             <div id="user-form-button">
                 <input type="submit" value="CREATE CODECOOLER">
             </div>
