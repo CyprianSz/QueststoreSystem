@@ -37,15 +37,13 @@ public class CreateMentorController implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
 
-        List<Group> allGroups = helper.readGroupsFromDB();
-
         String method = httpExchange.getRequestMethod();
         String response = "";
 
         if (method.equals("GET")) {
             response += helper.renderHeader( httpExchange, connection );
             response += helper.render( "admin/adminMenu" );
-            response += helper.renderWithDropdownGroups("admin/createMentor", allGroups);
+            response += helper.renderWithDropdownGroups("admin/createMentor");
             response += helper.render( "footer" );
 
             helper.sendResponse( response, httpExchange );
