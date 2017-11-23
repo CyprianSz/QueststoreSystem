@@ -219,12 +219,4 @@ public class HelperController {
         }
         return response;
     }
-
-    public boolean checkIfEmpty(Map<String, String> inputs) {
-        for(String value : inputs.values()) {
-            if(value.length() > 0) {
-                return true;
-            }
-        }return false;
-    }
 }

@@ -89,32 +89,30 @@ public class CreateMentorController implements HttpHandler {
 
 
     public String renderCreateMentor(Map<String, String> inputs) throws IOException {
-        if (!inputs.isEmpty() || inputs == null) {
-            return checkIfCreateMentor(inputs);
+        if (inputs.isEmpty()) {
+            return helper.render("admin/createMentor");
         }
-        return helper.render("admin/createMentor");
+        return checkIfCreateMentor(inputs);
     }
 
 
     public String checkIfCreateMentor(Map<String, String> inputs) throws IOException {
         if (validateData(inputs) == true) {
             createMentor(inputs);
+            return helper.render("admin/createMentor");
         }
         return renderCreateWithMessages(inputs);
     }
 
 
     public boolean validateData(Map<String, String> inputs) throws IOException {
-        String firstName = inputs.get("first-name");
-        String lastName = inputs.get("last-name");
         String dateOfBirth = inputs.get("date-of-birth");
         String email = inputs.get("email");
         String groupName = inputs.get("group");
 
         return helper.checkDateRegex(dateOfBirth).equals(dateOfBirth)
                 && helper.checkEmailRegex(email).equals(email)
-                && checkGroup(groupName).equals(groupName)
-                && helper.checkIfEmpty(inputs);
+                && checkGroup(groupName).equals(groupName);
     }
 
     public String renderCreateWithMessages(Map<String, String> inputs) throws IOException {
@@ -124,9 +122,9 @@ public class CreateMentorController implements HttpHandler {
 
         model.with("dateOfBirth", helper.checkDateRegex(inputs.get("date-of-birth")));
         model.with("email", helper.checkEmailRegex(inputs.get("email")));
-        model.with("firstName", "firstName");
-        model.with("lastName", "last name");
-        model.with("password", "password");
+        model.with("firstName", inputs.get("first-name"));
+        model.with("lastName", inputs.get("last-name"));
+        model.with("password", inputs.get("password"));
         model.with("groupName", checkGroup(inputs.get("group")));
         return template.render(model);
     }
