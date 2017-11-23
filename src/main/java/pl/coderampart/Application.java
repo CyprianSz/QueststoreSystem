@@ -1,15 +1,12 @@
 package pl.coderampart;
 
 import com.sun.net.httpserver.HttpServer;
-import pl.coderampart.controller.LoggedUserDataPage;
-import pl.coderampart.controller.Login;
-import pl.coderampart.controller.Logout;
+import pl.coderampart.controller.*;
 import pl.coderampart.controller.admin.*;
 import pl.coderampart.controller.codecooler.*;
 
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
-import pl.coderampart.controller.Static;
 import pl.coderampart.controller.mentor.*;
 
 import java.io.IOException;
@@ -62,7 +59,8 @@ public class Application {
         server.createContext("/quest/edit", new EditQuestController(connection));
         server.createContext("/quest/delete", new DeleteQuestController(connection));
 
-        server.createContext("/account", new LoggedUserDataPage(connection));
+        server.createContext("/change-password", new ChangePassword(connection));
+        server.createContext("/account", new LoggedUserData(connection));
         server.createContext("/wallet/level-info", new DisplayUserLevel(connection));
         server.createContext("/static", new Static());
 

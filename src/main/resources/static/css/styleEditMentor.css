@@ -7,6 +7,15 @@
     align-items: center;
     flex-direction: column;
 }
+
+#user-account {
+    display: flex;
+    min-height: 10em;
+    justify-content: right;
+    align-items: center;
+    flex-direction: column;
+}
+
 #user-form-container-edit .user-form label {
     float: right;
     max-width: 4em;
@@ -35,7 +44,7 @@
 
 /*INPUT FOR EMAIL AND PASSWORD*/
 
-input[type=password], input[type=text] {
+input[type=password], input[type=text], input[type=email] {
     width: 15em;
     background-color: #efefef;
     color: #666;

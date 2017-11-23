@@ -39,12 +39,13 @@ public class CreateArtifactController implements HttpHandler {
 
         if (method.equals( "POST" )) {
             Map<String, String> inputs = helper.getInputsMap( httpExchange );
-            createArtifact( inputs );
+            createArtifact( inputs, httpExchange );
+
             helper.redirectTo( "/artifact/create", httpExchange );
         }
     }
 
-    private void createArtifact(Map<String, String> inputs) {
+    private void createArtifact(Map<String, String> inputs, HttpExchange httpExchange) {
         String name = inputs.get("name");
         String description = inputs.get("description");
         String type = inputs.get("type");
@@ -53,7 +54,11 @@ public class CreateArtifactController implements HttpHandler {
         try {
             Artifact newArtifact = new Artifact( name, description, type, value );
             artifactDAO.create(newArtifact);
+
+            String flashNote = newArtifact.getName() + " created successfully";
+            helper.addSuccessFlashNoteDataToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            helper.addFailureFlashNoteDataToCookie(httpExchange);
             e.printStackTrace();
         }
     }

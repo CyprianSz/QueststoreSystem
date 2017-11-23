@@ -1,37 +1,35 @@
 <div id="sub-container-form">
-    <div id="user-form-container">
+    <div id="user-account">
+
+        <h2>Personal data edition: </h2>
+
         <form method="POST">
             <div class="user-form">
                 <label for="first-name">first name</label>
-                <input type="text" name="first-name" id="first-name" value="{{ firstName }}">
+                <input type="text" name="first-name" id="first-name" value="{{ firstName }}" required>
             </div>
 
             <div class="user-form">
                 <label for="last-name">last name</label>
-                <input type="text" name="last-name" id="last-name" value="{{ lastName }}">
+                <input type="text" name="last-name" id="last-name" value="{{ lastName }}" required>
             </div>
 
             <div class="user-form">
                 <label for="email">email</label>
-                <input type="text" name="email" id="email" value="{{ email }}">
+                <input type="email" name="email" id="email" value="{{ email }}" required>
             </div>
 
             <div class="user-form">
                 <label for="birthdate">birthdate</label>
-                <input type="text" name="birthdate" id="birthdate" value="{{ dateOfBirth }}">
+                <input type="text" name="birthdate" id="birthdate" value="{{ dateOfBirth }}" required
+                       pattern="^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"
+                       title="proper format is: YYYY-MM-DD">
             </div>
 
-            <div class="user-form">
-                <label for="current-password">current password</label>
-                <input type="text" name="current-password" id="birthdate" value="{{ dateOfBirth }}">
-            </div>
 
-            <div class="user-form">
-                <label for="birthdate">birthdate</label>
-                <input type="text" name="birthdate" id="birthdate" value="{{ dateOfBirth }}">
-            </div>
 
             <div id="user-form-button">
+                <a id="change-password-link" href="/change-password">CHANGE PASSWORD</a><br>
                 <input type="submit" value="SAVE CHANGES">
             </div>
         </form>

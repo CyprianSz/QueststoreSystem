@@ -64,19 +64,7 @@ public class Login implements HttpHandler{
             if (currentSession == null) {
                 return helper.render( "login" );
             } else {
-                String userType = currentSession.getUserType();
-
-                switch (userType) {
-                    case "Admin":
-                        redirectTo( "/mentor/create", httpExchange );
-                        break;
-                    case "Mentor":
-                        redirectTo("/team/create", httpExchange);
-                        break;
-                    case "Codecooler":
-                        redirectTo( "/wallet/display", httpExchange );
-                        break;
-                }
+                redirectTo( "/account", httpExchange );
                 return null;
             }
         } catch (SQLException | ClassNotFoundException e) {

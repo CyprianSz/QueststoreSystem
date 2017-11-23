@@ -1,0 +1,40 @@
+#flashNote {
+    font-weight: bold;
+    position: absolute;
+    z-index: 101;
+    top: -3em;
+    left: 0;
+    right: 0;
+    background: rgba(75, 181, 67, 0.9);
+    text-align: center;
+    line-height: 2.5;
+    overflow: hidden;
+    -webkit-box-shadow: 0 0 5px black;
+    -moz-box-shadow:    0 0 5px black;
+    box-shadow:         0 0 5px black;
+    animation: slide 6s;
+}
+
+#negativeFlashNote {
+    font-weight: bold;
+    position: absolute;
+    z-index: 101;
+    top: -3em;
+    left: 0;
+    right: 0;
+    background: rgba(255, 77, 77, 0.9);
+    text-align: center;
+    line-height: 2.5;
+    overflow: hidden;
+    -webkit-box-shadow: 0 0 5px black;
+    -moz-box-shadow:    0 0 5px black;
+    box-shadow:         0 0 5px black;
+    animation: slide 6s;
+}
+
+@-webkit-keyframes slide {
+    0% { -webkit-transform: translateY(0); }
+    20% { -webkit-transform: translateY(3em); }
+    80% { -webkit-transform: translateY(3em); }
+    100% { -webkit-transform: translateY(0); }
+}

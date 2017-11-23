@@ -5,9 +5,10 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.*;
 import pl.coderampart.model.*;
+import pl.coderampart.services.Loggable;
 
-import javax.print.DocFlavor;
 import java.io.*;
+import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,6 +21,7 @@ public class HelperController {
 
     private Connection connection;
     private MentorDAO mentorDAO;
+    private AdminDAO adminDAO;
     private LevelDAO levelDAO;
     private GroupDAO groupDAO;
     private TeamDAO teamDAO;
@@ -31,6 +33,7 @@ public class HelperController {
     public HelperController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(connection);
+        this.adminDAO = new AdminDAO(connection);
         this.levelDAO = new LevelDAO(connection);
         this.groupDAO = new GroupDAO(connection);
         this.teamDAO = new TeamDAO(connection);
@@ -40,7 +43,7 @@ public class HelperController {
         this.itemDAO = new ItemDAO(connection);
     }
 
-    public Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
+    private Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
         for (String pair : pairs) {
@@ -69,32 +72,53 @@ public class HelperController {
         return cookiesMap;
     }
 
-    public String renderHeader(HttpExchange httpExchange) {
+    public String renderHeader(HttpExchange httpExchange, Connection connection) {
+        Session currentSession = getCurrentSession(httpExchange, connection);
         Map<String, String> cookiesMap = createCookiesMap(httpExchange);
 
         String templatePath = "templates/header.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();
 
-        model.with("firstName", cookiesMap.get("firstName"));
-        model.with("lastName", cookiesMap.get("lastName"));
-        model.with("userType", cookiesMap.get("typeOfUser"));
-
-        return template.render(model);
-    }
-
-    public String renderHeader(HttpExchange httpExchange, Connection connection) {
-        Session currentSession = getCurrentSession(httpExchange, connection);
-
-        String templatePath = "templates/header.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
-        JtwigModel model = JtwigModel.newModel();
+        if (cookiesMap.containsKey( "flashNote" )) {
+            String flashNote = cookiesMap.get( "flashNote" );
+            String divID = cookiesMap.get( "divID" );
+            model.with("flashNote", createFlashNoteHTMLMessage( flashNote, divID ));
+            clearUsedFlashNoteCookie(httpExchange);
+        }
 
         model.with("firstName", currentSession.getUserFirstName());
         model.with("lastName", currentSession.getUserLastName());
         model.with("userType", currentSession.getUserType());
 
         return template.render(model);
+    }
+
+    private void clearUsedFlashNoteCookie(HttpExchange httpExchange) {
+        HttpCookie cookie = new HttpCookie("flashNote", "");
+        httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
+    }
+
+    public void addSuccessFlashNoteDataToCookie(String flashNote, HttpExchange httpExchange) {
+        HttpCookie divID = new HttpCookie("divID", "flashNote");
+        httpExchange.getResponseHeaders().add("Set-Cookie", divID.toString());
+
+        HttpCookie cookie = new HttpCookie("flashNote", flashNote);
+        httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
+    }
+
+    public void addFailureFlashNoteDataToCookie(HttpExchange httpExchange) {
+        String failureNote = "Ups... Something gone really wrong ! OPERATION UNSUCCESSFUL";
+
+        HttpCookie divID = new HttpCookie("divID", "negativeFlashNote");
+        httpExchange.getResponseHeaders().add("Set-Cookie", divID.toString());
+
+        HttpCookie cookie = new HttpCookie("flashNote", failureNote);
+        httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
+    }
+
+    private String createFlashNoteHTMLMessage(String flashNote, String divID) {
+        return "<div id=\"" + divID + "\">" + flashNote + "</div>";
     }
 
     public Session getCurrentSession(HttpExchange httpExchange, Connection connection) {
@@ -306,11 +330,26 @@ public class HelperController {
         }
     }
 
-    public Group getGroupByName(String groupName) {
+    public Loggable getLoggedUser(Session currentSession) {
+        String loggedUserID = currentSession.getUserID();
+        String loggedUserType = currentSession.getUserType();
+        Loggable loggedUser = null;
+
         try {
-            return groupDAO.getByName(groupName);
-        } catch (SQLException se) {
-            se.printStackTrace();
+            switch (loggedUserType) {
+                case "Admin":
+                    loggedUser = adminDAO.getByID( loggedUserID );
+                    break;
+                case "Mentor":
+                    loggedUser = mentorDAO.getByID( loggedUserID );
+                    break;
+                case "Codecooler":
+                    loggedUser = codecoolerDAO.getByID( loggedUserID );
+                    break;
+            }
+            return loggedUser;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }
