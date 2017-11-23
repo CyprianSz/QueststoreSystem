@@ -48,13 +48,13 @@ public class Application {
         server.createContext("/artifact/create", new CreateArtifactController(connection));
         server.createContext("/artifact/display", new DisplayArtifactsController(connection));
         server.createContext("/artifact/edit", new EditArtifactController(connection));
-//        server.createContext("/artifact/delete", new DeleteArtifactController(connection));
+        server.createContext("/artifact/delete", new DeleteArtifactController(connection));
 
         server.createContext("/wallet/display", new DisplayWalletController(connection));
         server.createContext("/codecooler/create", new CreateCodecoolerController(connection));
         server.createContext("/codecooler/display", new DisplayCodecoolersController(connection));
         server.createContext("/codecooler/edit", new EditCodecoolerController(connection));
-//        server.createContext("/codecooler/delete", new DeleteCodecoolerController(connection));
+        server.createContext("/codecooler/delete", new DeleteCodecoolerController(connection));
 
         server.createContext("/quest/create", new CreateQuestController(connection));
         server.createContext("/quest/display", new DisplayQuestsController(connection));

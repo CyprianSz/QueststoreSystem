@@ -1,0 +1,23 @@
+<div id="main-container-delete">
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for artifact in allArtifacts %}
+                        <a href="/artifact/delete?artifact-id={{ artifact.ID }}">
+                            <button name="artifact-id" value="{{ artifact.ID }}">
+                                {{ artifact.name }}
+                            </button>
+                        </a>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+        <div id="delete-question">
+            <h2>Please choose artifact to delete</h2>
+        </div>
+    </div>
+</div>
