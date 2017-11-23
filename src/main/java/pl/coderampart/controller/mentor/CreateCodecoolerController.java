@@ -37,15 +37,13 @@ public class CreateCodecoolerController implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
 
-        List<Group> allGroups = helper.readGroupsFromDB();
-
         String response = "";
         String method = httpExchange.getRequestMethod();
 
         if (method.equals( "GET" )) {
             response += helper.renderHeader( httpExchange, connection );
             response += helper.render( "mentor/mentorMenu" );
-            response += helper.renderWithDropdownGroups( "mentor/createCodecooler", allGroups );
+            response += helper.renderWithDropdowns( "mentor/createCodecooler");
             response += helper.render( "footer" );
 
             helper.sendResponse( response, httpExchange );
