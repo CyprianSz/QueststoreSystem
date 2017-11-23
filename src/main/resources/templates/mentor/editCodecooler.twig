@@ -39,6 +39,16 @@
                     <input type="text" name="birthdate" id="birthdate" value="{{ dateOfBirth }}">
                 </div>
 
+                <div class="user-form">
+                    <label for="group">group</label>
+                    <input type="text" name="group" id="group" list="groups" value="{{ groupName }}">
+                    <datalist id="groups">
+                        {% for group in allGroups %}
+                            <option value="{{ group.name }}"></option>
+                        {% endfor %}
+                    </datalist>
+                </div>
+
                 <div id="user-form-button">
                     <input type="submit" value="SAVE CHANGES">
                 </div>
