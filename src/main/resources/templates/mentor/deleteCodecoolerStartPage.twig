@@ -1,0 +1,23 @@
+<div id="main-container-delete">
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for codecooler in allCodecoolers %}
+                        <a href="/codecooler/delete?codecooler-id={{ codecooler.ID }}">
+                            <button name="codecooler-id" value="{{ codecooler.ID }}">
+                                {{ codecooler.firstName }} {{ codecooler.lastName }}
+                            </button>
+                        </a>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+        <div id="delete-question">
+            <h2>Please choose codecooler to delete</h2>
+        </div>
+    </div>
+</div>

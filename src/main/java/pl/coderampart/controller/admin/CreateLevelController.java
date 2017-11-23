@@ -9,6 +9,7 @@ import pl.coderampart.model.Level;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CreateLevelController implements HttpHandler{
@@ -16,6 +17,8 @@ public class CreateLevelController implements HttpHandler{
     private Connection connection;
     private LevelDAO levelDAO;
     private HelperController helper;
+
+    private static Map<String, String> inputs = new HashMap<>();
 
     public CreateLevelController(Connection connection) {
         this.connection = connection;
@@ -38,7 +41,7 @@ public class CreateLevelController implements HttpHandler{
         }
 
         if (method.equals("POST")) {
-            Map<String, String> inputs = helper.getInputsMap(httpExchange);
+            inputs = helper.getInputsMap(httpExchange);
 
             createLevel(inputs);
             helper.redirectTo( "/level/create", httpExchange );

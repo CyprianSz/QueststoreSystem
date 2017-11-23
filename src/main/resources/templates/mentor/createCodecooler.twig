@@ -3,23 +3,26 @@
     <div id="user-form-container">
         <form method="POST">
             <div class="user-form">
-                <input type="text" name="first-name" id="first-name" placeholder="first name">
+                <input type="text" name="first-name" id="first-name" placeholder="first name" required>
             </div>
 
             <div class="user-form">
-                <input type="text" name="last-name" id="last-name" placeholder="last name">
+                <input type="text" name="last-name" id="last-name" placeholder="last name" required>
             </div>
 
             <div class="user-form">
-                <input type="text" name="date-of-birth" id="date-of-birth" placeholder="date of birth">
+                <input type="text" name="date-of-birth" id="date-of-birth" placeholder="date of birth" required
+                       pattern="^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"
+                       title="YYYY-MM-DD">
             </div>
 
             <div class="user-form">
-                <input type="text" name="email" id="email" placeholder="email">
+                <input type="text" name="email" id="email" placeholder="email" required
+                       pattern="^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-](\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$">
             </div>
 
             <div class="user-form">
-                <input type="password" name="password" id="password" placeholder="password">
+                <input type="password" name="password" id="password" placeholder="password" required>
             </div>
 
             <div class="dropdown">

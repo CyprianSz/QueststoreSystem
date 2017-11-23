@@ -24,7 +24,10 @@
         <div id="logged-user">
             <h2 id="user-name">{{ firstName }} {{ lastName }}</h2>
             <p>{{ userType }}</p>
-            <p><a id="logout" href="/logout">logout</a></p>
+            <p>
+                {#<a id="logout" href="/logout" input type="submit" >logout</a>#}
+                <button name="logout"><a href="/logout" name="logout">LOGOUT</a></button>
+            </p>
         </div>
     </header>
 </div>
