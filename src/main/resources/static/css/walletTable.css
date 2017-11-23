@@ -12,3 +12,6 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 
+#items-list, #level-table {
+    padding-top: 3em;
+}
