@@ -7,29 +7,28 @@
                 <th>name</th>
                 <th>type</th>
                 <th>value</th>
-                <th>spent</th>
+                <th>creation date</th>
+                <th>is spent</th>
             </tr>
             </thead>
 
             <tbody>
-            {% for group in allGroups %}
-                <tr>
-                    <td>{{ group.Name }}</td>
-                    <td>{{ group.Name }}</td>
-                    <td>{{ group.Name }}</td>
-                    <td>{{ group.Name }}</td>
-                </tr>
+            {% for item in userItemsList %}
+            <tr>
+                <td>{{ item.artifact.name }}</td>
+                <td>{{ item.artifact.type }}</td>
+                <td>{{ item.artifact.value }}</td>
+                <td>{{ item.dateToString() }}</td>
+
+                {% if item.isSpent == true %}
+                    <td><input type="checkbox" checked disabled></td>
+                {% else %}
+                    <td><input type="checkbox" disabled></td>
+                {% endif %}
+            </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
+
 </div>
-
-
-
-    {#<tr>#}
-        {#<td>Combat training</td>#}
-        {#<td>single</td>#}
-        {#<td>50</td>#}
-        {#<td><input type="checkbox" disabled></td>#}
-    {#</tr>#}

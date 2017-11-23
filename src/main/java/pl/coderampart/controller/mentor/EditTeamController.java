@@ -22,7 +22,7 @@ public class EditTeamController implements HttpHandler {
 
     public EditTeamController(Connection connection) {
         this.connection = connection;
-        this.teamDAO = new TeamDAO(this.connection);
+        this.teamDAO = new TeamDAO(connection);
         this.helper = new HelperController(connection);
     }
 

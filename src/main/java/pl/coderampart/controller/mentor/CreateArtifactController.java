@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class CreateArtifactController implements HttpHandler {
+
     private Connection connection;
     private HelperController helper;
     private ArtifactDAO artifactDAO;

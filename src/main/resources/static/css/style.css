@@ -17,8 +17,14 @@ body {
 }
 
 #footer-container {
-    border: 2px solid #675f6b ;
+    border: 2px solid #675f6b;
+    background:rgba(255,255,255, 0.8);
     border-radius: 5px;
+    position: fixed;
+    bottom: 0.2em;
+    left: 0.2em;
+    right: 0.2em;
+    height: 30px;
 }
 
 footer {
@@ -68,6 +74,16 @@ header {
     margin-top: 1em;
     margin-right: 2em;
     margin-left: 2em;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#radio-form-edit {
+    border: solid 3px #675f6b ;
+    display: inline-block;
+    margin-top: 1em;
+    margin-right: 2em;
+    margin-left: 12em;
     border-radius: 10px;
     overflow: hidden;
 }

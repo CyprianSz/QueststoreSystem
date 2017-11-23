@@ -1,0 +1,23 @@
+<div id="main-container">
+
+    <div id="questsList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>reward</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for quest in allQuests %}
+                <tr>
+                    <td>{{ quest.name }}</td>
+                    <td>{{ quest.description }}</td>
+                    <td>{{ quest.reward }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<div id="main-container-delete">
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for quest in allQuests %}
+                        <a href="/quest/delete?quest-id={{ quest.ID }}">
+                            <button name="quest-id" value="{{ quest.ID }}">
+                                {{ quest.name }}
+                            </button>
+                        </a>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+        <div id="delete-question">
+            <h2>Please choose quest to delete</h2>
+        </div>
+    </div>
+</div>

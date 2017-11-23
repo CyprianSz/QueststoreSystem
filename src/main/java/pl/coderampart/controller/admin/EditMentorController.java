@@ -96,7 +96,7 @@ public class EditMentorController implements HttpHandler {
             mentor.setEmail( email );
             mentor.setDateOfBirth( dateOfBirthObject );
 
-            mentorDAO.update(mentor);
+            mentorDAO.update( mentor );
         } catch (SQLException e) {
             e.printStackTrace();
         }

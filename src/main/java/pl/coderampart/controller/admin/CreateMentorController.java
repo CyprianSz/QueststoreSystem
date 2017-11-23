@@ -71,7 +71,7 @@ public class CreateMentorController implements HttpHandler {
         try {
             String hashedPassword = hasher.generateStrongPasswordHash( password );
             Group group = groupDAO.getByName( groupName );
-            Mentor newMentor = new Mentor( firstName, lastName, dateOfBirthObject, email, hashedPassword);
+            Mentor newMentor = new Mentor( firstName, lastName, dateOfBirthObject, email, hashedPassword );
             newMentor.setGroup( group );
 
             mentorDAO.create( newMentor );
