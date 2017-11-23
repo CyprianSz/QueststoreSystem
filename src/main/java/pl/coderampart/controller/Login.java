@@ -27,7 +27,7 @@ public class Login implements HttpHandler{
         this.connection = connection;
         this.userDAO = new UserDAO(this.connection);
         this.sessionDAO = new SessionDAO(this.connection);
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
         this.hasher = new PasswordHasher();
     }
 
@@ -68,14 +68,13 @@ public class Login implements HttpHandler{
 
                 switch (userType) {
                     case "Admin":
-                        System.out.println("DUPSKO");
-                        redirectTo( "/create-mentor", httpExchange );
+                        redirectTo( "/mentor/create", httpExchange );
                         break;
                     case "Mentor":
-//                    redirectTo("/login", httpExchange);
+                        redirectTo("/team/create", httpExchange);
                         break;
                     case "Codecooler":
-                        redirectTo( "/display-wallet", httpExchange );
+                        redirectTo( "/wallet/display", httpExchange );
                         break;
                 }
                 return null;
@@ -141,7 +140,7 @@ public class Login implements HttpHandler{
     }
 
     private void redirectTo(String path, HttpExchange httpExchange) throws IOException {
-        httpExchange.getResponseHeaders().set( "Location", path);
+        httpExchange.getResponseHeaders().set( "Location", path );
         httpExchange.sendResponseHeaders( 302, -1 );
     }
 }

@@ -28,6 +28,16 @@ public class MentorDAO extends AbstractDAO {
         return this.createMentorFromResultSet(resultSet);
     }
 
+    public Mentor getByID(String ID) throws SQLException {
+
+        String query = "SELECT * FROM mentors WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, ID);
+        ResultSet resultSet = statement.executeQuery();
+
+        return this.createMentorFromResultSet(resultSet);
+    }
+
     public ArrayList<Mentor> readAll() throws SQLException{
         ArrayList<Mentor> mentorList = new ArrayList<>();
         String query = "SELECT * FROM mentors;";

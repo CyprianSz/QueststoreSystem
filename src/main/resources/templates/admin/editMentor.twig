@@ -6,7 +6,7 @@
             <form>
                 <div id="radio-form">
                     {%  for mentor in allMentors %}
-                        <a href="/edit-mentor?mentor-id={{ mentor.ID }}">
+                        <a href="/mentor/edit?mentor-id={{ mentor.ID }}">
                         <button name="mentor-id" value="{{ mentor.ID }}">{{ mentor.firstName }} {{ mentor.lastName }}</button>
                         </a>
                     {% endfor %}
@@ -21,6 +21,7 @@
             <form method="POST">
                 <div class="user-form">
                     <label for="first-name">first name</label>
+
                     <input type="text" name="first-name" id="first-name" value={{ firstName }}>
                 </div>
 

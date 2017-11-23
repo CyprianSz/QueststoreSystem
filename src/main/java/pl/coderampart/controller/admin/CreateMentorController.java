@@ -2,6 +2,8 @@ package pl.coderampart.controller.admin;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.MentorDAO;
 import pl.coderampart.controller.PasswordHasher;
@@ -14,45 +16,47 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CreateMentorController implements HttpHandler {
 
     private Connection connection;
     private MentorDAO mentorDAO;
-    private HelperController helperController;
+    private HelperController helper;
     private PasswordHasher hasher;
     private GroupDAO groupDAO;
+
+    private static Map<String, String> inputs = new HashMap<>();
 
     public CreateMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
         this.groupDAO = new GroupDAO(this.connection);
-        this.helperController = new HelperController();
+        this.helper = new HelperController(connection);
+        this.mentorDAO = new MentorDAO(connection);
+        this.groupDAO = new GroupDAO(connection);
         this.hasher = new PasswordHasher();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        String response = "";
+        System.out.println(inputs);
         String method = httpExchange.getRequestMethod();
+        String response = "";
 
-        response += helperController.renderHeader(httpExchange);
-        response += helperController.render("admin/adminMenu");
-        response += helperController.render("admin/createMentor");
-        response += helperController.render("footer");
+        if (method.equals("GET")) {
+            response += helper.renderHeader( httpExchange, connection );
+            response += helper.render( "admin/adminMenu" );
+            response += renderCreateMentor(inputs);
+            response += helper.render( "footer" );
+            helper.sendResponse( response, httpExchange );
+        }
 
-        if(method.equals("POST")) {
-            System.out.println("chuj");
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-
-            Map inputs = helperController.parseFormData(formData);
-            formDataForMentorCreation(inputs, httpExchange);
+        if (method.equals("POST")) {
+            inputs = helper.getInputsMap(httpExchange);
+            helper.redirectTo( "/mentor/create", httpExchange );
         }
 
         httpExchange.sendResponseHeaders(200, response.length());
@@ -61,69 +65,76 @@ public class CreateMentorController implements HttpHandler {
         os.close();
     }
 
-    public void formDataForMentorCreation(Map inputs, HttpExchange httpExchange) throws IOException {
+
+    private void createMentor(Map<String, String> inputs) throws IOException {
+        String firstName = inputs.get("first-name");
+        String lastName = inputs.get("last-name");
+        String dateOfBirth = inputs.get("date-of-birth");
+        String email = inputs.get("email");
+        String password = inputs.get("password");
+        String groupName = inputs.get("group");
+        LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
 
         try {
-            checkRegex(String.valueOf(inputs.get("date-of-birth")),String.valueOf(inputs.get("email")), httpExchange);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
+            String hashedPassword = hasher.generateStrongPasswordHash( password );
+            Group group = groupDAO.getByName( groupName );
+            Mentor newMentor = new Mentor( firstName, lastName, dateOfBirthObject, email, hashedPassword);
+            newMentor.setGroup( group );
 
-        try {
-            String hashedPassword = hasher.generateStrongPasswordHash(String.valueOf(inputs.get("password")));
-
-            String[] data = new String[]{String.valueOf(inputs.get("first-name")),
-                                         String.valueOf(inputs.get("last-name")),
-                                         String.valueOf(inputs.get("date-of-birth")),
-                                         hashedPassword,
-                                         String.valueOf(inputs.get("group"))};
-            createMentor(data);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException | SQLException e) {
+            mentorDAO.create( newMentor );
+        } catch (NoSuchAlgorithmException | SQLException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
     }
 
 
-    public void createMentor(String[] mentorData) throws SQLException {
-        ArrayList<Group> allGroups = this.groupDAO.readAll();
-        ArrayList<String> groupsNames = new ArrayList<>();
-
-        String chosenGroupName;
-        String firstName = mentorData[0];
-        String lastName = mentorData[1];
-        String dateOfBirth = mentorData[2];
-        String password = mentorData[3];
-        String email = mentorData[4];
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-        LocalDate date = LocalDate.parse(dateOfBirth, formatter);
-
-
-        Mentor newMentor = new Mentor(firstName, lastName, date, password, email);
-        for (Group group: allGroups) {
-            String groupName = group.getName();
-            groupsNames.add(groupName);
+    public String renderCreateMentor(Map<String, String> inputs) throws IOException {
+        if (!inputs.isEmpty() || inputs == null) {
+            return checkIfCreateMentor(inputs);
         }
-        do {
-            chosenGroupName = mentorData[5];
-        } while (!groupsNames.contains(chosenGroupName));
-        for (Group group : allGroups) {
-            if (group.getName().equals(chosenGroupName)) {
-                newMentor.setGroup( group );
-            }
-        }
-        this.mentorDAO.create(newMentor);
+        return helper.render("admin/createMentor");
     }
 
-    public void checkRegex(String date, String email, HttpExchange httpExchange) throws IOException {
 
-        String dateRegEx = "^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
-        String emailRegEx = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+"
-                + "(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
-        if(!date.matches(dateRegEx)){
-            throw new IllegalArgumentException("chujnia");
-//            httpExchange.getResponseHeaders().set( "Location", "/create-mentor");
-//            httpExchange.sendResponseHeaders( 302, -1 );
+    public String checkIfCreateMentor(Map<String, String> inputs) throws IOException {
+        if (validateData(inputs) == true) {
+            createMentor(inputs);
         }
+        return renderCreateWithMessages(inputs);
+    }
+
+
+    public boolean validateData(Map<String, String> inputs) throws IOException {
+        String firstName = inputs.get("first-name");
+        String lastName = inputs.get("last-name");
+        String dateOfBirth = inputs.get("date-of-birth");
+        String email = inputs.get("email");
+        String groupName = inputs.get("group");
+
+        return helper.checkDateRegex(dateOfBirth).equals(dateOfBirth)
+                && helper.checkEmailRegex(email).equals(email)
+                && checkGroup(groupName).equals(groupName)
+                && helper.checkIfEmpty(inputs);
+    }
+
+    public String renderCreateWithMessages(Map<String, String> inputs) throws IOException {
+        String templatePath = "templates/admin/createMentorWithExceptions.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("dateOfBirth", helper.checkDateRegex(inputs.get("date-of-birth")));
+        model.with("email", helper.checkEmailRegex(inputs.get("email")));
+        model.with("firstName", "firstName");
+        model.with("lastName", "last name");
+        model.with("password", "password");
+        model.with("groupName", checkGroup(inputs.get("group")));
+        return template.render(model);
+    }
+
+    public String checkGroup(String groupName) {
+        if( helper.getGroupByName(groupName) == null ) {
+            return "Group doesn't exist";
+        }
+        return helper.getGroupByName(groupName).getName();
     }
 }

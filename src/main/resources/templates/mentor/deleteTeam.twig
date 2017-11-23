@@ -3,8 +3,8 @@
         <div id="vertical-radio-list">
             <form>
                 <div id="radio-form">
-                    {%  for level in allLevels %}
-                        <button name="level-id" value="{{ level.ID }}">{{ level.rank }}</button>
+                    {%  for team in allTeams %}
+                        <button name="team-id" value="{{ team.ID }}">{{ team.name }}</button>
                     {% endfor %}
                 </div>
             </form>
@@ -13,7 +13,7 @@
 
     <div id="sub-container-form">
         <div id="delete-question">
-            <h2>Are you sure you want to delete this level?</h2>
+            <h2>Are you sure you want to delete this team?</h2>
             <div id="attributes">
                 <form method="POST">
                     <ul class="attribute_list">

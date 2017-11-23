@@ -1,0 +1,23 @@
+<div id="main-container-delete">
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <form>
+                <div id="radio-form">
+                    {%  for level in allLevels %}
+                        <a href="/level/delete?level-id={{ level.ID }}">
+                            <button name="level-id" value="{{ level.ID }}">
+                                Level: {{ level.rank }} {{ level.requiredExperience }}xp
+                            </button>
+                        </a>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+        <div id="delete-question">
+            <h2>Please choose level to delete</h2>
+        </div>
+    </div>
+</div>

@@ -9,10 +9,8 @@ import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,105 +18,47 @@ public class EditGroupController implements HttpHandler{
 
     private Connection connection;
     private GroupDAO groupDAO;
-    private HelperController helperController;
+    private HelperController helper;
 
     public EditGroupController(Connection connection){
         this.connection = connection;
-        this.groupDAO = new GroupDAO(this.connection);
-        this.helperController = new HelperController();
+        this.groupDAO = new GroupDAO(connection);
+        this.helper = new HelperController(connection);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String response = "";
-
-        String[] uri = httpExchange.getRequestURI().toString().split("=");
-        String id = uri[uri.length-1];
-
-        List<Group> allGroups = readGroupsFromDB();
+        List<Group> allGroups = helper.readGroupsFromDB();
+        String groupID = helper.getIdFromURI( httpExchange );
+        Group group = helper.getGroupById( groupID );
 
         if(method.equals("GET")) {
-            response += helperController.renderHeader(httpExchange);
-            response += helperController.render("admin/adminMenu");
-            String responseTemp = renderGroupsList(allGroups);
-            if(id.length()==36){
-                responseTemp = renderEditGroup(getGroupById(id, allGroups), allGroups);
-            }
-            response += responseTemp;
-            response += helperController.render("footer");
+            String response = "";
+            response += helper.renderHeader(httpExchange, connection);
+            response += helper.render("admin/adminMenu");
+            response += renderProperBodyResponse(groupID, allGroups);
+            response += helper.render("footer");
+
+            helper.sendResponse( response, httpExchange );
         }
 
         if(method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-
-            Map inputs = helperController.parseFormData(formData);
-
-            editGroup(inputs, allGroups, id);
-
-            response += helperController.render("header");
-            response += helperController.render("admin/adminMenu");
-            String responseTemp = renderGroupsList(allGroups);
-            if (id.length() == 36) {
-                responseTemp = renderEditGroup(getGroupById(id, allGroups), allGroups);
-            }
-            response += responseTemp;
-            response += helperController.render("footer");
+            Map inputs = helper.getInputsMap(httpExchange);
+            editGroup(inputs, group);
+            helper.redirectTo( "/group/edit", httpExchange );
         }
 
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
     }
 
-    private void editGroup(Map inputs, List<Group>allGroups, String id){
-        String name = String.valueOf(inputs.get("group-name"));
-
-        Group changedGroup = getGroupById(id, allGroups);
-
-        if (!changedGroup.equals(null)) {
-            changedGroup.setName(name);
-            try{
-                groupDAO.update(changedGroup);
-            } catch (SQLException se){
-                se.printStackTrace();
-            }
+    private String renderProperBodyResponse(String groupID, List<Group> allGroups) {
+        Integer idLength = 36;
+        if (groupID.length() == idLength) {
+            Group levelToEdit = helper.getGroupById( groupID );
+            return renderEditGroup(levelToEdit, allGroups);
+        } else {
+            return renderGroupEmptyForm(allGroups);
         }
-    }
-
-    private Group getGroupById(String id, List<Group> allGroups){
-        Group changedGroup = null;
-
-        for (Group group: allGroups) {
-            if(id.equals(group.getID())) {
-                changedGroup = group;
-            }
-        }
-        return changedGroup;
-    }
-
-    private List<Group> readGroupsFromDB() {
-        List<Group> allGroups = null;
-
-        try {
-            allGroups = groupDAO.readAll();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-
-        return allGroups;
-    }
-
-    private String renderGroupsList(List<Group> allGroups) {
-        String templatePath = "templates/admin/editGroup.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
-        JtwigModel model = JtwigModel.newModel();
-        model.with("allGroups", allGroups);
-
-        return template.render(model);
     }
 
     private String renderEditGroup(Group group, List<Group> allGroups) {
@@ -130,5 +70,26 @@ public class EditGroupController implements HttpHandler{
         model.with("groupName", group.getName());
 
         return template.render(model);
+    }
+
+    private String renderGroupEmptyForm(List<Group> allGroups) {
+        String templatePath = "templates/admin/editGroup.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allGroups", allGroups);
+
+        return template.render(model);
+    }
+
+    private void editGroup(Map<String, String> inputs, Group group) {
+        String name = inputs.get("group-name");
+
+        try {
+            group.setName( name );
+            groupDAO.update( group );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

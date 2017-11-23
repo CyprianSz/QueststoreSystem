@@ -9,7 +9,6 @@ import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Mentor;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
@@ -18,86 +17,52 @@ public class DeleteMentorController implements HttpHandler {
 
     private Connection connection;
     private MentorDAO mentorDAO;
-    private HelperController helperController;
+    private HelperController helper;
 
     public DeleteMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
-        this.helperController = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String response = "";
+        List<Mentor> allMentors = helper.readMentorsFromDB();
+        String mentorID = helper.getIdFromURI(httpExchange);
+        Mentor mentor = helper.getMentorById( mentorID );
 
-        List<Mentor> allMentors = readMentorsFromDB();
+        if (method.equals("GET")) {
+            String response = "";
+            response += helper.renderHeader(httpExchange, connection);
+            response += helper.render("admin/adminMenu");
+            response += renderProperBodyResponse(mentorID, allMentors);
+            response += helper.render("footer");
 
-        String[] uri = httpExchange.getRequestURI().toString().split("=");
-        String id = uri[uri.length-1];
-
-        if(method.equals("GET")) {
-            response += helperController.renderHeader(httpExchange);
-            response += helperController.render("admin/adminMenu");
-            String responseTemp = renderMentorsList(allMentors);
-            if(id.length()==36) {
-                responseTemp = renderDeleteQuestion(getMentorById(id, allMentors), allMentors);
-            }
-            response += responseTemp;
-            response += helperController.render("footer");
+            helper.sendResponse( response, httpExchange );
         }
 
-        if(method.equals("POST")){
+        if (method.equals("POST")) {
+            Map inputs = helper.getInputsMap(httpExchange);
 
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            Map inputs = helperController.parseFormData(formData);
             if(inputs.get("confirmation").equals("yes")) {
-                deleteMentor(allMentors, id);
+                deleteMentor(mentor);
             }
-
-            httpExchange.getResponseHeaders().set("Location", "/delete-mentor");
-            httpExchange.sendResponseHeaders(302, -1);
-
-            response +=  helperController.renderHeader(httpExchange);
-            response += helperController.render("admin/adminMenu");
-            String responseTemp = renderMentorsList(allMentors);
-            response += responseTemp;
-            response += helperController.render("footer");
+            helper.redirectTo( "/mentor/delete", httpExchange );
         }
-
-        httpExchange.sendResponseHeaders( 200, response.getBytes().length );
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-
-        os.close();
     }
 
-    private List<Mentor> readMentorsFromDB() {
-        List<Mentor> allMentors = null;
-
-        try {
-            allMentors = mentorDAO.readAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    private String renderProperBodyResponse(String mentorID, List<Mentor> allMentors) {
+        Integer idLength = 36;
+        if(mentorID.length() == idLength) {
+            Mentor mentorToDelete = helper.getMentorById(mentorID);
+            return renderConfirmation(mentorToDelete, allMentors);
+        } else {
+            return renderMentorsList(allMentors);
         }
-        return allMentors;
     }
 
-    private Mentor getMentorById(String id, List<Mentor> allMentors) {
-        Mentor changedMentor = null;
-
-        for (Mentor mentor: allMentors) {
-            if (id.equals(mentor.getID())) {
-                changedMentor = mentor;
-            }
-        }
-        return changedMentor;
-    }
-
-    private String renderDeleteQuestion(Mentor mentor, List<Mentor> allMentors) {
-
+    private String renderConfirmation(Mentor mentor, List<Mentor> allMentors) {
         String templatePath = "templates/admin/deleteChosenMentor.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();
@@ -105,11 +70,11 @@ public class DeleteMentorController implements HttpHandler {
         model.with("allMentors", allMentors);
         model.with("firstName", mentor.getFirstName());
         model.with("lastName", mentor.getLastName());
+
         return template.render(model);
     }
 
-
-    private String renderMentorsList(List<Mentor> allMentors) {
+    public String renderMentorsList(List<Mentor> allMentors) {
         String templatePath = "templates/admin/deleteMentorStartPage.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
@@ -119,17 +84,11 @@ public class DeleteMentorController implements HttpHandler {
         return template.render(model);
     }
 
-    private void deleteMentor(List<Mentor> allMentors,String id) {
-        Mentor changedMentor = null;
-        for (Mentor mentor: allMentors) {
-            if (id.equals(mentor.getID())) {
-                changedMentor = mentor;
-                try{
-
-                    mentorDAO.delete(changedMentor);
-                }catch (SQLException se){}
-                break;
-            }
+    private void deleteMentor(Mentor mentor) {
+        try {
+            mentorDAO.delete( mentor );
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

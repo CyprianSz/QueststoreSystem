@@ -20,7 +20,7 @@ public class Logout implements HttpHandler {
     public Logout(Connection connection) {
         this.connection = connection;
         this.sessionDAO = new SessionDAO( connection );
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override
