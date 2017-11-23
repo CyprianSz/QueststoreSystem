@@ -63,7 +63,6 @@ public class DeleteTeamController implements HttpHandler {
         }
     }
 
-
     private String renderConfirmation(Team team, List<Team> allTeams) {
         String templatePath = "templates/mentor/deleteChosenTeam.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
