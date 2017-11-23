@@ -2,11 +2,13 @@
     <div id="user-form-container">
         <form method="POST">
             <div class="user-form">
-                <input type="text" name="rank" id="rank" placeholder="rank" required>
+                <input type="text" name="rank" id="rank" placeholder="rank" required
+                       pattern="^[0-9]+$" title="It's not a digit">
             </div>
 
             <div class="user-form">
-                <input type="text" name="required-experience" id="required-experience" placeholder="required experience" required>
+                <input type="text" name="required-experience" id="required-experience" placeholder="required experience" required
+                       pattern="^[0-9]+$" title="It's not a digit">
             </div>
 
             <div class="user-form">
