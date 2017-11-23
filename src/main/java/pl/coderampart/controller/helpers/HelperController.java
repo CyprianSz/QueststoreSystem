@@ -210,17 +210,41 @@ public class HelperController {
         }
     }
 
+    public Codecooler getCodecoolerByID(String ID) {
+        try {
+            return codecoolerDAO.getByID(ID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<Item> readUserItemsFromDB(HttpExchange httpExchange, Connection connection) {
         Session currentSession = getCurrentSession(httpExchange, connection);
         String userID = currentSession.getUserID();
-        
+        Codecooler loggedCodecooler = getCodecoolerByID(userID);
+        String walletID = loggedCodecooler.getWallet().getID();
+
         try {
-            Codecooler loggedCodecooler = codecoolerDAO.getByID(userID);
-            String walletID = loggedCodecooler.getWallet().getID();
             return itemDAO.getUserItems(walletID);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
+
+    public Level readUserLevelFromDB(HttpExchange httpExchange, Connection connection) {
+        Session currentSession = getCurrentSession(httpExchange, connection);
+        String userID = currentSession.getUserID();
+        Codecooler loggedCodecooler = getCodecoolerByID(userID);
+        String levelID = loggedCodecooler.getLevel().getID();
+
+        try {
+            return levelDAO.getByID(levelID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

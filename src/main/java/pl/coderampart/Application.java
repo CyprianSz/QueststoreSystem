@@ -46,12 +46,12 @@ public class Application {
 //        server.createContext("/artifact/display", new DisplayArtifactsController(connection));
 //        server.createContext("/artifact/delete", new DeleteArtifactController(connection));
         server.createContext("/wallet/display", new DisplayWalletController(connection));
+        server.createContext("/wallet/level-info", new DisplayUserLevel(connection));
         server.createContext("/static", new Static());
 
 //        server.createContext("/buy-artifact", new ?(connection));
 //        server.createContext("/display-fundraisings", new ?(connection));
 //        server.createContext("/create-fundraising", new ?(connection));
-//        server.createContext("/wallet/level-info", new ?(connection));
 
         server.setExecutor(null);
         server.start();
