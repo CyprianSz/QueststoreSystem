@@ -22,17 +22,18 @@
                 <div class="edit-text-fields">
                     <div class="user-form">
                         <label for="name">name</label>
-                        <input type="text" name="name" id="name" value="{{ name }}">
+                        <input type="text" name="name" id="name" value="{{ name }}" required>
                     </div>
 
                     <div class="user-form">
                         <label for="description">description</label>
-                        <input type="text" name="description" id="description" value="{{ description }}">
+                        <input type="text" name="description" id="description" value="{{ description }}" required>
                     </div>
 
                     <div class="user-form">
                         <label for="reward">reward</label>
-                        <input type="text" name="reward" id="reward" value="{{ reward }}">
+                        <input type="text" name="reward" id="reward" value="{{ reward }}" required
+                               pattern="^[0-9]+$" title="It's not a digit">
                     </div>
                 </div>
 
