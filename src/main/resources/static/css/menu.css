@@ -42,7 +42,7 @@ li a {
 .nav__menu-item {
     display: inline-block;
     position: relative;
-    transition: .5s ease;
+    transition: .3s ease;
     top: 50%;
 }
 .nav__menu-item:hover {
