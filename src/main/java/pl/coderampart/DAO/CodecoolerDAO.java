@@ -68,7 +68,7 @@ public class CodecoolerDAO extends AbstractDAO {
     public void create(Codecooler codecooler) throws SQLException {
 
         String query = "INSERT INTO codecoolers (first_name, last_name, date_of_birth, email, password, "
-                + "wallet_id, group_id, team_id, level_id, id) "
+                + "wallet_id, group_id, level_id, team_id, id) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, codecooler);
@@ -103,11 +103,18 @@ public class CodecoolerDAO extends AbstractDAO {
         statement.setString(5, codecooler.getPassword());
         statement.setString(6, codecooler.getWallet().getID());
         statement.setString(7, codecooler.getGroup().getID());
-        statement.setString(8, codecooler.getTeam().getID());
-        statement.setString(9, codecooler.getLevel().getID());
+        statement.setString(8, codecooler.getLevel().getID());
+        statement.setString(9, setTeamIDIfExists(codecooler));
         statement.setString(10, codecooler.getID());
 
         return statement;
+    }
+
+    private String setTeamIDIfExists(Codecooler codecooler) throws SQLException {
+        if (codecooler.getTeam() == null) {
+            return "";
+        }
+        return codecooler.getTeam().getID();
     }
 
     public Codecooler createCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
@@ -125,9 +132,16 @@ public class CodecoolerDAO extends AbstractDAO {
         String levelID = resultSet.getString("level_id");
         Level levelObject = this.levelDAO.getByID(levelID);
         String teamID = resultSet.getString("team_ID");
-        Team teamObject = this.teamDAO.getByID(teamID);
+        Team teamObject = getTeamObjectIfExists(teamID);
 
         return new Codecooler(ID, firstName, lastName, dateOfBirthObject, email, password,
                              walletObject, groupObject, levelObject, teamObject);
+    }
+
+    private Team getTeamObjectIfExists(String teamID) throws SQLException {
+        if (teamID.equals("")) {
+            return null;
+        }
+        return this.teamDAO.getByID( teamID );
     }
 }

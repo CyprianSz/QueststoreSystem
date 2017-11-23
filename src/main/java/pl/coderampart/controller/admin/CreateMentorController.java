@@ -8,6 +8,7 @@ import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.MentorDAO;
 import pl.coderampart.controller.PasswordHasher;
 import pl.coderampart.controller.helpers.HelperController;
+import pl.coderampart.controller.helpers.Validator;
 import pl.coderampart.model.Group;
 import pl.coderampart.model.Mentor;
 import java.io.*;
@@ -17,7 +18,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CreateMentorController implements HttpHandler {
@@ -27,6 +27,7 @@ public class CreateMentorController implements HttpHandler {
     private HelperController helper;
     private PasswordHasher hasher;
     private GroupDAO groupDAO;
+    private Validator validator;
 
     private static Map<String, String> inputs = new HashMap<>();
 
@@ -38,11 +39,11 @@ public class CreateMentorController implements HttpHandler {
         this.mentorDAO = new MentorDAO(connection);
         this.groupDAO = new GroupDAO(connection);
         this.hasher = new PasswordHasher();
+        this.validator = new Validator(connection);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        System.out.println(inputs);
         String method = httpExchange.getRequestMethod();
         String response = "";
 
@@ -78,7 +79,7 @@ public class CreateMentorController implements HttpHandler {
         try {
             String hashedPassword = hasher.generateStrongPasswordHash( password );
             Group group = groupDAO.getByName( groupName );
-            Mentor newMentor = new Mentor( firstName, lastName, dateOfBirthObject, email, hashedPassword);
+            Mentor newMentor = new Mentor( firstName, lastName, dateOfBirthObject, email, hashedPassword );
             newMentor.setGroup( group );
 
             mentorDAO.create( newMentor );
@@ -88,7 +89,7 @@ public class CreateMentorController implements HttpHandler {
     }
 
 
-    public String renderCreateMentor(Map<String, String> inputs) throws IOException {
+    private String renderCreateMentor(Map<String, String> inputs) throws IOException {
         if (inputs.isEmpty()) {
             return helper.render("admin/createMentor");
         }
@@ -96,8 +97,8 @@ public class CreateMentorController implements HttpHandler {
     }
 
 
-    public String checkIfCreateMentor(Map<String, String> inputs) throws IOException {
-        if (validateData(inputs) == true) {
+    private String checkIfCreateMentor(Map<String, String> inputs) throws IOException {
+        if (this.validator.validateData(inputs) == true) {
             createMentor(inputs);
             return helper.render("admin/createMentor");
         }
@@ -105,34 +106,17 @@ public class CreateMentorController implements HttpHandler {
     }
 
 
-    public boolean validateData(Map<String, String> inputs) throws IOException {
-        String dateOfBirth = inputs.get("date-of-birth");
-        String email = inputs.get("email");
-        String groupName = inputs.get("group");
-
-        return helper.checkDateRegex(dateOfBirth).equals(dateOfBirth)
-                && helper.checkEmailRegex(email).equals(email)
-                && checkGroup(groupName).equals(groupName);
-    }
-
-    public String renderCreateWithMessages(Map<String, String> inputs) throws IOException {
-        String templatePath = "templates/admin/createMentorWithExceptions.twig";
+    private String renderCreateWithMessages(Map<String, String> inputs) throws IOException {
+        String templatePath = "templates/admin/templatesWithValidations/createMentorWithValidation.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 
-        model.with("dateOfBirth", helper.checkDateRegex(inputs.get("date-of-birth")));
-        model.with("email", helper.checkEmailRegex(inputs.get("email")));
+        model.with("dateOfBirth", this.validator.checkDateRegex(inputs.get("date-of-birth")));
+        model.with("email", this.validator.checkEmailRegex(inputs.get("email")));
         model.with("firstName", inputs.get("first-name"));
         model.with("lastName", inputs.get("last-name"));
         model.with("password", inputs.get("password"));
-        model.with("groupName", checkGroup(inputs.get("group")));
+        model.with("groupName", this.validator.checkGroup(inputs.get("group")));
         return template.render(model);
-    }
-
-    public String checkGroup(String groupName) {
-        if( helper.getGroupByName(groupName) == null ) {
-            return "Group doesn't exist";
-        }
-        return helper.getGroupByName(groupName).getName();
     }
 }

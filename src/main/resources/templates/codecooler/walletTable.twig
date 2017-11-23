@@ -1,0 +1,34 @@
+<div id="main-container">
+
+    <div id="items-list">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>name</th>
+                <th>type</th>
+                <th>value</th>
+                <th>creation date</th>
+                <th>is spent</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for item in userItemsList %}
+            <tr>
+                <td>{{ item.artifact.name }}</td>
+                <td>{{ item.artifact.type }}</td>
+                <td>{{ item.artifact.value }}</td>
+                <td>{{ item.dateToString() }}</td>
+
+                {% if item.isSpent == true %}
+                    <td><input type="checkbox" checked disabled></td>
+                {% else %}
+                    <td><input type="checkbox" disabled></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>

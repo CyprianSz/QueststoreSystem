@@ -18,99 +18,46 @@ public class EditTeamController implements HttpHandler {
 
     private Connection connection;
     private TeamDAO teamDAO;
-    private HelperController helperController;
+    private HelperController helper;
 
     public EditTeamController(Connection connection) {
         this.connection = connection;
-        this.teamDAO = new TeamDAO(this.connection);
-        this.helperController = new HelperController(connection);
+        this.teamDAO = new TeamDAO(connection);
+        this.helper = new HelperController(connection);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String response = "";
-
-        String[] uri = httpExchange.getRequestURI().toString().split("=");
-        String id = uri[uri.length-1];
-
-        List<Team> allTeams = readTeamsFromDB();
+        List<Team> allTeams = helper.readTeamsFromDB();
+        String teamID = helper.getIdFromURI( httpExchange );
+        Team team = helper.getTeamById( teamID );
 
         if(method.equals("GET")) {
-            response += helperController.renderHeader(httpExchange, connection);
-            response += helperController.render("mentor/mentorMenu");
-            String responseTemp = renderTeamsList(allTeams);
+            String response = "";
+            response += helper.renderHeader(httpExchange, connection);
+            response += helper.render("mentor/mentorMenu");
+            response += renderProperBodyResponse(teamID, allTeams);
+            response += helper.render("footer");
 
-            if(id.length()==36){
-                Team teamToChange = getTeamByID(id);
-                responseTemp = renderEditTeam(teamToChange, allTeams);
-            }
-            response += responseTemp;
-            response += helperController.render("footer");
-
-            httpExchange.sendResponseHeaders(200, response.getBytes().length);
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            helper.sendResponse( response, httpExchange );
         }
 
         if(method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-
-            Map inputs = helperController.parseFormData(formData);
-
-            editTeam(inputs, id);
-
-            helperController.redirectTo( "/team/edit", httpExchange );
-        }
-
-    }
-
-    private List<Team> readTeamsFromDB() {
-        List<Team> allTeams = null;
-
-        try {
-            allTeams = teamDAO.readAll();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return allTeams;
-    }
-
-    private Team getTeamByID(String id) {
-        Team teamToChange = null;
-        try {
-            teamToChange = teamDAO.getByID(id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return teamToChange;
-    }
-
-    private void editTeam(Map inputs, String id){
-        String name = String.valueOf(inputs.get("team-name"));
-
-        Team teamToChange = getTeamByID(id);
-
-        if (teamToChange != null) {
-            teamToChange.setName(name);
-            try{
-                teamDAO.update(teamToChange);
-            } catch (SQLException se){
-                se.printStackTrace();
-            }
+            Map inputs = helper.getInputsMap(httpExchange);
+            editTeam(inputs, team);
+            helper.redirectTo( "/team/edit", httpExchange );
         }
     }
-    private String renderTeamsList(List<Team> allTeams) {
-        String templatePath = "templates/mentor/editTeam.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
-        JtwigModel model = JtwigModel.newModel();
 
-        model.with("allTeams", allTeams);
-
-        return template.render(model);
+    private String renderProperBodyResponse(String teamID, List<Team> allTeams) {
+        Integer idLength = 36;
+        if(teamID.length() == idLength) {
+            Team teamToEdit = helper.getTeamById(teamID);
+            return renderEditTeam(teamToEdit, allTeams);
+        } else {
+            return renderTeamEmptyForm(allTeams);
+        }
     }
 
     private String renderEditTeam(Team team, List<Team> allTeams) {
@@ -122,5 +69,26 @@ public class EditTeamController implements HttpHandler {
         model.with("teamName", team.getName());
 
         return template.render(model);
+    }
+
+    private String renderTeamEmptyForm(List<Team> allTeams) {
+        String templatePath = "templates/mentor/editTeam.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allTeams", allTeams);
+
+        return template.render(model);
+    }
+
+    private void editTeam(Map<String, String> inputs, Team team) {
+        String name = inputs.get("team-name");
+
+        try {
+            team.setName(name);
+            teamDAO.update( team );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
