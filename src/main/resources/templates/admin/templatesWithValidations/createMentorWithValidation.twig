@@ -1,0 +1,35 @@
+
+
+<div id="main-container">
+    <div id="user-form-container">
+        <form method="POST">
+            <div class="user-form">
+                <input type="text" name="first-name" id="first-name" value="{{ firstName }}" required>
+            </div>
+
+            <div class="user-form">
+                <input type="text" name="last-name" id="last-name" value="{{ lastName }}" required>
+            </div>
+
+            <div class="user-form">
+                <input type="text" name="date-of-birth" id="date-of-birth" value="{{ dateOfBirth }}" required>
+            </div>
+
+            <div class="user-form">
+                <input type="text" name="email" id="email" value="{{ email }}" required>
+            </div>
+
+            <div class="user-form">
+                <input type="password" name="password" id="password" value="{{ password }}" required>
+            </div>
+
+            <div class="user-form">
+                <input type="text" name="group" id="group" value="{{ groupName }}" required>
+            </div>
+
+            <div id="user-form-button">
+                <input type="submit" value="CREATE MENTOR">
+            </div>
+        </form>
+    </div>
+</div>

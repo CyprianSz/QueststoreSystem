@@ -6,6 +6,7 @@ import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.*;
 import pl.coderampart.model.*;
 
+import javax.print.DocFlavor;
 import java.io.*;
 import java.net.URLDecoder;
 import java.sql.Connection;
@@ -301,6 +302,15 @@ public class HelperController {
             return questDAO.readAll();
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Group getGroupByName(String groupName) {
+        try {
+            return groupDAO.getByName(groupName);
+        } catch (SQLException se) {
+            se.printStackTrace();
             return null;
         }
     }
