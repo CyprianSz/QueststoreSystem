@@ -18,6 +18,7 @@ li a {
 .nav {
     width: 100%;
     margin: 0 auto;
+    margin-bottom: 0.5em;
     background: white;
     border: solid 3px #675f6b ;
     border-radius: 10px;
@@ -116,14 +117,15 @@ li a {
 }
 
 #main-container-edit, #main-container-delete {
-    height: 400px;
-    margin-left: -1em;
+    margin-left: -1.8em;
     display: flex;
     justify-content: left;
+    margin-bottom: 3em;
 }
 #main-container{
-    height: 400px;
+    height: auto;
     margin-left: -1em;
+    margin-bottom: 3em;
     display: flex;
 }
 
@@ -161,7 +163,6 @@ li a {
 
 #sub-container-form {
     padding: 3em;
-    align-items: center;
     display:flex;
     justify-content: center;
 }
