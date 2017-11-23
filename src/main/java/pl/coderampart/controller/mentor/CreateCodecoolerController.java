@@ -15,6 +15,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 public class CreateCodecoolerController implements HttpHandler {
@@ -35,13 +36,16 @@ public class CreateCodecoolerController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+
+        List<Group> allGroups = helper.readGroupsFromDB();
+
         String response = "";
         String method = httpExchange.getRequestMethod();
 
         if (method.equals( "GET" )) {
             response += helper.renderHeader( httpExchange, connection );
             response += helper.render( "mentor/mentorMenu" );
-            response += helper.render( "mentor/createCodecooler" );
+            response += helper.renderWithDropdownGroups( "mentor/createCodecooler", allGroups );
             response += helper.render( "footer" );
 
             helper.sendResponse( response, httpExchange );
