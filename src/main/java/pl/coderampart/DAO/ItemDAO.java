@@ -53,8 +53,6 @@ public class ItemDAO extends AbstractDAO {
         return itemList;
     }
 
-
-
     public void create(Item item) throws SQLException {
 
         String query = "INSERT INTO items (artifact_id, wallet_id, creation_date, is_spent, id) VALUES (?, ?, ?, ?, ?);";
@@ -62,8 +60,6 @@ public class ItemDAO extends AbstractDAO {
         PreparedStatement setStatement = setPreparedStatement(statement, item);
         statement.executeUpdate();
     }
-
-
 
     public void update(Item item) throws SQLException {
 

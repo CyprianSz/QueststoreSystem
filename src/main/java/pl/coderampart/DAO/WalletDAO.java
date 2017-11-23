@@ -16,8 +16,6 @@ public class WalletDAO extends AbstractDAO {
         connection = connectionToDB;
     }
 
-    public ArrayList<Item> readItemsByUserID(String ID)
-
     public Wallet getByID(String ID) throws SQLException {
 
         Wallet wallet = null;
