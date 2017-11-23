@@ -25,31 +25,42 @@ public class Application {
 
         server.createContext("/logout", new Logout(connection));
         server.createContext("/login", new Login(connection));
+
         server.createContext("/mentor/create", new CreateMentorController(connection));
-        server.createContext("/mentor/edit", new EditMentorController(connection));
         server.createContext("/mentor/display", new DisplayMentorsController(connection));
+        server.createContext("/mentor/edit", new EditMentorController(connection));
         server.createContext("/mentor/delete", new DeleteMentorController(connection));
+
         server.createContext("/group/create", new CreateGroupController(connection));
         server.createContext("/group/display", new DisplayGroupsController(connection));
         server.createContext("/group/edit", new EditGroupController(connection));
         server.createContext("/group/delete", new DeleteGroupController(connection));
+
         server.createContext("/level/create", new CreateLevelController(connection));
         server.createContext("/level/display", new DisplayLevelsController(connection));
         server.createContext("/level/edit", new EditLevelController(connection));
         server.createContext("/level/delete", new DeleteLevelController(connection));
+
         server.createContext("/team/create", new CreateTeamController(connection));
-        server.createContext("/team/edit", new EditTeamController(connection));
         server.createContext("/team/display", new DisplayTeamsController(connection));
+        server.createContext("/team/edit", new EditTeamController(connection));
         server.createContext("/team/delete", new DeleteTeamController(connection));
+
         server.createContext("/artifact/create", new CreateArtifactController(connection));
         server.createContext("/artifact/display", new DisplayArtifactsController(connection));
         server.createContext("/artifact/edit", new EditArtifactController(connection));
 //        server.createContext("/artifact/delete", new DeleteArtifactController(connection));
+
         server.createContext("/wallet/display", new DisplayWalletController(connection));
+        server.createContext("/codecooler/create", new CreateCodecoolerController(connection));
         server.createContext("/codecooler/display", new DisplayCodecoolersController(connection));
         server.createContext("/codecooler/edit", new EditCodecoolerController(connection));
+//        server.createContext("/codecooler/delete", new DeleteCodecoolerController(connection));
+
+        server.createContext("/quest/create", new CreateQuestController(connection));
         server.createContext("/quest/display", new DisplayQuestsController(connection));
         server.createContext("/quest/edit", new EditQuestController(connection));
+//        server.createContext("/quest/delete", new DeleteQuestController(connection));
 
         server.createContext("/static", new Static());
 

@@ -30,7 +30,7 @@ public class EditCodecoolerController implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        List<Codecooler> allCodecoolers= helper.readCodecoolersFromDB();
+        List<Codecooler> allCodecoolers = helper.readCodecoolersFromDB();
         String codecoolerID = helper.getIdFromURI( httpExchange );
         Codecooler codecooler = helper.getCodecoolerById( codecoolerID);
 
@@ -90,12 +90,14 @@ public class EditCodecoolerController implements HttpHandler {
         String lastName  = inputs.get("last-name");
         String email = inputs.get("email");
         String birthdate = inputs.get("birthdate");
-        LocalDate localDateObject = LocalDate.parse( birthdate );
+        LocalDate dateOfBirthObject = LocalDate.parse( birthdate );
+
         try {
             codecooler.setFirstName( firstName );
             codecooler.setLastName( lastName );
             codecooler.setEmail( email );
-            codecooler.setDateOfBirth( localDateObject );
+            codecooler.setDateOfBirth( dateOfBirthObject );
+
             codecoolerDAO.update( codecooler );
         } catch (SQLException e) {
             e.printStackTrace();

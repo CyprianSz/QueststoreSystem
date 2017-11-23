@@ -104,10 +104,17 @@ public class CodecoolerDAO extends AbstractDAO {
         statement.setString(6, codecooler.getWallet().getID());
         statement.setString(7, codecooler.getGroup().getID());
         statement.setString(8, codecooler.getLevel().getID());
-        statement.setString(9, codecooler.getTeam().getID());
+        statement.setString(9, setTeamIDIfExists(codecooler));
         statement.setString(10, codecooler.getID());
 
         return statement;
+    }
+
+    private String setTeamIDIfExists(Codecooler codecooler) throws SQLException {
+        if (codecooler.getTeam() == null) {
+            return "";
+        }
+        return codecooler.getTeam().getID();
     }
 
     public Codecooler createCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
@@ -125,9 +132,16 @@ public class CodecoolerDAO extends AbstractDAO {
         String levelID = resultSet.getString("level_id");
         Level levelObject = this.levelDAO.getByID(levelID);
         String teamID = resultSet.getString("team_ID");
-        Team teamObject = this.teamDAO.getByID(teamID);
+        Team teamObject = getTeamObjectIfExists(teamID);
 
         return new Codecooler(ID, firstName, lastName, dateOfBirthObject, email, password,
                              walletObject, groupObject, levelObject, teamObject);
+    }
+
+    private Team getTeamObjectIfExists(String teamID) throws SQLException {
+        if (teamID.equals("")) {
+            return null;
+        }
+        return this.teamDAO.getByID( teamID );
     }
 }
