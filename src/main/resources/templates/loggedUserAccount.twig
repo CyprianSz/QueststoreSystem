@@ -1,0 +1,29 @@
+<div id="sub-container-form">
+    <div id="user-form-container">
+        <form method="POST">
+            <div class="user-form">
+                <label for="first-name">first name</label>
+                <input type="text" name="first-name" id="first-name" value="{{ firstName }}">
+            </div>
+
+            <div class="user-form">
+                <label for="last-name">last name</label>
+                <input type="text" name="last-name" id="last-name" value="{{ lastName }}">
+            </div>
+
+            <div class="user-form">
+                <label for="email">email</label>
+                <input type="text" name="email" id="email" value="{{ email }}">
+            </div>
+
+            <div class="user-form">
+                <label for="birthdate">birthdate</label>
+                <input type="text" name="birthdate" id="birthdate" value="{{ dateOfBirth }}">
+            </div>
+
+            <div id="user-form-button">
+                <input type="submit" value="SAVE CHANGES">
+            </div>
+        </form>
+    </div>
+</div>
