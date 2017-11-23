@@ -62,7 +62,7 @@ public class Application {
         server.createContext("/quest/edit", new EditQuestController(connection));
         server.createContext("/quest/delete", new DeleteQuestController(connection));
 
-        server.createContext("/wallet/level-info", new DisplayUserLevel(connection));2
+        server.createContext("/wallet/level-info", new DisplayUserLevel(connection));
         server.createContext("/static", new Static());
 
 //        server.createContext("/buy-artifact", new ?(connection));
