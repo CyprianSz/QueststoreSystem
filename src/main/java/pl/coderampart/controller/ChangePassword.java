@@ -15,6 +15,8 @@ import pl.coderampart.model.Session;
 import pl.coderampart.services.Loggable;
 
 import java.io.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,6 +28,7 @@ public class ChangePassword implements HttpHandler {
     private AdminDAO adminDAO;
     private CodecoolerDAO codecoolerDAO;
     private MentorDAO mentorDAO;
+    private PasswordHasher hasher;
     private HelperController helper;
 
     public ChangePassword(Connection connection) {
@@ -34,6 +37,7 @@ public class ChangePassword implements HttpHandler {
         this.codecoolerDAO = new CodecoolerDAO( connection );
         this.mentorDAO = new MentorDAO( connection );
         this.helper = new HelperController( connection );
+        this.hasher = new PasswordHasher();
     }
 
     @Override
@@ -64,9 +68,29 @@ public class ChangePassword implements HttpHandler {
     }
 
     private void changePassword(Map<String, String> inputs, Loggable loggable) {
-        String currentPassword = inputs.get(  )
+        String currentPassword = inputs.get( "current-password" );
+        String newPassword = inputs.get( "new-password" );
+        String newPasswordConfirmation = inputs.get( "new-password-confirmation" );
+        String storedPassword = loggable.getPassword();
+        String userType = loggable.getType();
 
-        boolean isCurrentPasswordValid = validateCurrentPassword()
+        try {
+            boolean isCurrentPasswordValid = hasher.validatePassword(currentPassword, storedPassword);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+    private boolean validateCurrentPassword(String currentPassword) {
+        try {
+            return hasher.validatePassword(currentPassword, storedPassword);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
