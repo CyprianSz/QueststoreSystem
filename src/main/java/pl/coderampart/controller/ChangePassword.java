@@ -64,7 +64,9 @@ public class ChangePassword implements HttpHandler {
     }
 
     private void changePassword(Map<String, String> inputs, Loggable loggable) {
+        String currentPassword = inputs.get(  )
 
+        boolean isCurrentPasswordValid = validateCurrentPassword()
     }
 
 }
