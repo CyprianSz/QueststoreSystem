@@ -9,10 +9,14 @@
     <link rel="stylesheet" href="/static/css/walletTable.css">
     <link rel="stylesheet" href="/static/css/styleEditMentor.css">
     <link rel="stylesheet" href="/static/css/verticalMenuStyle.css">
+    <link rel="stylesheet" href="/static/css/flashNote.css">
 </head>
 <body>
 
+    {{ flashNote }}
+
 <div id="header-container">
+
     <header>
         <div id="logo">
             <img src="/static/img/logo.png" alt="logo">
@@ -22,7 +26,7 @@
             <p>by CodeRampart</p>
         </div>
         <div id="logged-user">
-            <h2 id="user-name">{{ firstName }} {{ lastName }}</h2>
+            <h2 id="user-name"><a id="account" href="/account">{{ firstName }} {{ lastName }}</a></h2>
             <p>{{ userType }}</p>
             <p>
                 {#<a id="logout" href="/logout" input type="submit" >logout</a>#}

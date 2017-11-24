@@ -37,6 +37,23 @@ public abstract class AbstractUser {
     public String getEmail() { return this.email; }
     public String getPassword() { return this.password; }
     public LocalDate getDateOfBirth() { return this.dateOfBirth; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public String toString() {
         String userData = "\nID: " + this.getID()
