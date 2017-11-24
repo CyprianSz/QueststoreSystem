@@ -36,13 +36,13 @@
                 </div>
 
                 <div class="user-form">
-                    <label for="birthdate">birthdate</label>
-                    <input type="text" name="birthdate" id="birthdate" value="{{ dateOfBirth }}" required
+                    <label for="date-of-birth">date of birth</label>
+                    <input type="text" name="date-of-birth" id="date-of-birth" value="{{ dateOfBirth }}" required
                            pattern="^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"
                            title="YYYY-MM-DD">
                 </div>
 
-                <div class="user-form">
+                <div class="dropdown">
                     <label for="group">group</label>
                     <input type="text" name="group" id="group" list="groups" value="{{ groupName }}">
                     <datalist id="groups">
