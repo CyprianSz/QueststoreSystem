@@ -1,5 +1,6 @@
 package pl.coderampart.DAO;
 
+import com.sun.org.apache.regexp.internal.RE;
 import pl.coderampart.model.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,6 +42,19 @@ public class TeamDAO extends AbstractDAO {
         String query = "SELECT * FROM teams WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, ID);
+        ResultSet resultSet = statement.executeQuery();
+
+        team = this.createTeamFromResultSet(resultSet);
+
+        return team;
+    }
+
+    public Team getByName(String name) throws SQLException {
+        Team team = null;
+
+        String query = "SELECT * FROM teams WHERE name = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, name);
         ResultSet resultSet = statement.executeQuery();
 
         team = this.createTeamFromResultSet(resultSet);
