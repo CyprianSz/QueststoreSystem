@@ -12,6 +12,6 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 
-#items-list, #level-table {
+#items-list, #level-table, #fundraisings-list {
     padding-top: 3em;
 }
