@@ -40,6 +40,15 @@ public class AdminDAO extends AbstractDAO {
         return adminList;
     }
 
+    public Admin getByID(String ID) throws SQLException {
+
+        String query = "SELECT * FROM admins WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, ID);
+        ResultSet resultSet = statement.executeQuery();
+
+        return this.createAdminFromResultSet(resultSet);
+    }
 
     public void create(Admin admin) throws SQLException {
         String query = "INSERT INTO admins (first_name, last_name, email, password, date_of_birth, id) "

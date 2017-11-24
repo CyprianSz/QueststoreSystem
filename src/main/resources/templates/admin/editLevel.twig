@@ -21,17 +21,19 @@
             <form method="POST">
                 <div class="user-form">
                     <label for="rank">rank</label>
-                    <input type="text" name="rank" id="rank" value={{ rank }}>
+                    <input type="text" name="rank" id="rank" value="{{ rank }}" required
+                           pattern="^[0-9]+$" title="It's not a digit">
                 </div>
 
                 <div class="user-form">
                     <label for="required-experience">required experience</label>
-                    <input type="text" name="required-experience" id="required-experience" value={{ requiredExperience }}>
+                    <input type="text" name="required-experience" id="required-experience" value="{{ requiredExperience }}" required
+                           pattern="^[0-9]+$" title="It's not a digit">
                 </div>
 
                 <div class="user-form">
                     <label for="description">description</label>
-                    <input type="text" name="description" id="description" value="{{ description }}">
+                    <input type="text" name="description" id="description" value="{{ description }}" required>
                 </div>
 
                 <div id="user-form-button">

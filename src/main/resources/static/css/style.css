@@ -12,6 +12,11 @@ body {
     text-decoration: underline;
 }
 
+#header-container a {
+    color: black;
+    text-decoration: none;
+}
+
 #header-container {
     display: flex;
 }
@@ -59,15 +64,24 @@ header {
     align-items: center;
     display: flex;
 }
-#logout {
+button[name="logout"] {
+    color: black;
+    background-color: white;
+    border-radius: 5px;
     text-decoration: none;
-    color: #000000;
+    border: solid 3px #675f6b ;
+    padding: 1em;
+    padding-bottom: 0.3em;
+    padding-top: 0.3em;
 }
-#logout:hover {
-    color: #000000;
-    text-decoration: underline;
+button[name="logout"]:hover {
+    background: #675f6b ;
+    transition: .3s ease;
 }
-
+a[name="logout"] {
+    text-decoration: none;
+    color: black;
+}
 #radio-form {
     border: solid 3px #675f6b ;
     display: inline-block;
@@ -176,4 +190,38 @@ input[type=submit]:hover {
 
 .edit-text-fields {
     text-align: right;
+}
+
+#change-password-link {
+    padding-left: 4.5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: underline;
+}
+
+/*#change-password-link a:hover{*/
+    /*padding-left: 4.5em;*/
+    /*padding-top: 0.5em;*/
+    /*color: black;*/
+    /*text-decoration: none;*/
+/*}*/
+
+#user-form-button a {
+    padding-left: 5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: none;
+    position: absolute;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#user-form-button a:hover {
+    padding-left: 5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: underline;
+    position: absolute;
+    font-size: 0.9em;
+    font-weight: bold;
 }

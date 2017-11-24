@@ -1,34 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create level</title>
-    <script src="https://www.w3schools.com/lib/w3.js"></script>
-    <link rel="stylesheet" href="static/css/styleEditMentor.css">
-    <link rel="stylesheet" href="static/css/menu.css">
-    <link rel="stylesheet" href="static/css/style.css">
-
-</head>
-
-<body>
-
-<div id="header-container" w3-include-html="../template/header.html"></div>
-
-<div w3-include-html="../template/adminMenu.html"></div>
-
 <div id="main-container">
     <div id="user-form-container">
         <form method="POST">
             <div class="user-form">
-                <input type="text" name="rank" id="rank" placeholder="rank">
+                <input type="text" name="rank" id="rank" placeholder="rank" required
+                       pattern="^[0-9]+$" title="It's not a digit">
             </div>
 
             <div class="user-form">
-                <input type="text" name="required-experience" id="required-experience" placeholder="required experience">
+                <input type="text" name="required-experience" id="required-experience" placeholder="required experience" required
+                       pattern="^[0-9]+$" title="It's not a digit">
             </div>
 
             <div class="user-form">
-                <input type="text" name="description" id="description" placeholder="description">
+                <input type="text" name="description" id="description" placeholder="description" required>
             </div>
 
             <div id="user-form-button">
@@ -37,4 +21,3 @@
         </form>
     </div>
 </div>
-</body>

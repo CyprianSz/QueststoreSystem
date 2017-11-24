@@ -3,19 +3,20 @@
     <div id="user-form-container">
         <form method="POST">
             <div class="user-form">
-                <input type="text" name="name" id="name" placeholder="name">
+                <input type="text" name="name" id="name" placeholder="name" required>
             </div>
 
             <div class="user-form">
-                <input type="text" name="description" id="description" placeholder="description">
+                <input type="text" name="description" id="description" placeholder="description" required>
             </div>
 
             <div class="user-form">
-                <input type="text" name="value" id="value" placeholder="value">
+                <input type="text" name="value" id="value" placeholder="value" required
+                       pattern="^[0-9]+$" title="It's not a digit">
             </div>
 
             <div id="radio-form">
-                <input type="radio" id="single" name="type" value="single"><label for="single">single</label>
+                <input type="radio" id="single" name="type" value="single" checked><label for="single">single</label>
                 <input type="radio" id="group" name="type" value="group"><label for="group">group</label>
             </div>
             <br>

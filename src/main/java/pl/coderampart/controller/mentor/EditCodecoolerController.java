@@ -34,7 +34,7 @@ public class EditCodecoolerController implements HttpHandler {
         String codecoolerID = helper.getIdFromURI( httpExchange );
         Codecooler codecooler = helper.getCodecoolerById( codecoolerID);
 
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             String response = "";
             response += helper.renderHeader(httpExchange, connection);
             response += helper.render("mentor/mentorMenu");
@@ -44,7 +44,7 @@ public class EditCodecoolerController implements HttpHandler {
             helper.sendResponse( response, httpExchange );
         }
 
-        if(method.equals("POST")) {
+        if (method.equals("POST")) {
             Map inputs = helper.getInputsMap(httpExchange);
             editCodecooler(inputs, codecooler);
             helper.redirectTo( "/codecooler/edit", httpExchange );
