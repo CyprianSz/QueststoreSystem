@@ -92,7 +92,7 @@ public class Login implements HttpHandler{
         } else {
             flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
         }
-        redirectTo("/login", httpExchange);
+        helper.redirectTo("/login", httpExchange);
     }
 
     private Loggable getLoggedUserFromInputs(Map<String, String> inputs) {

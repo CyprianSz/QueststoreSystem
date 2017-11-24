@@ -58,7 +58,7 @@ public class DeleteCodecoolerController implements HttpHandler {
     private String renderProperBodyResponse(String codecoolerID, List<Codecooler> allCodecoolers) {
         Integer idLength = 36;
         if(codecoolerID.length() == idLength) {
-            Codecooler codecoolerToDelete = helper.getCodecoolerById(codecoolerID);
+            Codecooler codecoolerToDelete = helper.getCodecoolerByID(codecoolerID);
             return renderConfirmation(codecoolerToDelete, allCodecoolers);
         } else {
             return renderTeamsList(allCodecoolers);
