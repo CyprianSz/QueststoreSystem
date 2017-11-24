@@ -8,7 +8,6 @@ import pl.coderampart.model.*;
 import pl.coderampart.services.Loggable;
 
 import java.io.*;
-import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -29,6 +28,7 @@ public class HelperController {
     private QuestDAO questDAO;
     private CodecoolerDAO codecoolerDAO;
     private ItemDAO itemDAO;
+    private FlashNoteHelper flashNoteHelper;
 
     public HelperController(Connection connection) {
         this.connection = connection;
@@ -41,6 +41,7 @@ public class HelperController {
         this.questDAO = new QuestDAO(connection);
         this.codecoolerDAO = new CodecoolerDAO(connection);
         this.itemDAO = new ItemDAO(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     private Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
@@ -75,50 +76,39 @@ public class HelperController {
     public String renderHeader(HttpExchange httpExchange, Connection connection) {
         Session currentSession = getCurrentSession(httpExchange, connection);
         Map<String, String> cookiesMap = createCookiesMap(httpExchange);
+        String controllerName = flashNoteHelper.getControllerNameFromURI(httpExchange);
 
         String templatePath = "templates/header.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();
 
-        if (cookiesMap.containsKey( "flashNote" )) {
-            String flashNote = cookiesMap.get( "flashNote" );
-            String divID = cookiesMap.get( "divID" );
-            model.with("flashNote", createFlashNoteHTMLMessage( flashNote, divID ));
-            clearUsedFlashNoteCookie(httpExchange);
-        }
-
         model.with("firstName", currentSession.getUserFirstName());
         model.with("lastName", currentSession.getUserLastName());
         model.with("userType", currentSession.getUserType());
 
+        if (cookiesMap.containsKey( controllerName + "flashNote" )) {
+            flashNoteHelper.modelFlashNote(cookiesMap, model, httpExchange);
+            flashNoteHelper.clearUsedFlashNoteCookie( httpExchange );
+        }
+
         return template.render(model);
     }
 
-    private void clearUsedFlashNoteCookie(HttpExchange httpExchange) {
-        HttpCookie cookie = new HttpCookie("flashNote", "");
-        httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
-    }
 
-    public void addSuccessFlashNoteDataToCookie(String flashNote, HttpExchange httpExchange) {
-        HttpCookie divID = new HttpCookie("divID", "flashNote");
-        httpExchange.getResponseHeaders().add("Set-Cookie", divID.toString());
+    public String renderLogin(HttpExchange httpExchange) {
+        Map<String, String> cookiesMap = createCookiesMap(httpExchange);
+        String controllerName = flashNoteHelper.getControllerNameFromURI(httpExchange);
 
-        HttpCookie cookie = new HttpCookie("flashNote", flashNote);
-        httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
-    }
+        String templatePath = "templates/login.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel model = JtwigModel.newModel();
 
-    public void addFailureFlashNoteDataToCookie(HttpExchange httpExchange) {
-        String failureNote = "Ups... Something gone really wrong ! OPERATION UNSUCCESSFUL";
+        if (cookiesMap.containsKey( controllerName + "flashNote" )) {
+            flashNoteHelper.modelFlashNote( cookiesMap, model, httpExchange );
+            flashNoteHelper.clearUsedFlashNoteCookie( httpExchange );
+        }
 
-        HttpCookie divID = new HttpCookie("divID", "negativeFlashNote");
-        httpExchange.getResponseHeaders().add("Set-Cookie", divID.toString());
-
-        HttpCookie cookie = new HttpCookie("flashNote", failureNote);
-        httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
-    }
-
-    private String createFlashNoteHTMLMessage(String flashNote, String divID) {
-        return "<div id=\"" + divID + "\">" + flashNote + "</div>";
+        return template.render(model);
     }
 
     public Session getCurrentSession(HttpExchange httpExchange, Connection connection) {
