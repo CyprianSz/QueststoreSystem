@@ -2,10 +2,12 @@ package pl.coderampart.controller.admin;
 
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
+import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.MentorDAO;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import pl.coderampart.controller.helpers.HelperController;
+import pl.coderampart.model.Group;
 import pl.coderampart.model.Mentor;
 
 import java.io.*;
@@ -18,11 +20,13 @@ public class EditMentorController implements HttpHandler {
 
     private Connection connection;
     private MentorDAO mentorDAO;
+    private GroupDAO groupDAO;
     private HelperController helper;
 
     public EditMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(connection);
+        this.groupDAO = new GroupDAO(connection);
         this.helper = new HelperController(connection);
     }
 
@@ -61,6 +65,7 @@ public class EditMentorController implements HttpHandler {
     }
 
     private String renderEditMentor(Mentor mentor, List<Mentor> allMentors) {
+        List<Group> allGroups = helper.readGroupsFromDB();
         String templatePath = "templates/admin/editMentor.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
@@ -70,6 +75,8 @@ public class EditMentorController implements HttpHandler {
         model.with("lastName", mentor.getLastName());
         model.with("email", mentor.getEmail());
         model.with("dateOfBirth", mentor.getDateOfBirth());
+        model.with("groupName", mentor.getGroup().getName());
+        model.with("allGroups", allGroups);
 
         return template.render(model);
     }
@@ -88,13 +95,16 @@ public class EditMentorController implements HttpHandler {
         String lastName= inputs.get("last-name");
         String dateOfBirth = inputs.get("date-of-birth");
         String email = inputs.get("email");
+        String groupName = inputs.get("group");
         LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
 
         try {
+            Group group = groupDAO.getByName( groupName );
             mentor.setFirstName( firstName );
             mentor.setLastName( lastName );
             mentor.setEmail( email );
             mentor.setDateOfBirth( dateOfBirthObject );
+            mentor.setGroup(group);
 
             mentorDAO.update( mentor );
         } catch (SQLException e) {

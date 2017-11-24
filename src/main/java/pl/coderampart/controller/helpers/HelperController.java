@@ -132,6 +132,31 @@ public class HelperController {
         return template.render(model);
     }
 
+    public String renderWithDropdownGroups(String fileName){
+        List<Group> allGroups = readGroupsFromDB();
+
+        String templatePath = "templates/" + fileName + ".twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allGroups", allGroups);
+
+        return template.render(model);
+    }
+
+    public String renderWithDropdowns(String fileName) {
+        List<Group> allGroups = readGroupsFromDB();
+        List<Team> allTeams = readTeamsFromDB();
+
+        String templatePath = "templates/" + fileName + ".twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+        model.with("allGroups", allGroups);
+        model.with("allTeams", allTeams);
+
+        return template.render(model);
+    }
+
     public void sendResponse(String response, HttpExchange httpExchange) throws IOException {
         httpExchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = httpExchange.getResponseBody();
@@ -241,15 +266,6 @@ public class HelperController {
     public Codecooler getCodecoolerByID(String ID) {
         try {
             return codecoolerDAO.getByID(ID);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public Codecooler getCodecoolerById(String id) {
-        try {
-            return codecoolerDAO.getByID( id );
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

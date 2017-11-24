@@ -5,8 +5,12 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.CodecoolerDAO;
+import pl.coderampart.DAO.GroupDAO;
+import pl.coderampart.DAO.TeamDAO;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Codecooler;
+import pl.coderampart.model.Group;
+import pl.coderampart.model.Team;
 
 import java.io.*;
 import java.sql.Connection;
@@ -19,10 +23,14 @@ public class EditCodecoolerController implements HttpHandler {
 
     private Connection connection;
     private CodecoolerDAO codecoolerDAO;
+    private GroupDAO groupDAO;
+    private TeamDAO teamDAO;
     private HelperController helper;
 
     public EditCodecoolerController(Connection connection) {
         this.connection = connection;
+        this.groupDAO = new GroupDAO(connection);
+        this.teamDAO = new TeamDAO(connection);
         this.codecoolerDAO = new CodecoolerDAO(connection);
         this.helper = new HelperController(connection);
     }
@@ -32,7 +40,7 @@ public class EditCodecoolerController implements HttpHandler {
         String method = httpExchange.getRequestMethod();
         List<Codecooler> allCodecoolers = helper.readCodecoolersFromDB();
         String codecoolerID = helper.getIdFromURI( httpExchange );
-        Codecooler codecooler = helper.getCodecoolerById( codecoolerID);
+        Codecooler codecooler = helper.getCodecoolerByID( codecoolerID );
 
         if (method.equals("GET")) {
             String response = "";
@@ -44,8 +52,8 @@ public class EditCodecoolerController implements HttpHandler {
             helper.sendResponse( response, httpExchange );
         }
 
-        if (method.equals("POST")) {
-            Map inputs = helper.getInputsMap(httpExchange);
+        if(method.equals("POST")) {
+            Map<String, String> inputs = helper.getInputsMap(httpExchange);
             editCodecooler(inputs, codecooler);
             helper.redirectTo( "/codecooler/edit", httpExchange );
         }
@@ -54,7 +62,7 @@ public class EditCodecoolerController implements HttpHandler {
     private String renderProperBodyResponse(String codecoolerID, List<Codecooler> allCodecoolers) {
         Integer idLength = 36;
         if(codecoolerID.length() == idLength) {
-            Codecooler codecoolerToEdit = helper.getCodecoolerById(codecoolerID);
+            Codecooler codecoolerToEdit = helper.getCodecoolerByID(codecoolerID);
             return renderEditCodecooler(codecoolerToEdit, allCodecoolers);
         } else {
             return renderCodecoolerEmptyForm(allCodecoolers);
@@ -62,6 +70,8 @@ public class EditCodecoolerController implements HttpHandler {
     }
 
     private String renderEditCodecooler(Codecooler codecooler, List<Codecooler> allCodecoolers) {
+        List<Group> allGroups = helper.readGroupsFromDB();
+        List<Team> allTeams = helper.readTeamsFromDB();
         String templatePath = "templates/mentor/editCodecooler.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
@@ -71,6 +81,10 @@ public class EditCodecoolerController implements HttpHandler {
         model.with("lastName", codecooler.getLastName());
         model.with("email", codecooler.getEmail());
         model.with("dateOfBirth", codecooler.getDateOfBirth());
+        model.with("groupName", codecooler.getGroup().getName());
+        model.with("teamName", codecooler.getTeam().getName());
+        model.with("allGroups", allGroups);
+        model.with("allTeams", allTeams);
 
         return template.render(model);
     }
@@ -90,13 +104,19 @@ public class EditCodecoolerController implements HttpHandler {
         String lastName  = inputs.get("last-name");
         String email = inputs.get("email");
         String birthdate = inputs.get("birthdate");
+        String groupName = inputs.get("group");
+        String teamName = inputs.get("team");
         LocalDate dateOfBirthObject = LocalDate.parse( birthdate );
 
         try {
+            Group group = groupDAO.getByName( groupName );
+            Team team = teamDAO.getByName( teamName );
             codecooler.setFirstName( firstName );
             codecooler.setLastName( lastName );
             codecooler.setEmail( email );
             codecooler.setDateOfBirth( dateOfBirthObject );
+            codecooler.setGroup(group);
+            codecooler.setTeam(team);
 
             codecoolerDAO.update( codecooler );
         } catch (SQLException e) {

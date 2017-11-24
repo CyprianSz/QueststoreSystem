@@ -53,15 +53,12 @@ public class CodecoolerDAO extends AbstractDAO {
 
     public Codecooler getByID(String ID) throws SQLException {
 
-        Codecooler codecooler = null;
         String query = "SELECT * FROM codecoolers WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, ID);
         ResultSet resultSet = statement.executeQuery();
 
-        codecooler = this.createCodecoolerFromResultSet(resultSet);
-
-        return codecooler;
+        return this.createCodecoolerFromResultSet(resultSet);
     }
 
 

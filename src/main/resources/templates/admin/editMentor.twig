@@ -21,7 +21,6 @@
             <form method="POST">
                 <div class="user-form">
                     <label for="first-name">first name</label>
-
                     <input type="text" name="first-name" id="first-name" value="{{ firstName }}" required>
                 </div>
 
@@ -41,6 +40,16 @@
                     <input type="text" name="date-of-birth" id="date-of-birth" value="{{ dateOfBirth }}" required
                            pattern="^[12][09]\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$"
                            title="YYYY-MM-DD">
+                </div>
+
+                <div class="dropdown">
+                    <label for="group">group</label>
+                    <input type="text" name="group" id="group" list="groups" value="{{ groupName }}">
+                    <datalist id="groups">
+                        {% for group in allGroups %}
+                            <option value="{{ group.name }}"></option>
+                        {% endfor %}
+                    </datalist>
                 </div>
 
                 <div id="user-form-button">
