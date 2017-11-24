@@ -7,19 +7,37 @@
     align-items: center;
     flex-direction: column;
 }
+
 #user-form-container-edit .user-form .dropdown label {
     float: right;
     max-width: 4em;
 }
 
-.user-form .dropdown{
+.user-form {
     justify-content: center;
     align-items: center;
     display: flex;
     margin-bottom: 0.12em;
 }
 
-.user-form .dropdown label {
+.dropdown {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-bottom: 0.12em;
+}
+
+.user-form  label {
+    color: #9a929e;
+    display: inline-block;
+    cursor: pointer;
+    min-width: 6em;
+    font-weight: bold;
+    padding: 1em 2em;
+    text-align: right;
+}
+
+.dropdown label {
     color: #9a929e;
     display: inline-block;
     cursor: pointer;
