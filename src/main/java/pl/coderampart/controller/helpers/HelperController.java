@@ -5,8 +5,8 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.*;
 import pl.coderampart.model.*;
+import pl.coderampart.services.Loggable;
 
-import javax.print.DocFlavor;
 import java.io.*;
 import java.net.URLDecoder;
 import java.sql.Connection;
@@ -20,6 +20,7 @@ public class HelperController {
 
     private Connection connection;
     private MentorDAO mentorDAO;
+    private AdminDAO adminDAO;
     private LevelDAO levelDAO;
     private GroupDAO groupDAO;
     private TeamDAO teamDAO;
@@ -27,10 +28,12 @@ public class HelperController {
     private QuestDAO questDAO;
     private CodecoolerDAO codecoolerDAO;
     private ItemDAO itemDAO;
+    private FlashNoteHelper flashNoteHelper;
 
     public HelperController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(connection);
+        this.adminDAO = new AdminDAO(connection);
         this.levelDAO = new LevelDAO(connection);
         this.groupDAO = new GroupDAO(connection);
         this.teamDAO = new TeamDAO(connection);
@@ -38,9 +41,10 @@ public class HelperController {
         this.questDAO = new QuestDAO(connection);
         this.codecoolerDAO = new CodecoolerDAO(connection);
         this.itemDAO = new ItemDAO(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
-    public Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
+    private Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
         for (String pair : pairs) {
@@ -69,22 +73,10 @@ public class HelperController {
         return cookiesMap;
     }
 
-    public String renderHeader(HttpExchange httpExchange) {
-        Map<String, String> cookiesMap = createCookiesMap(httpExchange);
-
-        String templatePath = "templates/header.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
-        JtwigModel model = JtwigModel.newModel();
-
-        model.with("firstName", cookiesMap.get("firstName"));
-        model.with("lastName", cookiesMap.get("lastName"));
-        model.with("userType", cookiesMap.get("typeOfUser"));
-
-        return template.render(model);
-    }
-
     public String renderHeader(HttpExchange httpExchange, Connection connection) {
         Session currentSession = getCurrentSession(httpExchange, connection);
+        Map<String, String> cookiesMap = createCookiesMap(httpExchange);
+        String controllerName = flashNoteHelper.getControllerNameFromURI(httpExchange);
 
         String templatePath = "templates/header.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
@@ -93,6 +85,28 @@ public class HelperController {
         model.with("firstName", currentSession.getUserFirstName());
         model.with("lastName", currentSession.getUserLastName());
         model.with("userType", currentSession.getUserType());
+
+        if (cookiesMap.containsKey( controllerName + "flashNote" )) {
+            flashNoteHelper.modelFlashNote(cookiesMap, model, httpExchange);
+            flashNoteHelper.clearUsedFlashNoteCookie( httpExchange );
+        }
+
+        return template.render(model);
+    }
+
+
+    public String renderLogin(HttpExchange httpExchange) {
+        Map<String, String> cookiesMap = createCookiesMap(httpExchange);
+        String controllerName = flashNoteHelper.getControllerNameFromURI(httpExchange);
+
+        String templatePath = "templates/login.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel model = JtwigModel.newModel();
+
+        if (cookiesMap.containsKey( controllerName + "flashNote" )) {
+            flashNoteHelper.modelFlashNote( cookiesMap, model, httpExchange );
+            flashNoteHelper.clearUsedFlashNoteCookie( httpExchange );
+        }
 
         return template.render(model);
     }
@@ -322,11 +336,26 @@ public class HelperController {
         }
     }
 
-    public Group getGroupByName(String groupName) {
+    public Loggable getLoggedUser(Session currentSession) {
+        String loggedUserID = currentSession.getUserID();
+        String loggedUserType = currentSession.getUserType();
+        Loggable loggedUser = null;
+
         try {
-            return groupDAO.getByName(groupName);
-        } catch (SQLException se) {
-            se.printStackTrace();
+            switch (loggedUserType) {
+                case "Admin":
+                    loggedUser = adminDAO.getByID( loggedUserID );
+                    break;
+                case "Mentor":
+                    loggedUser = mentorDAO.getByID( loggedUserID );
+                    break;
+                case "Codecooler":
+                    loggedUser = codecoolerDAO.getByID( loggedUserID );
+                    break;
+            }
+            return loggedUser;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }

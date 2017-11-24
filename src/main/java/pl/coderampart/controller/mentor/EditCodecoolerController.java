@@ -42,7 +42,7 @@ public class EditCodecoolerController implements HttpHandler {
         String codecoolerID = helper.getIdFromURI( httpExchange );
         Codecooler codecooler = helper.getCodecoolerByID( codecoolerID );
 
-        if(method.equals("GET")) {
+        if (method.equals("GET")) {
             String response = "";
             response += helper.renderHeader(httpExchange, connection);
             response += helper.render("mentor/mentorMenu");

@@ -12,6 +12,11 @@ body {
     text-decoration: underline;
 }
 
+#header-container a {
+    color: black;
+    text-decoration: none;
+}
+
 #header-container {
     display: flex;
 }
@@ -185,4 +190,38 @@ input[type=submit]:hover {
 
 .edit-text-fields {
     text-align: right;
+}
+
+#change-password-link {
+    padding-left: 4.5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: underline;
+}
+
+/*#change-password-link a:hover{*/
+    /*padding-left: 4.5em;*/
+    /*padding-top: 0.5em;*/
+    /*color: black;*/
+    /*text-decoration: none;*/
+/*}*/
+
+#user-form-button a {
+    padding-left: 5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: none;
+    position: absolute;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#user-form-button a:hover {
+    padding-left: 5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: underline;
+    position: absolute;
+    font-size: 0.9em;
+    font-weight: bold;
 }
