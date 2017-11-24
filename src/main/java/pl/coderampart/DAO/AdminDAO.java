@@ -16,16 +16,6 @@ public class AdminDAO extends AbstractDAO {
         connection = connectionToDB;
     }
 
-    public Admin getLogged(String email) throws SQLException {
-        String query = "SELECT * FROM admins WHERE email = ?;";
-
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, email);
-        ResultSet resultSet = statement.executeQuery();
-
-        return this.createAdminFromResultSet(resultSet);
-    }
-
     public ArrayList<Admin> readAll() throws SQLException{
         ArrayList<Admin> adminList = new ArrayList<>();
 
@@ -65,7 +55,6 @@ public class AdminDAO extends AbstractDAO {
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement setStatement = setPreparedStatement(statement, admin);
         setStatement.executeUpdate();
-
     }
 
     public void delete(Admin admin) throws SQLException{
