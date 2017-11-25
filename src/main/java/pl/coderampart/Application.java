@@ -18,8 +18,8 @@ public class Application {
 
     public static void main(String[] args) throws ClassNotFoundException, IOException, SQLException {
         Connection connection = ConnectionToDB.getConnection();
-
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+
         server.createContext("/logout", new Logout(connection));
         server.createContext("/login", new Login(connection));
 
