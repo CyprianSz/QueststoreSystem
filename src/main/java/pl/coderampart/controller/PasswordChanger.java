@@ -15,7 +15,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class ChangePassword implements HttpHandler {
+public class PasswordChanger implements HttpHandler {
 
     private Connection connection;
     private UserDAO userDAO;
@@ -23,7 +23,7 @@ public class ChangePassword implements HttpHandler {
     private HelperController helper;
     private FlashNoteHelper flashNoteHelper;
 
-    public ChangePassword(Connection connection) {
+    public PasswordChanger(Connection connection) {
         this.connection = connection;
         this.userDAO = new UserDAO( connection );
         this.hasher = new PasswordHasher();

@@ -1,6 +1,5 @@
 package pl.coderampart.DAO;
 
-import pl.coderampart.model.Admin;
 import pl.coderampart.services.Loggable;
 
 import java.sql.Connection;

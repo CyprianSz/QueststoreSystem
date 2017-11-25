@@ -7,6 +7,7 @@ import pl.coderampart.controller.codecooler.*;
 
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
+import pl.coderampart.controller.helpers.CookiesConfirmator;
 import pl.coderampart.controller.mentor.*;
 
 import java.io.IOException;
@@ -59,7 +60,8 @@ public class Application {
         server.createContext("/quest/edit", new EditQuestController(connection));
         server.createContext("/quest/delete", new DeleteQuestController(connection));
 
-        server.createContext("/change-password", new ChangePassword(connection));
+        server.createContext("/confirm-cookie-info", new CookiesConfirmator(connection));
+        server.createContext("/change-password", new PasswordChanger(connection));
         server.createContext("/account", new LoggedUserData(connection));
         server.createContext("/wallet/level-info", new DisplayUserLevel(connection));
         server.createContext("/static", new Static());

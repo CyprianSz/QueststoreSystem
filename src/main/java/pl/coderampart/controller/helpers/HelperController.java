@@ -108,6 +108,10 @@ public class HelperController {
             flashNoteHelper.clearUsedFlashNoteCookie( httpExchange );
         }
 
+        if (cookiesMap.containsKey( "cookieInfoConfirmation" )) {
+            model.with( "cookiesAccepted", true );
+        }
+
         return template.render(model);
     }
 

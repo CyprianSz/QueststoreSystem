@@ -32,6 +32,24 @@
     animation: slide 6s;
 }
 
+#cookiesNote {
+    font-weight: bold;
+    position: absolute;
+    padding-top: 1.6em;
+    padding-bottom: 1.6em;
+    z-index: 101;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(220, 220, 220, 0.97);
+    text-align: center;
+    line-height: 2em;
+    overflow: hidden;
+    -webkit-box-shadow: 0 0 5px black;
+    -moz-box-shadow:    0 0 5px black;
+    box-shadow:         0 0 5px black;
+}
+
 @-webkit-keyframes slide {
     0% { -webkit-transform: translateY(0); }
     20% { -webkit-transform: translateY(3em); }

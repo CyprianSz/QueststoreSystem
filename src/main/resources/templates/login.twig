@@ -59,5 +59,19 @@
         </footer>
     </div>
 
+    {% if cookiesAccepted == false %}
+        <div id="cookiesNote">
+            This site uses cookies. By continuing to browse the site you are agreeing to our use of cookies.
+            <br><a id="confirmation" href="/confirm-cookie-info">CONTINUE</a>
+
+            <script>
+                confirmation = document.getElementById("confirmation");
+                confirmation.addEventListener('click', function() {
+                    cookiesNote = document.getElementById("cookiesNote");
+                    cookiesNote.style.display = 'none';
+                }, false);
+            </script>
+        </div>
+    {% endif %}
 </body>
 </html>
