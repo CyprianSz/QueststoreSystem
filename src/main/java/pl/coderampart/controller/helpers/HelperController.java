@@ -314,7 +314,7 @@ public class HelperController {
         }
     }
 
-    public ArrayList<Codecooler> readCodecoolersFromDB() {
+    public List<Codecooler> readCodecoolersFromDB() {
         try {
             return codecoolerDAO.readAll();
         } catch (SQLException e) {

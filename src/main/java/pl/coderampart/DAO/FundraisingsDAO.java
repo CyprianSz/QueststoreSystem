@@ -25,7 +25,6 @@ public class FundraisingsDAO extends AbstractDAO {
     }
 
     public List<Fundraising> readAll() throws SQLException {
-
         List<Fundraising> fundraisingsList = new ArrayList<>();
 
         String query = "SELECT * FROM fundraisings;";
@@ -40,7 +39,6 @@ public class FundraisingsDAO extends AbstractDAO {
     }
 
     public Fundraising getByID(String ID) throws SQLException {
-
         String query = "SELECT * FROM fundraisings WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, ID);
@@ -50,14 +48,12 @@ public class FundraisingsDAO extends AbstractDAO {
     }
 
     public void create(Fundraising fundraising) throws SQLException {
-
         String query = "INSERT INTO fundraisings (id, artifact_id, name, creation_date, creator_id, is_open) " +
                        "VALUES (?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, fundraising);
-        setStatement.executeUpdate();
+        setPreparedStatement(statement, fundraising);
+        statement.executeUpdate();
     }
-
 
     public void delete(Fundraising fundraising) throws SQLException {
         String query = "DELETE FROM fundraisings WHERE id = ?;";
@@ -66,18 +62,16 @@ public class FundraisingsDAO extends AbstractDAO {
         statement.executeUpdate();
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Fundraising fundraising) throws SQLException {
+    private void setPreparedStatement(PreparedStatement statement, Fundraising fundraising) throws SQLException {
         statement.setString(1, fundraising.getID());
         statement.setString(2, fundraising.getArtifact().getID());
         statement.setString(3, fundraising.getName());
         statement.setString(4, fundraising.getCreationDate().toString());
         statement.setString(5, fundraising.getCreator().getID());
         statement.setBoolean(6, fundraising.getIsOpen());
-
-        return statement;
     }
 
-    public Fundraising createFundraisingFromResultSet(ResultSet resultSet) throws SQLException {
+    private Fundraising createFundraisingFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String artifactID = resultSet.getString( "artifact_id" );
         Artifact artifact = artifactDAO.getByID(artifactID);
@@ -86,7 +80,6 @@ public class FundraisingsDAO extends AbstractDAO {
         LocalDate creationDateObject = LocalDate.parse(creationDate);
         String creatorID = resultSet.getString("creator_id");
         Codecooler creator = codecoolerDAO.getByID(creatorID);
-
         Boolean isOpen = resultSet.getBoolean( "is_open" );
 
         return new Fundraising(ID, artifact, name, creationDateObject, creator, isOpen);

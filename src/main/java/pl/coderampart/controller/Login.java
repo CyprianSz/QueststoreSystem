@@ -87,7 +87,7 @@ public class Login implements HttpHandler{
             createCookieWithSessionID( newSession, httpExchange );
             addSessionToDatabase(newSession);
 
-            String successFlashNote = "LOGIN SUCCESSFUL";
+            String successFlashNote = "LOGIN SUCCESSFULLY";
             flashNoteHelper.addSuccessFlashNoteToCookie(successFlashNote , httpExchange);
         } else {
             flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);

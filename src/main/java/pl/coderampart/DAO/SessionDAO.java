@@ -29,7 +29,7 @@ public class SessionDAO {
                        "VALUES (?, ?, ?, ?, ?, ?);";
 
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, session);
+        setPreparedStatement(statement, session);
         statement.executeUpdate();
     }
 
@@ -40,15 +40,13 @@ public class SessionDAO {
         statement.executeUpdate();
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Session session) throws SQLException {
+    private void setPreparedStatement(PreparedStatement statement, Session session) throws SQLException {
         statement.setString(1, session.getID());
         statement.setString(2, session.getUserID());
         statement.setString(3, session.getUserFirstName());
         statement.setString(4, session.getUserLastName());
         statement.setString(5, session.getUserEmail());
         statement.setString(6, session.getUserType());
-
-        return statement;
     }
 
     private Session createSessionFromResultSet(ResultSet resultSet) {
