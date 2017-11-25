@@ -59,9 +59,9 @@
     float: right;
 }
 
-/*INPUT FOR EMAIL AND PASSWORD*/
+/*INPUTS*/
 
-input[type=password], input[type=text], input[type=email] {
+input[type=password], input[type=text], input[type=email], select, select > option {
     width: 15em;
     background-color: #efefef;
     color: #666;

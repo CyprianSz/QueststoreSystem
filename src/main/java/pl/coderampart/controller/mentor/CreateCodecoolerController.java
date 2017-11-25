@@ -68,14 +68,19 @@ public class CreateCodecoolerController implements HttpHandler {
         String password = inputs.get("password");
         String groupName = inputs.get("group");
         String teamName = inputs.get("team");
+
         LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
+
+        System.out.println("DUPA1");
 
         try {
             String hashedPassword = hasher.generateStrongPasswordHash( password );
             Group group = groupDAO.getByName( groupName );
             Team team = teamDAO.getByName( teamName );
+
             Codecooler newCodecooler= new Codecooler( firstName, lastName, dateOfBirthObject,
                                                       email, hashedPassword, connection );
+
             newCodecooler.setGroup( group );
             newCodecooler.setTeam( team );
             codecoolerDAO.create( newCodecooler );

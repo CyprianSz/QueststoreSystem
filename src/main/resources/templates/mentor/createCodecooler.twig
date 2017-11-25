@@ -28,21 +28,21 @@
             </div>
 
             <div class="dropdown">
-                <input type="text" name="group" list="groups" placeholder="group name">
-                <datalist id="groups">
+                <select name="group" id=group" required>
+                    <option value="" disabled selected>group</option>
                     {% for group in allGroups %}
-                        <option value="{{ group.name }}"></option>
+                        <option value="{{ group.name }}">{{ group.name }}</option>
                     {% endfor %}
-                </datalist>
+                </select>
             </div>
 
             <div class="dropdown">
-                <input type="text" name="team" list="teams" placeholder="team (optional)">
-                <datalist id="teams">
+                <select name="team" id=team" required>
+                    <option value="" disabled selected>team</option>
                     {% for team in allTeams %}
-                        <option value="{{ team.name }}"></option>
+                        <option value="{{ team.name }}">{{ team.name }}</option>
                     {% endfor %}
-                </datalist>
+                </select>
             </div>
 
             <div id="user-form-button">

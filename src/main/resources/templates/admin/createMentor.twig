@@ -27,12 +27,12 @@
             </div>
 
             <div class="dropdown">
-                <input type="text" name="group" list="groups" placeholder="group">
-                <datalist id="groups">
+                <select name="group" id=group">
+                    <option value="" disabled selected>group</option>
                     {% for group in allGroups %}
-                        <option value="{{ group.name }}"></option>
+                        <option value="{{ group.name }}">{{ group.name }}</option>
                     {% endfor %}
-                </datalist>
+                </select>
             </div>
 
             <div id="user-form-button">

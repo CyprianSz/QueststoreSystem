@@ -115,8 +115,8 @@ public class EditCodecoolerController implements HttpHandler {
             codecooler.setLastName( lastName );
             codecooler.setEmail( email );
             codecooler.setDateOfBirth( dateOfBirthObject );
-            codecooler.setGroup(group);
-            codecooler.setTeam(team);
+            codecooler.setGroup( group );
+            codecooler.setTeam( team );
 
             codecoolerDAO.update( codecooler );
         } catch (SQLException e) {

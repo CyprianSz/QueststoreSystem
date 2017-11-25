@@ -32,9 +32,6 @@ public class GroupDAO extends AbstractDAO {
         return groupList;
     }
 
-//    scalić te metody w jedną i w ogóle wyjebać do abstract DAO jak getBy
-//    z dwoma parametrami właśnie to po czym szukamy i dodatkowo w jakiej tabeli
-
     public Group getByID(String ID) throws SQLException{
         Group group = null;
 

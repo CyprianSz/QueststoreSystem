@@ -61,7 +61,6 @@ public class FlashNoteHelper {
 
     public String getControllerNameFromURI(HttpExchange httpExchange) {
         String[] uri = httpExchange.getRequestURI().toString().split("/");
-        System.out.println(uri[uri.length - 2]);
         return uri[uri.length - 2];
     }
 
