@@ -17,7 +17,7 @@
 
     <div id="sub-container-form">
 
-        <div id="user-form-container-edit">
+        <div id="user-form-container">
             <form method="POST">
                 <div class="user-form">
                     <label for="rank">rank</label>
@@ -26,14 +26,14 @@
                 </div>
 
                 <div class="user-form">
-                    <label for="required-experience">required experience</label>
+                    <label for="required-experience">exp required</label>
                     <input type="text" name="required-experience" id="required-experience" value="{{ requiredExperience }}" required
-                           pattern="^[0-9]+$" title="It's not a digit">
+                           pattern="^[0-9]+$" title="It's not a positive number">
                 </div>
 
                 <div class="user-form">
                     <label for="description">description</label>
-                    <input type="text" name="description" id="description" value="{{ description }}" required>
+                    <textarea rows="4" name="description" id="description" required>{{ description }}</textarea>
                 </div>
 
                 <div id="user-form-button">

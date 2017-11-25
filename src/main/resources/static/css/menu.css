@@ -26,6 +26,7 @@ li a {
     font-weight: bold;
 }
 .nav a {
+    font-weight: bold;
     display: block;
     padding: 0 16px;
     line-height: inherit;
@@ -104,11 +105,11 @@ li a {
 
 #attributes .attribute_list button[name="confirmation"]{
     display: inline-block;
-    margin: -2px;
-    padding: 10px 10px;
-    border: 1px solid #ddd;
+    padding: 0.3em 1em;
+    border: 0.1em solid #675f6b;
     cursor: pointer;
     font-size: 2em;
+    border-radius: 0.4em;
 }
 .attribute_list li {
     display: inline-block;
