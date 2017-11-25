@@ -138,7 +138,22 @@ input[type=password], input[type=text] {
     outline: none;
 }
 
-input[type=password]:focus, input[type=text]:focus {
+input[type=date] {
+    font-weight: bold;
+    width: 15em;
+    height: 2.3em;
+    background-color: #efefef ;
+    color: #666;
+    border: 2px solid #675f6b ;
+    border-radius: 5px;
+    font-family: Sawasdee, serif;
+    font-size: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input[type=password]:focus, input[type=text]:focus, input[type=data]:focus  {
     box-shadow: 0px 0px 3px 1px black;
 }
 

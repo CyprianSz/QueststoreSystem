@@ -37,9 +37,8 @@
 
                 <div class="user-form">
                     <label for="date-of-birth">date of birth</label>
-                    <input type="text" name="date-of-birth" id="date-of-birth" value="{{ dateOfBirth }}" required
-                           pattern="^[12][09]\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$"
-                           title="YYYY-MM-DD">
+                    <input type="text" name="date-of-birth" id="date-of-birth" placeholder="" value="{{ dateOfBirth }}"
+                           required title="MM-DD-YYYY" onfocus="(this.type='date')" onblur="(this.type='text')">
                 </div>
 
                 <div class="dropdown">
