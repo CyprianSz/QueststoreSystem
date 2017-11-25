@@ -8,6 +8,8 @@ import pl.coderampart.controller.codecooler.*;
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
 import pl.coderampart.controller.helpers.CookiesConfirmator;
+import pl.coderampart.controller.helpers.PasswordChanger;
+import pl.coderampart.controller.helpers.Static;
 import pl.coderampart.controller.mentor.*;
 
 import java.io.IOException;

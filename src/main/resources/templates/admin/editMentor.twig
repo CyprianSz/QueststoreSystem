@@ -43,7 +43,7 @@
 
                 <div class="dropdown">
                     <label for="group">group</label>
-                    <select name="group" id=group">
+                    <select name="group" id=group" required>
                         <option value="{{ groupName }}">{{ groupName }}</option>
                         {% for group in allGroups %}
                             <option value="{{ group.name }}">{{ group.name }}</option>

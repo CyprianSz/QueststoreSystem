@@ -1,4 +1,4 @@
-package pl.coderampart.controller;
+package pl.coderampart.controller.helpers;
 
 import java.util.Date;
 import java.util.Properties;
@@ -13,6 +13,7 @@ public class MailSender {
     private String port;
     private String senderEmailAddress;
     private String senderEmailPassword;
+    private String messageTitle;
     private boolean debug;
     private Properties properties;
 
@@ -21,10 +22,11 @@ public class MailSender {
         this.port = "587";
         this.senderEmailAddress = "queststore.coderampart@gmail.com";
         this.senderEmailPassword = "SzafraN777";
+        this.messageTitle = "WELCOME TO QUESTSTORE !";
         properties = System.getProperties();
     }
 
-    public boolean send(String receiverEmailAdress, String messageTitle, String messageBody) {
+    public boolean send(String receiverEmailAdress, String messageBody) {
         try {
             properties.setProperty("mail.smtp.host", this.host);
             properties.setProperty("mail.smtp.port", this.port);
@@ -61,5 +63,12 @@ public class MailSender {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public String prepareMessage(String userName, String password) {
+        return "Welcome on board " + userName + " ! " +
+               "\n\nTo log in for the first time use this password: " + password +
+               "\n\nOf course you can change it later." +
+               "\n\nHope you'll enjoy and see you soon ! ";
     }
 }

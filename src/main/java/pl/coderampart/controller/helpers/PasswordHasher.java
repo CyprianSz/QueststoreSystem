@@ -1,4 +1,4 @@
-package pl.coderampart.controller;
+package pl.coderampart.controller.helpers;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -39,7 +39,7 @@ public class PasswordHasher {
         }
     }
 
-    boolean validatePassword(String originalPassword, String storedPassword)
+    public boolean validatePassword(String originalPassword, String storedPassword)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         String[] parts = storedPassword.split(":");

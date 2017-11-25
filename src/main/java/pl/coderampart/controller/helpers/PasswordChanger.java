@@ -1,10 +1,8 @@
-package pl.coderampart.controller;
+package pl.coderampart.controller.helpers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import pl.coderampart.DAO.UserDAO;
-import pl.coderampart.controller.helpers.FlashNoteHelper;
-import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Session;
 import pl.coderampart.services.Loggable;
 
