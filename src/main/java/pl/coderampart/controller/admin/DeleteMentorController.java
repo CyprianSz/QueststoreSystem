@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.MentorDAO;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Mentor;
 
@@ -18,11 +19,14 @@ public class DeleteMentorController implements HttpHandler {
     private Connection connection;
     private MentorDAO mentorDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
+
 
     public DeleteMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(this.connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
@@ -46,7 +50,7 @@ public class DeleteMentorController implements HttpHandler {
             Map inputs = helper.getInputsMap(httpExchange);
 
             if(inputs.get("confirmation").equals("yes")) {
-                deleteMentor(mentor);
+                deleteMentor(mentor, httpExchange);
             }
             helper.redirectTo( "/mentor/delete", httpExchange );
         }
@@ -84,10 +88,16 @@ public class DeleteMentorController implements HttpHandler {
         return template.render(model);
     }
 
-    private void deleteMentor(Mentor mentor) {
+    private void deleteMentor(Mentor mentor, HttpExchange httpExchange) {
         try {
             mentorDAO.delete( mentor );
+
+            String deletedMentorFullName = mentor.getFirstName() + mentor.getLastName();
+            String flashNote = flashNoteHelper.createDeletionFlashNote( "Mentor",
+                                                                        deletedMentorFullName);
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

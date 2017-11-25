@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.TeamDAO;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 import pl.coderampart.model.Team;
@@ -19,12 +20,16 @@ public class CreateTeamController implements HttpHandler {
     private GroupDAO groupDAO;
     private TeamDAO teamDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
+
 
     public CreateTeamController(Connection connection) {
         this.connection = connection;
         this.groupDAO = new GroupDAO(connection);
         this.teamDAO = new TeamDAO(connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
+
     }
 
     @Override
@@ -43,12 +48,12 @@ public class CreateTeamController implements HttpHandler {
 
         if (method.equals("POST")) {
             Map<String, String> inputs = helper.getInputsMap(httpExchange);
-            createTeam(inputs);
+            createTeam(inputs, httpExchange);
             helper.redirectTo( "/team/create", httpExchange );
         }
     }
 
-    private void createTeam(Map<String, String> inputs) {
+    private void createTeam(Map<String, String> inputs, HttpExchange httpExchange) {
         String teamName = inputs.get("team-name");
         String groupName = inputs.get("group-name");
 
@@ -56,7 +61,11 @@ public class CreateTeamController implements HttpHandler {
             Group choosenGroup = groupDAO.getByName( groupName );
             Team newTeam = new Team(teamName, choosenGroup);
             teamDAO.create(newTeam);
+
+            String flashNote = flashNoteHelper.createCreationFlashNote( "Team", teamName );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

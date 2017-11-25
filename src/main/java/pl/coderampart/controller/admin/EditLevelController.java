@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.LevelDAO;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Level;
 
@@ -19,11 +20,15 @@ public class EditLevelController implements HttpHandler{
     private Connection connection;
     private LevelDAO levelDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
+
 
     public EditLevelController(Connection connection) {
         this.connection = connection;
         this.levelDAO = new LevelDAO(connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
+
     }
 
     @Override
@@ -45,7 +50,7 @@ public class EditLevelController implements HttpHandler{
 
         if(method.equals("POST")){
             Map<String, String> inputs = helper.getInputsMap(httpExchange);
-            editLevel(inputs, level);
+            editLevel(inputs, level, httpExchange);
             helper.redirectTo( "/level/edit", httpExchange );
         }
     }
@@ -82,7 +87,7 @@ public class EditLevelController implements HttpHandler{
         return template.render(model);
     }
 
-    private void editLevel(Map<String, String> inputs, Level level) {
+    private void editLevel(Map<String, String> inputs, Level level, HttpExchange httpExchange) {
         Integer rank = Integer.valueOf(inputs.get("rank"));
         Integer requiredExperience = Integer.valueOf(inputs.get("required-experience"));
         String description = inputs.get("description");
@@ -93,7 +98,11 @@ public class EditLevelController implements HttpHandler{
             level.setDescription( description );
 
             levelDAO.update(level);
+
+            String flashNote = flashNoteHelper.createEditionFlashNote( "Level", inputs.get("rank") );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

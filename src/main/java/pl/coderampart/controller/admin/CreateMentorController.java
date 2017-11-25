@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.MentorDAO;
 import pl.coderampart.controller.PasswordHasher;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 import pl.coderampart.model.Mentor;
@@ -23,6 +24,8 @@ public class CreateMentorController implements HttpHandler {
     private Connection connection;
     private MentorDAO mentorDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
+
     private PasswordHasher hasher;
     private GroupDAO groupDAO;
 
@@ -31,6 +34,7 @@ public class CreateMentorController implements HttpHandler {
         this.mentorDAO = new MentorDAO(this.connection);
         this.groupDAO = new GroupDAO(this.connection);
         this.helper = new HelperController(this.connection);
+        this.flashNoteHelper = new FlashNoteHelper();
         this.hasher = new PasswordHasher();
     }
 
@@ -52,12 +56,12 @@ public class CreateMentorController implements HttpHandler {
         if (method.equals("POST")) {
             Map<String, String> inputs = helper.getInputsMap(httpExchange);
 
-            createMentor(inputs);
+            createMentor(inputs, httpExchange);
             helper.redirectTo( "/mentor/create", httpExchange );
         }
     }
 
-    private void createMentor(Map<String, String> inputs) {
+    private void createMentor(Map<String, String> inputs, HttpExchange httpExchange) {
         String firstName = inputs.get("first-name");
         String lastName = inputs.get("last-name");
         String dateOfBirth = inputs.get("date-of-birth");
@@ -73,7 +77,12 @@ public class CreateMentorController implements HttpHandler {
             newMentor.setGroup( group );
 
             mentorDAO.create( newMentor );
+
+            String mentorFullName = firstName + " " + lastName;
+            String flashNote = flashNoteHelper.createCreationFlashNote( "Mentor", mentorFullName );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (NoSuchAlgorithmException | SQLException | InvalidKeySpecException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

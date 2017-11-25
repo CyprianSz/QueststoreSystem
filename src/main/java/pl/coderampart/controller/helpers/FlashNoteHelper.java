@@ -67,4 +67,16 @@ public class FlashNoteHelper {
     private String createFlashNoteHTMLMessage(String flashNote, String divID) {
         return "<div id=\"" + divID + "\">" + flashNote + "</div>";
     }
+
+    public String createCreationFlashNote(String createdObjectClassName, String createdObjectName) {
+        return createdObjectClassName + ": '" + createdObjectName + "' created successfully";
+    }
+
+    public String createEditionFlashNote(String editedObjectClassName, String editedObjectName) {
+        return editedObjectClassName + ": '" + editedObjectName + "' edited successfully";
+    }
+
+    public String createDeletionFlashNote(String deletedObjectClassName, String deletedObjectName) {
+        return deletedObjectClassName + ": '" + deletedObjectName + "' deleted successfully";
+    }
 }

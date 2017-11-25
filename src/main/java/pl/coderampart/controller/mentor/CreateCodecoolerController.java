@@ -6,6 +6,7 @@ import pl.coderampart.DAO.CodecoolerDAO;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.TeamDAO;
 import pl.coderampart.controller.PasswordHasher;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Group;
@@ -24,6 +25,7 @@ public class CreateCodecoolerController implements HttpHandler {
 
     private Connection connection;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
     private CodecoolerDAO codecoolerDAO;
     private GroupDAO groupDAO;
     private TeamDAO teamDAO;
@@ -32,9 +34,10 @@ public class CreateCodecoolerController implements HttpHandler {
     public CreateCodecoolerController(Connection connection) {
         this.connection = connection;
         this.codecoolerDAO = new CodecoolerDAO( connection );
-        this.helper = new HelperController(connection);
         this.groupDAO = new GroupDAO(connection);
         this.teamDAO = new TeamDAO(connection);
+        this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
         this.hasher = new PasswordHasher();
     }
 
@@ -55,12 +58,12 @@ public class CreateCodecoolerController implements HttpHandler {
 
         if (method.equals( "POST" )) {
             Map<String, String> inputs = helper.getInputsMap( httpExchange );
-            createCodecooler( inputs );
+            createCodecooler( inputs, httpExchange );
             helper.redirectTo( "/codecooler/create", httpExchange );
         }
     }
 
-    private void createCodecooler(Map<String, String> inputs) {
+    private void createCodecooler(Map<String, String> inputs, HttpExchange httpExchange) {
         String firstName = inputs.get("first-name");
         String lastName = inputs.get("last-name");
         String dateOfBirth = inputs.get("date-of-birth");
@@ -70,8 +73,6 @@ public class CreateCodecoolerController implements HttpHandler {
         String teamName = inputs.get("team");
 
         LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
-
-        System.out.println("DUPA1");
 
         try {
             String hashedPassword = hasher.generateStrongPasswordHash( password );
@@ -84,7 +85,12 @@ public class CreateCodecoolerController implements HttpHandler {
             newCodecooler.setGroup( group );
             newCodecooler.setTeam( team );
             codecoolerDAO.create( newCodecooler );
+
+            String codecoolerFullName = firstName + " " + lastName;
+            String flashNote = flashNoteHelper.createCreationFlashNote( "Codecooler", codecoolerFullName );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (NoSuchAlgorithmException | SQLException | InvalidKeySpecException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

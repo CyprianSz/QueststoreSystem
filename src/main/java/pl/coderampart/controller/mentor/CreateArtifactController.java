@@ -43,7 +43,6 @@ public class CreateArtifactController implements HttpHandler {
         if (method.equals( "POST" )) {
             Map<String, String> inputs = helper.getInputsMap( httpExchange );
             createArtifact( inputs, httpExchange );
-
             helper.redirectTo( "/artifact/create", httpExchange );
         }
     }
@@ -58,7 +57,7 @@ public class CreateArtifactController implements HttpHandler {
             Artifact newArtifact = new Artifact( name, description, type, value );
             artifactDAO.create(newArtifact);
 
-            String flashNote = newArtifact.getName() + " created successfully";
+            String flashNote = flashNoteHelper.createCreationFlashNote( "Artifact", name );
             flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
             flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);

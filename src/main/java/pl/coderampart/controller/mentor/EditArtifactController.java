@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.ArtifactDAO;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Artifact;
 
@@ -19,11 +20,13 @@ public class EditArtifactController implements HttpHandler {
     private Connection connection;
     private ArtifactDAO artifactDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
 
     public EditArtifactController(Connection connection) {
         this.connection = connection;
         this.artifactDAO = new ArtifactDAO(connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
@@ -45,7 +48,7 @@ public class EditArtifactController implements HttpHandler {
 
         if(method.equals("POST")) {
             Map inputs = helper.getInputsMap(httpExchange);
-            editArtifact(inputs, artifact);
+            editArtifact(inputs, artifact, httpExchange);
             helper.redirectTo( "/artifact/edit", httpExchange );
         }
     }
@@ -92,7 +95,7 @@ public class EditArtifactController implements HttpHandler {
         return template.render(model);
     }
 
-    private void editArtifact(Map<String, String> inputs, Artifact artifact) {
+    private void editArtifact(Map<String, String> inputs, Artifact artifact, HttpExchange httpExchange) {
         String name = inputs.get("name");
         String description = inputs.get("description");
         Integer value = Integer.valueOf(inputs.get("value"));
@@ -103,8 +106,12 @@ public class EditArtifactController implements HttpHandler {
             artifact.setDescription( description );
             artifact.setValue( value );
             artifact.setType( type );
-            artifactDAO.update( artifact);
+            artifactDAO.update( artifact );
+
+            String flashNote = flashNoteHelper.createEditionFlashNote( "Artifact", name );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

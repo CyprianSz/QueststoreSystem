@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.GroupDAO;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 
@@ -19,11 +20,14 @@ public class EditGroupController implements HttpHandler{
     private Connection connection;
     private GroupDAO groupDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
 
     public EditGroupController(Connection connection){
         this.connection = connection;
         this.groupDAO = new GroupDAO(connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
+
     }
 
     @Override
@@ -45,7 +49,7 @@ public class EditGroupController implements HttpHandler{
 
         if(method.equals("POST")) {
             Map inputs = helper.getInputsMap(httpExchange);
-            editGroup(inputs, group);
+            editGroup(inputs, group, httpExchange);
             helper.redirectTo( "/group/edit", httpExchange );
         }
 
@@ -82,13 +86,17 @@ public class EditGroupController implements HttpHandler{
         return template.render(model);
     }
 
-    private void editGroup(Map<String, String> inputs, Group group) {
+    private void editGroup(Map<String, String> inputs, Group group, HttpExchange httpExchange) {
         String name = inputs.get("group-name");
 
         try {
             group.setName( name );
             groupDAO.update( group );
+
+            String flashNote = flashNoteHelper.createEditionFlashNote( "Group", name );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

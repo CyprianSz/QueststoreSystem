@@ -6,6 +6,7 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.CodecoolerDAO;
 import pl.coderampart.DAO.TeamDAO;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Team;
@@ -18,14 +19,17 @@ import java.util.Map;
 
 
 public class DeleteCodecoolerController implements HttpHandler {
+
     private Connection connection;
     private CodecoolerDAO codecoolerDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
 
     public DeleteCodecoolerController (Connection connection) {
         this.connection = connection;
         this.codecoolerDAO = new CodecoolerDAO(this.connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
@@ -49,7 +53,7 @@ public class DeleteCodecoolerController implements HttpHandler {
             Map inputs = helper.getInputsMap(httpExchange);
 
             if(inputs.get("confirmation").equals("yes")){
-                deleteCodecooler(codecooler);
+                deleteCodecooler(codecooler, httpExchange);
             }
             helper.redirectTo( "/codecooler/delete", httpExchange );
         }
@@ -87,10 +91,15 @@ public class DeleteCodecoolerController implements HttpHandler {
         return template.render(model);
     }
 
-    private void deleteCodecooler(Codecooler codecooler) {
+    private void deleteCodecooler(Codecooler codecooler, HttpExchange httpExchange) {
         try {
             codecoolerDAO.delete( codecooler );
+
+            String name = codecooler.getFirstName() + " " + codecooler.getLastName();
+            String flashNote = flashNoteHelper.createDeletionFlashNote( "Codecooler", name);
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }
