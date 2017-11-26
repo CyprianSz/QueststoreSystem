@@ -3,16 +3,16 @@
     <div id="user-form-container">
         <form method="POST">
             <div class="user-form">
-                <input type="text" name="name" id="name" placeholder="name" required>
+                <input type="text" name="name" id="name" placeholder="name" maxlength="23" required>
             </div>
 
             <div class="user-form">
-                <input type="text" name="reward" id="reward" placeholder="reward" required
+                <input type="text" name="reward" id="reward" placeholder="reward" maxlength="20" required
                        pattern="^[0-9]+$" title="It's not a digit">
             </div>
 
             <div class="user-form">
-                <textarea rows="4" name="description" id="description" placeholder="description" required></textarea>
+                <textarea rows="4" name="description" id="description" placeholder="description" maxlength="100" required></textarea>
             </div>
 
             <div id="user-form-button">

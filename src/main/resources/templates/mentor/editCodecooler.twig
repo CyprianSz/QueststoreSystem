@@ -27,24 +27,25 @@
             <form method="POST">
                 <div class="user-form">
                     <label for="first-name">first name</label>
-                    <input type="text" name="first-name" id="first-name" value="{{ firstName }}" required>
+                    <input type="text" name="first-name" id="first-name" value="{{ firstName }}" maxlength="15" required>
                 </div>
 
                 <div class="user-form">
                     <label for="last-name">last name</label>
-                    <input type="text" name="last-name" id="last-name" value="{{ lastName }}" required>
+                    <input type="text" name="last-name" id="last-name" value="{{ lastName }}" maxlength="20" required >
                 </div>
 
                 <div class="user-form">
                     <label for="email">email</label>
-                    <input type="text" name="email" id="email" value="{{ email }}" required
+                    <input type="text" name="email" id="email" value="{{ email }}" maxlength="40" required
                            pattern="^[^@]+@[^@]+\.[a-zA-Z]{2,}$">
                 </div>
 
                 <div class="user-form">
                     <label for="date-of-birth">date of birth</label>
                     <input type="text" name="date-of-birth" id="date-of-birth" placeholder="" value="{{ dateOfBirth }}"
-                           title="MM-DD-YYYY" onfocus="(this.type='date')" onblur="(this.type='text')" required>
+                           title="MM-DD-YYYY" onfocus="(this.type='date')" onblur="(this.type='text')" required
+                           pattern="^(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))$">
                 </div>
 
                 <div class="dropdown">
