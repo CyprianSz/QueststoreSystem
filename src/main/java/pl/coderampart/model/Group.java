@@ -7,7 +7,6 @@ public class Group{
     protected String ID;
     protected String name;
 
-
     public Group(String name) {
         this.ID = UUIDController.createUUID(name);
         this.name = name;
@@ -19,10 +18,8 @@ public class Group{
     }
 
     public String toString() {
-        String groupData = "\nID: " + this.getID()
-                         + "\nname: " + this.getName();
-
-        return groupData;
+        return "\nID: " + this.getID()
+             + "\nname: " + this.getName();
     }
 
     public String getID() { return this.ID; }

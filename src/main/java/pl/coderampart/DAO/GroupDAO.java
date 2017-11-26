@@ -1,5 +1,6 @@
 package pl.coderampart.DAO;
 
+import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Group;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

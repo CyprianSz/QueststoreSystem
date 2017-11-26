@@ -10,6 +10,8 @@ import java.util.List;
 
 import pl.coderampart.model.*;
 
+import javax.xml.transform.Result;
+
 public class CodecoolerDAO extends AbstractDAO {
 
     private WalletDAO walletDAO;
@@ -24,16 +26,6 @@ public class CodecoolerDAO extends AbstractDAO {
         groupDAO = new GroupDAO(connection);
         levelDAO = new LevelDAO(connection);
         teamDAO  = new TeamDAO(connection);
-    }
-
-    public Codecooler getLogged(String email) throws SQLException {
-        String query = "SELECT * FROM codecoolers WHERE email = ?;";
-
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, email);
-        ResultSet resultSet = statement.executeQuery();
-
-        return this.createCodecoolerFromResultSet(resultSet);
     }
 
     public List<Codecooler> readAll() throws SQLException {
@@ -57,6 +49,36 @@ public class CodecoolerDAO extends AbstractDAO {
         ResultSet resultSet = statement.executeQuery();
 
         return this.createCodecoolerFromResultSet(resultSet);
+    }
+
+    public List<Codecooler> getByGroupID(String groupID) throws SQLException {
+        List<Codecooler> codecoolersFromGivenGroup = new ArrayList<>();
+
+        String query = "SELECT * FROM codecoolers WHERE group_id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, groupID);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            Codecooler codecooler = this.createCodecoolerFromResultSet(resultSet);
+            codecoolersFromGivenGroup.add(codecooler);
+        }
+        return codecoolersFromGivenGroup;
+    }
+
+    public List<Codecooler> getByTeamID(String teamID) throws SQLException {
+        List<Codecooler> codecoolersFromGivenTeam = new ArrayList<>();
+
+        String query = "SELECT * FROM codecoolers WHERE team_id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, teamID);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            Codecooler codecooler = this.createCodecoolerFromResultSet(resultSet);
+            codecoolersFromGivenTeam.add(codecooler);
+        }
+        return codecoolersFromGivenTeam;
     }
 
     public void create(Codecooler codecooler) throws SQLException {
