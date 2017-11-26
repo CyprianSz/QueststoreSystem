@@ -111,6 +111,17 @@ li a {
     font-size: 2em;
     border-radius: 0.4em;
 }
+
+#attributes .attribute_list button[name="confirmation"]:hover{
+    display: inline-block;
+    padding: 0.3em 1em;
+    border: 0.1em solid #675f6b;
+    background-color: #675f6b;
+    cursor: pointer;
+    font-size: 2em;
+    border-radius: 0.4em;
+}
+
 .attribute_list li {
     display: inline-block;
     margin-right: 10px;
@@ -166,13 +177,22 @@ li a {
 #sub-container-form {
     padding-top: 1em;
     padding-bottom: 2em;
-    padding-left: 3em;
+    padding-left: 4em;
     display:flex;
     justify-content: center;
 }
 
-#mentorsList, #groupsList, #levelsList{
-    padQding-top: 3em;
+/*#mentorsList, #groupsList, #levelsList{*/
+    /*padQding-top: 3em;*/
+/*}*/
+#personal-data {
+    padding-top: 1em;
+    padding-bottom: 2em;
+    padding-right: 2em;
+    display:flex;
+    justify-content: center;
 }
+
+
 
 

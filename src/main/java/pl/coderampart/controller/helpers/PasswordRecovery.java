@@ -2,6 +2,8 @@ package pl.coderampart.controller.helpers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.*;
 
 import java.io.*;
@@ -36,16 +38,13 @@ public class PasswordRecovery implements HttpHandler {
 
         if (method.equals("GET")) {
             String response = "";
-            response += helper.render("passwordRecovery");
+            response += renderPasswordRecovery( httpExchange );
             helper.sendResponse( response, httpExchange );
         }
 
         if (method.equals("POST")) {
             Map<String, String> inputs = helper.getInputsMap(httpExchange);
-
             sendResetPasswordEmail(inputs, httpExchange);
-            helper.redirectTo( "/login", httpExchange );
-            helper.redirectTo( "/password-recovery", httpExchange );
         }
     }
 
@@ -75,6 +74,21 @@ public class PasswordRecovery implements HttpHandler {
         } catch (SQLException | IOException | InvalidKeySpecException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+    }
+
+    private String renderPasswordRecovery(HttpExchange httpExchange) {
+        Map<String, String> cookiesMap = helper.createCookiesMap(httpExchange);
+        String controllerName = flashNoteHelper.getControllerNameFromURI(httpExchange);
+
+        String templatePath = "templates/passwordRecovery.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel model = JtwigModel.newModel();
+
+        if (cookiesMap.containsKey( controllerName + "flashNote" )) {
+            flashNoteHelper.modelFlashNote( cookiesMap, model, httpExchange );
+            flashNoteHelper.clearUsedFlashNoteCookie( httpExchange );
+        }
+        return template.render(model);
     }
 
 }
