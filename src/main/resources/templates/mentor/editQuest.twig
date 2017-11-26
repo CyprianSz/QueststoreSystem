@@ -1,19 +1,18 @@
 <div id="main-container-edit">
-
-    <script src="../../static/js/filteringScript.js"></script>
     <div id="vertical_menu">
         <div id="vertical-radio-list">
+            <script src="../../static/js/filteringScript.js"></script>
             <input type="text" id="searching" onkeyup="filterList()" placeholder="Search">
             <form>
                 <div id="radio-form">
                     <ul id="radio-form-ul">
                     {%  for quest in allQuests %}
                         <li>
-                            <a href="/quest/edit?quest-id={{ quest.ID }}">
-                                <button name="quest-id" value="{{ quest.ID }}">
-                                    {{ quest.name }}
-                                </button>
-                            </a>
+                        <a href="/quest/edit?quest-id={{ quest.ID }}">
+                            <button name="quest-id" value="{{ quest.ID }}">
+                                {{ quest.name }}
+                            </button>
+                        </a>
                         </li>
                     {% endfor %}
                     </ul>
