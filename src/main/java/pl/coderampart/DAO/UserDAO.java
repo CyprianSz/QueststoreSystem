@@ -31,6 +31,16 @@ public class UserDAO {
         return resultSet.getString( "password" );
     }
 
+    public boolean checkIfUserExists(String userType, String email) throws SQLException {
+        String query = "SELECT * FROM " + userType + "s WHERE email = ?;";
+
+        PreparedStatement statement = connection.prepareStatement( query );
+        statement.setString( 1, email );
+        ResultSet resultSet = statement.executeQuery();
+
+        return resultSet.next();
+    }
+
     public Loggable getLoggedUser(String userType, String email) throws SQLException {
         String query = "SELECT * FROM " + userType + "s WHERE email = ?;";
 
@@ -53,7 +63,19 @@ public class UserDAO {
         String userTable = user.getType().toLowerCase() + "s";
         String userID = user.getID();
 
-        String query = "UPDATE " + userTable + " SET password = \"" + newHashedPassword + "\" WHERE id = \"" + userID + "\";";
+        String query = "UPDATE " + userTable + " SET password = \""
+                     + newHashedPassword + "\" WHERE id = \"" + userID + "\";";
+
+        PreparedStatement statement = connection.prepareStatement( query );
+        statement.executeUpdate();
+    }
+
+
+    public void updateUserPassword(String email, String userType, String newHashedPassword) throws SQLException {
+        String userTable = userType.toLowerCase() + "s";
+
+        String query = "UPDATE " + userTable + " SET password = \""
+                     + newHashedPassword + "\" WHERE email = \"" + email + "\";";
 
         PreparedStatement statement = connection.prepareStatement( query );
         statement.executeUpdate();

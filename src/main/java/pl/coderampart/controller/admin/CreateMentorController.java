@@ -31,9 +31,9 @@ public class CreateMentorController implements HttpHandler {
 
     public CreateMentorController(Connection connection) {
         this.connection = connection;
-        this.mentorDAO = new MentorDAO(this.connection);
-        this.groupDAO = new GroupDAO(this.connection);
-        this.helper = new HelperController(this.connection);
+        this.mentorDAO = new MentorDAO(connection);
+        this.groupDAO = new GroupDAO(connection);
+        this.helper = new HelperController(connection);
         this.flashNoteHelper = new FlashNoteHelper();
         this.hasher = new PasswordHasher();
         this.mailSender = new MailSender();

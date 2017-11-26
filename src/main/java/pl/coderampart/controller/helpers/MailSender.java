@@ -71,4 +71,8 @@ public class MailSender {
                "\n\nOf course you can change it later." +
                "\n\nHope you'll enjoy and see you soon ! ";
     }
+
+    public String prepareResetPasswordMessage(String newPassword) {
+        return "Your new password is: " + newPassword;
+    }
 }

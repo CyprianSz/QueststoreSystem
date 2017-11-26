@@ -9,6 +9,7 @@ import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
 import pl.coderampart.controller.helpers.CookiesConfirmator;
 import pl.coderampart.controller.helpers.PasswordChanger;
+import pl.coderampart.controller.helpers.PasswordRecovery;
 import pl.coderampart.controller.helpers.Static;
 import pl.coderampart.controller.mentor.*;
 
@@ -61,6 +62,7 @@ public class Application {
         server.createContext("/quest/edit", new EditQuestController(connection));
         server.createContext("/quest/delete", new DeleteQuestController(connection));
 
+        server.createContext("/password-recovery", new PasswordRecovery(connection));
         server.createContext("/confirm-cookie-info", new CookiesConfirmator(connection));
         server.createContext("/change-password", new PasswordChanger(connection));
         server.createContext("/account", new LoggedUserData(connection));
