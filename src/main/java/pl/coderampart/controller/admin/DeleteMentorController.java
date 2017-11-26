@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.MentorDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Mentor;
@@ -14,7 +15,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-public class DeleteMentorController implements HttpHandler {
+public class DeleteMentorController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private MentorDAO mentorDAO;
@@ -31,6 +32,7 @@ public class DeleteMentorController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Admin", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Mentor> allMentors = helper.readMentorsFromDB();
         String mentorID = helper.getIdFromURI(httpExchange);

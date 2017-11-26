@@ -59,30 +59,51 @@ header {
     align-items: center;
     display: flex;
 }
-button[name="logout"] {
+
+/*button[name="logout"] {*/
+    /*color: black;*/
+    /*background-color: white;*/
+    /*border-radius: 5px;*/
+    /*text-decoration: none;*/
+    /*border: solid 3px #675f6b;*/
+    /*padding: 0.2em 1.4em 1.3em;*/
+/*}*/
+
+/*button[name="logout"]:hover {*/
+    /*background: #675f6b ;*/
+    /*transition: .2s ease;*/
+/*}*/
+
+a[name="logout"] {
     color: black;
     background-color: white;
     border-radius: 5px;
-    text-decoration: none;
-    border: solid 3px #675f6b ;
-    padding: 1em;
-    padding-bottom: 0.3em;
-    padding-top: 0.3em;
+    border: solid 3px #675f6b;
+    font-size: 0.8em;
+    padding: 0.5em 1.5em 0.2em;
+    font-weight: bold;
 }
-button[name="logout"]:hover {
+
+a[name="logout"]:hover {
     background: #675f6b ;
-    transition: .3s ease;
+    transition: .2s ease;
 }
-a[name="logout"] {
-    text-decoration: none;
-    color: black;
+
+#login-radio-form {
+    border: solid 3px #675f6b ;
+    display: inline-block;
+    margin: 1em 2em;
+    border-radius: 10px;
+    overflow: hidden;
 }
+
 #radio-form {
     border: solid 3px #675f6b ;
     display: inline-block;
     margin: 1em 2em;
     border-radius: 10px;
     overflow: hidden;
+    width: 15em;
 }
 
 #radio-form-edit {
@@ -282,4 +303,9 @@ input[type=submit]:hover {
     position: absolute;
     font-size: 0.9em;
     font-weight: bold;
+}
+
+#logged-user-type {
+    margin-top: 1em;
+    margin-bottom: 0.6em;
 }

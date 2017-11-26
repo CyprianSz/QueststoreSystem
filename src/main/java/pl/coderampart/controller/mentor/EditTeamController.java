@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.TeamDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Team;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class EditTeamController implements HttpHandler {
+public class EditTeamController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private TeamDAO teamDAO;
@@ -32,6 +33,7 @@ public class EditTeamController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Team> allTeams = helper.readTeamsFromDB();
         String teamID = helper.getIdFromURI( httpExchange );

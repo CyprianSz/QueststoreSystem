@@ -26,7 +26,7 @@ public class MailSender {
         properties = System.getProperties();
     }
 
-    public boolean send(String receiverEmailAdress, String messageBody) {
+    public void send(String receiverEmailAdress, String messageBody) {
         try {
             properties.setProperty("mail.smtp.host", this.host);
             properties.setProperty("mail.smtp.port", this.port);
@@ -58,10 +58,8 @@ public class MailSender {
             msg.setText(messageBody);
 
             Transport.send(msg);
-            return true;
         } catch (MessagingException e) {
             e.printStackTrace();
-            return false;
         }
     }
 
@@ -72,7 +70,7 @@ public class MailSender {
                "\n\nHope you'll enjoy and see you soon ! ";
     }
 
-    public String prepareResetPasswordMessage(String newPassword) {
+    String prepareResetPasswordMessage(String newPassword) {
         return "Your new password is: " + newPassword;
     }
 }

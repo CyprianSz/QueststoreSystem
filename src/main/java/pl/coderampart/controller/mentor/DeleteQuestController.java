@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.QuestDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Quest;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteQuestController  implements HttpHandler {
+public class DeleteQuestController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private QuestDAO questDAO;
@@ -32,6 +33,7 @@ public class DeleteQuestController  implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Quest> allQuests = helper.readQuestsFromDB();
         String questID = helper.getIdFromURI( httpExchange );

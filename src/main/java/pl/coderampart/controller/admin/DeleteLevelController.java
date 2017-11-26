@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.LevelDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Level;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteLevelController implements HttpHandler {
+public class DeleteLevelController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private LevelDAO levelDAO;
@@ -31,6 +32,7 @@ public class DeleteLevelController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Admin", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Level> allLevels = helper.readLevelsFromDB();
         String levelID = helper.getIdFromURI(httpExchange);

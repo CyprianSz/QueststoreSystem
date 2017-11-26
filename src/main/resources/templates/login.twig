@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LOG IN</title>
+    <title>Queststore - login</title>
     <link rel="Shortcut icon" href="/static/img/logo.ico" />
     <link rel="stylesheet" href="/static/css/myWallet.css"/>
     <link rel="stylesheet" href="/static/css/menu.css"/>
@@ -30,7 +30,7 @@
 
     <div id="logging-container">
         <form method="POST">
-            <div id="radio-form">
+            <div id="login-radio-form">
                 <input type="radio" id="admin" name="user-type" value="admin" required>
                 <label for="admin">Admin</label>
                 <input type="radio" id="mentor" name="user-type" value="mentor" required>
@@ -75,7 +75,7 @@
             <script>
                 confirmation = document.getElementById("confirmation");
                 confirmation.addEventListener('click', function() {
-                    cookiesNote = document.getElementById("cookiesNote");
+                    var cookiesNote = document.getElementById("cookiesNote");
                     cookiesNote.style.display = 'none';
                 }, false);
             </script>

@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.MentorDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.MailSender;
 import pl.coderampart.controller.helpers.PasswordHasher;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
@@ -19,7 +20,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Map;
 
-public class CreateMentorController implements HttpHandler {
+public class CreateMentorController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private MentorDAO mentorDAO;
@@ -41,7 +42,7 @@ public class CreateMentorController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-
+        validateAccess( "Admin", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         String response = "";
 

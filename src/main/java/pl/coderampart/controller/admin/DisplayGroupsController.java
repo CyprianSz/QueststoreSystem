@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
-public class DisplayGroupsController implements HttpHandler {
+public class DisplayGroupsController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private HelperController helper;
@@ -23,6 +24,7 @@ public class DisplayGroupsController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Admin", httpExchange, connection);
         List<Group> allGroups = helper.readGroupsFromDB();
         String response = "";
 

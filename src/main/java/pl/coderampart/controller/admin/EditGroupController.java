@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.GroupDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class EditGroupController implements HttpHandler{
+public class EditGroupController extends AccessValidator implements HttpHandler{
 
     private Connection connection;
     private GroupDAO groupDAO;
@@ -32,6 +33,7 @@ public class EditGroupController implements HttpHandler{
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Admin", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Group> allGroups = helper.readGroupsFromDB();
         String groupID = helper.getIdFromURI( httpExchange );

@@ -3,6 +3,7 @@ package pl.coderampart.controller.mentor;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import pl.coderampart.DAO.ArtifactDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Artifact;
@@ -12,7 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class CreateArtifactController implements HttpHandler {
+public class CreateArtifactController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private HelperController helper;
@@ -28,6 +29,7 @@ public class CreateArtifactController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String response = "";
         String method = httpExchange.getRequestMethod();
 

@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.TeamDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
@@ -14,7 +15,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class CreateTeamController implements HttpHandler {
+public class CreateTeamController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private GroupDAO groupDAO;
@@ -34,6 +35,7 @@ public class CreateTeamController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String response = "";
         String method = httpExchange.getRequestMethod();
 

@@ -3,6 +3,7 @@ package pl.coderampart.controller.admin;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import pl.coderampart.DAO.LevelDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Level;
@@ -13,7 +14,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateLevelController implements HttpHandler{
+public class CreateLevelController extends AccessValidator implements HttpHandler{
 
     private Connection connection;
     private LevelDAO levelDAO;
@@ -29,6 +30,7 @@ public class CreateLevelController implements HttpHandler{
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Admin", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         String response = "";
 

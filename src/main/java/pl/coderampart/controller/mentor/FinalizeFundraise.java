@@ -6,6 +6,7 @@ import pl.coderampart.DAO.ArtifactDAO;
 import pl.coderampart.DAO.CodecoolerDAO;
 import pl.coderampart.DAO.FundraisersDAO;
 import pl.coderampart.DAO.FundraisingsDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Artifact;
 import pl.coderampart.model.Codecooler;
@@ -17,7 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FinalizeFundraise implements HttpHandler {
+public class FinalizeFundraise extends AccessValidator implements HttpHandler {
     private Connection connection;
     private FundraisersDAO fundraisersDAO;
     private FundraisingsDAO fundraisingsDAO;
@@ -37,6 +38,7 @@ public class FinalizeFundraise implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String[] uri = httpExchange.getRequestURI().toString().split("=");
         String fundraisingID = uri[uri.length - 1];
 

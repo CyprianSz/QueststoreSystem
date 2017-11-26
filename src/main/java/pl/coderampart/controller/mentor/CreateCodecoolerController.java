@@ -5,10 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import pl.coderampart.DAO.CodecoolerDAO;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.TeamDAO;
-import pl.coderampart.controller.helpers.MailSender;
-import pl.coderampart.controller.helpers.PasswordHasher;
-import pl.coderampart.controller.helpers.FlashNoteHelper;
-import pl.coderampart.controller.helpers.HelperController;
+import pl.coderampart.controller.helpers.*;
 import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Group;
 import pl.coderampart.model.Team;
@@ -21,7 +18,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Map;
 
-public class CreateCodecoolerController implements HttpHandler {
+public class CreateCodecoolerController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private HelperController helper;
@@ -45,7 +42,7 @@ public class CreateCodecoolerController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-
+        validateAccess( "Mentor", httpExchange, connection);
         String response = "";
         String method = httpExchange.getRequestMethod();
 

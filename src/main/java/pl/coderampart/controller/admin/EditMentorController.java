@@ -6,6 +6,7 @@ import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.MentorDAO;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
@@ -17,7 +18,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
-public class EditMentorController implements HttpHandler {
+public class EditMentorController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private MentorDAO mentorDAO;
@@ -25,18 +26,17 @@ public class EditMentorController implements HttpHandler {
     private HelperController helper;
     private FlashNoteHelper flashNoteHelper;
 
-
     public EditMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(connection);
         this.groupDAO = new GroupDAO(connection);
         this.helper = new HelperController(connection);
         this.flashNoteHelper = new FlashNoteHelper();
-
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Admin", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Mentor> allMentors = helper.readMentorsFromDB();
         String mentorID = helper.getIdFromURI(httpExchange);

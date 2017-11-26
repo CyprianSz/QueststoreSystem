@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.ArtifactDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Artifact;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class EditArtifactController implements HttpHandler {
+public class EditArtifactController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private ArtifactDAO artifactDAO;
@@ -31,6 +32,7 @@ public class EditArtifactController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Artifact> allArtifacts = helper.readArtifactsFromDB();
         String artifactID = helper.getIdFromURI( httpExchange );

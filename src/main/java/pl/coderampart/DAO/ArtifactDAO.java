@@ -28,17 +28,6 @@ public class ArtifactDAO extends AbstractDAO {
         return artifact;
     }
 
-    public Artifact getByName(String name) throws SQLException {
-        Artifact artifact;
-        String query = "SELECT * FROM artifacts WHERE name = ?;";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, name);
-        ResultSet resultSet = statement.executeQuery();
-        artifact = this.createArtifactFromResultSet(resultSet);
-
-        return artifact;
-    }
-
     public List<Artifact> readAll() throws SQLException {
         List<Artifact> artifactList = new ArrayList<>();
         String query = "SELECT * FROM artifacts;";

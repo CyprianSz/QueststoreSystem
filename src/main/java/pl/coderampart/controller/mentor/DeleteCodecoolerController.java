@@ -6,6 +6,7 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.CodecoolerDAO;
 import pl.coderampart.DAO.TeamDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Codecooler;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class DeleteCodecoolerController implements HttpHandler {
+public class DeleteCodecoolerController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private CodecoolerDAO codecoolerDAO;
@@ -34,6 +35,7 @@ public class DeleteCodecoolerController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Codecooler> allCodecoolers = helper.readCodecoolersFromDB();
         String codecoolerID  = helper.getIdFromURI( httpExchange );
