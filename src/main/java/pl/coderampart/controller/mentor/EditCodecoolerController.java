@@ -109,7 +109,7 @@ public class EditCodecoolerController extends AccessValidator implements HttpHan
         String firstName = inputs.get("first-name");
         String lastName  = inputs.get("last-name");
         String email = inputs.get("email");
-        String birthdate = inputs.get("birthdate");
+        String birthdate = inputs.get("date-of-birth");
         String groupName = inputs.get("group");
         String teamName = inputs.get("team");
         LocalDate dateOfBirthObject = LocalDate.parse( birthdate );

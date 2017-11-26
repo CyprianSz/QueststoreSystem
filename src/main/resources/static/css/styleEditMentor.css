@@ -109,3 +109,24 @@ textarea {
     box-sizing: border-box;
     outline: none;
 }
+
+#searching {
+    width: 12.3em;
+    background-color: #efefef;
+    color: #666;
+    border: 2px solid #675f6b;
+    border-radius: 5px;
+    font-family: Sawasdee, serif;
+    font-size: 20px;
+    font-weight: bold;
+    box-sizing: border-box;
+    outline: none;
+    margin-left: 1.6em;
+    margin-bottom: -0.4em;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
