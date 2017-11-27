@@ -15,3 +15,8 @@ tr:nth-child(even) {
 #items-list, #level-table, #fundraisings-list {
     padding-top: 3em;
 }
+
+#fundraisings_table_insight:hover {
+    cursor: pointer;
+    background-color: #a296a6;
+}
