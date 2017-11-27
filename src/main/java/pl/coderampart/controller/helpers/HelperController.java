@@ -29,6 +29,7 @@ public class HelperController {
     private CodecoolerDAO codecoolerDAO;
     private ItemDAO itemDAO;
     private FlashNoteHelper flashNoteHelper;
+    private FundraisingsDAO fundraisingsDAO;
 
     public HelperController(Connection connection) {
         this.connection = connection;
@@ -41,6 +42,7 @@ public class HelperController {
         this.questDAO = new QuestDAO(connection);
         this.codecoolerDAO = new CodecoolerDAO(connection);
         this.itemDAO = new ItemDAO(connection);
+        this.fundraisingsDAO = new FundraisingsDAO(connection);
         this.flashNoteHelper = new FlashNoteHelper();
     }
 
@@ -354,6 +356,15 @@ public class HelperController {
                     break;
             }
             return loggedUser;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Fundraising> readFundraisingsFromDB() {
+        try {
+            return fundraisingsDAO.readAll();
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

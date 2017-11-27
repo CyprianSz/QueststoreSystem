@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.controller.helpers.HelperController;
+import pl.coderampart.model.Fundraising;
 import pl.coderampart.model.Item;
 
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class JoinFundraising implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        List<Item> fundraisingsList = helper.readUserItemsFromDB(httpExchange, connection);
+        List<Fundraising> fundraisingsList = helper.readFundraisingsFromDB();
         String response = "";
 
         response += helper.renderHeader(httpExchange, connection);
@@ -34,7 +35,7 @@ public class JoinFundraising implements HttpHandler {
         helper.sendResponse(response, httpExchange);
     }
 
-    private String renderDisplayFundraisings(List<Item> fundraisingsList) {
+    private String renderDisplayFundraisings(List<Fundraising> fundraisingsList) {
         String templatePath = "templates/codecooler/joinFundraising.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();

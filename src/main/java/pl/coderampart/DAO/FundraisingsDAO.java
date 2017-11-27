@@ -28,7 +28,7 @@ public class FundraisingsDAO extends AbstractDAO {
 
         List<Fundraising> fundraisingsList = new ArrayList<>();
 
-        String query = "SELECT * FROM fundraisings;";
+        String query = "SELECT * FROM fundraisings ORDER BY date(creation_date) DESC;";
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
 

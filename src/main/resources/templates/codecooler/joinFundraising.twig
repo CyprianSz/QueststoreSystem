@@ -1,47 +1,67 @@
-<div id="main-container-edit">
-
-    <div id="vertical_menu">
-        <div id="vertical-radio-list">
-            <form>
-                <div id="radio-form">
-                    {%  for fundraising in fundraisingsList %}
-                        <a href="/fundraising/join?fundraising-id={{ fundraising.ID }}">
-                            <button name="fundraising-id" value="{{ fundraising.ID }}">{{ fundraising.name }}</button>
-                        </a>
-                    {% endfor %}
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="sub-container-form">
-        <div id="fundraisings-list">
-            <table class="table">
-                <tbody>
+<div id="main-container">
+    <div id="fundraisings-list">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>name</th>
+                <th>artifact name</th>
+                <th>value</th>
+                <th>creation date</th>
+                <th>creator</th>
+                <th>is open</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for fundraising in fundraisingsList %}
                 <tr>
-                    <td>Name</td>
                     <td>{{ fundraising.name }}</td>
-                </tr>
-                <tr>
-                    <td>Artifact name</td>
                     <td>{{ fundraising.artifact.name }}</td>
-                </tr>
-                <tr>
-                    <td>Artifact description</td>
-                    <td>{{ fundraising.artifact.description }}</td>
-                </tr>
-                <tr>
-                    <td>Artifact value</td>
                     <td>{{ fundraising.artifact.value }}</td>
-                </tr>
-                <tr>
-                    <td>Creation date</td>
                     <td>{{ fundraising.dateToString() }}</td>
+                    <td>{{ fundraising.creator.firstName }} {{ fundraising.creator.lastName }}</td>
+                    {% if fundraising.isOpen == true %}
+                        <td><input type="checkbox" checked disabled></td>
+                    {% else %}
+                        <td><input type="checkbox" disabled></td>
+                    {% endif %}
                 </tr>
-                
-                </tbody>
-            </table>
-        </div>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
-
 </div>
+
+
+
+
+    {##}
+    {#<div id="vertical_menu">#}
+        {#<div id="vertical-radio-list">#}
+            {#<form>#}
+                {#<div id="radio-form">#}
+                    {#{%  for fundraising in fundraisingsList %}#}
+                        {#<a href="/fundraising/join?fundraising-id={{ fundraising.ID }}">#}
+                            {#<button name="fundraising-id" value="{{ fundraising.ID }}">{{ fundraising.name }}</button>#}
+                        {#</a>#}
+                    {#{% endfor %}#}
+  {##}
+                {#<tr>#}
+                    {#<td>Name</td>#}
+                    {#<td>{{ fundraising.name }}</td>#}
+                {#</tr>#}
+                {#<tr>#}
+                    {#<td>Artifact name</td>#}
+                    {#<td>{{ fundraising.artifact.name }}</td>#}
+                {#</tr>#}
+                {#<tr>#}
+                    {#<td>Artifact description</td>#}
+                    {#<td>{{ fundraising.artifact.description }}</td>#}
+                {#</tr>#}
+                {#<tr>#}
+                    {#<td>Artifact value</td>#}
+                    {#<td>{{ fundraising.artifact.value }}</td>#}
+                {#</tr>#}
+                {#<tr>#}
+                    {#<td>Creation date</td>#}
+                    {#<td>{{ fundraising.dateToString() }}</td>#}
+                {#</tr>#}
