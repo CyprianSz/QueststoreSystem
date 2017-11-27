@@ -69,9 +69,11 @@ public class Application {
         server.createContext("/wallet/level-info", new DisplayUserLevel(connection));
         server.createContext("/static", new Static());
 
-//        server.createContext("/buy-artifact", new ?(connection));
-//        server.createContext("/display-fundraisings", new ?(connection));
-//        server.createContext("/create-fundraising", new ?(connection));
+//        TODO:
+        server.createContext("/fundraising/join", new JoinFundraising(connection));
+//        server.createContext("/fundraising/create", new ?(connection));
+//        server.createContext("/fundraising/cancel", new ?(connection));
+//        server.createContext("/artifact/buy", new ?(connection));
 
         server.setExecutor(null);
         server.start();
