@@ -1,4 +1,4 @@
-package pl.coderampart.controller;
+package pl.coderampart.controller.helpers;
 
 import java.util.UUID;
 import java.lang.Byte;

@@ -5,6 +5,8 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.ArtifactDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Artifact;
 
@@ -14,20 +16,23 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteArtifactController implements HttpHandler {
+public class DeleteArtifactController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private ArtifactDAO artifactDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
 
     public DeleteArtifactController(Connection connection) {
         this.connection = connection;
         this.artifactDAO = new ArtifactDAO(connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Artifact> allArtifacts = helper.readArtifactsFromDB();
         String artifactID = helper.getIdFromURI( httpExchange );
@@ -47,7 +52,7 @@ public class DeleteArtifactController implements HttpHandler {
             Map inputs = helper.getInputsMap(httpExchange);
 
             if(inputs.get("confirmation").equals("yes")){
-                deleteArtifact(artifact);
+                deleteArtifact(artifact, httpExchange);
             }
             helper.redirectTo( "/artifact/delete", httpExchange );
         }
@@ -84,10 +89,15 @@ public class DeleteArtifactController implements HttpHandler {
         return template.render(model);
     }
 
-    private void deleteArtifact(Artifact artifact) {
+    private void deleteArtifact(Artifact artifact, HttpExchange httpExchange) {
         try {
             artifactDAO.delete( artifact );
+
+            String name = artifact.getName();
+            String flashNote = flashNoteHelper.createDeletionFlashNote( "Artifact", name );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

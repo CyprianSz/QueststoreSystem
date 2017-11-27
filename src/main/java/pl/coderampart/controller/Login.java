@@ -2,11 +2,10 @@ package pl.coderampart.controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.*;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
+import pl.coderampart.controller.helpers.PasswordHasher;
 import pl.coderampart.model.Session;
 import pl.coderampart.services.Loggable;
 
@@ -87,7 +86,7 @@ public class Login implements HttpHandler{
             createCookieWithSessionID( newSession, httpExchange );
             addSessionToDatabase(newSession);
 
-            String successFlashNote = "LOGIN SUCCESSFUL";
+            String successFlashNote = "LOGIN SUCCESSFULLY";
             flashNoteHelper.addSuccessFlashNoteToCookie(successFlashNote , httpExchange);
         } else {
             flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);

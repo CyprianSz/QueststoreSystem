@@ -5,6 +5,8 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.TeamDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Team;
 
@@ -14,20 +16,24 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class EditTeamController implements HttpHandler {
+public class EditTeamController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private TeamDAO teamDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
+
 
     public EditTeamController(Connection connection) {
         this.connection = connection;
         this.teamDAO = new TeamDAO(connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Team> allTeams = helper.readTeamsFromDB();
         String teamID = helper.getIdFromURI( httpExchange );
@@ -45,7 +51,7 @@ public class EditTeamController implements HttpHandler {
 
         if(method.equals("POST")) {
             Map inputs = helper.getInputsMap(httpExchange);
-            editTeam(inputs, team);
+            editTeam(inputs, team, httpExchange);
             helper.redirectTo( "/team/edit", httpExchange );
         }
     }
@@ -81,13 +87,17 @@ public class EditTeamController implements HttpHandler {
         return template.render(model);
     }
 
-    private void editTeam(Map<String, String> inputs, Team team) {
+    private void editTeam(Map<String, String> inputs, Team team, HttpExchange httpExchange) {
         String name = inputs.get("team-name");
 
         try {
             team.setName(name);
             teamDAO.update( team );
+
+            String flashNote = flashNoteHelper.createEditionFlashNote( "Team", name );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

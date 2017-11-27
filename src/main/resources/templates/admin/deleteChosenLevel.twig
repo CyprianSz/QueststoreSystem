@@ -1,14 +1,20 @@
 <div id="main-container-delete">
     <div id="vertical_menu">
         <div id="vertical-radio-list">
+            <script src="../../static/js/filteringScript.js"></script>
+            <input type="text" id="searching" onkeyup="filterList()" placeholder="Search">
             <form>
-                <div id="radio-form">
+                <ul id="radio-form-ul">
+                    <div id="radio-form">
+                     <li>
                     {%  for level in allLevels %}
                         <button name="level-id" value="{{ level.ID }}">
-                            Level: {{ level.rank }} {{ level.requiredExperience }}xp
+                            Level {{ level.rank }}
                         </button>
                     {% endfor %}
-                </div>
+                     </li>
+                    </div>
+                </ul>
             </form>
         </div>
     </div>

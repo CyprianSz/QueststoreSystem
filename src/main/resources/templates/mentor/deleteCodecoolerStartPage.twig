@@ -1,15 +1,21 @@
 <div id="main-container-delete">
     <div id="vertical_menu">
         <div id="vertical-radio-list">
+            <script src="../../static/js/filteringScript.js"></script>
+            <input type="text" id="searching" onkeyup="filterList()" placeholder="Search">
             <form>
                 <div id="radio-form">
+                    <ul id="radio-form-ul">
                     {%  for codecooler in allCodecoolers %}
+                        <li>
                         <a href="/codecooler/delete?codecooler-id={{ codecooler.ID }}">
                             <button name="codecooler-id" value="{{ codecooler.ID }}">
                                 {{ codecooler.firstName }} {{ codecooler.lastName }}
                             </button>
                         </a>
+                        </li>
                     {% endfor %}
+                    </ul>
                 </div>
             </form>
         </div>

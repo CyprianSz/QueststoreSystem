@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AchievementDAO extends AbstractDAO {
 
@@ -20,8 +21,8 @@ public class AchievementDAO extends AbstractDAO {
         codecoolerDAO = new CodecoolerDAO(connection);
     }
 
-    public ArrayList<Achievement> readAll() throws SQLException {
-        ArrayList<Achievement> achievementList = new ArrayList<>();
+    public List<Achievement> readAll() throws SQLException {
+        List<Achievement> achievementList = new ArrayList<>();
 
         String query = "SELECT * FROM achievements;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -31,24 +32,21 @@ public class AchievementDAO extends AbstractDAO {
             Achievement achievement = this.createAchievementFromResultSet(resultSet);
             achievementList.add(achievement);
         }
-
         return achievementList;
     }
 
     public void create(Achievement achievement) throws SQLException {
         String query = "INSERT INTO achievements (quest_id, codecooler_id, creation_date, id) VALUES (?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, achievement);
+        setPreparedStatement(statement, achievement);
         statement.executeUpdate();
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Achievement achievement) throws SQLException {
+    private void setPreparedStatement(PreparedStatement statement, Achievement achievement) throws SQLException {
         statement.setString(1, achievement.getQuest().getID());
         statement.setString(2, achievement.getCodecooler().getID());
         statement.setString(3, achievement.getCreationDate().toString());
         statement.setString(4, achievement.getID());
-
-        return statement;
     }
 
     private Achievement createAchievementFromResultSet(ResultSet resultSet) throws SQLException {

@@ -1,6 +1,6 @@
 
 #user-form-container {
-    padding-top: 2em;
+    padding-top: 1.2em;
     display: flex;
     min-height: 10em;
     justify-content: right;
@@ -59,9 +59,9 @@
     float: right;
 }
 
-/*INPUT FOR EMAIL AND PASSWORD*/
+/*INPUTS*/
 
-input[type=password], input[type=text], input[type=email] {
+input[type=password], input[type=text], input[type=email], select, select > option {
     width: 15em;
     background-color: #efefef;
     color: #666;
@@ -75,8 +75,25 @@ input[type=password], input[type=text], input[type=email] {
     outline: none;
 }
 
-input[type=password]:focus, input[type=text]:focus {
+input[type=password]:focus, input[type=text]:focus, textarea:focus {
     box-shadow: 0px 0px 3px 1px black;
+}
+
+textarea {
+    width: 15em;
+    /*margin-top: 0.1em;*/
+    background-color: #efefef;
+    color: #666;
+    border: 2px solid #675f6b;
+    border-radius: 5px;
+    font-family: Sawasdee, serif;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+    white-space: pre-line;
+    resize: none;
 }
 
 #groups {
@@ -91,4 +108,25 @@ input[type=password]:focus, input[type=text]:focus {
     padding: 10px;
     box-sizing: border-box;
     outline: none;
+}
+
+#searching {
+    width: 12.3em;
+    background-color: #efefef;
+    color: #666;
+    border: 2px solid #675f6b;
+    border-radius: 5px;
+    font-family: Sawasdee, serif;
+    font-size: 20px;
+    font-weight: bold;
+    box-sizing: border-box;
+    outline: none;
+    margin-left: 1.6em;
+    margin-bottom: -0.4em;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }

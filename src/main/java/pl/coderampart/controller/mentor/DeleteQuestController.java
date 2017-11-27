@@ -5,6 +5,8 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.QuestDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Quest;
 
@@ -14,20 +16,24 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteQuestController  implements HttpHandler {
+public class DeleteQuestController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private QuestDAO questDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
+
 
     public DeleteQuestController(Connection connection) {
         this.connection = connection;
         this.questDAO = new QuestDAO(connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Quest> allQuests = helper.readQuestsFromDB();
         String questID = helper.getIdFromURI( httpExchange );
@@ -47,7 +53,7 @@ public class DeleteQuestController  implements HttpHandler {
             Map inputs = helper.getInputsMap(httpExchange);
 
             if(inputs.get("confirmation").equals("yes")){
-                deleteQuest(quest);
+                deleteQuest(quest, httpExchange);
             }
             helper.redirectTo( "/quest/delete", httpExchange );
         }
@@ -84,10 +90,15 @@ public class DeleteQuestController  implements HttpHandler {
         return template.render(model);
     }
 
-    private void deleteQuest(Quest quest) {
+    private void deleteQuest(Quest quest, HttpExchange httpExchange) {
         try {
             questDAO.delete( quest );
+
+            String name = quest.getName();
+            String flashNote = flashNoteHelper.createDeletionFlashNote( "Quest", name);
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

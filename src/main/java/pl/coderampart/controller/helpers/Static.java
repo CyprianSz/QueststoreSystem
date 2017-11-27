@@ -1,4 +1,4 @@
-package pl.coderampart.controller;
+package pl.coderampart.controller.helpers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

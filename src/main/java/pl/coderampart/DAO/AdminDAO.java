@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+
 import pl.coderampart.model.*;
 
 public class AdminDAO extends AbstractDAO {
@@ -16,18 +18,8 @@ public class AdminDAO extends AbstractDAO {
         connection = connectionToDB;
     }
 
-    public Admin getLogged(String email) throws SQLException {
-        String query = "SELECT * FROM admins WHERE email = ?;";
-
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, email);
-        ResultSet resultSet = statement.executeQuery();
-
-        return this.createAdminFromResultSet(resultSet);
-    }
-
-    public ArrayList<Admin> readAll() throws SQLException{
-        ArrayList<Admin> adminList = new ArrayList<>();
+    public List<Admin> readAll() throws SQLException{
+        List<Admin> adminList = new ArrayList<>();
 
         String query = "SELECT * FROM admins;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -41,7 +33,6 @@ public class AdminDAO extends AbstractDAO {
     }
 
     public Admin getByID(String ID) throws SQLException {
-
         String query = "SELECT * FROM admins WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, ID);
@@ -54,7 +45,7 @@ public class AdminDAO extends AbstractDAO {
         String query = "INSERT INTO admins (first_name, last_name, email, password, date_of_birth, id) "
                          + "VALUES (?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, admin);
+        setPreparedStatement(statement, admin);
         statement.executeUpdate();
     }
 
@@ -63,9 +54,8 @@ public class AdminDAO extends AbstractDAO {
                 "last_name = ?, email = ?, password = ?, " +
                 "date_of_birth = ? WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, admin);
-        setStatement.executeUpdate();
-
+        setPreparedStatement(statement, admin);
+        statement.executeUpdate();
     }
 
     public void delete(Admin admin) throws SQLException{
@@ -75,18 +65,16 @@ public class AdminDAO extends AbstractDAO {
         statement.executeUpdate();
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Admin admin) throws SQLException {
+    private void setPreparedStatement(PreparedStatement statement, Admin admin) throws SQLException {
         statement.setString(1, admin.getFirstName());
         statement.setString(2, admin.getLastName());
         statement.setString(3, admin.getEmail());
         statement.setString(4, admin.getPassword());
         statement.setString(5, admin.getDateOfBirth().toString());
         statement.setString(6, admin.getID());
-
-        return statement;
     }
 
-    public Admin createAdminFromResultSet(ResultSet resultSet) throws SQLException {
+    Admin createAdminFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName = resultSet.getString("last_name");

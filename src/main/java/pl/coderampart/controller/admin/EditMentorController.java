@@ -6,6 +6,8 @@ import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.MentorDAO;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import pl.coderampart.controller.helpers.AccessValidator;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 import pl.coderampart.model.Mentor;
@@ -16,22 +18,25 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
-public class EditMentorController implements HttpHandler {
+public class EditMentorController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private MentorDAO mentorDAO;
     private GroupDAO groupDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
 
     public EditMentorController(Connection connection) {
         this.connection = connection;
         this.mentorDAO = new MentorDAO(connection);
         this.groupDAO = new GroupDAO(connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Admin", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Mentor> allMentors = helper.readMentorsFromDB();
         String mentorID = helper.getIdFromURI(httpExchange);
@@ -49,7 +54,7 @@ public class EditMentorController implements HttpHandler {
 
         if (method.equals("POST")) {
             Map<String, String> inputs = helper.getInputsMap(httpExchange);
-            editMentor(inputs, mentor);
+            editMentor(inputs, mentor, httpExchange);
             helper.redirectTo( "/mentor/edit", httpExchange );
         }
     }
@@ -90,7 +95,7 @@ public class EditMentorController implements HttpHandler {
         return template.render(model);
     }
 
-    private void editMentor(Map<String, String> inputs, Mentor mentor) {
+    private void editMentor(Map<String, String> inputs, Mentor mentor, HttpExchange httpExchange) {
         String firstName = inputs.get("first-name");
         String lastName= inputs.get("last-name");
         String dateOfBirth = inputs.get("date-of-birth");
@@ -107,7 +112,12 @@ public class EditMentorController implements HttpHandler {
             mentor.setGroup(group);
 
             mentorDAO.update( mentor );
+
+            String mentorFullName = firstName + " " + lastName;
+            String flashNote = flashNoteHelper.createEditionFlashNote( "Mentor", mentorFullName );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

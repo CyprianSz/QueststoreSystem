@@ -11,7 +11,6 @@ import java.io.*;
 import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,10 +48,16 @@ public class HelperController {
     private Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
+
         for (String pair : pairs) {
             String[] keyValue = pair.split("=");
-            String value = URLDecoder.decode(keyValue[1], "UTF-8");
-            map.put(keyValue[0], value);
+
+            if (keyValue.length == 1) {
+                map.put(keyValue[0], " ");
+            } else {
+                String value = URLDecoder.decode(keyValue[1], "UTF-8");
+                map.put(keyValue[0], value);
+            }
         }
         return map;
     }
@@ -110,6 +115,9 @@ public class HelperController {
             flashNoteHelper.clearUsedFlashNoteCookie( httpExchange );
         }
 
+        if (cookiesMap.containsKey( "cookieInfoConfirmation" )) {
+            model.with( "cookiesAccepted", true );
+        }
         return template.render(model);
     }
 
@@ -306,7 +314,7 @@ public class HelperController {
         }
     }
 
-    public ArrayList<Codecooler> readCodecoolersFromDB() {
+    public List<Codecooler> readCodecoolersFromDB() {
         try {
             return codecoolerDAO.readAll();
         } catch (SQLException e) {
@@ -369,5 +377,10 @@ public class HelperController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public String generateRandomPassword() {
+        String UUID = UUIDController.createUUID();
+        return UUID.split("-")[0];
     }
 }

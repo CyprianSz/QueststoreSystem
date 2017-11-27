@@ -1,24 +1,24 @@
 package pl.coderampart.DAO;
 
+import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Group;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupDAO extends AbstractDAO {
 
     private Connection connection;
 
     public GroupDAO(Connection connectionToDB) {
-
         connection = connectionToDB;
-
     }
 
-    public ArrayList<Group> readAll() throws SQLException{
-        ArrayList<Group> groupList = new ArrayList<>();
+    public List<Group> readAll() throws SQLException{
+        List<Group> groupList = new ArrayList<>();
 
         String query = "SELECT * FROM groups;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -28,12 +28,8 @@ public class GroupDAO extends AbstractDAO {
             Group group = this.createGroupFromResultSet(resultSet);
             groupList.add(group);
         }
-
         return groupList;
     }
-
-//    scalić te metody w jedną i w ogóle wyjebać do abstract DAO jak getBy
-//    z dwoma parametrami właśnie to po czym szukamy i dodatkowo w jakiej tabeli
 
     public Group getByID(String ID) throws SQLException{
         Group group = null;
@@ -49,7 +45,7 @@ public class GroupDAO extends AbstractDAO {
     }
 
     public Group getByName(String name) throws SQLException {
-        Group group = null;
+        Group group;
 
         String query = "SELECT * FROM groups WHERE name = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -62,30 +58,25 @@ public class GroupDAO extends AbstractDAO {
     }
 
     public void create(Group group) throws SQLException{
-
         String query = "INSERT INTO groups (name, id) VALUES (?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, group);
+        setPreparedStatement(statement, group);
         statement.executeUpdate();
-
     }
 
     public void update(Group group) throws SQLException {
 
         String query = "UPDATE groups SET name = ? WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, group);
-        setStatement.executeUpdate();
-
+        setPreparedStatement(statement, group);
+        statement.executeUpdate();
     }
 
     public void delete(Group group) throws SQLException{
-
         String query =  "DELETE FROM groups WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, group.getID());
         statement.executeUpdate();
-
     }
 
     private PreparedStatement setPreparedStatement(PreparedStatement statement, Group group) throws SQLException {

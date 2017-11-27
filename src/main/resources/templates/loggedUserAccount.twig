@@ -1,4 +1,4 @@
-<div id="sub-container-form">
+<div id="personal-data">
     <div id="user-account">
 
         <h2>Personal data edition: </h2>
@@ -21,9 +21,8 @@
 
             <div class="user-form">
                 <label for="birthdate">birthdate</label>
-                <input type="text" name="birthdate" id="birthdate" value="{{ dateOfBirth }}" required
-                       pattern="^[12][09]\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"
-                       title="proper format is: YYYY-MM-DD">
+                <input type="text" name="birthdate" id="birthdate" placeholder="" value="{{ dateOfBirth }}"
+                       required title="MM-DD-YYYY" onfocus="(this.type='date')" onblur="(this.type='text')">
             </div>
 
             <div id="user-form-button">

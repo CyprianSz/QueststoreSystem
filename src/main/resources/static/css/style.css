@@ -2,19 +2,14 @@ body {
     font-family: Sawasdee, serif;
 }
 
-#footer-container a {
+#footer-container a, #cookiesNote a, #header-container a {
     color: black;
     text-decoration: none;
 }
 
-#footer-container a:hover {
+#footer-container a:hover, #cookiesNote a:hover, #header-container a:hover {
     color: black;
     text-decoration: underline;
-}
-
-#header-container a {
-    color: black;
-    text-decoration: none;
 }
 
 #header-container {
@@ -64,32 +59,51 @@ header {
     align-items: center;
     display: flex;
 }
-button[name="logout"] {
+
+/*button[name="logout"] {*/
+    /*color: black;*/
+    /*background-color: white;*/
+    /*border-radius: 5px;*/
+    /*text-decoration: none;*/
+    /*border: solid 3px #675f6b;*/
+    /*padding: 0.2em 1.4em 1.3em;*/
+/*}*/
+
+/*button[name="logout"]:hover {*/
+    /*background: #675f6b ;*/
+    /*transition: .2s ease;*/
+/*}*/
+
+a[name="logout"] {
     color: black;
     background-color: white;
     border-radius: 5px;
-    text-decoration: none;
-    border: solid 3px #675f6b ;
-    padding: 1em;
-    padding-bottom: 0.3em;
-    padding-top: 0.3em;
+    border: solid 3px #675f6b;
+    font-size: 0.8em;
+    padding: 0.5em 1.5em 0.2em;
+    font-weight: bold;
 }
-button[name="logout"]:hover {
+
+a[name="logout"]:hover {
     background: #675f6b ;
-    transition: .3s ease;
+    transition: .2s ease;
 }
-a[name="logout"] {
-    text-decoration: none;
-    color: black;
+
+#login-radio-form {
+    border: solid 3px #675f6b ;
+    display: inline-block;
+    margin: 1em 2em;
+    border-radius: 10px;
+    overflow: hidden;
 }
+
 #radio-form {
     border: solid 3px #675f6b ;
     display: inline-block;
-    margin-top: 1em;
-    margin-right: 2em;
-    margin-left: 2em;
+    margin: 1em 2em;
     border-radius: 10px;
     overflow: hidden;
+    width: 15em;
 }
 
 #radio-form-edit {
@@ -145,7 +159,22 @@ input[type=password], input[type=text] {
     outline: none;
 }
 
-input[type=password]:focus, input[type=text]:focus {
+input[type=date] {
+    font-weight: bold;
+    width: 15em;
+    height: 2.3em;
+    background-color: #efefef ;
+    color: #666;
+    border: 2px solid #675f6b ;
+    border-radius: 5px;
+    font-family: Sawasdee, serif;
+    font-size: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input[type=password]:focus, input[type=text]:focus, input[type=data]:focus  {
     box-shadow: 0px 0px 3px 1px black;
 }
 
@@ -199,6 +228,56 @@ input[type=submit]:hover {
     text-decoration: underline;
 }
 
+#password-recovery {
+    text-align: center;
+    padding-right: 2.1em;
+    padding-top: 0.3em;
+}
+
+#password-recovery a {
+    text-align: center;
+    padding-left: 4.5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#back-to-login {
+    padding-top: 0.2em;
+}
+
+#password-recovery a:hover, #back-to-login a:hover {
+    text-align: center;
+    padding-left: 4.5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: underline;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#back-to-login a {
+    text-align: center;
+    padding-left: 12em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#back-to-login a:hover {
+    text-align: center;
+    padding-left: 12em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: underline;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
 /*#change-password-link a:hover{*/
     /*padding-left: 4.5em;*/
     /*padding-top: 0.5em;*/
@@ -224,4 +303,9 @@ input[type=submit]:hover {
     position: absolute;
     font-size: 0.9em;
     font-weight: bold;
+}
+
+#logged-user-type {
+    margin-top: 1em;
+    margin-bottom: 0.6em;
 }

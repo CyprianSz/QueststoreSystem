@@ -2,13 +2,19 @@
 
     <div id="vertical_menu">
         <div id="vertical-radio-list">
+            <script src="../../static/js/filteringScript.js"></script>
+            <input type="text" id="searching" onkeyup="filterList()" placeholder="Search">
             <form>
                 <div id="radio-form">
+                    <ul id="radio-form-ul">
                     {%  for group in allGroups %}
+                        <li>
                         <a href="/group/edit?group-id={{ group.ID }}">
-                        <button name="group-id" value="{{ group.ID }}">{{ group.name }}</button>
+                            <button name="group-id" value="{{ group.ID }}">{{ group.name }}</button>
                         </a>
+                        </li>
                     {% endfor %}
+                    </ul>
                 </div>
             </form>
         </div>
@@ -20,7 +26,7 @@
             <form method="POST">
                 <div class="user-form">
                     <label for="group-name">group name</label>
-                    <input type="text" name="group-name" id="group-name" value="{{ groupName }}" required>
+                    <input type="text" name="group-name" id="group-name" value="{{ groupName }}" maxlength="23" required>
                 </div>
 
                 <div id="user-form-button">

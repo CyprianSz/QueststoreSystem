@@ -24,8 +24,11 @@ li a {
     border-radius: 10px;
     color: #000000 ;
     font-weight: bold;
+    position: sticky;
+    top: 0;
 }
 .nav a {
+    font-weight: bold;
     display: block;
     padding: 0 16px;
     line-height: inherit;
@@ -42,7 +45,7 @@ li a {
 .nav__menu-item {
     display: inline-block;
     position: relative;
-    transition: .3s ease;
+    transition: .2s ease;
     top: 50%;
 }
 .nav__menu-item:hover {
@@ -57,7 +60,7 @@ li a {
 .nav__submenu-item{
     box-shadow: 0px 1px 1px #675f6b ;
     background-color: white;
-    transition: .5s ease;
+    transition: .3s ease;
     top: 50%;
 }
 
@@ -96,6 +99,7 @@ li a {
 
 #user-name{
     margin-bottom: -0.5em;
+    margin-top: 1.6em;
 }
 
 #empty {
@@ -104,12 +108,23 @@ li a {
 
 #attributes .attribute_list button[name="confirmation"]{
     display: inline-block;
-    margin: -2px;
-    padding: 10px 10px;
-    border: 1px solid #ddd;
+    padding: 0.3em 1em;
+    border: 0.1em solid #675f6b;
     cursor: pointer;
     font-size: 2em;
+    border-radius: 0.4em;
 }
+
+#attributes .attribute_list button[name="confirmation"]:hover{
+    display: inline-block;
+    padding: 0.3em 1em;
+    border: 0.1em solid #675f6b;
+    background-color: #675f6b;
+    cursor: pointer;
+    font-size: 2em;
+    border-radius: 0.4em;
+}
+
 .attribute_list li {
     display: inline-block;
     margin-right: 10px;
@@ -163,13 +178,24 @@ li a {
 }
 
 #sub-container-form {
-    padding: 3em;
+    padding-top: 1em;
+    padding-bottom: 2em;
+    padding-left: 4em;
     display:flex;
     justify-content: center;
 }
 
-#mentorsList, #groupsList, #levelsList{
-    padding-top: 3em;
+/*#mentorsList, #groupsList, #levelsList{*/
+    /*padQding-top: 3em;*/
+/*}*/
+#personal-data {
+    padding-top: 1em;
+    padding-bottom: 2em;
+    padding-right: 2em;
+    display:flex;
+    justify-content: center;
 }
+
+
 
 

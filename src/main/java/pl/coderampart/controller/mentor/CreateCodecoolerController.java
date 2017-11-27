@@ -5,8 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import pl.coderampart.DAO.CodecoolerDAO;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.TeamDAO;
-import pl.coderampart.controller.PasswordHasher;
-import pl.coderampart.controller.helpers.HelperController;
+import pl.coderampart.controller.helpers.*;
 import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Group;
 import pl.coderampart.model.Team;
@@ -17,30 +16,33 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
-public class CreateCodecoolerController implements HttpHandler {
+public class CreateCodecoolerController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
     private CodecoolerDAO codecoolerDAO;
     private GroupDAO groupDAO;
     private TeamDAO teamDAO;
     private PasswordHasher hasher;
+    private MailSender mailSender;
 
     public CreateCodecoolerController(Connection connection) {
         this.connection = connection;
         this.codecoolerDAO = new CodecoolerDAO( connection );
-        this.helper = new HelperController(connection);
         this.groupDAO = new GroupDAO(connection);
         this.teamDAO = new TeamDAO(connection);
+        this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
         this.hasher = new PasswordHasher();
+        this.mailSender = new MailSender();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-
+        validateAccess( "Mentor", httpExchange, connection);
         String response = "";
         String method = httpExchange.getRequestMethod();
 
@@ -55,32 +57,44 @@ public class CreateCodecoolerController implements HttpHandler {
 
         if (method.equals( "POST" )) {
             Map<String, String> inputs = helper.getInputsMap( httpExchange );
-            createCodecooler( inputs );
+            createCodecooler( inputs, httpExchange );
             helper.redirectTo( "/codecooler/create", httpExchange );
         }
     }
 
-    private void createCodecooler(Map<String, String> inputs) {
+    private void createCodecooler(Map<String, String> inputs, HttpExchange httpExchange) {
         String firstName = inputs.get("first-name");
         String lastName = inputs.get("last-name");
         String dateOfBirth = inputs.get("date-of-birth");
         String email = inputs.get("email");
-        String password = inputs.get("password");
         String groupName = inputs.get("group");
         String teamName = inputs.get("team");
+
         LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
 
         try {
-            String hashedPassword = hasher.generateStrongPasswordHash( password );
+            String generatedPassword = helper.generateRandomPassword();
+            String hashedPassword = hasher.generateStrongPasswordHash( generatedPassword );
             Group group = groupDAO.getByName( groupName );
             Team team = teamDAO.getByName( teamName );
+
             Codecooler newCodecooler= new Codecooler( firstName, lastName, dateOfBirthObject,
                                                       email, hashedPassword, connection );
             newCodecooler.setGroup( group );
             newCodecooler.setTeam( team );
             codecoolerDAO.create( newCodecooler );
+
+            String initialMessage = mailSender.prepareMessage( firstName, generatedPassword );
+            mailSender.send( email, initialMessage );
+
+            String codecoolerFullName = firstName + " " + lastName;
+            String flashNote = flashNoteHelper.createCreationFlashNote( "Codecooler", codecoolerFullName );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (NoSuchAlgorithmException | SQLException | InvalidKeySpecException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }
+
+
 }

@@ -1,16 +1,21 @@
 <div id="main-container-edit">
-
     <div id="vertical_menu">
         <div id="vertical-radio-list">
+            <script src="../../static/js/filteringScript.js"></script>
+            <input type="text" id="searching" onkeyup="filterList()" placeholder="Search">
             <form>
                 <div id="radio-form">
+                    <ul id="radio-form-ul">
                     {%  for quest in allQuests %}
+                        <li>
                         <a href="/quest/edit?quest-id={{ quest.ID }}">
                             <button name="quest-id" value="{{ quest.ID }}">
                                 {{ quest.name }}
                             </button>
                         </a>
+                        </li>
                     {% endfor %}
+                    </ul>
                 </div>
             </form>
         </div>
@@ -22,18 +27,18 @@
                 <div class="edit-text-fields">
                     <div class="user-form">
                         <label for="name">name</label>
-                        <input type="text" name="name" id="name" value="{{ name }}" required>
-                    </div>
-
-                    <div class="user-form">
-                        <label for="description">description</label>
-                        <input type="text" name="description" id="description" value="{{ description }}" required>
+                        <input type="text" name="name" id="name" value="{{ name }}" maxlength="23" required>
                     </div>
 
                     <div class="user-form">
                         <label for="reward">reward</label>
-                        <input type="text" name="reward" id="reward" value="{{ reward }}" required
+                        <input type="text" name="reward" id="reward" value="{{ reward }}" maxlength="20" required
                                pattern="^[0-9]+$" title="It's not a digit">
+                    </div>
+
+                    <div class="user-form">
+                        <label for="description">description</label>
+                        <textarea rows="4" name="description" id="description" maxlength="100" required>{{ description }}</textarea>
                     </div>
                 </div>
 
