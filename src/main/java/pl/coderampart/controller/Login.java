@@ -89,7 +89,8 @@ public class Login implements HttpHandler{
             String successFlashNote = "LOGIN SUCCESSFULLY";
             flashNoteHelper.addSuccessFlashNoteToCookie(successFlashNote , httpExchange);
         } else {
-            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
+            String failureFlashNote = "LOGIN FAILED";
+            flashNoteHelper.addFailureFlashNoteToCookie(failureFlashNote, httpExchange);
         }
         helper.redirectTo("/login", httpExchange);
     }

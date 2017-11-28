@@ -118,7 +118,8 @@ public class FinalizeFundraisingController extends AccessValidator implements Ht
                 String flashNote = "FUNDRAISING FINALIZED SUCCESSFULLY";
                 flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
             } else {
-                flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
+                String flashNote = "NOT ENOUGH FOUNDS ON PARTICIPANTS ACCOUNTS";
+                flashNoteHelper.addFailureFlashNoteToCookie(flashNote, httpExchange);
             }
         } catch (SQLException e) {
             flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);

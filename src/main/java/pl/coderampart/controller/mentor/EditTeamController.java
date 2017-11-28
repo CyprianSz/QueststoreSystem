@@ -8,6 +8,7 @@ import pl.coderampart.DAO.TeamDAO;
 import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
+import pl.coderampart.model.Group;
 import pl.coderampart.model.Team;
 
 import java.io.*;
@@ -67,12 +68,15 @@ public class EditTeamController extends AccessValidator implements HttpHandler {
     }
 
     private String renderEditTeam(Team team, List<Team> allTeams) {
+        List<Group> allGroups = helper.readGroupsFromDB();
         String templatePath = "templates/mentor/editTeam.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 
         model.with("allTeams", allTeams);
         model.with("teamName", team.getName());
+        model.with("groupName", team.getGroup().getName());
+        model.with("allGroups", allGroups);
 
         return template.render(model);
     }
