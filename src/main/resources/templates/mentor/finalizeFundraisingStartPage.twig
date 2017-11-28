@@ -1,0 +1,27 @@
+<div id="main-container">
+
+    <div id="itemsList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>name</th>
+                <th>creator</th>
+                <th>artifact</th>
+                <th>creation date</th>
+                <th>action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for fundraising in allFundraisings %}
+                <tr>
+                    <td>{{ fundraising.name }}</td>
+                    <td>{{ fundraising.creator.firstName }} {{ fundraising.creator.lastName }}</td>
+                    <td>{{ fundraising.artifact.name }}</td>
+                    <td>{{ fundraising.creationDate }}</td>
+                    <td><a href="/codecooler/finalize-fundraising?fundaising-id={{ fundraising.ID }}">finalize</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

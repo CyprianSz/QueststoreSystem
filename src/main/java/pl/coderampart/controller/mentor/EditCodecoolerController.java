@@ -58,7 +58,7 @@ public class EditCodecoolerController extends AccessValidator implements HttpHan
             helper.sendResponse( response, httpExchange );
         }
 
-        if(method.equals("POST")) {
+        if (method.equals("POST")) {
             Map<String, String> inputs = helper.getInputsMap(httpExchange);
             editCodecooler(inputs, codecooler, httpExchange);
             helper.redirectTo( "/codecooler/edit", httpExchange );

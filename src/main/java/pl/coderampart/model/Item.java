@@ -34,9 +34,7 @@ public class Item {
     public Wallet getWallet() { return this.wallet; }
     public LocalDate getCreationDate() { return this.creationDate; }
     public boolean getMark() { return this.isSpent; }
-    public void setMark() {
-        this.isSpent = true;
-    }
+    public void setMark() { this.isSpent = true; }
 
     public String dateToString() {
 
@@ -47,7 +45,6 @@ public class Item {
 
     @Override
     public String toString() {
-
         return this.artifact.getName();
     }
 

@@ -35,6 +35,18 @@ public class ItemDAO extends AbstractDAO {
         return itemList;
     }
 
+
+    public Item getByID(String itemID) throws SQLException {
+        Item item;
+
+        String query = "SELECT * FROM items WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, itemID);
+        ResultSet resultSet = statement.executeQuery();
+
+        return this.createItemFromResultSet(resultSet);
+    }
+
     public List<Item> getUserItems(String walletID) throws SQLException {
         List<Item> itemList = new ArrayList<>();
         String query = "SELECT * FROM items WHERE wallet_id = ?;";

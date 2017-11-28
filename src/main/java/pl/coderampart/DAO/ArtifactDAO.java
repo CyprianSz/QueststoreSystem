@@ -49,7 +49,7 @@ public class ArtifactDAO extends AbstractDAO {
     }
 
     public void update(Artifact artifact) throws SQLException {
-        String query = "UPDATE artifacts SET name = ?, type = ?, description = ?, value = ? WHERE id = ?";
+        String query = "UPDATE artifacts SET name = ?, description = ?, type = ?, value = ? WHERE id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         setPreparedStatement(statement, artifact);
         statement.executeUpdate();
