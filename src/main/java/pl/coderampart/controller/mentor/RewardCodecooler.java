@@ -60,9 +60,9 @@ public class RewardCodecooler extends AccessValidator implements HttpHandler {
         }
 
         if (method.equals("POST")) {
-            Map inputs = helper.getInputsMap(httpExchange);
-            String questName = (String) inputs.get("quest-name");
-            String codecoolerName = (String) inputs.get("codecooler-name");
+            Map<String, String> inputs = helper.getInputsMap(httpExchange);
+            String questName = inputs.get("quest-name");
+            String codecoolerName = inputs.get("codecooler-name");
 
             rewardCodecooler(questName, codecoolerName, httpExchange);
 
