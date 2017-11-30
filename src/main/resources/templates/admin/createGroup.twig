@@ -4,8 +4,9 @@
         <form method="POST">
             <div class="user-form">
                 <input type="text" name="group-name" id="group-name" placeholder="group name" maxlength="23"
-                       pattern="^[a-zA-Z]*$" title="Should contains only letters" required>
+                       pattern="^[a-zA-Z\s]+$" title="Should contains only letters" required>
             </div>
+
 
             <div id="user-form-button">
                 <input type="submit" value="CREATE GROUP">
