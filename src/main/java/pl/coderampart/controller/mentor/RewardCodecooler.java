@@ -110,8 +110,11 @@ public class RewardCodecooler extends AccessValidator implements HttpHandler {
     private void addCoolcoinsToCodecoolerAccount(Codecooler codecooler, Integer reward) throws SQLException {
         Wallet codecoolerWallet = codecooler.getWallet();
         Integer actualCodecoolerBalance = codecooler.getWallet().getBalance();
+        Integer actualEarnedCoins = codecooler.getWallet().getEarnedCoins();
         Integer updatedCodecoolerBalance = actualCodecoolerBalance + reward;
+        Integer updatedEarnedCoins = actualEarnedCoins + reward;
         codecoolerWallet.setBalance( updatedCodecoolerBalance );
+        codecoolerWallet.setEarnedCoins( updatedEarnedCoins );
 
         walletDAO.update(codecoolerWallet);
     }
