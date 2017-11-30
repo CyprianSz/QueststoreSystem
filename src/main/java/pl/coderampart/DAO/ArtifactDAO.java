@@ -41,6 +41,17 @@ public class ArtifactDAO extends AbstractDAO {
         return artifactList;
     }
 
+    public Artifact getByName(String name) throws SQLException {
+        Artifact artifact;
+
+        String query = "SELECT * FROM artifacts WHERE name = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, name);
+        ResultSet resultSet = statement.executeQuery();
+
+        return this.createArtifactFromResultSet(resultSet);
+    }
+
     public void create(Artifact artifact) throws SQLException{
         String query = "INSERT INTO artifacts (name, description, type, value, id) VALUES (?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
