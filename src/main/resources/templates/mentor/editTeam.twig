@@ -2,13 +2,19 @@
 
     <div id="vertical_menu">
         <div id="vertical-radio-list">
+            <script src="../../static/js/filteringScript.js"></script>
+            <input type="text" id="searching" onkeyup="filterList()" placeholder="Search">
             <form>
                 <div id="radio-form">
+                    <ul id="radio-form-ul">
                     {%  for team in allTeams %}
+                        <li>
                         <a href="/team/edit?team-id={{ team.ID }}">
                             <button name="team-id" value="{{ team.ID }}">{{ team.name }}</button>
                         </a>
+                        </li>
                     {% endfor %}
+                    </ul>
                 </div>
             </form>
         </div>
@@ -19,7 +25,17 @@
             <form method="POST">
                 <div class="user-form">
                     <label for="team-name">team name</label>
-                    <input type="text" name="team-name" id="team-name" value="{{ teamName }}" required>
+                    <input type="text" name="team-name" id="team-name" value="{{ teamName }}" maxlength="23" required>
+                </div>
+
+                <div class="dropdown">
+                    <label for="group">group</label>
+                    <select name="group" id=group" required>
+                        <option value="{{ groupName }}">{{ groupName }}</option>
+                        {% for group in allGroups %}
+                            <option value="{{ group.name }}">{{ group.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div id="user-form-button">

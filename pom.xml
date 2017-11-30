@@ -10,7 +10,6 @@
     <name>coderampart</name>
     <url>http://maven.apache.org</url>
 
-
     <build>
         <plugins>
             <plugin>
@@ -44,6 +43,12 @@
     </build>
 
     <dependencies>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
 
         <dependency>
             <groupId>org.xerial</groupId>

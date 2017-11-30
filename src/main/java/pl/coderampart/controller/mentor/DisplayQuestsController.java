@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Quest;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
-public class DisplayQuestsController implements HttpHandler {
+public class DisplayQuestsController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private HelperController helper;
@@ -24,6 +25,7 @@ public class DisplayQuestsController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         List<Quest> allQuests = helper.readQuestsFromDB();
         String response = "";
 

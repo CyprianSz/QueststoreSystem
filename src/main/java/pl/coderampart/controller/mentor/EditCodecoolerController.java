@@ -7,6 +7,8 @@ import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.CodecoolerDAO;
 import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.TeamDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Group;
@@ -19,13 +21,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-public class EditCodecoolerController implements HttpHandler {
+public class EditCodecoolerController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private CodecoolerDAO codecoolerDAO;
     private GroupDAO groupDAO;
     private TeamDAO teamDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
+
 
     public EditCodecoolerController(Connection connection) {
         this.connection = connection;
@@ -33,10 +37,12 @@ public class EditCodecoolerController implements HttpHandler {
         this.teamDAO = new TeamDAO(connection);
         this.codecoolerDAO = new CodecoolerDAO(connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Codecooler> allCodecoolers = helper.readCodecoolersFromDB();
         String codecoolerID = helper.getIdFromURI( httpExchange );
@@ -52,9 +58,9 @@ public class EditCodecoolerController implements HttpHandler {
             helper.sendResponse( response, httpExchange );
         }
 
-        if(method.equals("POST")) {
+        if (method.equals("POST")) {
             Map<String, String> inputs = helper.getInputsMap(httpExchange);
-            editCodecooler(inputs, codecooler);
+            editCodecooler(inputs, codecooler, httpExchange);
             helper.redirectTo( "/codecooler/edit", httpExchange );
         }
     }
@@ -99,11 +105,11 @@ public class EditCodecoolerController implements HttpHandler {
         return template.render(model);
     }
 
-    private void editCodecooler(Map<String, String> inputs, Codecooler codecooler) {
+    private void editCodecooler(Map<String, String> inputs, Codecooler codecooler, HttpExchange httpExchange) {
         String firstName = inputs.get("first-name");
         String lastName  = inputs.get("last-name");
         String email = inputs.get("email");
-        String birthdate = inputs.get("birthdate");
+        String birthdate = inputs.get("date-of-birth");
         String groupName = inputs.get("group");
         String teamName = inputs.get("team");
         LocalDate dateOfBirthObject = LocalDate.parse( birthdate );
@@ -115,11 +121,16 @@ public class EditCodecoolerController implements HttpHandler {
             codecooler.setLastName( lastName );
             codecooler.setEmail( email );
             codecooler.setDateOfBirth( dateOfBirthObject );
-            codecooler.setGroup(group);
-            codecooler.setTeam(team);
+            codecooler.setGroup( group );
+            codecooler.setTeam( team );
 
             codecoolerDAO.update( codecooler );
+
+            String codecoolerFullName = firstName + " " + lastName;
+            String flashNote = flashNoteHelper.createEditionFlashNote( "Codecooler", codecoolerFullName );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

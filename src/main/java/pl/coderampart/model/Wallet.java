@@ -1,6 +1,6 @@
 package pl.coderampart.model;
 
-import pl.coderampart.controller.UUIDController;
+import pl.coderampart.controller.helpers.UUIDController;
 
 public class Wallet {
 
@@ -25,7 +25,6 @@ public class Wallet {
     public Integer getEarnedCoins() { return this.earnedCoins; }
     public void setBalance(Integer balance) { this.balance = balance; }
     public void setEarnedCoins(Integer earnedCoins) { this.earnedCoins = earnedCoins; }
-
 
     public String toString() {
         String walletData = "\nBalance: " + this.getBalance()

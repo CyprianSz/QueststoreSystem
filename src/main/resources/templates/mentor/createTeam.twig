@@ -4,11 +4,16 @@
     <div id="user-form-container">
         <form method="POST">
             <div class="user-form">
-                <input type="text" name="team-name" id="team-name" placeholder="team name" required>
+                <input type="text" name="team-name" id="team-name" placeholder="team name" maxlength="23" required>
             </div>
 
-            <div class="user-form">
-                <input type="text" name="group-name" id="group-name" placeholder="group name" required>
+            <div class="dropdown">
+                <select name="group-name" id=group-name" required>
+                    <option value="" disabled selected>group</option>
+                    {% for group in allGroups %}
+                        <option value="{{ group.name }}">{{ group.name }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div id="user-form-button">

@@ -7,6 +7,10 @@ import pl.coderampart.controller.codecooler.*;
 
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
+import pl.coderampart.controller.helpers.CookiesConfirmator;
+import pl.coderampart.controller.helpers.PasswordChanger;
+import pl.coderampart.controller.helpers.PasswordRecovery;
+import pl.coderampart.controller.helpers.Static;
 import pl.coderampart.controller.mentor.*;
 
 import java.io.IOException;
@@ -16,10 +20,9 @@ import java.sql.SQLException;
 public class Application {
 
     public static void main(String[] args) throws ClassNotFoundException, IOException, SQLException {
-        ConnectionToDB connectionToDB = ConnectionToDB.getInstance();
-        Connection connection = connectionToDB.connectToDataBase();
-
+        Connection connection = ConnectionToDB.getConnection();
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+
         server.createContext("/logout", new Logout(connection));
         server.createContext("/login", new Login(connection));
 
@@ -53,20 +56,28 @@ public class Application {
         server.createContext("/codecooler/display", new DisplayCodecoolersController(connection));
         server.createContext("/codecooler/edit", new EditCodecoolerController(connection));
         server.createContext("/codecooler/delete", new DeleteCodecoolerController(connection));
+        server.createContext("/codecooler/mark-item", new MarkItemController(connection));
+        server.createContext("/codecooler/finalize-fundraising", new FinalizeFundraisingController(connection));
 
         server.createContext("/quest/create", new CreateQuestController(connection));
         server.createContext("/quest/display", new DisplayQuestsController(connection));
         server.createContext("/quest/edit", new EditQuestController(connection));
         server.createContext("/quest/delete", new DeleteQuestController(connection));
 
-//        server.createContext("/change-password", new ChangePassword(connection));
+        server.createContext("/password-recovery", new PasswordRecovery(connection));
+        server.createContext("/confirm-cookie-info", new CookiesConfirmator(connection));
+        server.createContext("/change-password", new PasswordChanger(connection));
         server.createContext("/account", new LoggedUserData(connection));
         server.createContext("/wallet/level-info", new DisplayUserLevel(connection));
         server.createContext("/static", new Static());
 
-//        server.createContext("/buy-artifact", new ?(connection));
-//        server.createContext("/display-fundraisings", new ?(connection));
-//        server.createContext("/create-fundraising", new ?(connection));
+
+
+//        TODO:
+        server.createContext("/fundraising/join", new JoinFundraising(connection));
+//        server.createContext("/fundraising/create", new ?(connection));
+//        server.createContext("/fundraising/cancel", new ?(connection));
+//        server.createContext("/artifact/buy", new ?(connection));
 
         server.setExecutor(null);
         server.start();

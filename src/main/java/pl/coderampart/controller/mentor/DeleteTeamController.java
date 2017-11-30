@@ -5,6 +5,8 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.TeamDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Team;
 
@@ -14,20 +16,24 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteTeamController implements HttpHandler {
+public class DeleteTeamController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private TeamDAO teamDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
+
 
     public DeleteTeamController(Connection connection) {
         this.connection = connection;
         this.teamDAO = new TeamDAO(this.connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Mentor", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Team> allTeams = helper.readTeamsFromDB();
         String teamID = helper.getIdFromURI( httpExchange );
@@ -47,7 +53,7 @@ public class DeleteTeamController implements HttpHandler {
             Map inputs = helper.getInputsMap(httpExchange);
 
             if(inputs.get("confirmation").equals("yes")){
-                deleteTeam(team);
+                deleteTeam(team, httpExchange);
             }
             helper.redirectTo( "/team/delete", httpExchange );
         }
@@ -84,10 +90,15 @@ public class DeleteTeamController implements HttpHandler {
         return template.render(model);
     }
 
-    private void deleteTeam(Team team) {
+    private void deleteTeam(Team team, HttpExchange httpExchange) {
         try {
             teamDAO.delete( team );
+
+            String name = team.getName();
+            String flashNote = flashNoteHelper.createDeletionFlashNote( "Team", name);
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

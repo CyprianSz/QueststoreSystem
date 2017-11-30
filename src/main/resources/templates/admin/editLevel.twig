@@ -3,13 +3,19 @@
 
     <div id="vertical_menu">
         <div id="vertical-radio-list">
+            <script src="../../static/js/filteringScript.js"></script>
+            <input type="text" id="searching" onkeyup="filterList()" placeholder="Search">
             <form>
                 <div id="radio-form">
+                    <ul id="radio-form-ul">
                     {%  for level in allLevels %}
+                        <li>
                         <a href="/level/edit?level-id={{ level.ID }}">
-                        <button name="level-id" value="{{ level.ID }}">Level {{ level.rank }} {{ level.requiredExperience }}xp</button>
+                        <button name="level-id" value="{{ level.ID }}">Level {{ level.rank }}</button>
                         </a>
+                        </li>
                     {% endfor %}
+                    </ul>
                 </div>
             </form>
         </div>
@@ -17,23 +23,23 @@
 
     <div id="sub-container-form">
 
-        <div id="user-form-container-edit">
+        <div id="user-form-container">
             <form method="POST">
                 <div class="user-form">
                     <label for="rank">rank</label>
-                    <input type="text" name="rank" id="rank" value="{{ rank }}" required
+                    <input type="text" name="rank" id="rank" value="{{ rank }}" maxlength="10" required
                            pattern="^[0-9]+$" title="It's not a digit">
                 </div>
 
                 <div class="user-form">
-                    <label for="required-experience">required experience</label>
+                    <label for="required-experience">exp required</label>
                     <input type="text" name="required-experience" id="required-experience" value="{{ requiredExperience }}" required
-                           pattern="^[0-9]+$" title="It's not a digit">
+                           pattern="^[0-9]+$" title="It's not a positive number" maxlength="20">
                 </div>
 
                 <div class="user-form">
                     <label for="description">description</label>
-                    <input type="text" name="description" id="description" value="{{ description }}" required>
+                    <textarea rows="4" name="description" id="description" maxlength="100" required>{{ description }}</textarea>
                 </div>
 
                 <div id="user-form-button">

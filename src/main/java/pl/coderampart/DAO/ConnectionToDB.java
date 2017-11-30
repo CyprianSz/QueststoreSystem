@@ -6,32 +6,13 @@ import java.sql.SQLException;
 
 public class ConnectionToDB {
 
-    private static ConnectionToDB instance = null;
-    private static Connection connection;
-
-    public ConnectionToDB() {}
-
-    public static ConnectionToDB getInstance() {
-        if (instance == null) {
-            try {
-                instance = new ConnectionToDB();
-            } catch (Exception e) {
-                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            }
-        }
-        return instance;
-    }
-
-    public Connection connectToDataBase() throws SQLException {
-
+    public static Connection getConnection() {
         try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
+            Class.forName( "org.sqlite.JDBC" );
+            return DriverManager.getConnection( "jdbc:sqlite:src/main/resources/db/quest_store.db" );
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/db/quest_store.db");
-
-        return connection;
     }
-
 }

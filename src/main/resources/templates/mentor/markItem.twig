@@ -1,0 +1,27 @@
+<div id="main-container">
+
+    <div id="itemsList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>owner</th>
+                <th>artifact</th>
+                <th>type</th>
+                <th>creation date</th>
+                <th>action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for DTO in codecoolersItemsPairs %}
+                <tr>
+                    <td>{{ DTO.codecooler.firstName }} {{ DTO.codecooler.lastName }}</td>
+                    <td>{{ DTO.item.artifact.name }}</td>
+                    <td>{{ DTO.item.artifact.type }}</td>
+                    <td>{{ DTO.item.creationDate }}</td>
+                    <td><a href="/codecooler/mark-item?item-id={{ DTO.item.ID }}">spend</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -5,6 +5,8 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.LevelDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Level;
 
@@ -14,21 +16,23 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteLevelController implements HttpHandler {
+public class DeleteLevelController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private LevelDAO levelDAO;
     private HelperController helper;
-
+    private FlashNoteHelper flashNoteHelper;
 
     public DeleteLevelController(Connection connection) {
         this.connection = connection;
         this.levelDAO = new LevelDAO(this.connection);
         this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Admin", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
         List<Level> allLevels = helper.readLevelsFromDB();
         String levelID = helper.getIdFromURI(httpExchange);
@@ -48,7 +52,7 @@ public class DeleteLevelController implements HttpHandler {
             Map inputs = helper.getInputsMap(httpExchange);
 
             if(inputs.get("confirmation").equals("yes")) {
-                deleteLevel(level);
+                deleteLevel(level, httpExchange);
             }
             helper.redirectTo( "/level/delete", httpExchange );
         }
@@ -85,10 +89,15 @@ public class DeleteLevelController implements HttpHandler {
         return template.render(model);
     }
 
-    private void deleteLevel(Level level) {
+    private void deleteLevel(Level level, HttpExchange httpExchange) {
         try {
             levelDAO.delete( level );
+
+            String rank = level.getRank().toString();
+            String flashNote = flashNoteHelper.createDeletionFlashNote( "Level", rank);
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
         } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
             e.printStackTrace();
         }
     }

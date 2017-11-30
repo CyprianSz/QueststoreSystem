@@ -17,31 +17,26 @@ public class WalletDAO extends AbstractDAO {
     }
 
     public Wallet getByID(String ID) throws SQLException {
-
-        Wallet wallet = null;
-
         String query = "SELECT * FROM wallets WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, ID);
         ResultSet resultSet = statement.executeQuery();
 
-        wallet = this.createWalletFromResultSet(resultSet);
-
-        return wallet;
+        return this.createWalletFromResultSet(resultSet);
     }
 
     public void create(Wallet wallet) throws SQLException {
         String query = "INSERT INTO wallets (balance, earned_coins, id) VALUES (?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, wallet);
-        setStatement.executeUpdate();
+        setPreparedStatement(statement, wallet);
+        statement.executeUpdate();
     }
 
     public void update(Wallet wallet) throws SQLException {
         String query = "UPDATE wallets SET balance = ?, earned_coins = ? WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, wallet);
-        setStatement.executeUpdate();
+        setPreparedStatement(statement, wallet);
+        statement.executeUpdate();
     }
 
     public void delete(Wallet wallet) throws SQLException {
@@ -51,12 +46,10 @@ public class WalletDAO extends AbstractDAO {
         statement.executeUpdate();
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Wallet wallet) throws SQLException {
+    private void setPreparedStatement(PreparedStatement statement, Wallet wallet) throws SQLException {
         statement.setInt(1, wallet.getBalance());
         statement.setInt(2, wallet.getEarnedCoins());
         statement.setString(3, wallet.getID());
-
-        return statement;
     }
 
     private Wallet createWalletFromResultSet(ResultSet resultSet) throws SQLException {

@@ -1,6 +1,6 @@
 package pl.coderampart.model;
 
-import pl.coderampart.controller.UUIDController;
+import pl.coderampart.controller.helpers.UUIDController;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -53,16 +53,7 @@ public class Fundraising {
         return isOpen;
     }
 
-    public void closeFundraising(boolean open) {
+    public void closeFundraising() {
         isOpen = false;
-    }
-
-    public String dateToString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return this.creationDate.format(formatter);
-    }
-
-    public String getArtifactID() {
-        return artifact.getID();
     }
 }
