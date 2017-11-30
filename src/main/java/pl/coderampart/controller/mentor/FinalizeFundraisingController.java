@@ -166,5 +166,4 @@ public class FinalizeFundraisingController extends AccessValidator implements Ht
             walletDAO.update(fundraiserWallet);
         }
     }
-
 }

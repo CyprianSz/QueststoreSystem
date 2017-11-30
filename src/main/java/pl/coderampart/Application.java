@@ -58,6 +58,7 @@ public class Application {
         server.createContext("/codecooler/delete", new DeleteCodecoolerController(connection));
         server.createContext("/codecooler/mark-item", new MarkItemController(connection));
         server.createContext("/codecooler/finalize-fundraising", new FinalizeFundraisingController(connection));
+        server.createContext("/codecooler/reward", new RewardCodecooler(connection));
 
         server.createContext("/quest/create", new CreateQuestController(connection));
         server.createContext("/quest/display", new DisplayQuestsController(connection));

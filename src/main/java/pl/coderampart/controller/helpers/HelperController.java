@@ -9,7 +9,6 @@ import pl.coderampart.services.Loggable;
 
 import java.io.*;
 import java.net.URLDecoder;
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class HelperController {
                 map.put(keyValue[0], " ");
             } else {
                 String value = URLDecoder.decode(keyValue[1], "UTF-8");
-                map.put(keyValue[0], value);
+                map.put(keyValue[0], EscapeHTML.escapeHTML( value ));
             }
         }
         return map;
