@@ -18,7 +18,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class JoinFundraising extends AccessValidator implements HttpHandler {
+public class JoinFundraisingController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private HelperController helper;
@@ -26,7 +26,7 @@ public class JoinFundraising extends AccessValidator implements HttpHandler {
     private FlashNoteHelper flashNoteHelper;
 
 
-    public JoinFundraising(Connection connection) {
+    public JoinFundraisingController(Connection connection) {
         this.connection = connection;
         this.helper = new HelperController(connection);
         this.fundraisersDAO = new FundraisersDAO(connection);
@@ -49,7 +49,7 @@ public class JoinFundraising extends AccessValidator implements HttpHandler {
             helper.sendResponse(response, httpExchange);
         }
 
-        if(method.equals("POST")) {
+        if (method.equals("POST")) {
             joinToFundraising(httpExchange, connection);
             helper.redirectTo( "/fundraising/join", httpExchange );
         }
@@ -75,7 +75,7 @@ public class JoinFundraising extends AccessValidator implements HttpHandler {
         Integer idLength = 36;
         String fundraisingID = helper.getIdFromURI( httpExchange );
 
-        if(fundraisingID.length() == idLength) {
+        if (fundraisingID.length() == idLength) {
             Fundraising fundraising = helper.getFundraisingByID(fundraisingID);
             List<Codecooler> fundraisersList = helper.getFundraisersList(fundraisingID);
             return renderDisplayExactFundraising(fundraising, fundraisersList);

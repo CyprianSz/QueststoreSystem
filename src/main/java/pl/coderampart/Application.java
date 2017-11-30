@@ -11,8 +11,6 @@ import pl.coderampart.controller.helpers.*;
 import pl.coderampart.controller.mentor.*;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -50,6 +48,7 @@ public class Application {
         server.createContext("/artifact/display", new DisplayArtifactsController(connection));
         server.createContext("/artifact/edit", new EditArtifactController(connection));
         server.createContext("/artifact/delete", new DeleteArtifactController(connection));
+        server.createContext("/artifact/buy", new BuyArtifactController(connection));
 
         server.createContext("/wallet/display", new DisplayWalletController(connection));
         server.createContext("/codecooler/create", new CreateCodecoolerController(connection));
@@ -69,11 +68,11 @@ public class Application {
         server.createContext("/confirm-cookie-info", new CookiesConfirmator(connection));
         server.createContext("/change-password", new PasswordChanger(connection));
         server.createContext("/account", new LoggedUserData(connection));
-        server.createContext("/wallet/level-info", new DisplayUserLevel(connection));
+        server.createContext("/wallet/level-info", new DisplayUserLevelController(connection));
         server.createContext("/static", new Static());
 
-        server.createContext("/fundraising/join", new JoinFundraising(connection));
         server.createContext("/fundraising/create", new CreateFundraising(connection));
+        server.createContext("/fundraising/join", new JoinFundraisingController(connection));
 
         server.setExecutor(null);
         server.start();

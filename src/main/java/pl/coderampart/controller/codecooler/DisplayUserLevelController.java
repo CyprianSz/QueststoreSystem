@@ -11,12 +11,12 @@ import pl.coderampart.model.Level;
 import java.io.IOException;
 import java.sql.Connection;
 
-public class DisplayUserLevel extends AccessValidator implements HttpHandler {
+public class DisplayUserLevelController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private HelperController helper;
 
-    public DisplayUserLevel(Connection connection) {
+    public DisplayUserLevelController(Connection connection) {
         this.connection = connection;
         this.helper = new HelperController(connection);
     }
