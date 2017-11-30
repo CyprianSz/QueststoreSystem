@@ -7,19 +7,19 @@ import pl.coderampart.controller.codecooler.*;
 
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
-import pl.coderampart.controller.helpers.CookiesConfirmator;
-import pl.coderampart.controller.helpers.PasswordChanger;
-import pl.coderampart.controller.helpers.PasswordRecovery;
-import pl.coderampart.controller.helpers.Static;
+import pl.coderampart.controller.helpers.*;
 import pl.coderampart.controller.mentor.*;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class Application {
 
     public static void main(String[] args) throws ClassNotFoundException, IOException, SQLException {
+
         Connection connection = ConnectionToDB.getConnection();
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
