@@ -12,7 +12,7 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 
-#items-list, #level-table, #fundraisings-list {
+#items-list, #level-table, #fundraisings-list, #fundraising-info {
     padding-top: 3em;
 }
 

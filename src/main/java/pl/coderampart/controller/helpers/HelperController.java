@@ -383,4 +383,13 @@ public class HelperController {
         String UUID = UUIDController.createUUID();
         return UUID.split("-")[0];
     }
+
+    public Fundraising getFundraisingByID(String ID) {
+        try {
+            return fundraisingsDAO.getByID(ID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

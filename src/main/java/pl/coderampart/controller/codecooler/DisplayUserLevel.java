@@ -4,13 +4,14 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Level;
 
 import java.io.IOException;
 import java.sql.Connection;
 
-public class DisplayUserLevel implements HttpHandler {
+public class DisplayUserLevel extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private HelperController helper;
@@ -22,6 +23,7 @@ public class DisplayUserLevel implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Codecooler", httpExchange, connection);
         Level userLevel = helper.readUserLevelFromDB(httpExchange, connection);
         String response = "";
 

@@ -1,4 +1,5 @@
 <div id="main-container">
+
     <div id="fundraisings-list">
         <table class="table">
 
@@ -33,38 +34,3 @@
         </table>
     </div>
 </div>
-
-
-
-
-    {##}
-    {#<div id="vertical_menu">#}
-        {#<div id="vertical-radio-list">#}
-            {#<form>#}
-                {#<div id="radio-form">#}
-                    {#{%  for fundraising in fundraisingsList %}#}
-                        {#<a href="/fundraising/join?fundraising-id={{ fundraising.ID }}">#}
-                            {#<button name="fundraising-id" value="{{ fundraising.ID }}">{{ fundraising.name }}</button>#}
-                        {#</a>#}
-                    {#{% endfor %}#}
-  {##}
-                {#<tr>#}
-                    {#<td>Name</td>#}
-                    {#<td>{{ fundraising.name }}</td>#}
-                {#</tr>#}
-                {#<tr>#}
-                    {#<td>Artifact name</td>#}
-                    {#<td>{{ fundraising.artifact.name }}</td>#}
-                {#</tr>#}
-                {#<tr>#}
-                    {#<td>Artifact description</td>#}
-                    {#<td>{{ fundraising.artifact.description }}</td>#}
-                {#</tr>#}
-                {#<tr>#}
-                    {#<td>Artifact value</td>#}
-                    {#<td>{{ fundraising.artifact.value }}</td>#}
-                {#</tr>#}
-                {#<tr>#}
-                    {#<td>Creation date</td>#}
-                    {#<td>{{ fundraising.dateToString() }}</td>#}
-                {#</tr>#}

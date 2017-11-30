@@ -7,6 +7,7 @@ import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.CodecoolerDAO;
 import pl.coderampart.DAO.ItemDAO;
 import pl.coderampart.DAO.WalletDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Item;
 
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
-public class DisplayWalletController implements HttpHandler {
+public class DisplayWalletController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private HelperController helper;
@@ -26,6 +27,7 @@ public class DisplayWalletController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Codecooler", httpExchange, connection);
         List<Item> userItemsList = helper.readUserItemsFromDB(httpExchange, connection);
         String response = "";
 
