@@ -71,7 +71,7 @@ public class Application {
         server.createContext("/wallet/level-info", new DisplayUserLevelController(connection));
         server.createContext("/static", new Static());
 
-        server.createContext("/fundraising/create", new CreateFundraising(connection));
+        server.createContext("/fundraising/create", new CreateFundraisingController(connection));
         server.createContext("/fundraising/join", new JoinFundraisingController(connection));
 
         server.setExecutor(null);

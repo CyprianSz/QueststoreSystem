@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class CreateFundraising extends AccessValidator implements HttpHandler {
+public class CreateFundraisingController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private FundraisingDAO fundraisingDAO;
@@ -30,7 +30,7 @@ public class CreateFundraising extends AccessValidator implements HttpHandler {
     private HelperController helper;
     private FlashNoteHelper flashNoteHelper;
 
-    public CreateFundraising(Connection connection) {
+    public CreateFundraisingController(Connection connection) {
         this.connection = connection;
         this.fundraisingDAO = new FundraisingDAO(connection);
         this.artifactDAO = new ArtifactDAO( connection );
