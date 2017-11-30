@@ -309,3 +309,13 @@ input[type=submit]:hover {
     margin-top: 1em;
     margin-bottom: 0.6em;
 }
+
+#reward-quest-container {
+    padding-top: 4em;
+    padding-right: 7em;
+    display: flex;
+    min-height: 10em;
+    justify-content: right;
+    align-items: center;
+    flex-direction: column;
+}
