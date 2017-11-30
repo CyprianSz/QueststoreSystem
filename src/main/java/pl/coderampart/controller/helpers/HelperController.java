@@ -431,4 +431,12 @@ public class HelperController {
         return UUID.split("-")[0];
     }
 
+    public Fundraising getFundraisingByID(String ID) {
+        try {
+            return fundraisingDAO.getByID(ID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
