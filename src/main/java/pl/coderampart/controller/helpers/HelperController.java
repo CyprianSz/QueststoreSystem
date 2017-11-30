@@ -9,8 +9,10 @@ import pl.coderampart.services.Loggable;
 
 import java.io.*;
 import java.net.URLDecoder;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +30,7 @@ public class HelperController {
     private CodecoolerDAO codecoolerDAO;
     private ItemDAO itemDAO;
     private FlashNoteHelper flashNoteHelper;
-    private FundraisingsDAO fundraisingsDAO;
+    private FundraisingDAO fundraisingDAO;
 
     public HelperController(Connection connection) {
         this.connection = connection;
@@ -41,7 +43,7 @@ public class HelperController {
         this.questDAO = new QuestDAO(connection);
         this.codecoolerDAO = new CodecoolerDAO(connection);
         this.itemDAO = new ItemDAO(connection);
-        this.fundraisingsDAO = new FundraisingsDAO(connection);
+        this.fundraisingDAO = new FundraisingDAO(connection);
         this.flashNoteHelper = new FlashNoteHelper();
     }
 
@@ -291,6 +293,25 @@ public class HelperController {
         }
     }
 
+    public Item getItemById(String id) {
+        try {
+            return itemDAO.getByID( id );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public Fundraising getFundraisingById(String id) {
+        try {
+            return fundraisingDAO.getByID( id );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<Item> readUserItemsFromDB (HttpExchange httpExchange, Connection connection) {
         Session currentSession = getCurrentSession(httpExchange, connection);
         String userID = currentSession.getUserID();
@@ -323,6 +344,24 @@ public class HelperController {
         }
     }
 
+    public List<Quest> readQuestsFromDB() {
+        try {
+            return questDAO.readAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Item> readItemsFromDB() {
+        try {
+            return itemDAO.readAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public Level readUserLevelFromDB(HttpExchange httpExchange, Connection connection) {
         Session currentSession = getCurrentSession(httpExchange, connection);
         String userID = currentSession.getUserID();
@@ -331,15 +370,6 @@ public class HelperController {
 
         try {
             return levelDAO.getByID(levelID);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public List<Quest> readQuestsFromDB() {
-        try {
-            return questDAO.readAll();
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -372,7 +402,24 @@ public class HelperController {
 
     public List<Fundraising> readFundraisingsFromDB() {
         try {
-            return fundraisingsDAO.readAll();
+            return fundraisingDAO.readAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Fundraising> readOpenFundraisingsFromDB() {
+        try {
+            List<Fundraising> allFundraisings = fundraisingDAO.readAll();
+            List<Fundraising> openFundraisings = new ArrayList<>();
+
+            for (Fundraising fundraising : allFundraisings) {
+                if (fundraising.getIsOpen()) {
+                    openFundraisings.add(fundraising);
+                }
+            }
+            return openFundraisings;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

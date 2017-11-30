@@ -1,6 +1,5 @@
 package pl.coderampart.DAO;
 
-import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Group;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,16 +31,14 @@ public class GroupDAO extends AbstractDAO {
     }
 
     public Group getByID(String ID) throws SQLException{
-        Group group = null;
+        Group group;
 
         String query = "SELECT * FROM groups WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, ID);
         ResultSet resultSet = statement.executeQuery();
 
-        group = this.createGroupFromResultSet(resultSet);
-
-        return group;
+        return this.createGroupFromResultSet(resultSet);
     }
 
     public Group getByName(String name) throws SQLException {
@@ -52,9 +49,7 @@ public class GroupDAO extends AbstractDAO {
         statement.setString(1, name);
         ResultSet resultSet = statement.executeQuery();
 
-        group = this.createGroupFromResultSet(resultSet);
-
-        return group;
+        return this.createGroupFromResultSet(resultSet);
     }
 
     public void create(Group group) throws SQLException{
@@ -65,7 +60,6 @@ public class GroupDAO extends AbstractDAO {
     }
 
     public void update(Group group) throws SQLException {
-
         String query = "UPDATE groups SET name = ? WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         setPreparedStatement(statement, group);
@@ -79,11 +73,9 @@ public class GroupDAO extends AbstractDAO {
         statement.executeUpdate();
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Group group) throws SQLException {
+    private void setPreparedStatement(PreparedStatement statement, Group group) throws SQLException {
         statement.setString(1, group.getName());
         statement.setString(2, group.getID());
-
-        return statement;
     }
 
     private Group createGroupFromResultSet(ResultSet resultSet) throws SQLException {

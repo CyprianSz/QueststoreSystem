@@ -42,7 +42,7 @@ public class CreateTeamController extends AccessValidator implements HttpHandler
         if (method.equals("GET")) {
             response += helper.renderHeader(httpExchange, connection);
             response += helper.render("mentor/mentorMenu");
-            response += helper.render("mentor/createTeam");
+            response += helper.renderWithDropdownGroups("mentor/createTeam");
             response += helper.render("footer");
 
             helper.sendResponse(response, httpExchange);

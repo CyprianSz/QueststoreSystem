@@ -56,6 +56,8 @@ public class Application {
         server.createContext("/codecooler/display", new DisplayCodecoolersController(connection));
         server.createContext("/codecooler/edit", new EditCodecoolerController(connection));
         server.createContext("/codecooler/delete", new DeleteCodecoolerController(connection));
+        server.createContext("/codecooler/mark-item", new MarkItemController(connection));
+        server.createContext("/codecooler/finalize-fundraising", new FinalizeFundraisingController(connection));
 
         server.createContext("/quest/create", new CreateQuestController(connection));
         server.createContext("/quest/display", new DisplayQuestsController(connection));
@@ -68,6 +70,8 @@ public class Application {
         server.createContext("/account", new LoggedUserData(connection));
         server.createContext("/wallet/level-info", new DisplayUserLevel(connection));
         server.createContext("/static", new Static());
+
+
 
 //        TODO:
         server.createContext("/fundraising/join", new JoinFundraising(connection));

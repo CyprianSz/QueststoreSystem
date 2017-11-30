@@ -15,11 +15,12 @@ public class FundraisersDAO extends AbstractDAO {
         connection = connectionToDB;
     }
 
-    public List<String> getFundraisersIDs(String FundraisingID) throws SQLException {
+    public List<String> getFundraisersIDs(String fundraisingID) throws SQLException {
         List<String> fundraisersIDsList = new ArrayList<>();
 
-        String query = "SELECT foundraiser_id FROM foundraisers WHERE fundraising_id = ?";
+        String query = "SELECT fundraiser_id FROM fundraisers WHERE fundraising_id = ?";
         PreparedStatement statement = connection.prepareStatement( query );
+        statement.setString( 1, fundraisingID );
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
@@ -29,11 +30,12 @@ public class FundraisersDAO extends AbstractDAO {
         return fundraisersIDsList;
     }
 
-    public List<String> getFundraisingsIDs(String FundraiserID) throws SQLException {
+    public List<String> getFundraisingsIDs(String fundraiserID) throws SQLException {
         List<String> fundraisingsIDsList = new ArrayList<>();
 
-        String query = "SELECT fundraising_id FROM foundraisers WHERE fundraiser_id = ?";
+        String query = "SELECT fundraising_id FROM fundraisers WHERE fundraiser_id = ?";
         PreparedStatement statement = connection.prepareStatement( query );
+        statement.setString( 1, fundraiserID );
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {

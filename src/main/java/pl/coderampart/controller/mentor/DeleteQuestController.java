@@ -52,7 +52,7 @@ public class DeleteQuestController extends AccessValidator implements HttpHandle
         if(method.equals("POST")){
             Map inputs = helper.getInputsMap(httpExchange);
 
-            if(inputs.get("confirmation").equals("yes")){
+            if (inputs.get("confirmation").equals("yes")) {
                 deleteQuest(quest, httpExchange);
             }
             helper.redirectTo( "/quest/delete", httpExchange );

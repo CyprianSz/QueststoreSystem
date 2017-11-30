@@ -26,7 +26,6 @@ public class Wallet {
     public void setBalance(Integer balance) { this.balance = balance; }
     public void setEarnedCoins(Integer earnedCoins) { this.earnedCoins = earnedCoins; }
 
-
     public String toString() {
         String walletData = "\nBalance: " + this.getBalance()
                           + "\nTotal coins earned: " + this.getEarnedCoins();
