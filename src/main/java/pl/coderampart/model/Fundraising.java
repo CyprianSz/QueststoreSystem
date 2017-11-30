@@ -56,4 +56,8 @@ public class Fundraising {
     public void closeFundraising() {
         isOpen = false;
     }
+
+    public String dateToString() {
+        return creationDate.toString();
+    }
 }

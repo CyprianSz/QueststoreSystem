@@ -2,49 +2,64 @@
     <div id="#fundraising-info">
         <table class="table">
             <tbody>
-            <tr>
-                <td>name</td>
-                <td>{{ fundraising.name }}</td>
-            </tr>
-            <tr>
-                <td>artifact name</td>
-                <td>{{ fundraising.artifact.name }}</td>
-            </tr>
-            <tr>
-                <td>value</td>
-                <td>{{ fundraising.artifact.value }}</td>
-            </tr>
-            <tr>
-                <td>creation date</td>
-                <td>{{ fundraising.dateToString() }}</td>
-            </tr>
-            <tr>
-                <td>creator</td>
-                <td>{{ fundraising.creator.firstName }} {{ fundraising.creator.lastName }}</td>
-            </tr>
-            <tr>
-                <td>is open</td>
-                {% if fundraising.isOpen == true %}
-                    <td><input type="checkbox" checked disabled></td>
-                {% else %}
-                    <td><input type="checkbox" disabled></td>
-                {% endif %}
-            </tr>
-            <tr>
-                <td>fundraisers list</td>
-                <td>TODO: ROZWIJANA LISTA Z FUNDRAISERAMI</td>
-            </tr>
+                <tr>
+                    <td>name</td>
+                    <td>{{ fundraising.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>artifact name</td>
+                    <td>{{ fundraising.artifact.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>value</td>
+                    <td>{{ fundraising.artifact.value }}</td>
+                </tr>
+
+                <tr>
+                    <td>creation date</td>
+                    <td>{{ fundraising.dateToString() }}</td>
+                </tr>
+
+                <tr>
+                    <td>creator</td>
+                    <td>{{ fundraising.creator.firstName }} {{ fundraising.creator.lastName }}</td>
+                </tr>
+
+                <tr>
+                    <td>is open</td>
+                    {% if fundraising.isOpen == true %}
+                        <td><input type="checkbox" checked disabled></td>
+                    {% else %}
+                        <td><input type="checkbox" disabled></td>
+                    {% endif %}
+                </tr>
+
+                <tr>
+                    <td>fundraisers list</td>
+                    <td>
+                        <div class="dropdown">
+                            <select name="group" id=group">
+                                <option value="" disabled selected>display</option>
+                                {% for fundraiser in fundraisersList %}
+                                    <option disabled>{{ fundraiser.firstName }} {{ fundraiser.lastName }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 
         <div id="user-form-button">
-            {% if fundraising.isOpen == true %}
-                {#button - action = sciezka do controllera#}
-                {#action post#}
-                <input type="submit" value="JOIN">
-            {% else %}
-                <input type="submit" value="FUNDRAISING CLOSED" disabled>
-            {% endif %}
+            <form method="POST">
+                {% if fundraising.isOpen == true %}
+                    <input type="submit" value="JOIN">
+                {% else %}
+                    <input type="submit" value="FUNDRAISING CLOSED" disabled>
+                {% endif %}
+            </form>
         </div>
     </div>
 </div>
