@@ -433,7 +433,7 @@ public class HelperController {
 
     public Fundraising getFundraisingByID(String ID) {
         try {
-            return fundraisingsDAO.getByID(ID);
+            return fundraisingDAO.getByID(ID);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
