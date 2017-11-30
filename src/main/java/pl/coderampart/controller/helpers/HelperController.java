@@ -31,6 +31,7 @@ public class HelperController {
     private ItemDAO itemDAO;
     private FlashNoteHelper flashNoteHelper;
     private FundraisingDAO fundraisingDAO;
+    private FundraisersDAO fundraisersDAO;
 
     public HelperController(Connection connection) {
         this.connection = connection;
@@ -45,6 +46,7 @@ public class HelperController {
         this.itemDAO = new ItemDAO(connection);
         this.fundraisingDAO = new FundraisingDAO(connection);
         this.flashNoteHelper = new FlashNoteHelper();
+        this.fundraisersDAO = new FundraisersDAO(connection);
     }
 
     private Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
@@ -438,5 +440,26 @@ public class HelperController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<String> readFundraisersIDsFromDB(String fundraisingID) {
+        try {
+            return fundraisersDAO.getFundraisersIDs(fundraisingID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Codecooler> getFundraisersList(String fundraisingID) {
+        List<String> fundraisersIDsList = readFundraisersIDsFromDB(fundraisingID);
+        List<Codecooler> fundraisersList = new ArrayList<>();
+        
+        for (String ID : fundraisersIDsList) {
+            Codecooler fundraiser = getCodecoolerByID(ID);
+            fundraisersList.add(fundraiser);
+        }
+        
+        return fundraisersList;
     }
 }

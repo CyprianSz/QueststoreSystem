@@ -41,8 +41,9 @@
                     <td>
                         <div class="dropdown">
                             <select name="group" id=group">
+                                <option value="" disabled selected>display</option>
                                 {% for fundraiser in fundraisersList %}
-                                    <option disabled>{{ fundraiser.firstName }} {{ fundraisers.lastName }}</option>
+                                    <option disabled>{{ fundraiser.firstName }} {{ fundraiser.lastName }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -52,13 +53,13 @@
         </table>
 
         <div id="user-form-button">
-            {% if fundraising.isOpen == true %}
-                {#button - action = sciezka do controllera#}
-                {#action post#}
-                <input type="submit" value="JOIN">
-            {% else %}
-                <input type="submit" value="FUNDRAISING CLOSED" disabled>
-            {% endif %}
+            <form method="POST">
+                {% if fundraising.isOpen == true %}
+                    <input type="submit" value="JOIN">
+                {% else %}
+                    <input type="submit" value="FUNDRAISING CLOSED" disabled>
+                {% endif %}
+            </form>
         </div>
     </div>
 </div>
