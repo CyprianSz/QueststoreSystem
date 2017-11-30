@@ -25,7 +25,8 @@
             <form method="POST">
                 <div class="user-form">
                     <label for="team-name">team name</label>
-                    <input type="text" name="team-name" id="team-name" value="{{ teamName }}" maxlength="23" required>
+                    <input type="text" name="team-name" id="team-name" value="{{ teamName }}" maxlength="23"
+                           pattern="^[a-zA-Z]*$" title="Should contains only letters" required>
                 </div>
 
                 <div class="dropdown">

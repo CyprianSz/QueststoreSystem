@@ -39,7 +39,8 @@
 
                 <div class="user-form">
                     <label for="description">description</label>
-                    <textarea rows="4" name="description" id="description" maxlength="100" required>{{ description }}</textarea>
+                    <textarea rows="4" name="description" id="description" maxlength="100"
+                              pattern="^[a-zA-Z]*$" title="Should contains only letters" required>{{ description }}</textarea>
                 </div>
 
                 <div id="user-form-button">
