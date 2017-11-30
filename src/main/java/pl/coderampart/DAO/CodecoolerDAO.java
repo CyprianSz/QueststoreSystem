@@ -51,6 +51,18 @@ public class CodecoolerDAO extends AbstractDAO {
         return this.createCodecoolerFromResultSet(resultSet);
     }
 
+    public Codecooler getByName(String firstName, String lastName) throws SQLException {
+        Codecooler codecooler;
+
+        String query = "SELECT * FROM codecoolers WHERE first_name = ? AND last_name = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, firstName);
+        statement.setString(2, lastName);
+        ResultSet resultSet = statement.executeQuery();
+
+        return this.createCodecoolerFromResultSet(resultSet);
+    }
+
     public Codecooler getCodecoolerByWalletID(String walletID) throws SQLException {
         String query = "SELECT * FROM codecoolers WHERE wallet_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);

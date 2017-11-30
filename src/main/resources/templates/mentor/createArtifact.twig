@@ -3,7 +3,8 @@
     <div id="user-form-container">
         <form method="POST">
             <div class="user-form">
-                <input type="text" name="name" id="name" placeholder="name" maxlength="23" required>
+                <input type="text" name="name" id="name" placeholder="name" maxlength="23"
+                       pattern="^[a-zA-Z\s]+$" title="Should contains only letters" required>
             </div>
 
             <div class="user-form">
@@ -12,7 +13,8 @@
             </div>
 
             <div class="user-form">
-                <textarea rows="4" name="description" id="description" placeholder="description" maxlength="100" required></textarea>
+                <textarea rows="4" name="description" id="description" placeholder="description" maxlength="100"
+                          pattern="^[a-zA-Z\s]+$" title="Should contains only letters" required></textarea>
             </div>
 
             <div id="radio-form">
