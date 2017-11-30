@@ -7,10 +7,7 @@ import pl.coderampart.controller.codecooler.*;
 
 import java.net.InetSocketAddress;
 import pl.coderampart.DAO.ConnectionToDB;
-import pl.coderampart.controller.helpers.CookiesConfirmator;
-import pl.coderampart.controller.helpers.PasswordChanger;
-import pl.coderampart.controller.helpers.PasswordRecovery;
-import pl.coderampart.controller.helpers.Static;
+import pl.coderampart.controller.helpers.*;
 import pl.coderampart.controller.mentor.*;
 
 import java.io.IOException;
@@ -58,6 +55,7 @@ public class Application {
         server.createContext("/codecooler/delete", new DeleteCodecoolerController(connection));
         server.createContext("/codecooler/mark-item", new MarkItemController(connection));
         server.createContext("/codecooler/finalize-fundraising", new FinalizeFundraisingController(connection));
+        server.createContext("/codecooler/reward", new RewardCodecooler(connection));
 
         server.createContext("/quest/create", new CreateQuestController(connection));
         server.createContext("/quest/display", new DisplayQuestsController(connection));

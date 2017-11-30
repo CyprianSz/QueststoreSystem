@@ -1,0 +1,30 @@
+
+    <div id="reward-quest-container">
+        <form method="POST">
+            <div class="dropdown">
+                <label for="codecooler-name">reward</label>
+                <select name="codecooler-name" id=codecooler-name required>
+                    <option value="" disabled selected>codecooler</option>
+                    {% for codecooler in allCodecoolers %}
+                        <option value="{{ codecooler.firstName }} {{ codecooler.lastName }}">
+                            {{ codecooler.firstName }} {{ codecooler.lastName }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="dropdown">
+                <label for="quest-name">for</label>
+                <select name="quest-name" id=quest-name" required>
+                    <option value="" disabled selected>quest</option>
+                    {% for quest in allQuests %}
+                        <option value="{{ quest.name }}">{{ quest.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div id="user-form-button">
+                <input type="submit" value="REWARD">
+            </div>
+        </form>
+    </div>

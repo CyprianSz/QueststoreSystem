@@ -42,6 +42,17 @@ public class QuestDAO extends AbstractDAO {
         return quest;
     }
 
+    public Quest getByName(String name) throws SQLException {
+        Quest quest;
+
+        String query = "SELECT * FROM quests WHERE name = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, name);
+        ResultSet resultSet = statement.executeQuery();
+
+        return this.createQuestFromResultSet(resultSet);
+    }
+
     public void create(Quest quest) throws SQLException{
         String query = "INSERT INTO quests (name, description, reward, id) VALUES (?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
