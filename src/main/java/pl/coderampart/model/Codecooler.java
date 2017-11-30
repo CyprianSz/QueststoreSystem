@@ -23,7 +23,7 @@ public class Codecooler extends AbstractUser implements Loggable {
         this.group = null;
         this.team = null;
 
-        try{
+        try {
             WalletDAO walletDAO = new WalletDAO(this.connection);
             LevelDAO levelDAO = new LevelDAO(this.connection);
             this.level = levelDAO.getFirstLevel();
