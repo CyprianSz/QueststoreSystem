@@ -4,17 +4,11 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
-import pl.coderampart.DAO.AchievementDAO;
-import pl.coderampart.DAO.CodecoolerDAO;
-import pl.coderampart.DAO.QuestDAO;
-import pl.coderampart.DAO.WalletDAO;
+import pl.coderampart.DAO.*;
 import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
-import pl.coderampart.model.Achievement;
-import pl.coderampart.model.Codecooler;
-import pl.coderampart.model.Quest;
-import pl.coderampart.model.Wallet;
+import pl.coderampart.model.*;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -29,6 +23,7 @@ public class RewardCodecooler extends AccessValidator implements HttpHandler {
     private QuestDAO questDAO;
     private AchievementDAO achievementDAO;
     private WalletDAO walletDAO;
+    private LevelDAO levelDAO;
     private HelperController helper;
     private FlashNoteHelper flashNoteHelper;
 
@@ -38,6 +33,7 @@ public class RewardCodecooler extends AccessValidator implements HttpHandler {
         this.questDAO = new QuestDAO( connection );
         this.achievementDAO = new AchievementDAO(connection);
         this.walletDAO = new WalletDAO( connection );
+        this.levelDAO = new LevelDAO( connection );
         this.helper = new HelperController( connection );
         this.flashNoteHelper = new FlashNoteHelper();
     }
@@ -115,7 +111,43 @@ public class RewardCodecooler extends AccessValidator implements HttpHandler {
         Integer updatedEarnedCoins = actualEarnedCoins + reward;
         codecoolerWallet.setBalance( updatedCodecoolerBalance );
         codecoolerWallet.setEarnedCoins( updatedEarnedCoins );
+        updateCodecoolerLevel( codecooler );
 
         walletDAO.update(codecoolerWallet);
+    }
+
+    private void updateCodecoolerLevel(Codecooler codecooler) throws SQLException {
+        Wallet codecoolerWallet = codecooler.getWallet();
+        Integer codecoolerEarnedCoins = codecoolerWallet.getEarnedCoins();
+        Level updatedLevel = checkLevelByEarnedCoins(codecoolerEarnedCoins);
+
+        if (updatedLevel != codecooler.getLevel()){
+            codecooler.setLevel(updatedLevel);
+            codecoolerDAO.update(codecooler);
+        }
+    }
+
+    private Level checkLevelByEarnedCoins(Integer earnedCoins) throws SQLException {
+        List<Level> allLevels = levelDAO.readAll();
+        Level currentLevel = null;
+        Level lowerLevel = null;
+        Level higherLevel = null;
+
+        for (int i = 0; i < allLevels.size(); i++){
+            if (i < allLevels.size() - 1){
+                lowerLevel = allLevels.get(i);
+                higherLevel = allLevels.get(i + 1);
+                if (earnedCoins < higherLevel.getRequiredExperience() && earnedCoins > lowerLevel.getRequiredExperience()){
+                    currentLevel = lowerLevel;
+                    break;
+                }
+            } else if (i == allLevels.size() - 1) {
+                if (earnedCoins > allLevels.get(i).getRequiredExperience()){
+                    currentLevel = allLevels.get(i);
+                }
+            }
+        }
+
+        return currentLevel;
     }
 }
