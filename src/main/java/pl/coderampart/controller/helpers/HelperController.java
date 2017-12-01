@@ -31,6 +31,7 @@ public class HelperController {
     private FlashNoteHelper flashNoteHelper;
     private FundraisingDAO fundraisingDAO;
     private FundraisersDAO fundraisersDAO;
+    private WalletDAO walletDAO;
 
     public HelperController(Connection connection) {
         this.connection = connection;
@@ -46,6 +47,7 @@ public class HelperController {
         this.fundraisingDAO = new FundraisingDAO(connection);
         this.flashNoteHelper = new FlashNoteHelper();
         this.fundraisersDAO = new FundraisersDAO(connection);
+        this.walletDAO = new WalletDAO(connection);
     }
 
     private Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
@@ -371,6 +373,20 @@ public class HelperController {
 
         try {
             return levelDAO.getByID(levelID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Wallet readUserWalletFromDB(HttpExchange httpExchange, Connection connection) {
+        Session currentSession = getCurrentSession(httpExchange, connection);
+        String userID = currentSession.getUserID();
+        Codecooler loggedCodecooler = getCodecoolerByID(userID);
+        String walletID = loggedCodecooler.getWallet().getID();
+
+        try {
+            return walletDAO.getByID(walletID);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

@@ -840,7 +840,10 @@ tr:nth-child(even) {
     cursor: pointer;
     background-color: #a296a6;
 }
-
+#wallet {
+    display: flex;
+    justify-content: center;
+}
 
 
 

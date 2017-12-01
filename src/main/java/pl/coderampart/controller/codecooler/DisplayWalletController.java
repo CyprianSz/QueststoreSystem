@@ -9,7 +9,9 @@ import pl.coderampart.DAO.ItemDAO;
 import pl.coderampart.DAO.WalletDAO;
 import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.HelperController;
+import pl.coderampart.model.Codecooler;
 import pl.coderampart.model.Item;
+import pl.coderampart.model.Wallet;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -29,21 +31,23 @@ public class DisplayWalletController extends AccessValidator implements HttpHand
     public void handle(HttpExchange httpExchange) throws IOException {
         validateAccess( "Codecooler", httpExchange, connection);
         List<Item> userItemsList = helper.readUserItemsFromDB(httpExchange, connection);
+        Wallet wallet = helper.readUserWalletFromDB(httpExchange, connection);
         String response = "";
 
         response += helper.renderHeader(httpExchange, connection);
         response += helper.render("codecooler/codecoolerMenu");
-        response += renderDisplayItems(userItemsList);
+        response += renderDisplayItems(userItemsList, wallet);
         response += helper.render("footer");
 
         helper.sendResponse(response, httpExchange);
     }
 
-    private String renderDisplayItems(List<Item> userItemsList) {
+    private String renderDisplayItems(List<Item> userItemsList, Wallet wallet) {
         String templatePath = "templates/codecooler/walletTable.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel model = JtwigModel.newModel();
 
+        model.with("wallet", wallet.getBalance());
         model.with("userItemsList", userItemsList);
 
         return template.render(model);
