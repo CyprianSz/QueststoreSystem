@@ -1,0 +1,29 @@
+<div id="main-container">
+
+    <div id="teamsList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>team_name</th>
+                <th>members</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for teamMembers in groupedCodecoolers %}
+                <tr>
+                    <td>{{ teamMembers[0].team.name }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <select name="group" id=group">
+                                {% for member in teamMembers %}
+                                    <option disabled>{{ member.firstName }} {{ member.lastName }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -6,18 +6,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LevelDAO extends AbstractDAO {
 
     private Connection connection;
 
     public LevelDAO(Connection connectionToDB) {
-
         connection = connectionToDB;
     }
 
-    public ArrayList<Level> readAll() throws SQLException {
-        ArrayList<Level> levelList = new ArrayList<>();
+    public List<Level> readAll() throws SQLException {
+        List<Level> levelList = new ArrayList<>();
 
         String query = "SELECT * FROM levels ORDER BY required_experience;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -31,8 +31,7 @@ public class LevelDAO extends AbstractDAO {
     }
 
     public Level getByID(String ID) throws SQLException {
-
-        Level level = null;
+        Level level;
         String query = "SELECT * FROM levels WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, ID);
@@ -44,8 +43,7 @@ public class LevelDAO extends AbstractDAO {
     }
 
     public Level getFirstLevel() throws SQLException {
-
-        Level level = null;
+        Level level;
         String query = "SELECT * FROM levels WHERE rank = 0;";
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
@@ -55,26 +53,21 @@ public class LevelDAO extends AbstractDAO {
     }
 
     public void create(Level level) throws SQLException {
-
         String query = "INSERT INTO levels (rank, required_experience, description, id) VALUES (?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, level);
+        setPreparedStatement(statement, level);
         statement.executeUpdate();
-
     }
 
 
     public void update(Level level) throws SQLException {
-
         String query = "UPDATE levels SET rank = ?, required_experience = ?, description = ? WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, level);
-        setStatement.executeUpdate();
+        setPreparedStatement(statement, level);
+        statement.executeUpdate();
     }
 
-
     public void delete(Level level) throws SQLException {
-
         String query = "DELETE FROM levels WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, level.getID());
@@ -82,13 +75,11 @@ public class LevelDAO extends AbstractDAO {
     }
 
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Level level) throws SQLException {
+    private void setPreparedStatement(PreparedStatement statement, Level level) throws SQLException {
         statement.setInt(1, level.getRank());
         statement.setInt(2, level.getRequiredExperience());
         statement.setString(3, level.getDescription());
         statement.setString(4, level.getID());
-
-        return statement;
     }
 
     private Level createLevelFromResultSet(ResultSet resultSet) throws SQLException {

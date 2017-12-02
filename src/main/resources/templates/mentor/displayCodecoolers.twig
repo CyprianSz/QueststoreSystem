@@ -1,0 +1,29 @@
+<div id="main-container">
+
+    <div id="codecoolersList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>first name</th>
+                <th>last name</th>
+                <th>date of birth</th>
+                <th>email</th>
+                <th>group name</th>
+                <th>team name</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for codecooler in allCodecoolers %}
+                <tr>
+                    <td>{{ codecooler.firstName }}</td>
+                    <td>{{ codecooler.lastName }}</td>
+                    <td>{{ codecooler.dateOfBirth }}</td>
+                    <td>{{ codecooler.email }}</td>
+                    <td>{{ codecooler.group.name }}</td>
+                    <td>{{ codecooler.team.name }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

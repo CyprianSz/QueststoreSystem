@@ -1,0 +1,43 @@
+<div id="main-container-delete">
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <script src="../../static/js/filteringScript.js"></script>
+            <input type="text" id="searching" onkeyup="filterList()" placeholder="Search">
+            <form>
+                <div id="radio-form">
+                    <ul id="radio-form-ul">
+                    {%  for codecooler in allCodecoolers %}
+                        <li>
+                        <button name="codecooler-id" value="{{ codecooler.ID }}">
+                            {{ codecooler.firstName }} {{ codecooler.lastName }}
+                        </button>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+        <div id="delete-question">
+            <h2>Are you sure you want to delete <strong>{{ firstName }} {{ lastName }}</strong> ?</h2>
+            <div id="attributes">
+                <form method="POST">
+                    <ul class="attribute_list">
+                        <li>
+                            <div class="submit">
+                                <button name="confirmation" value="yes">Yes</button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="submit">
+                                <button name="confirmation" value="no">No</button>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

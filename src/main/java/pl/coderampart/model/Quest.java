@@ -1,6 +1,6 @@
 package pl.coderampart.model;
 
-import pl.coderampart.controller.UUIDController;
+import pl.coderampart.controller.helpers.UUIDController;
 
 public class Quest{
 

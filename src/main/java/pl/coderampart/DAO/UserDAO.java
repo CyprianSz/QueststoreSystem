@@ -1,6 +1,5 @@
 package pl.coderampart.DAO;
 
-import pl.coderampart.model.Admin;
 import pl.coderampart.services.Loggable;
 
 import java.sql.Connection;
@@ -26,17 +25,27 @@ public class UserDAO {
         String query = "SELECT password FROM " + userType + "s WHERE email = ?;";
 
         PreparedStatement statement = connection.prepareStatement( query );
-        statement.setString(1, email);
+        statement.setString( 1, email );
         ResultSet resultSet = statement.executeQuery();
 
         return resultSet.getString( "password" );
     }
 
+    public boolean checkIfUserExists(String userType, String email) throws SQLException {
+        String query = "SELECT * FROM " + userType + "s WHERE email = ?;";
+
+        PreparedStatement statement = connection.prepareStatement( query );
+        statement.setString( 1, email );
+        ResultSet resultSet = statement.executeQuery();
+
+        return resultSet.next();
+    }
+
     public Loggable getLoggedUser(String userType, String email) throws SQLException {
         String query = "SELECT * FROM " + userType + "s WHERE email = ?;";
 
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, email);
+        PreparedStatement statement = connection.prepareStatement( query );
+        statement.setString( 1, email );
         ResultSet resultSet = statement.executeQuery();
 
         switch (userType) {
@@ -50,4 +59,25 @@ public class UserDAO {
         return null;
     }
 
+    public void updateUserPassword(Loggable user, String newHashedPassword) throws SQLException {
+        String userTable = user.getType().toLowerCase() + "s";
+        String userID = user.getID();
+
+        String query = "UPDATE " + userTable + " SET password = \""
+                     + newHashedPassword + "\" WHERE id = \"" + userID + "\";";
+
+        PreparedStatement statement = connection.prepareStatement( query );
+        statement.executeUpdate();
+    }
+
+
+    public void updateUserPassword(String email, String userType, String newHashedPassword) throws SQLException {
+        String userTable = userType.toLowerCase() + "s";
+
+        String query = "UPDATE " + userTable + " SET password = \""
+                     + newHashedPassword + "\" WHERE email = \"" + email + "\";";
+
+        PreparedStatement statement = connection.prepareStatement( query );
+        statement.executeUpdate();
+    }
 }

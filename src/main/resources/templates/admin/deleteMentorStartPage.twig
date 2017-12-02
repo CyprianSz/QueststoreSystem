@@ -1,13 +1,19 @@
 <div id="main-container-delete">
     <div id="vertical_menu">
         <div id="vertical-radio-list">
+            <script src="../../static/js/filteringScript.js"></script>
+            <input type="text" id="searching" onkeyup="filterList()" placeholder="Search">
             <form>
                 <div id="radio-form">
+                    <ul id="radio-form-ul">
                     {%  for mentor in allMentors %}
-                        <a href="/delete-mentor?mentor-id={{ mentor.ID }}">
+                        <li>
+                        <a href="/mentor/delete?mentor-id={{ mentor.ID }}">
                             <button name="mentor-id" value="{{ mentor.ID }}">{{ mentor.firstName }} {{ mentor.lastName }}</button>
                         </a>
+                        </li>
                     {% endfor %}
+                    </ul>
                 </div>
             </form>
         </div>
@@ -18,5 +24,4 @@
             <h2 id="choose-mentor-to-delete">Please choose mentor to delete</h2>
         </div>
     </div>
-
 </div>

@@ -1,27 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create group</title>
-    <script src="https://www.w3schools.com/lib/w3.js"></script>
-    <link rel="stylesheet" href="static/css/styleEditMentor.css">
-    <link rel="stylesheet" href="static/css/menu.css">
-    <link rel="stylesheet" href="static/css/style.css">
-
-</head>
-
 <body>
-
-<div id="header-container" w3-include-html="../template/header.html"></div>
-
-<div w3-include-html="../template/adminMenu.html"></div>
-
 <div id="main-container">
     <div id="user-form-container">
         <form method="POST">
             <div class="user-form">
-                <input type="text" name="group-name" id="group-name" placeholder="group name">
+                <input type="text" name="group-name" id="group-name" placeholder="group name" maxlength="23"
+                       pattern="^[a-zA-Z\s]+$" title="Should contains only letters" required>
             </div>
+
 
             <div id="user-form-button">
                 <input type="submit" value="CREATE GROUP">

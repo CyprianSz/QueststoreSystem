@@ -14,7 +14,6 @@ public class Codecooler extends AbstractUser implements Loggable {
     private Group group;
     private Level level;
     private Team team;
-    private ArrayList<Achievement> achievementList;
     private Connection connection;
 
     public Codecooler(String firstName, String lastName, LocalDate dateOfBirth, String email, String password, Connection connectionToDB) {
@@ -23,7 +22,6 @@ public class Codecooler extends AbstractUser implements Loggable {
         this.wallet = new Wallet();
         this.group = null;
         this.team = null;
-        this.achievementList = new ArrayList<Achievement>();
 
         try{
             WalletDAO walletDAO = new WalletDAO(this.connection);
@@ -43,7 +41,6 @@ public class Codecooler extends AbstractUser implements Loggable {
         this.group = group;
         this.level = level;
         this.team = team;
-        this.achievementList = new ArrayList<Achievement>();
     }
 
     public Wallet getWallet() { return this.wallet; }

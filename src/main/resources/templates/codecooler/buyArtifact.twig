@@ -1,0 +1,25 @@
+<div id="main-container">
+
+    <div id="itemsList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>value</th>
+                <th>action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for artifact in allArtifacts %}
+                <tr>
+                    <td>{{ artifact.name }}</td>
+                    <td>{{ artifact.description }}</td>
+                    <td>{{ artifact.value }}</td>
+                    <td><a href="/artifact/buy?item-id={{ artifact.ID }}">buy</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<div id="personal-data">
+    <div id="user-account">
+
+        <h2>Personal data edition: </h2>
+
+        <form method="POST">
+            <div class="user-form">
+                <label for="first-name">first name</label>
+                <input type="text" name="first-name" id="first-name" value="{{ firstName }}" required>
+            </div>
+
+            <div class="user-form">
+                <label for="last-name">last name</label>
+                <input type="text" name="last-name" id="last-name" value="{{ lastName }}" required>
+            </div>
+
+            <div class="user-form">
+                <label for="email">email</label>
+                <input type="email" name="email" id="email" value="{{ email }}" required>
+            </div>
+
+            <div class="user-form">
+                <label for="birthdate">birthdate</label>
+                <input type="text" name="birthdate" id="birthdate" placeholder="" value="{{ dateOfBirth }}"
+                       required title="MM-DD-YYYY" onfocus="(this.type='date')" onblur="(this.type='text')">
+            </div>
+
+            <div id="user-form-button">
+                <a id="change-password-link" href="/change-password">CHANGE PASSWORD</a><br>
+                <input type="submit" value="SAVE CHANGES">
+            </div>
+        </form>
+    </div>
+</div>

@@ -2,29 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Mentor</title>
-    <link rel="stylesheet" href="static/css/myWallet.css">
-    <link rel="stylesheet" href="static/css/menu.css">
-    <link rel="stylesheet" href="static/css/style.css">
-    <link rel="stylesheet" href="static/css/walletTable.css">
-    <link rel="stylesheet" href="static/css/styleEditMentor.css">
-    <link rel="stylesheet" href="static/css/verticalMenuStyle.css">
+    <title>Queststore</title>
+    <link rel="Shortcut icon" href="/static/img/logo.ico" />
+    <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 <body>
 
+    {{ flashNote }}
+
 <div id="header-container">
+
     <header>
         <div id="logo">
-            <img src="static/img/logo.png" alt="logo">
+            <img src="/static/img/logo.png" alt="logo">
         </div>
         <div id="app-info">
             <h1 id="app-name">QuestStore</h1>
             <p>by CodeRampart</p>
         </div>
         <div id="logged-user">
-            <h2 id="user-name">{{ firstName }} {{ lastName }}</h2>
-            <p>{{ userType }}</p>
-            <p><a id="logout" href="/logout">logout</a></p>
+            <h2 id="user-name"><a id="account" href="/account">{{ firstName }} {{ lastName }}</a></h2>
+            <p id="logged-user-type">{{ userType }}</p>
+
+            <a name="logout" href="/logout">LOGOUT</a>
+            </p>
         </div>
     </header>
 </div>

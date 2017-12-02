@@ -6,19 +6,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupDAO extends AbstractDAO {
 
     private Connection connection;
 
     public GroupDAO(Connection connectionToDB) {
-
         connection = connectionToDB;
-
     }
 
-    public ArrayList<Group> readAll() throws SQLException{
-        ArrayList<Group> groupList = new ArrayList<>();
+    public List<Group> readAll() throws SQLException{
+        List<Group> groupList = new ArrayList<>();
 
         String query = "SELECT * FROM groups;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -28,59 +27,55 @@ public class GroupDAO extends AbstractDAO {
             Group group = this.createGroupFromResultSet(resultSet);
             groupList.add(group);
         }
-
         return groupList;
     }
 
     public Group getByID(String ID) throws SQLException{
-        Group group = null;
+        Group group;
 
         String query = "SELECT * FROM groups WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, ID);
         ResultSet resultSet = statement.executeQuery();
 
-        group = this.createGroupFromResultSet(resultSet);
-
-        return group;
+        return this.createGroupFromResultSet(resultSet);
     }
 
+    public Group getByName(String name) throws SQLException {
+        Group group;
 
+        String query = "SELECT * FROM groups WHERE name = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, name);
+        ResultSet resultSet = statement.executeQuery();
+
+        return this.createGroupFromResultSet(resultSet);
+    }
 
     public void create(Group group) throws SQLException{
-
         String query = "INSERT INTO groups (name, id) VALUES (?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, group);
+        setPreparedStatement(statement, group);
         statement.executeUpdate();
-
     }
 
     public void update(Group group) throws SQLException {
-
         String query = "UPDATE groups SET name = ? WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, group);
-        setStatement.executeUpdate();
-
+        setPreparedStatement(statement, group);
+        statement.executeUpdate();
     }
 
-
     public void delete(Group group) throws SQLException{
-
         String query =  "DELETE FROM groups WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, group.getID());
         statement.executeUpdate();
-
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Group group) throws SQLException {
-
+    private void setPreparedStatement(PreparedStatement statement, Group group) throws SQLException {
         statement.setString(1, group.getName());
         statement.setString(2, group.getID());
-
-        return statement;
     }
 
     private Group createGroupFromResultSet(ResultSet resultSet) throws SQLException {

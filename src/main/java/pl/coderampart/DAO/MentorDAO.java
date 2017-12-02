@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+
 import pl.coderampart.model.*;
 
 public class MentorDAO extends AbstractDAO {
@@ -28,8 +30,17 @@ public class MentorDAO extends AbstractDAO {
         return this.createMentorFromResultSet(resultSet);
     }
 
-    public ArrayList<Mentor> readAll() throws SQLException{
-        ArrayList<Mentor> mentorList = new ArrayList<>();
+    public Mentor getByID(String ID) throws SQLException {
+        String query = "SELECT * FROM mentors WHERE id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, ID);
+        ResultSet resultSet = statement.executeQuery();
+
+        return this.createMentorFromResultSet(resultSet);
+    }
+
+    public List<Mentor> readAll() throws SQLException{
+        List<Mentor> mentorList = new ArrayList<>();
         String query = "SELECT * FROM mentors;";
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
@@ -45,8 +56,8 @@ public class MentorDAO extends AbstractDAO {
         String query = "INSERT INTO mentors (first_name, last_name, date_of_birth, email, password, group_id, id) "
                          + "VALUES (?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, mentor);
-        setStatement.executeUpdate();
+        setPreparedStatement(statement, mentor);
+        statement.executeUpdate();
     }
 
     public void update(Mentor mentor) throws SQLException{
@@ -54,8 +65,8 @@ public class MentorDAO extends AbstractDAO {
                     "last_name = ?, date_of_birth = ?, email = ?, " +
                     "password = ?, group_id = ? WHERE id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
-        PreparedStatement setStatement = setPreparedStatement(statement, mentor);
-        setStatement.executeUpdate();
+        setPreparedStatement(statement, mentor);
+        statement.executeUpdate();
     }
 
     public void delete(Mentor mentor) throws SQLException {
@@ -65,8 +76,7 @@ public class MentorDAO extends AbstractDAO {
         statement.executeUpdate();
     }
 
-    private PreparedStatement setPreparedStatement(PreparedStatement statement, Mentor mentor) throws SQLException {
-
+    private void setPreparedStatement(PreparedStatement statement, Mentor mentor) throws SQLException {
         statement.setString(1, mentor.getFirstName());
         statement.setString(2, mentor.getLastName());
         statement.setString(3, mentor.getDateOfBirth().toString());
@@ -74,11 +84,9 @@ public class MentorDAO extends AbstractDAO {
         statement.setString(5, mentor.getPassword());
         statement.setString(6, mentor.getGroup().getID());
         statement.setString(7, mentor.getID());
-
-        return statement;
     }
 
-    public Mentor createMentorFromResultSet(ResultSet resultSet) throws SQLException {
+    Mentor createMentorFromResultSet(ResultSet resultSet) throws SQLException {
         String ID = resultSet.getString("id");
         String firstName = resultSet.getString("first_name");
         String lastName = resultSet.getString("last_name");

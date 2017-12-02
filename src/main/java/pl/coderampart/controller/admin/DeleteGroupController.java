@@ -5,76 +5,84 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import pl.coderampart.DAO.GroupDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
 import pl.coderampart.model.Group;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteGroupController implements HttpHandler{
+public class DeleteGroupController extends AccessValidator implements HttpHandler{
 
     private Connection connection;
     private GroupDAO groupDAO;
-    private HelperController helperController;
+    private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
+
 
     public DeleteGroupController(Connection connection) {
         this.connection = connection;
         this.groupDAO = new GroupDAO(this.connection);
-        this.helperController = new HelperController();
+        this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Admin", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
-        String response = "";
+        List<Group> allGroups = helper.readGroupsFromDB();
+        String groupID = helper.getIdFromURI(httpExchange);
+        Group group = helper.getGroupById(groupID);
 
-        List<Group> allGroups = readGroupsFromDB();
+        if (method.equals("GET")) {
+            String response = "";
+            response += helper.renderHeader( httpExchange, connection );
+            response += helper.render( "admin/adminMenu" );
+            response += renderProperBodyResponse( groupID, allGroups );
+            response += helper.render( "footer" );
 
-        String[] uri = httpExchange.getRequestURI().toString().split("=%2F");
-        String id = uri[uri.length-1];
-
-        response += helperController.renderHeader(httpExchange);
-        response += helperController.render("admin/adminMenu");
-        response += renderGroupsList(allGroups);
-        response += helperController.render("footer");
+            helper.sendResponse( response, httpExchange );
+        }
 
         if(method.equals("POST")){
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            Map inputs = helperController.parseFormData(formData);
+            Map inputs = helper.getInputsMap(httpExchange);
 
             if(inputs.get("confirmation").equals("yes")){
-                deleteGroup(allGroups, id);
+                deleteGroup(group, httpExchange);
             }
+            helper.redirectTo( "/group/delete", httpExchange );
         }
-
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
     }
 
-    private List<Group> readGroupsFromDB(){
-        List<Group> allGroups = null;
-
-        try {
-            allGroups = groupDAO.readAll();
-        } catch (SQLException se) {
-            se.printStackTrace();
+    private String renderProperBodyResponse(String groupID, List<Group> allGroups) {
+        Integer idLength = 36;
+        if(groupID.length() == idLength) {
+            Group groupToDelete = helper.getGroupById(groupID);
+            return renderConfirmation(groupToDelete, allGroups);
+        } else {
+            return renderGroupsList(allGroups);
         }
-
-        return allGroups;
     }
 
-    private String renderGroupsList(List<Group> allGroups) {
-        String templatePath = "templates/admin/deleteGroup.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
+    private String renderConfirmation(Group group, List<Group> allGroups) {
+        String templatePath = "templates/admin/deleteChosenGroup.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("allGroups", allGroups);
+        model.with("name", group.getName());
+
+        return template.render( model );
+    }
+
+    public String renderGroupsList(List<Group> allGroups) {
+        String templatePath = "templates/admin/deleteGroupStartPage.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
 
         model.with("allGroups", allGroups);
@@ -82,18 +90,16 @@ public class DeleteGroupController implements HttpHandler{
         return template.render(model);
     }
 
-    private void deleteGroup(List<Group> allGroups, String id) {
-        Group deletedGroup = null;
-        for (Group group: allGroups) {
-            if (id.equals(group.getID())) {
-                deletedGroup = group;
-                try {
-                    groupDAO.delete(deletedGroup);
-                } catch (SQLException se) {
-                    se.printStackTrace();
-                }
-                break;
-            }
+    private void deleteGroup(Group group, HttpExchange httpExchange) {
+        try {
+            groupDAO.delete( group );
+
+            String name = group.getName();
+            String flashNote = flashNoteHelper.createDeletionFlashNote( "Group", name);
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
+        } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
+            e.printStackTrace();
         }
     }
 }

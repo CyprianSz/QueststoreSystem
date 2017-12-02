@@ -2,12 +2,12 @@ body {
     font-family: Sawasdee, serif;
 }
 
-#footer-container a {
+#footer-container a, #cookiesNote a, #header-container a, #itemsList a {
     color: black;
     text-decoration: none;
 }
 
-#footer-container a:hover {
+#footer-container a:hover, #cookiesNote a:hover, #header-container a:hover, #itemsList a:hover {
     color: black;
     text-decoration: underline;
 }
@@ -17,8 +17,14 @@ body {
 }
 
 #footer-container {
-    border: 2px solid #675f6b ;
+    border: 2px solid #675f6b;
+    background:rgba(255,255,255, 0.8);
     border-radius: 5px;
+    position: fixed;
+    bottom: 0.2em;
+    left: 0.2em;
+    right: 0.2em;
+    height: 30px;
 }
 
 footer {
@@ -53,19 +59,59 @@ header {
     align-items: center;
     display: flex;
 }
-#logout {
-    text-decoration: none;
-    color: #000000;
+
+/*button[name="logout"] {*/
+    /*color: black;*/
+    /*background-color: white;*/
+    /*border-radius: 5px;*/
+    /*text-decoration: none;*/
+    /*border: solid 3px #675f6b;*/
+    /*padding: 0.2em 1.4em 1.3em;*/
+/*}*/
+
+/*button[name="logout"]:hover {*/
+    /*background: #675f6b ;*/
+    /*transition: .2s ease;*/
+/*}*/
+
+a[name="logout"] {
+    color: black;
+    background-color: white;
+    border-radius: 5px;
+    border: solid 3px #675f6b;
+    font-size: 0.8em;
+    padding: 0.5em 1.5em 0.2em;
+    font-weight: bold;
 }
-#logout:hover {
-    color: #000000;
-    text-decoration: underline;
+
+a[name="logout"]:hover {
+    background: #675f6b ;
+    transition: .2s ease;
+}
+
+#login-radio-form {
+    border: solid 3px #675f6b ;
+    display: inline-block;
+    margin: 1em 2em;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 #radio-form {
     border: solid 3px #675f6b ;
     display: inline-block;
-    margin: 20px;
+    margin: 1em 2em;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 15em;
+}
+
+#radio-form-edit {
+    border: solid 3px #675f6b ;
+    display: inline-block;
+    margin-top: 1em;
+    margin-right: 2em;
+    margin-left: 12em;
     border-radius: 10px;
     overflow: hidden;
 }
@@ -113,7 +159,22 @@ input[type=password], input[type=text] {
     outline: none;
 }
 
-input[type=password]:focus, input[type=text]:focus {
+input[type=date] {
+    font-weight: bold;
+    width: 15em;
+    height: 2.3em;
+    background-color: #efefef ;
+    color: #666;
+    border: 2px solid #675f6b ;
+    border-radius: 5px;
+    font-family: Sawasdee, serif;
+    font-size: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input[type=password]:focus, input[type=text]:focus, input[type=data]:focus  {
     box-shadow: 0px 0px 3px 1px black;
 }
 
@@ -159,3 +220,633 @@ input[type=submit]:hover {
 .edit-text-fields {
     text-align: right;
 }
+
+#change-password-link {
+    padding-left: 4.5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: underline;
+}
+
+#password-recovery {
+    text-align: center;
+    padding-right: 2.1em;
+    padding-top: 0.3em;
+}
+
+#password-recovery a {
+    text-align: center;
+    padding-left: 4.5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#back-to-login {
+    padding-top: 0.2em;
+}
+
+#password-recovery a:hover, #back-to-login a:hover {
+    text-align: center;
+    padding-left: 4.5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: underline;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#back-to-login a {
+    text-align: center;
+    padding-left: 12em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#back-to-login a:hover {
+    text-align: center;
+    padding-left: 12em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: underline;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#user-form-button a {
+    padding-left: 5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: none;
+    position: absolute;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#user-form-button a:hover {
+    padding-left: 5em;
+    padding-top: 0.5em;
+    color: black;
+    text-decoration: underline;
+    position: absolute;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#logged-user-type {
+    margin-top: 1em;
+    margin-bottom: 0.6em;
+}
+#flashNote {
+    font-weight: bold;
+    position: absolute;
+    z-index: 101;
+    top: -3em;
+    left: 0;
+    right: 0;
+    background: rgba(75, 181, 67, 0.9);
+    text-align: center;
+    line-height: 2.5;
+    overflow: hidden;
+    -webkit-box-shadow: 0 0 5px black;
+    -moz-box-shadow:    0 0 5px black;
+    box-shadow:         0 0 5px black;
+    animation: slide 4s;
+}
+
+#negativeFlashNote {
+    font-weight: bold;
+    position: absolute;
+    z-index: 101;
+    top: -3em;
+    left: 0;
+    right: 0;
+    background: rgba(255, 77, 77, 0.9);
+    text-align: center;
+    line-height: 2.5;
+    overflow: hidden;
+    -webkit-box-shadow: 0 0 5px black;
+    -moz-box-shadow:    0 0 5px black;
+    box-shadow:         0 0 5px black;
+    animation: slide 4s;
+}
+
+#cookiesNote {
+    font-weight: bold;
+    position: absolute;
+    padding-top: 1.6em;
+    padding-bottom: 1.6em;
+    z-index: 101;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(220, 220, 220, 0.97);
+    text-align: center;
+    line-height: 2em;
+    overflow: hidden;
+    -webkit-box-shadow: 0 0 5px black;
+    -moz-box-shadow:    0 0 5px black;
+    box-shadow:         0 0 5px black;
+}
+
+@-webkit-keyframes slide {
+    0% { -webkit-transform: translateY(0); }
+    20% { -webkit-transform: translateY(3em); }
+    80% { -webkit-transform: translateY(3em); }
+    100% { -webkit-transform: translateY(0); }
+}
+nav ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #000000 ;
+}
+
+li a {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #000000 ;
+    text-decoration: none;
+}
+
+.nav {
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 0.5em;
+    background: white;
+    border: solid 3px #675f6b ;
+    border-radius: 10px;
+    color: #000000 ;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+}
+.nav a {
+    font-weight: bold;
+    display: block;
+    padding: 0 16px;
+    line-height: inherit;
+    cursor: pointer;
+}
+
+.nav__menu {
+    line-height: 45px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+
+.nav__menu-item {
+    display: inline-block;
+    position: relative;
+    transition: .2s ease;
+    top: 50%;
+}
+.nav__menu-item:hover {
+    background: #675f6b ;
+
+}
+
+.nav__menu-item:hover .nav__submenu {
+    display: block;
+}
+
+.nav__submenu-item{
+    box-shadow: 0px 1px 1px #675f6b ;
+    background-color: white;
+    transition: .3s ease;
+    top: 50%;
+}
+
+.nav__submenu {
+    font-weight: 300;
+    text-transform: none;
+    display: none;
+    position: absolute;
+    width: 220px;
+    height: 2em;
+    background-color: white;
+}
+
+.nav__submenu-item:hover {
+    background-color: #675f6b ;
+    box-shadow: 7px 7px 20px #675f6b ;
+}
+
+.nav__submenu-item a {
+    text-decoration: none;
+    color: black ;
+}
+
+#logged-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position:absolute;
+    top:0;
+    right:0;
+    flex-direction: column;
+    border-left: solid 3px #675f6b ;
+    height: 8em;
+    width: 20em;;
+}
+
+#user-name{
+    margin-bottom: -0.5em;
+    margin-top: 1.6em;
+}
+
+#empty {
+    height: 400px;
+}
+
+#attributes .attribute_list button[name="confirmation"]{
+    display: inline-block;
+    padding: 0.3em 1em;
+    border: 0.1em solid #675f6b;
+    cursor: pointer;
+    font-size: 2em;
+    border-radius: 0.4em;
+}
+
+#attributes .attribute_list button[name="confirmation"]:hover{
+    display: inline-block;
+    padding: 0.3em 1em;
+    border: 0.1em solid #675f6b;
+    background-color: #675f6b;
+    cursor: pointer;
+    font-size: 2em;
+    border-radius: 0.4em;
+}
+
+.attribute_list li {
+    display: inline-block;
+    margin-right: 10px;
+    size: 10em;
+}
+
+#main-container-edit, #main-container-delete {
+    margin-left: -1.8em;
+    display: flex;
+    justify-content: left;
+    margin-bottom: 3em;
+}
+#main-container{
+    height: auto;
+    margin-left: -1em;
+    margin-bottom: 3em;
+    display: flex;
+}
+
+#main-container-quest{
+    height: 38em;
+    margin-left: -1em;
+}
+
+#main-container-artifact{
+    height: 30em;
+    margin-left: -1em;
+}
+
+
+#vertical_menu{
+    float: left;
+}
+
+#delete-question {
+    padding: 5em;
+    align-items: center;
+    display:flex;
+    flex-direction: column;
+}
+
+#choose-mentor-to-delete {
+    padding: 3em;
+}
+
+#edit-operation {
+    padding: 6em;
+    align-items: center;
+    display:flex;
+    justify-content: center;
+}
+
+#sub-container-form {
+    padding-top: 1em;
+    padding-bottom: 2em;
+    padding-left: 4em;
+    display:flex;
+    justify-content: center;
+}
+
+/*#mentorsList, #groupsList, #levelsList{*/
+/*padQding-top: 3em;*/
+/*}*/
+#personal-data {
+    padding-top: 1em;
+    padding-bottom: 2em;
+    padding-right: 5em;
+    display:flex;
+    justify-content: center;
+}
+#main-container {
+    display: flex;
+    min-height: 27em;
+    justify-content: center;
+}
+
+#single-artifact-container {
+    display: flex;
+    min-height: 3em;
+    justify-content: center;
+}
+
+#group-artifact-table-container {
+    display: flex;
+    min-height: 19em;
+    justify-content: center;
+}
+
+#display-wallet-container {
+    display: flex;
+    min-height: 19em;
+    justify-content: center;
+}
+
+#level-info-container {
+    display: flex;
+    min-height: 25.5em;
+    justify-content: center;
+}
+
+#coolcoinsBalance-container {
+    display: flex;
+    justify-content: center;
+    padding: 2em;
+}
+
+#coolcoins-label {
+    width: 12em;
+    margin: 0 auto;
+    background: white;
+    border: solid 3px #675f6b;
+    border-radius: 10px;
+    color: #000000;
+    font-weight: bold;
+    justify-content: center;
+    display: flex;
+}
+
+#coolcoins-label:hover {
+    background-color: #7c7c7c;
+}
+
+#buyButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+}
+
+#startFunraisingsButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+}
+
+#user-form-container {
+    padding-top: 1.2em;
+    display: flex;
+    min-height: 10em;
+    justify-content: right;
+    align-items: center;
+    flex-direction: column;
+}
+
+#user-account {
+    display: flex;
+    min-height: 10em;
+    justify-content: right;
+    align-items: center;
+    flex-direction: column;
+}
+
+#user-form-container-edit .user-form .dropdown label {
+    float: right;
+    max-width: 4em;
+}
+
+.user-form {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-bottom: 0.12em;
+}
+
+.dropdown {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-bottom: 0.12em;
+}
+
+.user-form  label {
+    color: #9a929e;
+    display: inline-block;
+    cursor: pointer;
+    min-width: 6em;
+    font-weight: bold;
+    padding: 1em 2em;
+    text-align: right;
+}
+
+.dropdown label {
+    color: #9a929e;
+    display: inline-block;
+    cursor: pointer;
+    min-width: 6em;
+    font-weight: bold;
+    padding: 1em 2em;
+    text-align: right;
+}
+
+#user-form-button {
+    float: right;
+}
+
+/*INPUTS*/
+
+input[type=password], input[type=text], input[type=email], select, select > option {
+    width: 15em;
+    background-color: #efefef;
+    color: #666;
+    border: 2px solid #675f6b;
+    border-radius: 5px;
+    font-family: Sawasdee, serif;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input[type=password]:focus, input[type=text]:focus, input[type=email]:focus, input[type=date]:focus, select:focus, textarea:focus {
+    box-shadow: 0px 0px 3px 1px black;
+}
+
+textarea {
+    width: 15em;
+    /*margin-top: 0.1em;*/
+    background-color: #efefef;
+    color: #666;
+    border: 2px solid #675f6b;
+    border-radius: 5px;
+    font-family: Sawasdee, serif;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+    white-space: pre-line;
+    resize: none;
+}
+
+#groups {
+    width: 15em;
+    background-color: #efefef;
+    color: #666;
+    border: 2px solid #675f6b;
+    border-radius: 5px;
+    font-family: Sawasdee, serif;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+#searching {
+    width: 12.3em;
+    background-color: #efefef;
+    color: #666;
+    border: 2px solid #675f6b;
+    border-radius: 5px;
+    font-family: Sawasdee, serif;
+    font-size: 20px;
+    font-weight: bold;
+    box-sizing: border-box;
+    outline: none;
+    margin-left: 1.6em;
+    margin-bottom: -0.4em;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.walletTable {
+    border: solid 3px #675f6b;
+    border-radius: 10px;
+}
+
+.levelTable {
+    border: solid 3px #675f6b;
+    border-radius: 10px;
+}
+
+.singleArtifactTable {
+    border: solid 3px #675f6b;
+    border-radius: 10px;
+}
+
+.group-artifact-table {
+    border: solid 3px #675f6b;
+    border-radius: 10px;
+}
+
+td, th {
+    text-align: left;
+    padding: 15px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+#vertical-radio-list button {
+    float: left;
+    clear: left;
+    width: 100%;
+    height: 3em;
+    position: static !important;
+    display: inline !important;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid lightgray;
+    border-top: none;
+    transition: .3s ease;
+    top: 50%;
+    left: 50%;
+    font-size: 1em;
+    cursor: pointer;
+    padding: 1.1em 1.1em;
+    background-color: white;
+    color: #000000;
+}
+
+#vertical-radio-list button:hover {
+    background-color: #675f6b;
+}
+
+#vertical-radio-list-quest label {
+    float: left;
+    cursor: pointer;
+    vertical-align: middle;
+    display:inline-block;
+    padding: 0.5em 2em;
+    border: none;
+    width: 130%;
+    color: black;
+    font-weight: bold;
+}
+.table {
+    border: solid 3px #675f6b;
+    border-radius: 10px;
+}
+
+td, th {
+    text-align: left;
+    padding: 15px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+#items-list, #level-table, #fundraisings-list, #fundraising-info {
+    padding-top: 3em;
+}
+
+#fundraisings_table_insight:hover {
+    cursor: pointer;
+    background-color: #a296a6;
+}
+#wallet {
+    display: flex;
+    justify-content: center;
+}
+
+
+
+
+
+

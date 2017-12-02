@@ -3,7 +3,9 @@ package pl.coderampart.controller;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import pl.coderampart.DAO.*;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
+import pl.coderampart.controller.helpers.PasswordHasher;
 import pl.coderampart.model.Session;
 import pl.coderampart.services.Loggable;
 
@@ -21,13 +23,15 @@ public class Login implements HttpHandler{
     private UserDAO userDAO;
     private SessionDAO sessionDAO;
     private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
     private PasswordHasher hasher;
 
     public Login(Connection connection) {
         this.connection = connection;
         this.userDAO = new UserDAO(this.connection);
         this.sessionDAO = new SessionDAO(this.connection);
-        this.helper = new HelperController();
+        this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
         this.hasher = new PasswordHasher();
     }
 
@@ -52,7 +56,7 @@ public class Login implements HttpHandler{
             String sessionID = cookiesMap.get( "sessionID" );
             response += renderProperResponse( sessionID, httpExchange );
         } else {
-            response += helper.render( "login" );
+            response += helper.renderLogin(httpExchange);
         }
         helper.sendResponse(response, httpExchange);
     }
@@ -62,21 +66,9 @@ public class Login implements HttpHandler{
             Session currentSession = sessionDAO.getByID( sessionID );
 
             if (currentSession == null) {
-                return helper.render( "login" );
+                return helper.renderLogin(httpExchange);
             } else {
-                String userType = currentSession.getUserType();
-
-                switch (userType) {
-                    case "Admin":
-                        redirectTo( "/create-mentor", httpExchange );
-                        break;
-                    case "Mentor":
-//                    redirectTo("/login", httpExchange);
-                        break;
-                    case "Codecooler":
-                        redirectTo( "/display-wallet", httpExchange );
-                        break;
-                }
+                redirectTo( "/account", httpExchange );
                 return null;
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -93,8 +85,14 @@ public class Login implements HttpHandler{
             Session newSession = createNewSession( loggedUser );
             createCookieWithSessionID( newSession, httpExchange );
             addSessionToDatabase(newSession);
+
+            String successFlashNote = "LOGIN SUCCESSFULLY";
+            flashNoteHelper.addSuccessFlashNoteToCookie(successFlashNote , httpExchange);
+        } else {
+            String failureFlashNote = "LOGIN FAILED";
+            flashNoteHelper.addFailureFlashNoteToCookie(failureFlashNote, httpExchange);
         }
-        redirectTo("/login", httpExchange);
+        helper.redirectTo("/login", httpExchange);
     }
 
     private Loggable getLoggedUserFromInputs(Map<String, String> inputs) {
@@ -140,7 +138,7 @@ public class Login implements HttpHandler{
     }
 
     private void redirectTo(String path, HttpExchange httpExchange) throws IOException {
-        httpExchange.getResponseHeaders().set( "Location", path);
+        httpExchange.getResponseHeaders().set( "Location", path );
         httpExchange.sendResponseHeaders( 302, -1 );
     }
 }

@@ -2,135 +2,75 @@ package pl.coderampart.controller.admin;
 
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
+import pl.coderampart.DAO.GroupDAO;
 import pl.coderampart.DAO.MentorDAO;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import pl.coderampart.controller.helpers.AccessValidator;
+import pl.coderampart.controller.helpers.FlashNoteHelper;
 import pl.coderampart.controller.helpers.HelperController;
+import pl.coderampart.model.Group;
 import pl.coderampart.model.Mentor;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class EditMentorController implements HttpHandler {
+public class EditMentorController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
     private MentorDAO mentorDAO;
-    private HelperController helperController;
+    private GroupDAO groupDAO;
+    private HelperController helper;
+    private FlashNoteHelper flashNoteHelper;
 
     public EditMentorController(Connection connection) {
         this.connection = connection;
-        this.mentorDAO = new MentorDAO(this.connection);
-        this.helperController = new HelperController();
+        this.mentorDAO = new MentorDAO(connection);
+        this.groupDAO = new GroupDAO(connection);
+        this.helper = new HelperController(connection);
+        this.flashNoteHelper = new FlashNoteHelper();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Admin", httpExchange, connection);
         String method = httpExchange.getRequestMethod();
-        String response = "";
-
-        String[] uri = httpExchange.getRequestURI().toString().split("=");
-        String id = uri[uri.length-1];
-
-        List<Mentor> allMentors = readMentorsFromDB();
+        List<Mentor> allMentors = helper.readMentorsFromDB();
+        String mentorID = helper.getIdFromURI(httpExchange);
+        Mentor mentor = helper.getMentorById( mentorID );
 
         if (method.equals("GET")) {
-            response += helperController.renderHeader(httpExchange);
-            response += helperController.render("admin/adminMenu");
-            String responseTemp = renderMentorsList(allMentors);
-            if (id.length()==36) {
-                responseTemp = renderEditMentor(getMentorById(id, allMentors), allMentors);
-            }
-            response += responseTemp;
-            response += helperController.render("footer");
+            String response = "";
+            response += helper.renderHeader(httpExchange, connection);
+            response += helper.render("admin/adminMenu");
+            response += renderProperBodyResponse(mentorID, allMentors);
+            response += helper.render("footer");
+
+            helper.sendResponse( response, httpExchange );
         }
 
         if (method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader( httpExchange.getRequestBody(), "utf-8" );
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-
-            Map inputs = helperController.parseFormData(formData);
-
-            editMentor(inputs, allMentors, id);
-
-            response += helperController.render("header");
-            response += helperController.render("admin/adminMenu");
-            String responseTemp = renderMentorsList(allMentors);
-            if (id.length()==36) {
-                responseTemp = renderEditMentor(getMentorById(id, allMentors), allMentors);
-            }
-            response +=responseTemp;
-            response += helperController.render("footer");
-        }
-
-        httpExchange.sendResponseHeaders( 200, response.getBytes().length );
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-
-        os.close();
-    }
-
-    private void editMentor(Map inputs, List<Mentor>allMentors, String id) {
-
-        Mentor changedMentor = getMentorById(id, allMentors);
-
-        String firstName = String.valueOf(inputs.get("first-name"));
-        String lastName= String.valueOf(inputs.get("last-name"));
-        String dateOfBirth = String.valueOf(inputs.get("date-of-birth"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-        LocalDate date = LocalDate.parse(dateOfBirth, formatter);
-        String email= String.valueOf(inputs.get("email"));
-
-        if(!changedMentor.equals(null)){
-            changedMentor.setFirstName(firstName);
-            changedMentor.setLastName(lastName);
-            changedMentor.setDateOfBirth(date);
-            changedMentor.setEmail(email);
-            try {
-                mentorDAO.update(changedMentor);
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            Map<String, String> inputs = helper.getInputsMap(httpExchange);
+            editMentor(inputs, mentor, httpExchange);
+            helper.redirectTo( "/mentor/edit", httpExchange );
         }
     }
 
-    private Mentor getMentorById(String id, List<Mentor> allMentors) {
-        Mentor changedMentor = null;
-
-        for (Mentor mentor: allMentors) {
-            if (id.equals(mentor.getID())) {
-                changedMentor = mentor;
-            }
+    private String renderProperBodyResponse(String mentorID, List<Mentor> allMentors) {
+        Integer idLength = 36;
+        if (mentorID.length() == idLength) {
+            Mentor mentorToEdit = helper.getMentorById( mentorID );
+            return renderEditMentor(mentorToEdit, allMentors);
+        } else {
+            return renderMentorEmptyForm(allMentors);
         }
-        return changedMentor;
-    }
-
-    private List<Mentor> readMentorsFromDB() {
-        List <Mentor> allMentors = null;
-
-        try {
-            allMentors = mentorDAO.readAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return allMentors;
-    }
-
-    private String renderMentorsList(List<Mentor> allMentors) {
-        String templatePath = "templates/admin/editMentor.twig";
-        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
-        JtwigModel model = JtwigModel.newModel();
-        model.with("allMentors", allMentors);
-
-        return template.render(model);
     }
 
     private String renderEditMentor(Mentor mentor, List<Mentor> allMentors) {
+        List<Group> allGroups = helper.readGroupsFromDB();
         String templatePath = "templates/admin/editMentor.twig";
         JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
         JtwigModel model = JtwigModel.newModel();
@@ -140,7 +80,45 @@ public class EditMentorController implements HttpHandler {
         model.with("lastName", mentor.getLastName());
         model.with("email", mentor.getEmail());
         model.with("dateOfBirth", mentor.getDateOfBirth());
+        model.with("groupName", mentor.getGroup().getName());
+        model.with("allGroups", allGroups);
 
         return template.render(model);
+    }
+
+    private String renderMentorEmptyForm(List<Mentor> allMentors) {
+        String templatePath = "templates/admin/editMentor.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate( templatePath );
+        JtwigModel model = JtwigModel.newModel();
+        model.with("allMentors", allMentors);
+
+        return template.render(model);
+    }
+
+    private void editMentor(Map<String, String> inputs, Mentor mentor, HttpExchange httpExchange) {
+        String firstName = inputs.get("first-name");
+        String lastName= inputs.get("last-name");
+        String dateOfBirth = inputs.get("date-of-birth");
+        String email = inputs.get("email");
+        String groupName = inputs.get("group");
+        LocalDate dateOfBirthObject = LocalDate.parse(dateOfBirth);
+
+        try {
+            Group group = groupDAO.getByName( groupName );
+            mentor.setFirstName( firstName );
+            mentor.setLastName( lastName );
+            mentor.setEmail( email );
+            mentor.setDateOfBirth( dateOfBirthObject );
+            mentor.setGroup(group);
+
+            mentorDAO.update( mentor );
+
+            String mentorFullName = firstName + " " + lastName;
+            String flashNote = flashNoteHelper.createEditionFlashNote( "Mentor", mentorFullName );
+            flashNoteHelper.addSuccessFlashNoteToCookie(flashNote, httpExchange);
+        } catch (SQLException e) {
+            flashNoteHelper.addFailureFlashNoteToCookie(httpExchange);
+            e.printStackTrace();
+        }
     }
 }

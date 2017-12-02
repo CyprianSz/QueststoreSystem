@@ -2,36 +2,54 @@ package pl.coderampart.controller.codecooler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
+import pl.coderampart.DAO.CodecoolerDAO;
+import pl.coderampart.DAO.ItemDAO;
 import pl.coderampart.DAO.WalletDAO;
+import pl.coderampart.controller.helpers.AccessValidator;
 import pl.coderampart.controller.helpers.HelperController;
+import pl.coderampart.model.Codecooler;
+import pl.coderampart.model.Item;
+import pl.coderampart.model.Wallet;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.Connection;
+import java.util.List;
 
-public class DisplayWalletController implements HttpHandler {
+public class DisplayWalletController extends AccessValidator implements HttpHandler {
 
     private Connection connection;
-    private WalletDAO walletDAO;
-    private HelperController helperController;
+    private HelperController helper;
 
     public DisplayWalletController(Connection connection) {
         this.connection = connection;
-        this.walletDAO = new WalletDAO(this.connection);
-        this.helperController = new HelperController();
+        this.helper = new HelperController(connection);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        validateAccess( "Codecooler", httpExchange, connection);
+        List<Item> userItemsList = helper.readUserItemsFromDB(httpExchange, connection);
+        Wallet wallet = helper.readUserWalletFromDB(httpExchange, connection);
         String response = "";
-        response += helperController.renderHeader(httpExchange);
-        response += helperController.render("codecooler/codecoolerMenu");
-        response += helperController.render("codecooler/codecoolerWallet");
-//        response += renderWalletItems(walletItems);
-        response += helperController.render("footer");
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+
+        response += helper.renderHeader(httpExchange, connection);
+        response += helper.render("codecooler/codecoolerMenu");
+        response += renderDisplayItems(userItemsList, wallet);
+        response += helper.render("footer");
+
+        helper.sendResponse(response, httpExchange);
+    }
+
+    private String renderDisplayItems(List<Item> userItemsList, Wallet wallet) {
+        String templatePath = "templates/codecooler/walletTable.twig";
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("wallet", wallet.getBalance());
+        model.with("userItemsList", userItemsList);
+
+        return template.render(model);
     }
 }

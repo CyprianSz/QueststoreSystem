@@ -1,0 +1,29 @@
+<div id="main-container-delete">
+    <div id="vertical_menu">
+        <div id="vertical-radio-list">
+            <script src="../../static/js/filteringScript.js"></script>
+            <input type="text" id="searching" onkeyup="filterList()" placeholder="Search">
+            <form>
+                <div id="radio-form">
+                    <ul id="radio-form-ul">
+                    {%  for team in allTeams %}
+                        <li>
+                        <a href="/team/delete?team-id={{ team.ID }}">
+                            <button name="team-id" value="{{ team.ID }}">
+                                {{ team.name }}
+                            </button>
+                        </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sub-container-form">
+        <div id="delete-question">
+            <h2>Please choose team to delete</h2>
+        </div>
+    </div>
+</div>
