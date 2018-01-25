@@ -32,7 +32,8 @@ public abstract class AccessValidator {
         }
     }
 
-    private String getLoggedUserType( Map<String, String> cookiesMap, SessionDAO sessionDAO ) throws SQLException, ClassNotFoundException {
+    private String getLoggedUserType( Map<String, String> cookiesMap, SessionDAO sessionDAO )
+            throws SQLException, ClassNotFoundException {
         String sessionID = cookiesMap.get( "sessionID" );
         Session currentSession = sessionDAO.getByID( sessionID );
         return currentSession.getUserType();}

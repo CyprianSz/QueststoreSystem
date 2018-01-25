@@ -1,7 +1,9 @@
-# Queststore_system 
+# Queststore
 
-* This is a simple app simulating Questore platform system
-* It's used for managing achievements and rewards using internal
-  codecool currency
-* Uses: Java SE, Maven, Flyway, JDBC, SQLite, HTML, CSS, Jtwig
+## Application used for managing achievements and rewards using internal school currency
+  
+#####Uses: Java SE, Maven, Flyway, JDBC, SQLite, HTML, CSS, Jtwig
 
++ Secured authentication by hashing and salting passwords
++ CRUD functionalities with conditional authentication privileges
++ Dynamically render pages with template usage
